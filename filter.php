@@ -26,6 +26,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+require_once('locallib.php');
 /**
  * This class looks for question tags in Moodle text and
  * replaces them with questions from the question bank.
@@ -42,6 +43,8 @@ class filter_simplequestion extends moodle_text_filter {
   $START_TAG = '{QUESTION:';
   $END_TAG = '}';
   $LINKTEXTLIMIT = 40;  // Don't allow too many chars in a link for safety
+  $KEY = 'abcdefg';  // not very good but maybe good enough?
+  // Note, the same key is added within preview.php
 
   $renderer = $PAGE->get_renderer('filter_simplequestion');
 
@@ -58,7 +61,7 @@ class filter_simplequestion extends moodle_text_filter {
     // There may be a question or questions in here somewhere so continue ...
     // Get the question numbers and positions in the text and call the
     // renderer to deal with them
-    $text = filter_simplequestion_insert_questions($text, $START_TAG, $END_TAG, $LINKTEXTLIMIT, $renderer);   
+    $text = filter_simplequestion_insert_questions($text, $START_TAG, $END_TAG, $LINKTEXTLIMIT, $renderer, $KEY);   
 
     return $text;
   }
@@ -70,7 +73,7 @@ class filter_simplequestion extends moodle_text_filter {
 *
 * params:  string containing patterns, pattern start, pattern end, renderer
 */
-function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, $renderer) {
+function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, $renderer, $key) {
   
   $newstring = $str;
   While (strpos($newstring, $needle) !== false) {
@@ -108,7 +111,9 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
        
        if ($verified) {
         // Render the question link
-        $question = $renderer->get_question($number, $linktext);
+        // Encrypt question number
+        $en = filter_simplequestion_encrypt($number, $key);
+        $question = $renderer->get_question($en, $linktext);
        }
 
        // Update the text to replace the filtered string

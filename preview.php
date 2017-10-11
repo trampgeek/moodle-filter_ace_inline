@@ -36,6 +36,7 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once(__DIR__ . '/../../question/previewlib.php');
+require_once('locallib.php');
 
 /**
  * The maximum number of variants previewable. If there are more variants than this for a question
@@ -43,9 +44,11 @@ require_once(__DIR__ . '/../../question/previewlib.php');
  * @var integer
  */
 define('QUESTION_PREVIEW_MAX_VARIANTS', 100);
+$KEY = "abcdefg";
 
-// Get and validate question id.
-$id = required_param('id', PARAM_INT); 
+// Get and validate question id (note, encrypted to text).
+$enid = required_param('id', PARAM_TEXT); 
+$id = (int) filter_simplequestion_decrypt($enid, $KEY);
 
 $question = question_bank::load_question($id);
 
@@ -70,7 +73,8 @@ if ($cmid = optional_param('cmid', 0, PARAM_INT)) {
 }
 
 // Disable for this version of preview.php (security risk?)
-// question_require_capability_on($question, 'use');
+// Student can't edit question at all via this version of preview
+// question_require_capability_on($question, 'view');
 
 $PAGE->set_pagelayout('popup');
 
