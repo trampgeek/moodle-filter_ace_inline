@@ -41,6 +41,7 @@ class filter_simplequestion extends moodle_text_filter {
   // Might need to change these at some point - eg to double curlies
   $START_TAG = '{QUESTION:';
   $END_TAG = '}';
+  $LINKTEXTLIMIT = 20;  // Don't allow too many chars in a link for safety
 
   $renderer = $PAGE->get_renderer('filter_simplequestion');
 
@@ -57,7 +58,7 @@ class filter_simplequestion extends moodle_text_filter {
     // There may be a question or questions in here somewhere so continue ...
     // Get the question numbers and positions in the text and call the
     // renderer to deal with them
-    $text = filter_simplequestion_insert_questions($text, $START_TAG, $END_TAG, $renderer);   
+    $text = filter_simplequestion_insert_questions($text, $START_TAG, $END_TAG, $LINKTEXTLIMIT, $renderer);   
 
     return $text;
   }
@@ -69,7 +70,7 @@ class filter_simplequestion extends moodle_text_filter {
 *
 * params:  string containing patterns, pattern start, pattern end, renderer
 */
-function filter_simplequestion_insert_questions($str, $needle, $limit, $renderer) {
+function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, $renderer) {
   
   $newstring = $str;
   While (strpos($newstring, $needle) !== false) {
@@ -78,7 +79,6 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $renderer
        $pos = $initpos + strlen($needle);  //get up to string
        $endpos = strpos($newstring, $limit);
        $data = substr($newstring, $pos, $endpos - $pos); // extract question data
-       // Todo: add some sanity checks here, trim the string etc
        
        // get the link text
        $endlinkpos = strpos($data, '|');
@@ -87,8 +87,21 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $renderer
        // get the question number
        $number = substr($data, $endlinkpos + 1, $endpos - $endlinkpos);
        
-       // Render the question link
-       $question = $renderer->get_question($number, $linktext); 
+       // Run some checks (are these sufficient?)
+       $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
+       
+       if (!filter_var($number, FILTER_VALIDATE_INT) === false) {
+        
+       $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
+         if (strlen($linktext) > $linktextlimit) {
+            $linktext = "Link to question";
+         }
+         // Render the question link
+         $question = $renderer->get_question($number, $linktext);
+       } else {
+
+        $question = " {Please check your data} "; 
+       }
        
        // Update the text to replace the filtered string
        $newstring = substr_replace($newstring, $question, $initpos, $endpos - $initpos + 1);

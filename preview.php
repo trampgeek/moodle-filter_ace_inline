@@ -69,7 +69,7 @@ if ($cmid = optional_param('cmid', 0, PARAM_INT)) {
     // Note that in the other cases, require_login will set the correct page context.
 }
 
-// Disable for this version of preview.php
+// Disable for this version of preview.php (security risk?)
 // question_require_capability_on($question, 'use');
 
 $PAGE->set_pagelayout('popup');
@@ -130,84 +130,9 @@ if ($previewid) {
 $options->behaviour = $quba->get_preferred_behaviour();
 $options->maxmark = $quba->get_question_max_mark($slot);
 
-/*
-// Create the settings form, and initialise the fields.
-$optionsform = new preview_options_form(question_preview_form_url($question->id, $context, $previewid),
-        array('quba' => $quba, 'maxvariant' => $maxvariant));
-$optionsform->set_data($options);
-
-// Process change of settings, if that was requested.
-if ($newoptions = $optionsform->get_submitted_data()) {
-    // Set user preferences.
-    $options->save_user_preview_options($newoptions);
-    if (!isset($newoptions->variant)) {
-        $newoptions->variant = $options->variant;
-    }
-    if (isset($newoptions->saverestart)) {
-        restart_preview($previewid, $question->id, $newoptions, $context);
-    }
-}
-*/
 // Prepare a URL that is used in various places.
 $actionurl = question_preview_action_url($question->id, $quba->get_id(), $options, $context);
-/*
-// Process any actions from the buttons at the bottom of the form.
-if (data_submitted() && confirm_sesskey()) {
 
-    try {
-
-        if (optional_param('restart', false, PARAM_BOOL)) {
-            restart_preview($previewid, $question->id, $options, $context);
-
-        } else if (optional_param('fill', null, PARAM_BOOL)) {
-            $correctresponse = $quba->get_correct_response($slot);
-            if (!is_null($correctresponse)) {
-                $quba->process_action($slot, $correctresponse);
-
-                $transaction = $DB->start_delegated_transaction();
-                question_engine::save_questions_usage_by_activity($quba);
-                $transaction->allow_commit();
-            }
-            redirect($actionurl);
-
-        } else if (optional_param('finish', null, PARAM_BOOL)) {
-            $quba->process_all_actions();
-            $quba->finish_all_questions();
-
-            $transaction = $DB->start_delegated_transaction();
-            question_engine::save_questions_usage_by_activity($quba);
-            $transaction->allow_commit();
-            redirect($actionurl);
-
-        } else {
-            $quba->process_all_actions();
-
-            $transaction = $DB->start_delegated_transaction();
-            question_engine::save_questions_usage_by_activity($quba);
-            $transaction->allow_commit();
-
-            $scrollpos = optional_param('scrollpos', '', PARAM_RAW);
-            if ($scrollpos !== '') {
-                $actionurl->param('scrollpos', (int) $scrollpos);
-            }
-            redirect($actionurl);
-        }
-
-    } catch (question_out_of_sequence_exception $e) {
-        print_error('submissionoutofsequencefriendlymessage', 'question', $actionurl);
-
-    } catch (Exception $e) {
-        // This sucks, if we display our own custom error message, there is no way
-        // to display the original stack trace.
-        $debuginfo = '';
-        if (!empty($e->debuginfo)) {
-            $debuginfo = $e->debuginfo;
-        }
-        print_error('errorprocessingresponses', 'question', $actionurl,
-                $e->getMessage(), $debuginfo);
-    }
-}
-*/
 if ($question->length) {
     $displaynumber = '1';
 } else {
@@ -227,20 +152,7 @@ if (is_null($quba->get_correct_response($slot))) {
 if (!$previewid) {
     $restartdisabled = array('disabled' => 'disabled');
 }
-/*
-// Prepare technical info to be output.
-$qa = $quba->get_question_attempt($slot);
-$technical = array();
-$technical[] = get_string('behaviourbeingused', 'question',
-        question_engine::get_behaviour_name($qa->get_behaviour_name()));
-$technical[] = get_string('technicalinfominfraction',     'question', $qa->get_min_fraction());
-$technical[] = get_string('technicalinfomaxfraction',     'question', $qa->get_max_fraction());
-$technical[] = get_string('technicalinfovariant',         'question', $qa->get_variant());
-$technical[] = get_string('technicalinfoquestionsummary', 'question', s($qa->get_question_summary()));
-$technical[] = get_string('technicalinforightsummary',    'question', s($qa->get_right_answer_summary()));
-$technical[] = get_string('technicalinforesponsesummary', 'question', s($qa->get_response_summary()));
-$technical[] = get_string('technicalinfostate',           'question', '' . $qa->get_state());
-*/
+
 // Start output.
 $title = get_string('previewquestion', 'question', format_string($question->name));
 $headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
@@ -273,19 +185,6 @@ echo html_writer::empty_tag('input', $finishdisabled  + array('type' => 'submit'
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
 
-// Output the technical info.
-/*
-print_collapsible_region_start('', 'techinfo', get_string('technicalinfo', 'question') .
-        $OUTPUT->help_icon('technicalinfo', 'question'),
-        'core_question_preview_techinfo_collapsed', true);
-foreach ($technical as $info) {
-    echo html_writer::tag('p', $info, array('class' => 'notifytiny'));
-}
-print_collapsible_region_end();
-
-// Display the settings form.
-$optionsform->display();
-*/
 $PAGE->requires->js_module('core_question_engine');
 $PAGE->requires->strings_for_js(array(
     'closepreview',
