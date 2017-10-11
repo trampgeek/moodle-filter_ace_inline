@@ -46,7 +46,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     $link = new moodle_url($url, array('id'=>$number));
     
     // Check for link text
-    if ($linktext === '') { $linktext = get_string('link_text', 'filter_question'); }
+    if ($linktext === '') { $linktext = get_string('link_text', 'filter_simplequestion'); }
     
     // Todo: Add an option to have the link inline or as a popup
     $text = $this->output->action_link($link, $linktext, new popup_action('click', $link)); 

@@ -41,7 +41,7 @@ class filter_simplequestion extends moodle_text_filter {
   // Might need to change these at some point - eg to double curlies
   $START_TAG = '{QUESTION:';
   $END_TAG = '}';
-  $LINKTEXTLIMIT = 20;  // Don't allow too many chars in a link for safety
+  $LINKTEXTLIMIT = 40;  // Don't allow too many chars in a link for safety
 
   $renderer = $PAGE->get_renderer('filter_simplequestion');
 
@@ -88,21 +88,29 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
        $number = substr($data, $endlinkpos + 1, $endpos - $endlinkpos);
        
        // Run some checks (are these sufficient?)
-       $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
+       $verified = true;
        
-       if (!filter_var($number, FILTER_VALIDATE_INT) === false) {
-        
+       // Clean the text string
        $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
-         if (strlen($linktext) > $linktextlimit) {
-            $linktext = "Link to question";
-         }
-         // Render the question link
-         $question = $renderer->get_question($number, $linktext);
-       } else {
 
-        $question = " {Please check your data} "; 
+       // Check the number (must be integer)
+       if (filter_var($number, FILTER_VALIDATE_INT) === false) {
+         // Invalid number string
+         $question = get_string('link_number_error', 'filter_simplequestion'); 
+         $verified = false;
        }
        
+       // Check the link text for length
+       if (strlen($linktext) > $linktextlimit) {
+            $question = $linktext . get_string('link_text_length', 'filter_simplequestion'); 
+            $verified = false;
+       }
+       
+       if ($verified) {
+        // Render the question link
+        $question = $renderer->get_question($number, $linktext);
+       }
+
        // Update the text to replace the filtered string
        $newstring = substr_replace($newstring, $question, $initpos, $endpos - $initpos + 1);
        $initpos = $endpos + 1;

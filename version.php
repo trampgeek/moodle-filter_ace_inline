@@ -26,6 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017101000;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2017101104;        // The current plugin version
 $plugin->requires  = 2017051500;        // Requires this Moodle version
 $plugin->component = 'filter_simplequestion'; // Full name of the plugin (used for diagnostics)
+$plugin->maturity = MATURITY_BETA;
+$plugin->release = 'v1.0'; // first release of the plugin into the wild
