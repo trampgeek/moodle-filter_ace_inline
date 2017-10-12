@@ -49,3 +49,80 @@ function filter_simplequestion_encrypt($string, $key) {
   }
 return base64_encode($result);
 }
+
+/**
+ * Library functions used by question/preview.php.
+ *
+ * @package    moodlecore
+ * @subpackage questionengine
+ * @copyright  2010 The Open University
+ * Modified for use in filter_simplequestion by Richard Jones http://richardnz/net
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+function filter_simplequestion_preview_action_url($questionid, $qubaid,
+        question_preview_options $options, $context) {
+    $params = array(
+        'id' => $questionid,
+        'previewid' => $qubaid,
+    );
+    if ($context->contextlevel == CONTEXT_MODULE) {
+        $params['cmid'] = $context->instanceid;
+    } else if ($context->contextlevel == CONTEXT_COURSE) {
+        $params['courseid'] = $context->instanceid;
+    }
+    $params = array_merge($params, $options->get_url_params());
+    return new moodle_url('/filter/simplequestion/preview.php', $params);
+}
+
+/**
+ * Generate the URL for starting a new preview of a given question with the given options.
+ * @param integer $questionid the question to preview.
+ * @param string $preferredbehaviour the behaviour to use for the preview.
+ * @param float $maxmark the maximum to mark the question out of.
+ * @param question_display_options $displayoptions the display options to use.
+ * @param int $variant the variant of the question to preview. If null, one will
+ *      be picked randomly.
+ * @param object $context context to run the preview in (affects things like
+ *      filter settings, theme, lang, etc.) Defaults to $PAGE->context.
+ * @return moodle_url the URL.
+ */
+function filter_simplequestion_question_preview_url($questionid, $preferredbehaviour = null,
+        $maxmark = null, $displayoptions = null, $variant = null, $context = null) {
+
+    $params = array('id' => $questionid);
+
+    if (is_null($context)) {
+        global $PAGE;
+        $context = $PAGE->context;
+    }
+    if ($context->contextlevel == CONTEXT_MODULE) {
+        $params['cmid'] = $context->instanceid;
+    } else if ($context->contextlevel == CONTEXT_COURSE) {
+        $params['courseid'] = $context->instanceid;
+    }
+
+    if (!is_null($preferredbehaviour)) {
+        $params['behaviour'] = $preferredbehaviour;
+    }
+
+    if (!is_null($maxmark)) {
+        $params['maxmark'] = $maxmark;
+    }
+
+    if (!is_null($displayoptions)) {
+        $params['correctness']     = $displayoptions->correctness;
+        $params['marks']           = $displayoptions->marks;
+        $params['markdp']          = $displayoptions->markdp;
+        $params['feedback']        = (bool) $displayoptions->feedback;
+        $params['generalfeedback'] = (bool) $displayoptions->generalfeedback;
+        $params['rightanswer']     = (bool) $displayoptions->rightanswer;
+        $params['history']         = (bool) $displayoptions->history;
+    }
+
+    if ($variant) {
+        $params['variant'] = $variant;
+    }
+
+    return new moodle_url('/filter/simplequestion/preview.php', $params);
+}

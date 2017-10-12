@@ -26,7 +26,8 @@
  * @subpackage questionengine
  * @copyright  Alex Smith {@link http://maths.york.ac.uk/serving_maths} and
  *      numerous contributors.
- *  Modified/simplified for moodle_filter_simplequestion by Richard Jones https://richardnz.net/
+ * Modified/simplified for moodle_filter_simplequestion by Richard Jones https://richardnz.net/
+ *
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,14 +37,13 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once(__DIR__ . '/../../question/previewlib.php');
 require_once('locallib.php');
+
 /**
  * The maximum number of variants previewable. If there are more variants than this for a question
  * then we only allow the selection of the first x variants.
  * @var integer
  */
 define('QUESTION_PREVIEW_MAX_VARIANTS', 100);
-
-// Get and validate question id.
 $KEY = "abcdefg";
 
 // Get and validate question id (note, encrypted to text).
@@ -71,7 +71,11 @@ if ($cmid = optional_param('cmid', 0, PARAM_INT)) {
     $PAGE->set_context($context);
     // Note that in the other cases, require_login will set the correct page context.
 }
-//question_require_capability_on($question, 'use');
+
+// Disable for this version of preview.php (security risk?)
+// Student can't edit question at all via this version of preview
+// question_require_capability_on($question, 'view');
+
 $PAGE->set_pagelayout('popup');
 
 // Get and validate display options.
@@ -79,7 +83,7 @@ $maxvariant = min($question->get_num_variants(), QUESTION_PREVIEW_MAX_VARIANTS);
 $options = new question_preview_options($question);
 $options->load_user_defaults();
 $options->set_from_request();
-$PAGE->set_url(filter_simplequestion_question_preview_url($question->id, $options->behaviour, $options->maxmark,
+$PAGE->set_url(question_preview_url($id, $options->behaviour, $options->maxmark,
         $options, $options->variant, $context));
 
 // Get and validate existing preview, or start a new one.
@@ -103,7 +107,7 @@ if ($previewid) {
 
     $slot = $quba->get_first_question_number();
     $usedquestion = $quba->get_question($slot);
-    if ($usedquestion->id != $question->id) {
+    if ($usedquestion->id != $enid) {
         print_error('questionidmismatch', 'question');
     }
     $question = $usedquestion;
@@ -111,7 +115,7 @@ if ($previewid) {
 
 } else {
     $quba = question_engine::make_questions_usage_by_activity(
-            'core_question_preview', context_user::instance($USER->id));
+            'filter_simplequestion', context_user::instance($USER->id));
     $quba->set_preferred_behaviour($options->behaviour);
     $slot = $quba->add_question($question, $options->maxmark);
 
@@ -123,35 +127,15 @@ if ($previewid) {
 
     $quba->start_question($slot, $options->variant);
 
-    $transaction = $DB->start_delegated_transaction();
-    question_engine::save_questions_usage_by_activity($quba);
-    $transaction->allow_commit();
+    //$transaction = $DB->start_delegated_transaction();
+    //question_engine::save_questions_usage_by_activity($quba);
+    //$transaction->allow_commit();
 }
 $options->behaviour = $quba->get_preferred_behaviour();
 $options->maxmark = $quba->get_question_max_mark($slot);
 
-// Create the settings form, and initialise the fields.
-$optionsform = new preview_options_form(question_preview_form_url($question->id, $context, $previewid),
-        array('quba' => $quba, 'maxvariant' => $maxvariant));
-$optionsform->set_data($options);
-
-// Process change of settings, if that was requested.
-if ($newoptions = $optionsform->get_submitted_data()) {
-    // Set user preferences.
-    $options->save_user_preview_options($newoptions);
-    if (!isset($newoptions->variant)) {
-        $newoptions->variant = $options->variant;
-    }
-    if (isset($newoptions->saverestart)) {
-        restart_preview($previewid, $question->id, $newoptions, $context);
-    }
-}
-
 // Prepare a URL that is used in various places.
 $actionurl = filter_simplequestion_preview_action_url($enid, $quba->get_id(), $options, $context);
-
-// Process any actions from the buttons at the bottom of the form.
-// Clean this up as we won't allow any but submit and close
 
 if (data_submitted() && confirm_sesskey()) {
 
@@ -209,12 +193,12 @@ if (data_submitted() && confirm_sesskey()) {
     }
 }
 
+
 if ($question->length) {
     $displaynumber = '1';
 } else {
     $displaynumber = 'i';
 }
-
 $restartdisabled = array();
 $finishdisabled = array();
 $filldisabled = array();
@@ -230,20 +214,6 @@ if (!$previewid) {
     $restartdisabled = array('disabled' => 'disabled');
 }
 
-// Prepare technical info to be output.
-/* Not needed
-$qa = $quba->get_question_attempt($slot);
-$technical = array();
-$technical[] = get_string('behaviourbeingused', 'question',
-        question_engine::get_behaviour_name($qa->get_behaviour_name()));
-$technical[] = get_string('technicalinfominfraction',     'question', $qa->get_min_fraction());
-$technical[] = get_string('technicalinfomaxfraction',     'question', $qa->get_max_fraction());
-$technical[] = get_string('technicalinfovariant',         'question', $qa->get_variant());
-$technical[] = get_string('technicalinfoquestionsummary', 'question', s($qa->get_question_summary()));
-$technical[] = get_string('technicalinforightsummary',    'question', s($qa->get_right_answer_summary()));
-$technical[] = get_string('technicalinforesponsesummary', 'question', s($qa->get_response_summary()));
-$technical[] = get_string('technicalinfostate',           'question', '' . $qa->get_state());
-*/
 // Start output.
 $title = get_string('previewquestion', 'question', format_string($question->name));
 $headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
@@ -269,28 +239,12 @@ echo html_writer::start_tag('div', array('id' => 'previewcontrols', 'class' => '
 //        'name' => 'restart', 'value' => get_string('restart', 'question'), 'class' => 'btn btn-secondary'));
 //echo html_writer::empty_tag('input', $finishdisabled  + array('type' => 'submit',
 //        'name' => 'save',    'value' => get_string('save', 'question'), 'class' => 'btn btn-secondary'));
-//echo html_writer::empty_tag('input', $filldisabled    + array('type' => 'submit',
-//        'name' => 'fill',    'value' => get_string('fillincorrect', 'question'), 'class' => 'btn btn-secondary'));
+echo html_writer::empty_tag('input', $filldisabled    + array('type' => 'submit',
+        'name' => 'fill',    'value' => get_string('fillincorrect', 'question'), 'class' => 'btn btn-secondary'));
 echo html_writer::empty_tag('input', $finishdisabled  + array('type' => 'submit',
         'name' => 'finish',  'value' => get_string('answer_question', 'filter_simplequestion'), 'class' => 'btn btn-secondary'));
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
-
-// Output the technical info.
-/*
-print_collapsible_region_start('', 'techinfo', get_string('technicalinfo', 'question') .
-        $OUTPUT->help_icon('technicalinfo', 'question'),
-        'core_question_preview_techinfo_collapsed', true);
-
-
-foreach ($technical as $info) {
-    echo html_writer::tag('p', $info, array('class' => 'notifytiny'));
-}
-*/
-print_collapsible_region_end();
-
-// Display the settings form.
-// $optionsform->display();
 
 $PAGE->requires->js_module('core_question_engine');
 $PAGE->requires->strings_for_js(array(

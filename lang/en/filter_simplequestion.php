@@ -31,3 +31,4 @@ $string['link_text'] = 'Click for question';
 $string['link_text_length'] = ' { Link text too long }';
 $string['link_text_error'] = ' { invalid characters in link }';
 $string['link_number_error'] = '{ Please check your question id }';
+$string['answer_question'] = "Submit";
