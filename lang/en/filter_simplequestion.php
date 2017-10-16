@@ -32,3 +32,17 @@ $string['link_text_length'] = ' { Link text too long }';
 $string['link_text_error'] = ' { invalid characters in link }';
 $string['link_number_error'] = '{ Please check your question id }';
 $string['answer_question'] = "Submit";
+// Settings strings
+$string['settings_heading'] = 'Insert Question settings';
+$string['settings_desc'] = 'Change the settings for this filter.  
+                            Note: if you change these settings, existing uses will fail.
+                            <br /> This is a one time setup!';
+$string['settings_start_tag'] = 'Start tag';
+$string['settings_end_tag'] = 'End tag';
+$string['settings_start_tag_desc'] = 'Tag that marks the start of the question';
+$string['settings_end_tag_desc'] = 'Tag that marks the end of the question';
+$string['settings_key'] = 'Encoding key';
+$string['settings_key_desc'] = 'Secret key to encode the question id';
+$string['settings_linklimit'] = 'Link lengths';
+$string['settings_linklimit_desc'] = 'Maximum length of the text string that links to a question';
+

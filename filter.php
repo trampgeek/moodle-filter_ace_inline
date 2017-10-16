@@ -40,12 +40,14 @@ class filter_simplequestion extends moodle_text_filter {
   function filter($text, array $options = array()) {
   global $PAGE;
   // Might need to change these at some point - eg to double curlies
-  $START_TAG = '{QUESTION:';
-  $END_TAG = '}';
-  $LINKTEXTLIMIT = 40;  // Don't allow too many chars in a link for safety
-  $KEY = 'abcdefg';  // not very good but maybe good enough?
-  // Note, the same key is added within preview.php
-
+  // defined in setting.php with default values
+  
+  $def_config = get_config('filter_simplequestion');
+  $starttag = $def_config->starttag;
+  $endtag = $def_config->endtag;
+  $linktextlimit = $def_config->linklimit;
+  $key = $def_config->key;
+ 
   $renderer = $PAGE->get_renderer('filter_simplequestion');
 
     // Basic tests to avoid work
@@ -61,7 +63,7 @@ class filter_simplequestion extends moodle_text_filter {
     // There may be a question or questions in here somewhere so continue ...
     // Get the question numbers and positions in the text and call the
     // renderer to deal with them
-    $text = filter_simplequestion_insert_questions($text, $START_TAG, $END_TAG, $LINKTEXTLIMIT, $renderer, $KEY);   
+    $text = filter_simplequestion_insert_questions($text, $starttag, $endtag, $linktextlimit, $renderer, $key);   
 
     return $text;
   }

@@ -44,11 +44,12 @@ require_once('locallib.php');
 define('QUESTION_PREVIEW_MAX_VARIANTS', 100);
 
 // Get and validate question id.
-$KEY = "abcdefg";
+$def_config = get_config('filter_simplequestion');
+$key = $def_config->key;
 
 // Get and validate question id (note, encrypted to text).
 $enid = required_param('id', PARAM_TEXT); 
-$id = (int) filter_simplequestion_decrypt($enid, $KEY);
+$id = (int) filter_simplequestion_decrypt($enid, $key);
 
 $question = question_bank::load_question($id);
 
