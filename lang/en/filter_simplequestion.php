@@ -31,7 +31,8 @@ $string['link_text'] = 'Click for question';
 $string['link_text_length'] = ' { Link text too long }';
 $string['link_text_error'] = ' { invalid characters in link }';
 $string['link_number_error'] = '{ Please check your question id }';
-$string['answer_question'] = "Submit";
+$string['answer_question'] = 'Submit answer';
+$string['previewquestion'] = 'Question, {$a}';
 
 // Settings strings
 $string['settings_heading'] = 'Insert Question settings';
