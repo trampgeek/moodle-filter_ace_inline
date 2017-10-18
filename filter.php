@@ -39,6 +39,12 @@ class filter_simplequestion extends moodle_text_filter {
 
   function filter($text, array $options = array()) {
   global $PAGE;
+    
+  // Basic test to avoid work
+  if (!is_string($text)) {
+    // non string data can not be filtered anyway
+    return $text;
+  }
   // Might need to change these at some point - eg to double curlies
   // defined in setting.php with default values
   
@@ -47,24 +53,24 @@ class filter_simplequestion extends moodle_text_filter {
   $endtag = $def_config->endtag;
   $linktextlimit = $def_config->linklimit;
   $key = $def_config->key;
+    
+  // Do a quick check to see if we have a tag
+  if (strpos($text, $starttag) === false) {
+    return $text;
+  }
  
   $renderer = $PAGE->get_renderer('filter_simplequestion');
+  // Check our context and get the course id
+  $coursectx = $this->context->get_course_context(false);
+  if (!$coursectx) {
+    return $text;
+  }
+  $courseid = $coursectx->instanceid;
 
-    // Basic tests to avoid work
-    if (!is_string($text)) {
-      // non string data can not be filtered anyway
-      return $text;
-    }
-    if (strpos($text, '{') === false) {
-      // Do a quick check to see if we have curlies
-      return $text;
-    }
-
-    // There may be a question or questions in here somewhere so continue ...
-    // Get the question numbers and positions in the text and call the
-    // renderer to deal with them
-    $text = filter_simplequestion_insert_questions($text, $starttag, $endtag, $linktextlimit, $renderer, $key);   
-
+  // There may be a question or questions in here somewhere so continue ...
+  // Get the question numbers and positions in the text and call the
+  // renderer to deal with them
+  $text = filter_simplequestion_insert_questions($text, $starttag, $endtag, $linktextlimit, $renderer, $key, $courseid);   
     return $text;
   }
 
@@ -75,7 +81,7 @@ class filter_simplequestion extends moodle_text_filter {
 *
 * params:  string containing patterns, pattern start, pattern end, renderer
 */
-function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, $renderer, $key) {
+function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, $renderer, $key, $courseid) {
   
   $newstring = $str;
   While (strpos($newstring, $needle) !== false) {
@@ -115,7 +121,7 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
         // Render the question link
         // Encrypt question number
         $en = filter_simplequestion_encrypt($number, $key);
-        $question = $renderer->get_question($en, $linktext);
+        $question = $renderer->get_question($en, $linktext, $courseid);
        }
 
        // Update the text to replace the filtered string

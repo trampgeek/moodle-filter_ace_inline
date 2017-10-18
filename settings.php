@@ -60,4 +60,8 @@ if ($ADMIN->fulltree) {
                                                 get_string('settings_key', 'filter_simplequestion'),
                                                 get_string('settings_key_desc', 'filter_simplequestion'), 
                                                 $KEY, PARAM_RAW));
+  $settings->add(new admin_setting_configcheckbox('filter_simplequestion/displaymode',
+                                                get_string('settings_displaymode', 'filter_simplequestion'),
+                                                get_string('settings_displaymode_desc', 'filter_simplequestion'), 
+                                                1));
 }
