@@ -63,28 +63,23 @@ return base64_encode($result);
 
 function get_preview_url($questionid, $courseid) {
     $params = array('id' => $questionid, 'courseid'=>$courseid);
-    return new moodle_url('/filter/simplequestion/preview.php', $params);
+    return new moodle_url('/filter/simplequestion/showquestion.php', $params);
 }
 
-function preview_action_url($questionid, $qubaid,
-        question_preview_options $options, $courseid) {
-    $params = array(
-        'id' => $questionid,
-        'courseid' => $courseid,
-        'previewid' => $qubaid
-    );
-    
-    $params = array_merge($params, $options->get_url_params());
-    return new moodle_url('/filter/simplequestion/preview.php', $params);
-}
+function get_display_options($maxvariant) {
 
-function preview_form_url($questionid, $courseid, $previewid = null) {
-    $params = array(
-        'id' => $questionid,
-        'courseid' => $courseid,
-    );
-    if ($previewid) {
-        $params['previewid'] = $previewid;
-    }
-    return new moodle_url('/filter/simplequestion/preview.php', $params);
+  $options = array();
+  // Question options - note just 1 question in the attempt
+  $options = new question_display_options();
+  $options->marks = question_display_options::MAX_ONLY;
+  $options->markdp = 0; // Display marks to 2 decimal places.
+  $options->feedback = 'immediatefeedback';
+  $options->generalfeedback = question_display_options::HIDDEN;
+  $options->variant = $maxvariant;
+  if ($options->variant) {
+    $options->variant = min($maxvariant, max(1, $options->variant));
+  } else {
+    $options->variant = rand(1, $maxvariant);
+  }
+  return $options;
 }
