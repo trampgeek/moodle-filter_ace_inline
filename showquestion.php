@@ -79,19 +79,18 @@ if (data_submitted() && confirm_sesskey()) {
 
 } else {
   // Setup the question to be displayed                     
-  $quba->set_preferred_behaviour('deferredfeedback');
+  $quba->set_preferred_behaviour('immediatefeedback');
   $slot = $quba->add_question($question, 0);
   $quba->start_question($slot);
   
   $transaction = $DB->start_delegated_transaction();
   question_engine::save_questions_usage_by_activity($quba);
   $transaction->allow_commit();
-
-  // Create the settings form, and initialise the fields.
-  $optionsform = new preview_options_form(preview_form_url($enid, $courseid, $slot),
-                     array('quba' => $quba, 'maxvariant' => $maxvariant));
-  $optionsform->set_data($options);
 }
+  // Create the settings form, and initialise the fields.
+  //$optionsform = new preview_options_form(preview_form_url($enid, $courseid, $slot),
+  //                   array('quba' => $quba, 'maxvariant' => $maxvariant));
+  //$optionsform->set_data($options);
 
 $title = get_string('previewquestion', 'filter_simplequestion', format_string($question->name));
 $headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
@@ -112,9 +111,10 @@ echo html_writer::end_tag('div');
 // Output the question.
 echo $quba->render_question($slot, $options);
 
+/*
 // Finish the question form.
 // Todo: Add an option in config to show the controls like fill, close, submit
-// Meanwhile we do have a check button on the question form
+// Meanwhile we do have a check button on the question form with immediate feedback
 // 
 echo html_writer::start_tag('div', array('id' => 'previewcontrols', 'class' => 'controls'));
 //echo html_writer::empty_tag('input', $filldisabled    + array('type' => 'submit',
@@ -124,5 +124,5 @@ echo html_writer::empty_tag('input', array('type' => 'submit','name' => 'finish'
       'class' => 'btn btn-secondary'));
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
-
+*/
 echo $OUTPUT->footer();
