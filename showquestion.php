@@ -79,7 +79,7 @@ if (data_submitted() && confirm_sesskey()) {
 
 } else {
   // Setup the question to be displayed                     
-  $quba->set_preferred_behaviour('immediatefeedback');
+  $quba->set_preferred_behaviour('deferredfeedback');
   $slot = $quba->add_question($question, 0);
   $quba->start_question($slot);
   
@@ -88,10 +88,9 @@ if (data_submitted() && confirm_sesskey()) {
   $transaction->allow_commit();
 
   // Create the settings form, and initialise the fields.
-  // We will skip any controls for now at least
-  //$optionsform = new preview_options_form(preview_form_url($enid, $courseid),
-  //                   array('quba' => $quba, 'maxvariant' => $maxvariant));
-  //$optionsform->set_data($options);
+  $optionsform = new preview_options_form(preview_form_url($enid, $courseid, $slot),
+                     array('quba' => $quba, 'maxvariant' => $maxvariant));
+  $optionsform->set_data($options);
 }
 
 $title = get_string('previewquestion', 'filter_simplequestion', format_string($question->name));
@@ -117,13 +116,13 @@ echo $quba->render_question($slot, $options);
 // Todo: Add an option in config to show the controls like fill, close, submit
 // Meanwhile we do have a check button on the question form
 // 
-// echo html_writer::start_tag('div', array('id' => 'previewcontrols', 'class' => 'controls'));
+echo html_writer::start_tag('div', array('id' => 'previewcontrols', 'class' => 'controls'));
 //echo html_writer::empty_tag('input', $filldisabled    + array('type' => 'submit',
 //        'name' => 'fill',    'value' => get_string('fillincorrect', 'question'), 'class' => 'btn btn-secondary'));
-//echo html_writer::empty_tag('input', array('type' => 'submit','name' => 'finish',  
-//      'value' => get_string('answer_question', 'filter_simplequestion'), 
-//      'class' => 'btn btn-secondary'));
-//echo html_writer::end_tag('div');
+echo html_writer::empty_tag('input', array('type' => 'submit','name' => 'finish',  
+     'value' => get_string('answer_question', 'filter_simplequestion'), 
+      'class' => 'btn btn-secondary'));
+echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
 
 echo $OUTPUT->footer();

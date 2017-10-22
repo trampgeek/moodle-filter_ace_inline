@@ -66,6 +66,11 @@ function get_preview_url($questionid, $courseid) {
     return new moodle_url('/filter/simplequestion/showquestion.php', $params);
 }
 
+function preview_form_url($questionid, $courseid, $slot) {
+    $params = array('id' => $questionid, 'courseid'=>$courseid, 'slot'=>$slot);
+    return new moodle_url('/filter/simplequestion/showquestion.php', $params);
+}
+
 function get_display_options($maxvariant) {
 
   $options = array();
@@ -73,7 +78,7 @@ function get_display_options($maxvariant) {
   $options = new question_display_options();
   $options->marks = question_display_options::MAX_ONLY;
   $options->markdp = 0; // Display marks to 2 decimal places.
-  $options->feedback = 'immediatefeedback';
+  $options->feedback = 'deferredfeedback';
   $options->generalfeedback = question_display_options::HIDDEN;
   $options->variant = $maxvariant;
   if ($options->variant) {
