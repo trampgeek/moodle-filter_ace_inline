@@ -74,9 +74,9 @@ if (data_submitted() && confirm_sesskey()) {
   $transaction = $DB->start_delegated_transaction();
   question_engine::load_questions_usage_by_activity($qubaid);
   $quba->process_all_actions($timenow);
-  question_engine::save_questions_usage_by_activity($quba);
-  $transaction->allow_commit();
-
+  //question_engine::save_questions_usage_by_activity($quba);
+  //$transaction->allow_commit();
+  // question_engine::delete_questions_usage_by_activity($qubaid);
 } else {
   // Setup the question to be displayed                     
   $quba->set_preferred_behaviour('immediatefeedback');
