@@ -61,16 +61,6 @@ return base64_encode($result);
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function get_preview_url($questionid, $courseid) {
-    $params = array('id' => $questionid, 'courseid'=>$courseid);
-    return new moodle_url('/filter/simplequestion/showquestion.php', $params);
-}
-
-function preview_form_url($questionid, $courseid, $slot) {
-    $params = array('id' => $questionid, 'courseid'=>$courseid, 'slot'=>$slot);
-    return new moodle_url('/filter/simplequestion/showquestion.php', $params);
-}
-
 function get_display_options($maxvariant) {
 
   $options = array();
@@ -78,7 +68,7 @@ function get_display_options($maxvariant) {
   $options = new question_display_options();
   $options->marks = question_display_options::MAX_ONLY;
   $options->markdp = 0; // Display marks to 2 decimal places.
-  $options->feedback = 'deferredfeedback';
+  $options->feedback = 'immediatefeedback';
   $options->generalfeedback = question_display_options::HIDDEN;
   $options->variant = $maxvariant;
   if ($options->variant) {
@@ -87,4 +77,63 @@ function get_display_options($maxvariant) {
     $options->variant = rand(1, $maxvariant);
   }
   return $options;
+}
+
+/**
+ * The the URL to use for actions relating to this preview.
+ * @param int $enid the encrypted id of the question being previewed.
+ * @param int $qubaid the id of the question usage for this preview.
+ * @param question_preview_options $options the options in use.
+ */
+function preview_action_url($enid, $qubaid,
+        question_preview_options $options, $courseid) {
+    $params = array(
+        'id' => $enid,
+        'previewid' => $qubaid,
+        'courseid' => $courseid
+    );
+    $params = array_merge($params, $options->get_url_params());
+    return new moodle_url('/filter/simplequestion/preview.php', $params);
+}
+
+/**
+ * Generate the URL for starting a new preview of a given question with the given options.
+ * @param integer $questionid the question to preview.
+ * @param string $preferredbehaviour the behaviour to use for the preview.
+ * @param float $maxmark the maximum to mark the question out of.
+ * @param question_display_options $displayoptions the display options to use.
+ * @param int $variant the variant of the question to preview. If null, one will
+ *      be picked randomly.
+ * @param object $context context to run the preview in (affects things like
+ *      filter settings, theme, lang, etc.) Defaults to $PAGE->context.
+ * @return moodle_url the URL.
+ */
+function preview_url($enid, $preferredbehaviour = null,
+        $maxmark = null, $displayoptions = null, $variant = null, $courseid) {
+
+    $params = array('id' => $enid, 'courseid' => $courseid);
+
+    if (!is_null($preferredbehaviour)) {
+        $params['behaviour'] = $preferredbehaviour;
+    }
+
+    if (!is_null($maxmark)) {
+        $params['maxmark'] = $maxmark;
+    }
+
+    if (!is_null($displayoptions)) {
+        $params['correctness']     = $displayoptions->correctness;
+        $params['marks']           = $displayoptions->marks;
+        $params['markdp']          = $displayoptions->markdp;
+        $params['feedback']        = (bool) $displayoptions->feedback;
+        $params['generalfeedback'] = (bool) $displayoptions->generalfeedback;
+        $params['rightanswer']     = (bool) $displayoptions->rightanswer;
+        $params['history']         = (bool) $displayoptions->history;
+    }
+
+    if ($variant) {
+        $params['variant'] = $variant;
+    }
+
+    return new moodle_url('/filter/simplequestion/preview.php', $params);
 }

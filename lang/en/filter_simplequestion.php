@@ -50,6 +50,6 @@ $string['settings_linklimit_desc'] = 'Maximum length of the text string that lin
 $string['settings_displaymode'] = 'Display mode';
 $string['settings_displaymode_desc'] = 'Show in popup? If unchecked question will be embedded';
 // errors
-$string['friendlymessage'] = 'Programming error: could not review queation';
+$string['friendlymessage'] = 'Programming error: could not review question';
 $string['questionidmismatch'] = "Programming error: Question mismatch";
 $string['postsubmiterror'] = "Programming error: Could not review question";

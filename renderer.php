@@ -39,7 +39,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     // I'm thinking return a popup link to preview.php
     // Todo: look at this: https://moodle.org/mod/forum/discuss.php?d=332254
 
-    $url = '/filter/simplequestion/showquestion.php'; 
+    $url = '/filter/simplequestion/preview.php'; 
 
     // Now the question number will be visible within the link, do we care?
     // Not for the simplequestion version anyway
