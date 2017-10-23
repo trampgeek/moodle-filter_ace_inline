@@ -35,21 +35,52 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
   */
   public function get_question($number, $linktext, $courseid) {
     global $CFG;
-    // What's the most sensible thing to do here?
-    // I'm thinking return a popup link to preview.php
     // Todo: look at this: https://moodle.org/mod/forum/discuss.php?d=332254
 
     $url = '/filter/simplequestion/preview.php'; 
-
-    // Now the question number will be visible within the link, do we care?
-    // Not for the simplequestion version anyway
     $link = new moodle_url($url, array('id'=>$number, 'courseid'=>$courseid));
     
     // Check for link text
     if ($linktext === '') { $linktext = get_string('link_text', 'filter_simplequestion'); }
     
-    // Todo: Add an option to have the link inline or as a popup
-    $text = $this->output->action_link($link, $linktext, new popup_action('click', $link)); 
-    return $text;
+    // Check config for popuup or embed
+    $def_config = get_config('filter_simplequestion');
+    $popup = $def_config->displaymode;
+    if ($popup) {
+      return $this->output->action_link($link, $linktext, new popup_action('click', $link));
+    } else { 
+      return html_writer::link($link, $linktext);
+    }
   }
+  // Question display form
+  public function display_question($actionurl, $quba, $slot, $question, $options, $displaynumber) {
+    global $PAGE;
+
+    // Heading info
+    $title = get_string('previewquestion', 'filter_simplequestion', format_string($question->name));
+    $headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
+    $PAGE->set_title($title);
+    $PAGE->set_heading($title);
+    echo $this->output->header();
+     
+    // Start the question form.
+    echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
+        'enctype' => 'multipart/form-data', 'id' => 'responseform'));
+    echo html_writer::start_tag('div');
+    echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
+    echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
+    echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos', 'value' => '', 'id' => 'scrollpos'));
+    echo html_writer::end_tag('div');
+
+    // Output the question.
+    echo $quba->render_question($slot, $options, $displaynumber);
+
+    $PAGE->requires->js_module('core_question_engine');
+    $PAGE->requires->strings_for_js(array(
+      'closepreview',
+      ), 'question');
+    $PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
+
+    echo $this->output->footer();
+}
 }

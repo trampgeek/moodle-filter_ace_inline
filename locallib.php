@@ -128,7 +128,7 @@ function preview_url($enid, $preferredbehaviour = null,
         $params['feedback']        = (bool) $displayoptions->feedback;
         $params['generalfeedback'] = (bool) $displayoptions->generalfeedback;
         $params['rightanswer']     = (bool) $displayoptions->rightanswer;
-        $params['history']         = (bool) $displayoptions->history;
+        //$params['history']         = (bool) $displayoptions->history;
     }
 
     if ($variant) {
