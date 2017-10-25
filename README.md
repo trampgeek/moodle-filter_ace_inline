@@ -30,3 +30,11 @@ Tested in Moodle 3.3.2+ Build 20171006 Version 2017051502.06
 Richard Jones https://richardnz.net richardnz@outlook.com.
 
 October 2017
+
+Known bugs, Todos
+==========
+The question usage attempts table is not currently being cleaned of old attempts, this might eventually pose a problem.
+
+The non-popup config option replaces the course page with the question.  The student would have to use the breadcrumbs to return to the course page.  I have to put this option in an iframe or sliding Bootstrap panel.  At minimum a close button.
+
+Not tested with advanced question types yet such as drag and drop onto image.

@@ -96,11 +96,8 @@ if ($previewid) {
 
 } else {
 
-    //$quba = question_engine::make_questions_usage_by_activity(
-    //        'filter_simplequestion', $context);
-
     $quba = question_engine::make_questions_usage_by_activity(
-            'core_question_preview', context_user::instance($USER->id));
+            'filter_simplequestion', $context);
 
     $quba->set_preferred_behaviour($options->behaviour);
     $slot = $quba->add_question($question, $options->maxmark);
@@ -154,11 +151,8 @@ if (data_submitted() && confirm_sesskey()) {
   }
 }
 
-if ($question->length) {
-    $displaynumber = '1';
-} else {
-    $displaynumber = 'i';
-}
+$displaynumber = '1';
 
 // Start output.
-$renderer->display_question($actionurl, $quba, $slot, $question, $options, $displaynumber);
+$renderer->display_question($actionurl, $quba, $slot, $question, $options, $displaynumber, $popup);
+

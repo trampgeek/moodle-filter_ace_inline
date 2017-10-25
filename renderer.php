@@ -53,8 +53,9 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     }
   }
   // Question display form
-  public function display_question($actionurl, $quba, $slot, $question, $options, $displaynumber) {
+  public function display_question($actionurl, $quba, $slot, $question, $options, $displaynumber, $popup) {
     global $PAGE;
+
 
     // Heading info
     $title = get_string('previewquestion', 'filter_simplequestion', format_string($question->name));
@@ -62,7 +63,17 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     $PAGE->set_title($title);
     $PAGE->set_heading($title);
     echo $this->output->header();
-     
+    
+    /* Place in an iframe if not popup - umm, tricky
+       Probably need to look inside the js.
+    if (!$popup) {
+      // Todo: Add height and width to config
+      $height = 400;
+      $width =  512;
+      $attributes = array('height'=>$height, 'width'=>$width);
+      echo html_writer::empty_tag('iframe', $attributes);
+    } */
+
     // Start the question form.
     echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
         'enctype' => 'multipart/form-data', 'id' => 'responseform'));
@@ -71,7 +82,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
     echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos', 'value' => '', 'id' => 'scrollpos'));
     echo html_writer::end_tag('div');
-
+    
     // Output the question.
     echo $quba->render_question($slot, $options, $displaynumber);
 
