@@ -21,15 +21,11 @@ question link and look in the URL, the first id is the question's id number.
 Question number xxx is replaced by a simple encryption technique such that 
 the original id number os not displayed by preview.php.
 
-The linktext is limited to 40 characters (do you really need more - there's a constant in the code).
-
-This question is then previewed in a popup with a simplified version of preview.php
-
-Tested in Moodle 3.3.2+ Build 20171006 Version 2017051502.06
-
-Richard Jones https://richardnz.net richardnz@outlook.com.
-
-October 2017
+Configuration
+=============
+The start and end tags are configurable as is the link text length.
+The question can be displayed as a popup or as a regular Moodle page.
+You can change the encryption key (bearing in mind that that is a once off operation as existing questions would become changed or lost).
 
 Known bugs, Todos
 ==========
@@ -38,3 +34,13 @@ The question usage attempts table is not currently being cleaned of old attempts
 The non-popup config option replaces the course page with the question.  The student would have to use the breadcrumbs to return to the course page.  I have to put this option in an iframe or sliding Bootstrap panel.  At minimum a close button.
 
 Not tested with advanced question types yet such as drag and drop onto image.
+
+Questions and suggestions
+=========================
+Richard Jones https://richardnz.net richardnz@outlook.com.
+October 2017
+
+Moodle
+======
+Tested in Moodle 3.3.2+ Build 20171006 Version 2017051502.06
+Tracker: https://tracker.moodle.org/browse/CONTRIB-7081
