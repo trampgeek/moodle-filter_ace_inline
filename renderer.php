@@ -93,15 +93,23 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     $PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
   }
 
-  public function display_controls($enid, $courseid) {
+  public function display_controls($enid, $courseid, $popup) {
     
     // Form controls for simplequestion
     echo html_writer::start_tag('div', array('class'=>'filter_simplequestion_controls')); 
-    // Just link back to the course for now   
-    $linktext =  get_string('return_course', 'filter_simplequestion');
-    $url = '/course/view.php'; 
-    $link = new moodle_url($url, array('id'=>$courseid));
-    echo html_writer::link($link, $linktext);
+    
+    // for popup close the window
+
+    if ($popup) {
+      echo get_string('use_close', 'filter_simplequestion');
+    } else {  
+    // for embedded have a link, it's on me  
+      $linktext =  get_string('return_course', 'filter_simplequestion');
+      $url = '/course/view.php'; 
+      $link = new moodle_url($url, array('id'=>$courseid));
+      echo html_writer::link($link, $linktext);
+    }
+
     echo html_writer::end_tag('div');
     echo html_writer::end_tag('form');
     

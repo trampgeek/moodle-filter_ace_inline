@@ -58,3 +58,4 @@ $string['postsubmiterror'] = "Programming error: Could not review question";
 
 //Question form controls
 $string['return_course'] = "Return to your course";
+$string['use_close'] = "Close the window to return to your course";

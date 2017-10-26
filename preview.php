@@ -158,4 +158,4 @@ $displaynumber = '1';
 
 // Start output.
 $renderer->display_question($actionurl, $quba, $slot, $question, $options, $displaynumber, $popup);
-$renderer->display_controls($enid, $courseid);
+$renderer->display_controls($enid, $courseid, $popup);
