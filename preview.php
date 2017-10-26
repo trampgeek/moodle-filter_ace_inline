@@ -33,7 +33,6 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once(__DIR__ . '/../../question/previewlib.php');
-require_once('locallib.php');
 
 /**
  * The maximum number of variants previewable. If there are more variants than this for a question
@@ -49,7 +48,7 @@ $popup = $def_config->displaymode;
 
 // Get and decrypt question id (note, encrypted to text).
 $enid = required_param('id', PARAM_TEXT); 
-$id = (int) filter_simplequestion_decrypt($enid, $key);
+$id = (int) \filter_simplequestion\utility\tools::decrypt($enid, $key);
 
 $question = question_bank::load_question($id);
 $courseid = required_param('courseid', PARAM_INT);
@@ -68,8 +67,10 @@ $options = new question_preview_options($question);
 //$options->load_user_defaults();
 //$options->set_from_request();
 $options->behaviour = 'immediatefeedback';
-$PAGE->set_url(preview_url($enid, $options->behaviour, $options->maxmark,
-        $options, $options->variant, $courseid));
+$page_url = \filter_simplequestion\urls::preview_url($enid, 
+            $options->behaviour, $options->maxmark,
+            $options, $options->variant, $courseid);
+$PAGE->set_url($page_url);
 
 // Get and validate existing preview, or start a new one.
 $previewid = optional_param('previewid', 0, PARAM_INT);
@@ -118,11 +119,13 @@ $options->behaviour = $quba->get_preferred_behaviour();
 $options->maxmark = $quba->get_question_max_mark($slot);
 
 // Prepare a URL that is used in various places.
-$actionurl = preview_action_url($enid, $quba->get_id(), $options, $courseid);
+$actionurl = \filter_simplequestion\urls::preview_action_url(
+                 $enid, $quba->get_id(), $options, $courseid);
 
 // Process check button action
 if (data_submitted() && confirm_sesskey()) {
   try {
+
     $quba->process_all_actions();
     $quba->finish_all_questions();
 
@@ -155,4 +158,4 @@ $displaynumber = '1';
 
 // Start output.
 $renderer->display_question($actionurl, $quba, $slot, $question, $options, $displaynumber, $popup);
-
+$renderer->display_controls($enid, $courseid);

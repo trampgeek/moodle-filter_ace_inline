@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,19 +16,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Basic email protection filter.
  *
  * @package    filter
  * @subpackage simplequestion
- * @copyright  2017 Richard Jones (https://richardnz.net/)
+ * @copyright  2017 Richard Jones (https://richardnz.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
+ * 
  */
-
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version   = 2017102604;        // The current plugin version
-$plugin->requires  = 2017051500;        // Requires this Moodle version
-$plugin->component = 'filter_simplequestion'; // Full name of the plugin (used for diagnostics)
-$plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.1'; // version with encryption/obfuscation of question id
+$tasks = array(
+  // If I have this right, run every other day at 02:21 AM
+  // Admins can run any time and adjust via task scheduler
+  // The cron will delete dimplequestion records when the table gets large  
+  array('classname' => 'filter_simplequestion\task\simplequestion_cron',
+        'blocking' => 0,      
+        'minute' => '21',
+        'hour' => '2',
+        'day' => '*/2',
+        'dayofweek' => '*',
+        'month' => '*'
+    )
+);

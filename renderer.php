@@ -85,13 +85,27 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     
     // Output the question.
     echo $quba->render_question($slot, $options, $displaynumber);
-
+    
     $PAGE->requires->js_module('core_question_engine');
     $PAGE->requires->strings_for_js(array(
       'closepreview',
       ), 'question');
     $PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
+  }
 
+  public function display_controls($enid, $courseid) {
+    
+    // Form controls for simplequestion
+    echo html_writer::start_tag('div', array('class'=>'filter_simplequestion_controls')); 
+    // Just link back to the course for now   
+    $linktext =  get_string('return_course', 'filter_simplequestion');
+    $url = '/course/view.php'; 
+    $link = new moodle_url($url, array('id'=>$courseid));
+    echo html_writer::link($link, $linktext);
+    echo html_writer::end_tag('div');
+    echo html_writer::end_tag('form');
+    
+    // End the output
     echo $this->output->footer();
-}
+  }
 }

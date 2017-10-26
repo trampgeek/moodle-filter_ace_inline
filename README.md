@@ -29,9 +29,7 @@ You can change the encryption key (bearing in mind that that is a once off opera
 
 Known bugs, Todos
 ==========
-The question usage attempts table is not currently being cleaned of old attempts, this might eventually pose a problem.
-
-The non-popup config option replaces the course page with the question.  The student would have to use the breadcrumbs to return to the course page.  I have to put this option in an iframe or sliding Bootstrap panel.  At minimum a close button.
+The non-popup config option replaces the course page with the question.  The student would have to use the breadcrumbs to return to the course page or a link added at the bottom of the preview.
 
 Not tested with advanced question types yet such as drag and drop onto image.
 
@@ -43,4 +41,5 @@ October 2017
 Moodle
 ======
 Tested in Moodle 3.3.2+ Build 20171006 Version 2017051502.06
+Debian Stretch, Apache2, PHP 7.1, Postgres 9.2.
 Tracker: https://tracker.moodle.org/browse/CONTRIB-7081

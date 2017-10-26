@@ -33,11 +33,12 @@ $string['link_text_error'] = ' { invalid characters in link }';
 $string['link_number_error'] = '{ Please check your question id }';
 $string['answer_question'] = 'Submit answer';
 $string['previewquestion'] = 'Question, {$a}';
+$string['clean_up_usages'] = 'Clean old question usages for Insert question';
 
 // Settings strings
 $string['settings_heading'] = 'Insert Question settings';
 $string['settings_desc'] = 'Change the settings for this filter.  
-                            Note: if you change these settings, existing uses will fail.
+                            Note: if you change the tags and key settings, existing uses will fail.
                             <br /> This is a one time setup!';
 $string['settings_start_tag'] = 'Start tag';
 $string['settings_end_tag'] = 'End tag';
@@ -49,7 +50,11 @@ $string['settings_linklimit'] = 'Link lengths';
 $string['settings_linklimit_desc'] = 'Maximum length of the text string that links to a question';
 $string['settings_displaymode'] = 'Display mode';
 $string['settings_displaymode_desc'] = 'Show in popup? If unchecked question will be embedded';
+
 // errors
 $string['friendlymessage'] = 'Programming error: could not review question';
 $string['questionidmismatch'] = "Programming error: Question mismatch";
 $string['postsubmiterror'] = "Programming error: Could not review question";
+
+//Question form controls
+$string['return_course'] = "Return to your course";

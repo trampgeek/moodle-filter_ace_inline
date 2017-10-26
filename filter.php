@@ -26,7 +26,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once('locallib.php');
+
 /**
  * This class looks for question tags in Moodle text and
  * replaces them with questions from the question bank.
@@ -120,7 +120,7 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
        if ($verified) {
         // Render the question link
         // Encrypt question number
-        $en = filter_simplequestion_encrypt($number, $key);
+        $en = \filter_simplequestion\utility\tools::encrypt($number, $key);
         $question = $renderer->get_question($en, $linktext, $courseid);
        }
 
