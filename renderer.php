@@ -36,11 +36,23 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
   public function get_question($number, $linktext, $courseid) {
     global $CFG;
     // Todo: look at this: https://moodle.org/mod/forum/discuss.php?d=332254
-
+    
     $url = '/filter/simplequestion/preview.php'; 
+
+    // Check if I'm inside a module
+    if ($this->page->cm) {
+      $modname = $this->page->cm->modname;
+      $cmid = $this->page->cm->id;
+      $link = new moodle_url($url, array('id'=>$number, 
+                                       'courseid'=>$courseid,
+                                       'modname'=>$modname,
+                                       'cmid'=>$cmid));
+    } else {
+
     $link = new moodle_url($url, array('id'=>$number, 
                                        'courseid'=>$courseid));
-    
+    }
+
     // Check for link text
     if ($linktext === '') { $linktext = get_string('link_text', 'filter_simplequestion'); }
     
@@ -55,7 +67,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
   }
   // Question display form
   public function display_question($actionurl, $quba, $slot, $question, 
-                                   $options, $displaynumber, $popup) {
+                                   $options, $popup, $courseid) {
     // Heading info
     $title = get_string('previewquestion', 'filter_simplequestion', format_string($question->name));
     $this->page->set_title($title);
@@ -71,30 +83,30 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     echo html_writer::end_tag('div');
     
     // Output the question.
-    echo $quba->render_question($slot, $options, $displaynumber);
+    echo $quba->render_question($slot, $options);
+
+    echo html_writer::end_tag('form');
   }
 
-  public function display_controls($enid, $courseid, $popup) {
-
-    // Form controls for simplequestion
+  public function display_controls($popup, $courseid, $cmid, $modname) {
+    
+    // Add controls for exiting back to course or module
     echo html_writer::start_tag('div', array('class'=>'filter_simplequestion_controls')); 
-    // for popup close the window
+    
+    // for popup close the window message
     if ($popup) {
       echo get_string('use_close', 'filter_simplequestion');
     
-    } else if ($this->page->cm) {
+    } else if ($cmid != 0) {
 
       // Do something specific to this module
-      $modname = $this->page->cm->modname;
-      $cmid = $this->page->cm->id;
-      
       $linktext =  get_string('return_module', 'filter_simplequestion');
       $url = '/mod/' . $modname . '/view.php'; 
       $link = new moodle_url($url, array('id'=>$cmid));
       echo html_writer::link($link, $linktext);
 
     } else {  
-    // for embedded have a link, won't work in activity module  
+    // for embedded have a link back to the course  
       $linktext =  get_string('return_course', 'filter_simplequestion');
       $url = '/course/view.php'; 
       $link = new moodle_url($url, array('id'=>$courseid));
@@ -102,8 +114,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     }
 
     echo html_writer::end_tag('div');
-    echo html_writer::end_tag('form');
-    
+
     // End the output
     echo $this->output->footer();
   }

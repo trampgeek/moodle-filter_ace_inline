@@ -54,6 +54,9 @@ $courseid = required_param('courseid', PARAM_INT);
 require_login($courseid);
 $context = context_course::instance($courseid);
 
+// Collect any module information so we can return there
+$modname = optional_param('modname', 'none', PARAM_TEXT);
+$cmid = optional_param('cmid', 0, PARAM_INT);
 
 $PAGE->set_context($context);
 $renderer = $PAGE->get_renderer('filter_simplequestion');
@@ -115,7 +118,7 @@ $options->maxmark = $quba->get_question_max_mark($slot);
 
 // Prepare a URL that is used in various places.
 $actionurl = \filter_simplequestion\urls::preview_action_url(
-                 $enid, $quba->get_id(), $options, $courseid);
+                 $enid, $quba->get_id(), $options, $courseid, $cmid, $modname);
 
 // Process check button action
 if (data_submitted() && confirm_sesskey()) {
@@ -143,9 +146,8 @@ if (data_submitted() && confirm_sesskey()) {
   }
 }
 
-$displaynumber = '1';
-
 // Start output.
 $renderer->display_question($actionurl, $quba, $slot, $question, 
-                            $options, $displaynumber, $popup);
-$renderer->display_controls($enid, $courseid, $popup);
+                            $options, $popup, $courseid);
+
+$renderer->display_controls($popup, $courseid, $cmid, $modname);

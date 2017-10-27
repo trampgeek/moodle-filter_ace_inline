@@ -45,11 +45,13 @@ class urls  {
    */
   
   public static function preview_action_url($enid, $qubaid,
-        question_preview_options $options, $courseid) {
+        question_preview_options $options, $courseid, $cmid, $modname) {
     $params = array(
         'id' => $enid,
         'previewid' => $qubaid,
-        'courseid' => $courseid
+        'courseid' => $courseid,
+        'cmid' => $cmid,
+        'modname' =>$modname
     );
     $params = array_merge($params, $options->get_url_params());
     return new moodle_url('/filter/simplequestion/preview.php', $params);
