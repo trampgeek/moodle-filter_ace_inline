@@ -41,8 +41,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function filter_simplequestion_question_pluginfile($course, $context, $component, $filearea, $qubaid, $slot, $args,
-        $forcedownload, array $options = array()) {
+function filter_simplequestion_question_pluginfile($course, $context, $component, 
+         $filearea, $qubaid, $slot, $args,
+         $forcedownload, array $options = array()) {
     $fs = get_file_storage();
     $relativepath = implode('/', $args);
     $fullpath = "/$context->id/$component/$filearea/$relativepath";

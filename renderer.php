@@ -38,7 +38,8 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     // Todo: look at this: https://moodle.org/mod/forum/discuss.php?d=332254
 
     $url = '/filter/simplequestion/preview.php'; 
-    $link = new moodle_url($url, array('id'=>$number, 'courseid'=>$courseid));
+    $link = new moodle_url($url, array('id'=>$number, 
+                                       'courseid'=>$courseid));
     
     // Check for link text
     if ($linktext === '') { $linktext = get_string('link_text', 'filter_simplequestion'); }
@@ -53,57 +54,47 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     }
   }
   // Question display form
-  public function display_question($actionurl, $quba, $slot, $question, $options, $displaynumber, $popup) {
-    global $PAGE;
-
-
+  public function display_question($actionurl, $quba, $slot, $question, 
+                                   $options, $displaynumber, $popup) {
     // Heading info
     $title = get_string('previewquestion', 'filter_simplequestion', format_string($question->name));
-    $headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
-    $PAGE->set_title($title);
-    $PAGE->set_heading($title);
+    $this->page->set_title($title);
+    $this->page->set_heading($title);
     echo $this->output->header();
-    
-    /* Place in an iframe if not popup - umm, tricky
-       Probably need to look inside the js.
-    if (!$popup) {
-      // Todo: Add height and width to config
-      $height = 400;
-      $width =  512;
-      $attributes = array('height'=>$height, 'width'=>$width);
-      echo html_writer::empty_tag('iframe', $attributes);
-    } */
 
-    // Start the question form.
+    // Start the simplified question form.
     echo html_writer::start_tag('form', array('method' => 'post', 'action' => $actionurl,
         'enctype' => 'multipart/form-data', 'id' => 'responseform'));
     echo html_writer::start_tag('div');
     echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
     echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots', 'value' => $slot));
-    echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'scrollpos', 'value' => '', 'id' => 'scrollpos'));
     echo html_writer::end_tag('div');
     
     // Output the question.
     echo $quba->render_question($slot, $options, $displaynumber);
-    
-    $PAGE->requires->js_module('core_question_engine');
-    $PAGE->requires->strings_for_js(array(
-      'closepreview',
-      ), 'question');
-    $PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
   }
 
   public function display_controls($enid, $courseid, $popup) {
-    
+
     // Form controls for simplequestion
     echo html_writer::start_tag('div', array('class'=>'filter_simplequestion_controls')); 
-    
     // for popup close the window
-
     if ($popup) {
       echo get_string('use_close', 'filter_simplequestion');
+    
+    } else if ($this->page->cm) {
+
+      // Do something specific to this module
+      $modname = $this->page->cm->modname;
+      $cmid = $this->page->cm->id;
+      
+      $linktext =  get_string('return_module', 'filter_simplequestion');
+      $url = '/mod/' . $modname . '/view.php'; 
+      $link = new moodle_url($url, array('id'=>$cmid));
+      echo html_writer::link($link, $linktext);
+
     } else {  
-    // for embedded have a link, it's on me  
+    // for embedded have a link, won't work in activity module  
       $linktext =  get_string('return_course', 'filter_simplequestion');
       $url = '/course/view.php'; 
       $link = new moodle_url($url, array('id'=>$courseid));

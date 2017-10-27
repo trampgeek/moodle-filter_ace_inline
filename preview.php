@@ -40,7 +40,6 @@ require_once(__DIR__ . '/../../question/previewlib.php');
  * @var integer
  */
 define('QUESTION_PREVIEW_MAX_VARIANTS', 100);
-
 // Get and validate question id.
 $def_config = get_config('filter_simplequestion');
 $key = $def_config->key;
@@ -55,17 +54,13 @@ $courseid = required_param('courseid', PARAM_INT);
 require_login($courseid);
 $context = context_course::instance($courseid);
 
+
 $PAGE->set_context($context);
 $renderer = $PAGE->get_renderer('filter_simplequestion');
-
-//question_require_capability_on($question, 'view');
-//$PAGE->set_pagelayout('popup');
 
 // Get and validate display options.
 $maxvariant = min($question->get_num_variants(), QUESTION_PREVIEW_MAX_VARIANTS);
 $options = new question_preview_options($question);
-//$options->load_user_defaults();
-//$options->set_from_request();
 $options->behaviour = 'immediatefeedback';
 $page_url = \filter_simplequestion\urls::preview_url($enid, 
             $options->behaviour, $options->maxmark,
@@ -132,13 +127,7 @@ if (data_submitted() && confirm_sesskey()) {
     $transaction = $DB->start_delegated_transaction();
     question_engine::save_questions_usage_by_activity($quba);
     $transaction->allow_commit();
-
-    $scrollpos = optional_param('scrollpos', '', PARAM_RAW);
-    if ($scrollpos !== '') {
-        $actionurl->param('scrollpos', (int) $scrollpos);
-        redirect($actionurl);
-    }
-
+    
   } catch (question_out_of_sequence_exception $e) {
     print_error('friendlymessage', 'filter_simplequestion', $actionurl);
 
@@ -157,5 +146,6 @@ if (data_submitted() && confirm_sesskey()) {
 $displaynumber = '1';
 
 // Start output.
-$renderer->display_question($actionurl, $quba, $slot, $question, $options, $displaynumber, $popup);
+$renderer->display_question($actionurl, $quba, $slot, $question, 
+                            $options, $displaynumber, $popup);
 $renderer->display_controls($enid, $courseid, $popup);

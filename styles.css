@@ -3,5 +3,15 @@
    padding: 8px 35px 8px 14px;
    margin-bottom: 20px;
    margin-left:8.5em;
-   background-color: #bce8f1;
+   background-color: #006;
+}
+
+.filter_simplequestion_controls a:link,
+.filter_simplequestion_controls  a:visited {
+   color: #FF6;
+}
+
+.filter_simplequestion_controls a:hover {
+   color: #FF6;
+   text-decoration: underline;
 }

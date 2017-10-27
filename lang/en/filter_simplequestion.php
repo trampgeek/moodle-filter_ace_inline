@@ -57,5 +57,6 @@ $string['questionidmismatch'] = "Programming error: Question mismatch";
 $string['postsubmiterror'] = "Programming error: Could not review question";
 
 //Question form controls
+$string['return_module'] = "Return to your activity";
 $string['return_course'] = "Return to your course";
 $string['use_close'] = "Close the window to return to your course";

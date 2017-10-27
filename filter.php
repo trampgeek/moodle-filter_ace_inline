@@ -66,11 +66,12 @@ class filter_simplequestion extends moodle_text_filter {
     return $text;
   }
   $courseid = $coursectx->instanceid;
-
+  
   // There may be a question or questions in here somewhere so continue ...
   // Get the question numbers and positions in the text and call the
   // renderer to deal with them
-  $text = filter_simplequestion_insert_questions($text, $starttag, $endtag, $linktextlimit, $renderer, $key, $courseid);   
+  $text = filter_simplequestion_insert_questions($text, $starttag, $endtag, $linktextlimit, 
+                                                 $renderer, $key, $courseid);   
     return $text;
   }
 
@@ -81,7 +82,8 @@ class filter_simplequestion extends moodle_text_filter {
 *
 * params:  string containing patterns, pattern start, pattern end, renderer
 */
-function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, $renderer, $key, $courseid) {
+function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit, 
+                                                $renderer, $key, $courseid) {
   
   $newstring = $str;
   While (strpos($newstring, $needle) !== false) {
