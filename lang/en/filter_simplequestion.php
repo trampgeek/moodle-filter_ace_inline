@@ -38,18 +38,24 @@ $string['clean_up_usages'] = 'Clean old question usages for Insert question';
 // Settings strings
 $string['settings_heading'] = 'Insert Question settings';
 $string['settings_desc'] = 'Change the settings for this filter.  
-                            Note: if you change the tags and key settings, existing uses will fail.
+                            Note: if you change the tags, existing uses will fail.
                             <br /> This is a one time setup!';
 $string['settings_start_tag'] = 'Start tag';
 $string['settings_end_tag'] = 'End tag';
 $string['settings_start_tag_desc'] = 'Tag that marks the start of the question';
 $string['settings_end_tag_desc'] = 'Tag that marks the end of the question';
-$string['settings_key'] = 'Encoding key';
-$string['settings_key_desc'] = 'Secret key to encode the question id';
+$string['settings_key'] = 'Encoding key (alphabetical only)';
+$string['settings_key_desc'] = 'Secret key to encode the question id (alphabetical characters only)';
 $string['settings_linklimit'] = 'Link lengths';
 $string['settings_linklimit_desc'] = 'Maximum length of the text string that links to a question';
 $string['settings_displaymode'] = 'Display mode';
-$string['settings_displaymode_desc'] = 'Show in popup? If unchecked question will be embedded';
+$string['settings_displaymode_desc'] = 'Show in popup? If unchecked question will be embedded in sliding panel.
+                        <br /> <br />If embedded, select size of iframe below.';
+// size of iframe
+$string['settings_height'] = 'iFrame height';
+$string['settings_height_desc'] = 'Enter whole number (pixels)';
+$string['settings_width'] = 'iFrame width';
+$string['settings_width_desc'] = 'Enter whole number (pixels)';
 
 // errors
 $string['friendlymessage'] = 'Programming error: could not review question';
@@ -57,6 +63,5 @@ $string['questionidmismatch'] = "Programming error: Question mismatch";
 $string['postsubmiterror'] = "Programming error: Could not review question";
 
 //Question form controls
-$string['return_module'] = "Return to your activity";
-$string['return_course'] = "Return to your course";
+$string['click_link'] = "Click question link to close frame";
 $string['use_close'] = "Close the window to return to your course";

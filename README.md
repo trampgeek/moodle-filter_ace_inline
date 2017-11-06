@@ -24,12 +24,13 @@ the original id number os not displayed by preview.php.
 Configuration
 =============
 The start and end tags are configurable as is the link text length.
-The question can be displayed as a popup or as a regular Moodle page.
-You can change the encryption key (bearing in mind that that is a once off operation as existing questions would become changed or lost).
+The question can be displayed as a popup or within an iframe embedded in a sliding panel
+You can change the encryption key.
 
 Known bugs, Todos
 ==========
-The non-popup config option replaces the course page with the question.  The student would have to use the breadcrumbs to return to the course page or a link added at the bottom of the preview.
+Not sure if iframe solution is ideal, student needs to figure out that clicking
+the link opens and closes the sliding panel.  teacher could add instructions to that effect though.
 
 Not tested with advanced question types yet such as drag and drop onto image.
 

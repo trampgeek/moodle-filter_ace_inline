@@ -32,7 +32,9 @@ if ($ADMIN->fulltree) {
   $START_TAG = '{QUESTION:';
   $END_TAG = '}';
   $LINKTEXTLIMIT = 40;  
-  $KEY = 'abcdefg';
+  $KEY = 'this is my secret key';
+  $HEIGHT = 800;
+  $WIDTH = 800;
 
   // language strings
   $heading = get_string('settings_heading', 'filter_simplequestion');
@@ -44,12 +46,12 @@ if ($ADMIN->fulltree) {
   $settings->add(new admin_setting_configtext('filter_simplequestion/starttag',
                                                 get_string('settings_start_tag', 'filter_simplequestion'),
                                                 get_string('settings_start_tag_desc', 'filter_simplequestion'), 
-                                                $START_TAG, PARAM_RAW));
+                                                $START_TAG, PARAM_TEXT));
     
   $settings->add(new admin_setting_configtext('filter_simplequestion/endtag',
                                                 get_string('settings_end_tag', 'filter_simplequestion'),
                                                 get_string('settings_end_tag_desc', 'filter_simplequestion'), 
-                                                $END_TAG, PARAM_RAW));
+                                                $END_TAG, PARAM_TEXT));
 
   $settings->add(new admin_setting_configtext('filter_simplequestion/linklimit',
                                                 get_string('settings_linklimit', 'filter_simplequestion'),
@@ -64,4 +66,15 @@ if ($ADMIN->fulltree) {
                                                 get_string('settings_displaymode', 'filter_simplequestion'),
                                                 get_string('settings_displaymode_desc', 'filter_simplequestion'), 
                                                 1));
+  // Dimension for iframe or popup window
+
+  $settings->add(new admin_setting_configtext('filter_simplequestion/height',
+                                                get_string('settings_height', 'filter_simplequestion'),
+                                                get_string('settings_height_desc', 'filter_simplequestion'), 
+                                                $HEIGHT, PARAM_INT));
+    
+  $settings->add(new admin_setting_configtext('filter_simplequestion/width',
+                                                get_string('settings_width', 'filter_simplequestion'),
+                                                get_string('settings_width_desc', 'filter_simplequestion'), 
+                                                $WIDTH, PARAM_INT));
 }

@@ -24,6 +24,8 @@
  * @copyright  Muhammad Ali: https://stackoverflow.com/users/1418637/muhammad-ali
  * @license    https://creativecommons.org/licenses/by-sa/3.0/
  *
+ * Modifed by Richard Jones, https://richardnz.net
+ *
  * https://stackoverflow.com/questions/24350891/how-to-encrypt-decrypt-an-integer-in-php 
  *
  */
@@ -31,6 +33,11 @@
 namespace filter_simplequestion\utility;
 
 class tools  {
+
+  // Encrypt and decrypt an integer using a simple key
+  // of alphabetical characters.
+  // The encoded number must be alphabetical since it
+  // is going to be used in a css id.
 
    public static function encrypt($string, $key) {
     $result = '';
@@ -40,14 +47,23 @@ class tools  {
       $char = chr(ord($char)+ord($keychar));
       $result.=$char;
     }
-    return base64_encode($result);
+    $result = base64_encode($result);
+    $r1 = str_replace('=', '_', $result);
+    $r2 = str_replace('+', '__', $r1);
+    $r3 = str_replace('/', '-', $r2);    
+    return substr($key, 0, 1) . $r3;
   }
 
   public static function decrypt($string, $key) {
     $result = '';
-    $string = base64_decode($string);
-    for($i=0; $i<strlen($string); $i++) {
-      $char = substr($string, $i, 1);
+    $newstring = substr($string, 1, strlen($string) - 1);
+    $s1 = str_replace('_', '=', $newstring);
+    $s2 = str_replace('__', '+', $s1);
+    $s3 = str_replace('-', '/', $s2);    
+    $s4 = base64_decode($s3);
+
+    for($i=0; $i<strlen($s4); $i++) {
+      $char = substr($s4, $i, 1);
       $keychar = substr($key, ($i % strlen($key))-1, 1);
       $char = chr(ord($char)-ord($keychar));
       $result.=$char;

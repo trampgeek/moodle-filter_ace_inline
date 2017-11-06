@@ -60,12 +60,47 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     $def_config = get_config('filter_simplequestion');
     $popup = $def_config->displaymode;
     if ($popup) {
+      // Show the preview page
       return $this->output->action_link($link, $linktext, new popup_action('click', $link));
     } else { 
-      return html_writer::link($link, $linktext);
+
+      // embed the question right here
+      return $this->embed_question($number, $link, $linktext);
     }
   }
-  // Question display form
+
+  public function embed_question($number, $link, $linktext) {
+    
+    $def_config = get_config('filter_simplequestion');
+    $height = $def_config->height;
+    $width = $def_config->width;
+
+    $html = '';
+    $html .= html_writer::start_tag('div', array('class'=>'filter_simplequestion_container'));
+      
+      $target = '#' . $number;
+      $attributes = array('href'=>$target, 'data-toggle'=>'collapse'); 
+      $html .= html_writer::start_tag('a', $attributes);
+      $html .= $linktext;
+      $html .= html_writer::end_tag('a');
+    
+      $div_array = array('id'=>$number, 'class'=>'collapse');
+    
+        $html .= html_writer::start_tag('div', $div_array);
+        
+        // the preview page needs to be embedded right here
+        $attributes = array('height'=>$height, 'width'=>$width, 'src'=>$link);
+        $html .= html_writer::start_tag('iframe', $attributes);
+        $html .= html_writer::end_tag('iframe');
+      
+      $html .= html_writer::end_tag('div');
+    
+    $html .= html_writer::end_tag('div');
+    
+    return $html;
+  }
+
+  // Question display form for popup
   public function display_question($actionurl, $quba, $slot, $question, 
                                    $options, $popup, $courseid) {
     // Heading info
@@ -87,7 +122,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
 
     echo html_writer::end_tag('form');
   }
-
+  
   public function display_controls($popup, $courseid, $cmid, $modname) {
     
     // Add controls for exiting back to course or module
@@ -97,20 +132,9 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     if ($popup) {
       echo get_string('use_close', 'filter_simplequestion');
     
-    } else if ($cmid != 0) {
-
-      // Do something specific to this module
-      $linktext =  get_string('return_module', 'filter_simplequestion');
-      $url = '/mod/' . $modname . '/view.php'; 
-      $link = new moodle_url($url, array('id'=>$cmid));
-      echo html_writer::link($link, $linktext);
-
     } else {  
-    // for embedded have a link back to the course  
-      $linktext =  get_string('return_course', 'filter_simplequestion');
-      $url = '/course/view.php'; 
-      $link = new moodle_url($url, array('id'=>$courseid));
-      echo html_writer::link($link, $linktext);
+    // for embedded click link to close panel 
+      echo get_string('click_link', 'filter_simplequestion');
     }
 
     echo html_writer::end_tag('div');
