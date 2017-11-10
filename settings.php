@@ -62,10 +62,12 @@ if ($ADMIN->fulltree) {
                                                 get_string('settings_key', 'filter_simplequestion'),
                                                 get_string('settings_key_desc', 'filter_simplequestion'), 
                                                 $KEY, PARAM_RAW));
+  /* Moved from settings to instance
   $settings->add(new admin_setting_configcheckbox('filter_simplequestion/displaymode',
                                                 get_string('settings_displaymode', 'filter_simplequestion'),
                                                 get_string('settings_displaymode_desc', 'filter_simplequestion'), 
                                                 1));
+  */
   // Dimension for iframe or popup window
 
   $settings->add(new admin_setting_configtext('filter_simplequestion/height',

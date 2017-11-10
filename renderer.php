@@ -33,7 +33,7 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
   * Given a question id, show the preview.php page
   *
   */
-  public function get_question($number, $linktext, $courseid) {
+  public function get_question($number, $linktext, $popup, $courseid) {
     global $CFG;
     // Todo: look at this: https://moodle.org/mod/forum/discuss.php?d=332254
     
@@ -56,10 +56,8 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     // Check for link text
     if ($linktext === '') { $linktext = get_string('link_text', 'filter_simplequestion'); }
     
-    // Check config for popuup or embed
-    $def_config = get_config('filter_simplequestion');
-    $popup = $def_config->displaymode;
-    if ($popup) {
+    // Check for popup or embed
+    if ($popup === 'popup') {
       // Show the preview page
       return $this->output->action_link($link, $linktext, new popup_action('click', $link));
     } else { 
@@ -69,6 +67,12 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
     }
   }
 
+  public function get_error($text) {
+    $html = html_writer::start_tag('div', array('class'=>'filter_simplequestion_error'));
+    $html .= $text;
+    $html .= html_writer::end_tag('div');
+    return $html;
+  }
   public function embed_question($number, $link, $linktext) {
     
     $def_config = get_config('filter_simplequestion');
@@ -77,7 +81,9 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
 
     $html = '';
     $html .= html_writer::start_tag('div', array('class'=>'filter_simplequestion_container'));
-      
+      // We are using the encrypted question num ber as an id
+      // This restricted the range of characters that could be used
+      // to start the id or within the id tag.
       $target = '#' . $number;
       $attributes = array('href'=>$target, 'data-toggle'=>'collapse'); 
       $html .= html_writer::start_tag('a', $attributes);

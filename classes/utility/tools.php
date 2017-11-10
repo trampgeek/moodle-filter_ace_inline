@@ -38,6 +38,7 @@ class tools  {
   // of alphabetical characters.
   // The encoded number must be alphabetical since it
   // is going to be used in a css id.
+  // It also has to begin with a letter for some browsers
 
    public static function encrypt($string, $key) {
     $result = '';

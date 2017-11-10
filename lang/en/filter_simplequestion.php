@@ -28,9 +28,6 @@
 
 $string['filtername'] = 'Insert question';
 $string['link_text'] = 'Click for question';
-$string['link_text_length'] = ' { Link text too long }';
-$string['link_text_error'] = ' { invalid characters in link }';
-$string['link_number_error'] = '{ Please check your question id }';
 $string['answer_question'] = 'Submit answer';
 $string['previewquestion'] = 'Question, {$a}';
 $string['clean_up_usages'] = 'Clean old question usages for Insert question';
@@ -48,9 +45,11 @@ $string['settings_key'] = 'Encoding key (alphabetical only)';
 $string['settings_key_desc'] = 'Secret key to encode the question id (alphabetical characters only)';
 $string['settings_linklimit'] = 'Link lengths';
 $string['settings_linklimit_desc'] = 'Maximum length of the text string that links to a question';
+/*
 $string['settings_displaymode'] = 'Display mode';
 $string['settings_displaymode_desc'] = 'Show in popup? If unchecked question will be embedded in sliding panel.
                         <br /> <br />If embedded, select size of iframe below.';
+*/
 // size of iframe
 $string['settings_height'] = 'iFrame height';
 $string['settings_height_desc'] = 'Enter whole number (pixels)';
@@ -59,8 +58,14 @@ $string['settings_width_desc'] = 'Enter whole number (pixels)';
 
 // errors
 $string['friendlymessage'] = 'Programming error: could not review question';
-$string['questionidmismatch'] = "Programming error: Question mismatch";
-$string['postsubmiterror'] = "Programming error: Could not review question";
+$string['questionidmismatch'] = 'Programming error: Question mismatch';
+$string['postsubmiterror'] = 'Programming error: Could not review question';
+$string['pop_param_error'] = 'Please specify "popup" or "embed" within your link';
+$string['param_number_error'] = 'Bad number of parameters';
+$string['link_text_length'] = 'Link text too long';
+$string['link_text_error'] = 'Invalid characters in link';
+$string['link_number_error'] = 'Please check your question id';
+$string['unknown_error'] = 'Unknown error - bad format?';
 
 //Question form controls
 $string['click_link'] = "Click question link to close frame";

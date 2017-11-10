@@ -92,20 +92,18 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
        $pos = $initpos + strlen($needle);  //get up to string
        $endpos = strpos($newstring, $limit);
        $data = substr($newstring, $pos, $endpos - $pos); // extract question data
-       
+       //  Get the parameters
+       $params = explode('|', $data);
        // get the link text
-       $endlinkpos = strpos($data, '|');
-       $linktext = substr($data, 0, $endlinkpos);
-       
-       // get the question number
-       $number = substr($data, $endlinkpos + 1, $endpos - $endlinkpos);
+       $linktext = $params[0];
+       $number = $params[1];
+       $popup = $params[2];
        
        // Run some checks (are these sufficient?)
        $verified = true;
        
        // Clean the text string
        $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
-
        // Check the number (must be integer)
        if (filter_var($number, FILTER_VALIDATE_INT) === false) {
          // Invalid number string
@@ -123,9 +121,10 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
         // Render the question link
         // Encrypt question number
         $en = \filter_simplequestion\utility\tools::encrypt($number, $key);
-        $question = $renderer->get_question($en, $linktext, $courseid);
+        $question = $renderer->get_question($en, $linktext, $popup, $courseid);
+       } else {
+        $question = $renderer->get_error($question);   
        }
-
        // Update the text to replace the filtered string
        $newstring = substr_replace($newstring, $question, $initpos, $endpos - $initpos + 1);
        $initpos = $endpos + 1;
