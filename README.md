@@ -14,12 +14,13 @@ A simple implementation of a text filter for Moodle.
 In this version the user places special codes within text anywhere in Moodle which 
 can then be replaced by a link to a question number in the database.  
 
-The code is of the form {QUESTION:linktext|xxx} where xxx is the question id number.  You
-can find this number by looking at the questions in your question bank. Click the preview
+The code is of the form {QUESTION:linktext|xxx|display} where xxx is the question id number and
+display is the display mode (embed or popup).  
+You can find the question number by looking at the questions in your question bank. Click the preview
 question link and look in the URL, the first id is the question's id number. 
 
 Question number xxx is replaced by a simple encryption technique such that 
-the original id number os not displayed by preview.php.
+the original id number is not displayed by preview.php.
 
 Configuration
 =============
@@ -31,6 +32,9 @@ Known bugs, Todos
 ==========
 Not sure if iframe solution is ideal, student needs to figure out that clicking
 the link opens and closes the sliding panel.  teacher could add instructions to that effect though.
+Next task is to replace with div and togglebutton.
+
+An ATTO button will be available to insert the question via a form dialog in the next version.
 
 Not tested with advanced question types yet such as drag and drop onto image.
 
