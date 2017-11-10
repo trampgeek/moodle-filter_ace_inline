@@ -94,27 +94,51 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
        $data = substr($newstring, $pos, $endpos - $pos); // extract question data
        //  Get the parameters
        $params = explode('|', $data);
-       // get the link text
-       $linktext = $params[0];
-       $number = $params[1];
-       $popup = $params[2];
-       
-       // Run some checks (are these sufficient?)
+
+       // Run some checks
        $verified = true;
        
-       // Clean the text string
-       $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
-       // Check the number (must be integer)
-       if (filter_var($number, FILTER_VALIDATE_INT) === false) {
-         // Invalid number string
-         $question = get_string('link_number_error', 'filter_simplequestion'); 
+       if (count($params) == 3 ) {
+       
+          $linktext = trim($params[0]);
+          $number = $params[1];
+          $popup = trim($params[2]);
+
+          // Clean the text strings
+          $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
+          $popup = filter_var($popup, FILTER_SANITIZE_STRING);
+       
+       } else {
+       
+         // Invalid parameter count
+         $question = get_string('param_number_error', 'filter_simplequestion'); 
          $verified = false;
+       }
+
+       if ($verified) {     
+         // Check the popup 
+         if ( ($popup != 'embed') && ($popup != 'popup') ) {
+           // Invalid display mode
+           $question = get_string('pop_param_error', 'filter_simplequestion'); 
+           $verified = false;
+         }
+       }
+              
+       if ($verified) {     
+         // Check the number (must be integer)
+         if (filter_var($number, FILTER_VALIDATE_INT) === false) {
+           // Invalid number string
+           $question = get_string('link_number_error', 'filter_simplequestion'); 
+           $verified = false;
+         }
        }
        
        // Check the link text for length
-       if (strlen($linktext) > $linktextlimit) {
+       if ($verified) {
+         if (strlen($linktext) > $linktextlimit) {
             $question = $linktext . get_string('link_text_length', 'filter_simplequestion'); 
             $verified = false;
+         }
        }
        
        if ($verified) {
