@@ -26,8 +26,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017110602;        // The current plugin version
-$plugin->requires  = 2017051500;        // Requires this Moodle version
-$plugin->component = 'filter_simplequestion'; // Full name of the plugin (used for diagnostics)
+$plugin->version   = 2017110602;        
+$plugin->requires  = 2017051500;        
+$plugin->component = 'filter_simplequestion';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.1'; // version with encryption/obfuscation of question id
+// This release includes move of display option from config to filter text
+$plugin->release = 'v1.4'; 

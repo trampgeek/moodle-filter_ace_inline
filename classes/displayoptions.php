@@ -25,25 +25,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace filter_simplequestion;
-
+defined('MOODLE_INTERNAL') || die();
+/** 
+ * Control question display options
+ */
 class displayoptions  {
+    /** 
+     * Set the display options for a question
+     * @param int $maxvariant The maximum number of variants previewable.
+     * @return array $options the display options
+     */
+    public static function get_options($maxvariant) {
 
-  public static function get_options($maxvariant) {
-
-    $options = array();
-    // Question options - note just 1 question in the attempt
-    $options = new question_display_options();
-    $options->marks = question_display_options::MAX_ONLY;
-    $options->markdp = 0; // Display marks to 2 decimal places.
-    $options->feedback = 'immediatefeedback';
-    $options->generalfeedback = question_display_options::HIDDEN;
-    $options->variant = $maxvariant;
-    if ($options->variant) {
-      $options->variant = min($maxvariant, max(1, $options->variant));
-    }  else {
-      $options->variant = rand(1, $maxvariant);
+        $options = array();
+        // Question options - note just 1 question in the attempt
+        $options = new question_display_options();
+        $options->marks = question_display_options::MAX_ONLY;
+        $options->markdp = 0; // Display marks to 2 decimal places.
+        $options->feedback = 'immediatefeedback';
+        $options->generalfeedback = question_display_options::HIDDEN;
+        $options->variant = $maxvariant;
+        if ($options->variant) {
+            $options->variant = min($maxvariant, max(1, $options->variant));
+        }  else {
+            $options->variant = rand(1, $maxvariant);
+        } 
+        return $options;
     }
-    return $options;
-  }
-
 }

@@ -15,43 +15,46 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library functions used by question/preview.php.
- *
- * @package    moodlecore
- * @subpackage questionengine
- * @copyright  2010 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * Modified for use in filter_simplequestion by Richard Jones {@link https://richardnz.net}
- */
-namespace filter_simplequestion\task;
-
- /**
  * Scheduled tasks relating to filter_simplequestion. Specifically, delete any old
  * question usages that are left over in the database. Runs every other day.
+ * @package    filter
+ * @subpackage simplequestion
+ * @copyright  2017 Richard Jones {@link https://richardnz.net/}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
  */
-
+namespace filter_simplequestion\task;
+/**
+ * This class controls the cleanup of unwanted entries in table question_usages
+ *
+ */
 class simplequestion_cron extends \core\task\scheduled_task {
 
+    /**
+     * Function to return name used in admin screens
+     * @return string name used in admin screens
+     */
     public function get_name() {
-      // Shown in admin screens
-      return get_string('clean_up_usages', 'filter_simplequestion');
+        return get_string('clean_up_usages', 'filter_simplequestion');
     }
-
+    /**
+     * Function to potentially execute database delete query
+     * @return boolean always true
+     */
     public function execute() {
-      global $DB;
-      // We delete simplequestion previews periodically via cron. 
-      // They don't contain anything of value as we are not tracking responses
-      $component = 'filter_simplequestion';
-      $behaviour = 'immediatefeedback';
+        global $DB;
+        // We delete simplequestion previews periodically via cron. 
+        // They don't contain anything of value as we are not tracking responses
+        $component = 'filter_simplequestion';
+        $behaviour = 'immediatefeedback';
 
-      $count = $DB->count_records('question_usages', 
-                     array('component'=>$component, 'preferredbehaviour'=>$behaviour));
+        $count = $DB->count_records('question_usages', 
+                   array('component'=>$component, 'preferredbehaviour'=>$behaviour));
       
-      if ($count > 100) {
-        $DB->delete_records('question_usages', 
-                     array('component'=>$component, 'preferredbehaviour'=>$behaviour));
-      }
-      return true;
+       if ($count > 100) {
+           $DB->delete_records('question_usages',
+                   array('component'=>$component, 'preferredbehaviour'=>$behaviour));
+       }
+       return true;
   }
 }

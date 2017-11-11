@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Basic email protection filter.
+ * Timing for the filter_simplequestion cron task
  *
  * @package    filter
  * @subpackage simplequestion
@@ -27,7 +27,7 @@
 $tasks = array(
   // If I have this right, run every other day at 02:21 AM
   // Admins can run any time and adjust via task scheduler
-  // The cron will delete dimplequestion records when the table gets large  
+  // The cron will delete simplequestion records when the table gets large  
   array('classname' => 'filter_simplequestion\task\simplequestion_cron',
         'blocking' => 0,      
         'minute' => '21',

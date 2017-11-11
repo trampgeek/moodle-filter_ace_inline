@@ -1,15 +1,15 @@
 /* css file for simplequestion */
 .filter_simplequestion_controls {
-   padding: 8px 35px 8px 14px;
-   margin-bottom: 20px;
-   margin-left:8.5em;
-   background-color: #006;
-   color: #FF6;
+    padding: 8px 35px 8px 14px;
+    margin-bottom: 20px;
+    margin-left:8.5em;
+    background-color: #006;
+    color: #FF6;
 }
 
 .filter_simplequestion_controls a:link,
 .filter_simplequestion_controls  a:visited {
-   color: #FF6;
+    color: #FF6;
 }
 
 .filter_simplequestion_controls a:hover {
@@ -17,5 +17,8 @@
    text-decoration: underline;
 }
 .filter_simplequestion_error {
-  color:#FF0000;
+   color:#FF0000;
+}
+.filter_simplequestion_embedded {
+	 border:none;
 }

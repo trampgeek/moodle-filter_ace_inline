@@ -26,7 +26,7 @@
  * @subpackage questionengine
  * @copyright  Alex Smith {@link http://maths.york.ac.uk/serving_maths} and
  *      numerous contributors.
- * Modified for filter_simplequestion by Richard Jones {@link https:richardnz.net}
+ * Modified for filter_simplequestion by Richard Jones {@link https://richardnz.net}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,7 +35,8 @@ require_once($CFG->libdir . '/questionlib.php');
 require_once(__DIR__ . '/../../question/previewlib.php');
 
 /**
- * The maximum number of variants previewable. If there are more variants than this for a question
+ * The maximum number of variants previewable.
+ * If there are more variants than this for a question
  * then we only allow the selection of the first x variants.
  * @var integer
  */
@@ -43,10 +44,9 @@ define('QUESTION_PREVIEW_MAX_VARIANTS', 100);
 // Get and validate question id.
 $def_config = get_config('filter_simplequestion');
 $key = $def_config->key;
-$popup = $def_config->displaymode;
 
 // Get and decrypt question id (note, encrypted to text).
-$enid = required_param('id', PARAM_TEXT); 
+$enid = required_param('id', PARAM_TEXT);
 $id = (int) \filter_simplequestion\utility\tools::decrypt($enid, $key);
 
 $question = question_bank::load_question($id);
@@ -58,6 +58,10 @@ $context = context_course::instance($courseid);
 $modname = optional_param('modname', 'none', PARAM_TEXT);
 $cmid = optional_param('cmid', 0, PARAM_INT);
 
+// get the display opption to popup or embed
+// (for the controls below the question)
+$popup = required_param('popup', PARAM_TEXT);
+
 $PAGE->set_context($context);
 $renderer = $PAGE->get_renderer('filter_simplequestion');
 
@@ -65,7 +69,7 @@ $renderer = $PAGE->get_renderer('filter_simplequestion');
 $maxvariant = min($question->get_num_variants(), QUESTION_PREVIEW_MAX_VARIANTS);
 $options = new question_preview_options($question);
 $options->behaviour = 'immediatefeedback';
-$page_url = \filter_simplequestion\urls::preview_url($enid, 
+$page_url = \filter_simplequestion\urls::preview_url($enid, $popup,
             $options->behaviour, $options->maxmark,
             $options, $options->variant, $courseid);
 $PAGE->set_url($page_url);
@@ -84,7 +88,7 @@ if ($previewid) {
                 preview_url($enid, $options->behaviour,
                 $options->maxmark, $options, $options->variant, $courseid), null, $e);
     }
-    
+
     $slot = $quba->get_first_question_number();
     $usedquestion = $quba->get_question($slot);
     if ($usedquestion->id != $question->id) {
@@ -118,36 +122,35 @@ $options->maxmark = $quba->get_question_max_mark($slot);
 
 // Prepare a URL that is used in various places.
 $actionurl = \filter_simplequestion\urls::preview_action_url(
-                 $enid, $quba->get_id(), $options, $courseid, $cmid, $modname);
+                 $enid, $popup, $quba->get_id(), $options, $courseid, $cmid, $modname);
 
 // Process check button action
 if (data_submitted() && confirm_sesskey()) {
-  try {
+    try {
 
-    $quba->process_all_actions();
-    $quba->finish_all_questions();
+        $quba->process_all_actions();
+        $quba->finish_all_questions();
 
-    $transaction = $DB->start_delegated_transaction();
-    question_engine::save_questions_usage_by_activity($quba);
-    $transaction->allow_commit();
-    
-  } catch (question_out_of_sequence_exception $e) {
-    print_error('friendlymessage', 'filter_simplequestion', $actionurl);
+        $transaction = $DB->start_delegated_transaction();
+        question_engine::save_questions_usage_by_activity($quba);
+        $transaction->allow_commit();
+ 
+    } catch (question_out_of_sequence_exception $e) {
+        print_error('friendlymessage', 'filter_simplequestion', $actionurl);
 
-  } catch (Exception $e) {
-      // This sucks, if we display our own custom error message, there is no way
-      // to display the original stack trace.
-      $debuginfo = '';
-      if (!empty($e->debuginfo)) {
-          $debuginfo = $e->debuginfo;
-      }
-      print_error('postsubmiterror', 'filter_simplequestion', $actionurl,
+    } catch (Exception $e) {
+        // This sucks, if we display our own custom error message, there is no way
+        // to display the original stack trace.
+        $debuginfo = '';
+        if (!empty($e->debuginfo)) {
+            $debuginfo = $e->debuginfo;
+        }
+        print_error('postsubmiterror', 'filter_simplequestion', $actionurl,
                 $e->getMessage(), $debuginfo);
-  }
+    }
 }
 
 // Start output.
-$renderer->display_question($actionurl, $quba, $slot, $question, 
-                            $options, $popup, $courseid);
+$renderer->display_question($actionurl, $quba, $slot, $question, $options);
 
-$renderer->display_controls($popup, $courseid, $cmid, $modname);
+$renderer->display_controls($popup);

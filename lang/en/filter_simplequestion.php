@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,10 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Filter to include a question from a question bank in text
- *
  * Strings for component 'filter_simplequestion', language 'en'
  *
  * @package    filter
@@ -29,7 +25,7 @@
 $string['filtername'] = 'Insert question';
 $string['link_text'] = 'Click for question';
 $string['answer_question'] = 'Submit answer';
-$string['previewquestion'] = 'Question, {$a}';
+$string['previewquestion'] = 'Question: {$a}';
 $string['clean_up_usages'] = 'Clean old question usages for Insert question';
 
 // Settings strings
@@ -68,5 +64,5 @@ $string['link_number_error'] = 'Please check your question id';
 $string['unknown_error'] = 'Unknown error - bad format?';
 
 //Question form controls
-$string['click_link'] = "Click question link to close frame";
+$string['click_link'] = "Click the question link again to close frame";
 $string['use_close'] = "Close the window to return to your course";
