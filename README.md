@@ -33,15 +33,19 @@ The start and end tags are configurable as is the link text length.
 The question can be displayed as a popup or within an iframe embedded in a sliding 
 panel - the size of the iframe is configurable.
 
+The sliding panel uses a Bootstrap collabsible.
+
 You can change the encryption key.  Be sure to use only alphabetical characters 
 and spaces.
+
+The associated moodle_ATTO_button plugin allows a button to be added to the ATTO
+editor toolbar and the codes are then inserted by dialog
 
 Known bugs, Todos
 =================
 Add option to have link text or toggle button in embedded questions.
 
-An ATTO button will be available to insert the question via a form dialog in the
-very near future.
+The button has the tags hard-coded to the default configuration at the moment.
 
 Will not work with some advanced question types yet such as drag and drop. I probably
 over-simplified the question form. Will check that.
@@ -55,6 +59,7 @@ November 2017
 
 Moodle
 ======
-Tested in Moodle 3.3.2+ Build 20171006 Version 2017051502.06
+Tested in Moodle 3.4, 3.3.2+ Build 20171006 Version 2017051502.06
+Tested on Chrome, Firefox and Edge browsers
 Debian Stretch, Apache2, PHP 7.1, Postgres 9.2.
 Tracker: https://tracker.moodle.org/browse/CONTRIB-7081
