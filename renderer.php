@@ -49,11 +49,15 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
         if ($this->page->cm) {
             $modname = $this->page->cm->modname;
             $cmid = $this->page->cm->id;
-            $link = new moodle_url($url, array('id' => $number, 'courseid' => $courseid,
-                    'popup' => $popup, 'modname' => $modname, 'cmid' => $cmid));
+            $link = new moodle_url($url, 
+                    array('id' => $number,
+                    'courseid' => $courseid,'popup' => $popup, 'modname' => $modname, 
+                    'cmid' => $cmid));
         } else {
 
-            $link = new moodle_url($url, array('id' => $number, 'courseid' => $courseid,
+            $link = new moodle_url($url, 
+                    array('id' => $number,
+                    'courseid' => $courseid,
                     'popup' => $popup));
         }
 
@@ -92,33 +96,34 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
      * @return string the html required to embed the question
      */
     
-   public function embed_question($number, $link, $linktext) {
-   // Get the iFrame size from config
-   $def_config = get_config('filter_simplequestion');
-   $height = $def_config->height;
-   $width = $def_config->width;
-   
-    $html = '';
-    $html .= html_writer::start_tag('div',
-              array('class' => 'filter_simplequestion_link'));
-    $target = '#' . $number; // id of the collabsible div
-    $attributes = array('href' => $target, 'data-toggle' => 'collapse');
-    $html .= html_writer::start_tag('a', $attributes);
-    $html .= $linktext;
-    $html .= html_writer::end_tag('a');
-    $html .= html_writer::end_tag('div');
-   
-    // The collabsible div - toggles on link being clicked
-    $div_array = array('id' => $number, 'class' => 'collapse');
-    $html .= html_writer::start_tag('div', $div_array);
+    public function embed_question($number, $link, $linktext) {
+        // Let's try some js from scratch:
+        $this->page->requires->js_call_amd(
+                'filter_simplequestion/toggle', 'init');
+        $html = '';
+        $togglebutton = html_writer::tag('button', $linktext,
+                array('class'=>'filter_simplequestion_button btn btn-primary'));
+        $html .= html_writer::div($togglebutton,
+                'filter_simplequestion_buttoncontainer');
+      
+        // Get the iFrame size from config
+        $def_config = get_config('filter_simplequestion');
+        $height = $def_config->height;
+        $width = $def_config->width;
+      
+        // The collabsible div - toggles on link being clicked
+        $container_div_attributes = 
+                array('id' => 'filter_simplequestion_' . $number, 
+                      'class' => 'filter_simplequestion_container hide'); 
+        $html .= html_writer::start_tag('div', $container_div_attributes);
 
-    // the question preview page is embedded here in an iframe        
-    $attributes = array('height'=>$height, 'width'=>$width,'src' => $link);
-    $html .= html_writer::start_tag('iframe', $attributes);
-    $html .= html_writer::end_tag('iframe');
-    $html .= html_writer::end_tag('div');
-    
-    return $html;
+        // the question preview page is embedded here in an iframe        
+        $iframe_attributes = array('height'=>$height, 'width'=>$width,'src' => $link);
+        $html .= html_writer::start_tag('iframe', $iframe_attributes);
+        $html .= html_writer::end_tag('iframe');
+        $html .= html_writer::end_tag('div');
+
+        return $html;
    }
     /**
      * This function return the html required to display controls for

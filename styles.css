@@ -2,7 +2,6 @@
 .filter_simplequestion_controls {
     padding: 8px 35px 8px 14px;
     margin-bottom: 20px;
-    margin-left:8.5em;
     background-color: #006;
     color: #FF6;
 }
@@ -20,13 +19,17 @@
    color:#FF0000;
 }
 .filter_simplequestion_link a:link, 
-.filter_simplequestion_link a:link {
+.filter_simplequestion_link a:visited {
    padding: 5px;
    overflow:hidden;
    background-color: #006;
    color:#FF6;
 }
 .filter_simplequestion_link a:hover {
-   color: #FF6;
+     background-color: #136;
+     color: #FF6;
    text-decoration: underline;
 }
+/* Hide the question info block */
+#q1 .info { display:none; }
+#page-filter-simplequestion-preview .breadcrumb { display:none; }

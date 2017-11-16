@@ -172,9 +172,9 @@ $title = get_string('previewquestion', 'filter_simplequestion',
     echo $quba->render_question($slot, $options, 1);
 
     echo html_writer::end_tag('form');
-//$PAGE->requires->js_module('core_question_engine');
-//$PAGE->requires->strings_for_js(array(
-//    'closepreview',
-//), 'question');
-//$PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
+    $PAGE->requires->js_module('core_question_engine'); 
+    $PAGE->requires->strings_for_js(array(
+    'closepreview',
+    ), 'question');
+    $PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
 $renderer->display_controls($popup);
