@@ -94,10 +94,8 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
      * @param string $link the url of the page to display
      * @param string $linktext the text of the link
      * @return string the html required to embed the question
-     */
-    
+     */  
     public function embed_question($number, $link, $linktext) {
-        // Let's try some js from scratch:
         $this->page->requires->js_call_amd(
                 'filter_simplequestion/toggle', 'init');
         $html = '';
@@ -111,13 +109,13 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
         $height = $def_config->height;
         $width = $def_config->width;
       
-        // The collabsible div - toggles on link being clicked
-        $container_div_attributes = 
-                array('id' => 'filter_simplequestion_' . $number, 
-                      'class' => 'filter_simplequestion_container hide'); 
+        // The hidden div - toggles on button link being clicked
+        $container_div_attributes =
+                array('id' => 'filter_simplequestion_' . $number,
+                      'class' => 'filter_simplequestion_container hide');
         $html .= html_writer::start_tag('div', $container_div_attributes);
 
-        // the question preview page is embedded here in an iframe        
+        // the question preview page is embedded here in an iframe    
         $iframe_attributes = array('height'=>$height, 'width'=>$width,'src' => $link);
         $html .= html_writer::start_tag('iframe', $iframe_attributes);
         $html .= html_writer::end_tag('iframe');
@@ -126,14 +124,13 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
         return $html;
    }
     /**
-     * This function return the html required to display controls for
-     * exiting back to course or module the form which displays and processes the question
+     * Return the html required to display informational text
      * @param string $popup whether the question is embedded or in popup
      * @return string the html required to display the controls
      */
     public function display_controls($popup) {
  
-        // Add controls for exiting back to course or module
+        // Add text for exiting back to course or module
         echo html_writer::start_tag('div',
                 array('class' => 'filter_simplequestion_controls'));
 

@@ -17,6 +17,9 @@ can then be replaced by a link to a question number in the database.
 The code is of the form {QUESTION:linktext|xxx|display} where xxx is the question id
 number and display is the display mode (embed or popup).  
 
+The plugin moodle_atto_question allows a teacher to insert the question codes
+via a button which triggers a dialog box.
+
 You can find the question number by looking at the questions in your question bank. 
 Click the preview question link and look in the URL, the first id is the question's id number. 
 
@@ -25,30 +28,25 @@ the original id number is not displayed by preview.php.
 
 Version
 =======
-1.4 still in beta testing, help welcome.
+1.5 still in beta testing, help welcome.
 
 Configuration
 =============
 The start and end tags are configurable as is the link text length.
-The question can be displayed as a popup or within an iframe embedded in a sliding 
-panel - the size of the iframe is configurable.
-
-The sliding panel uses a Bootstrap collabsible.
+The question can be displayed as a popup or within an iframe embedded in a hidden 
+div - the size of the iframe is configurable.
 
 You can change the encryption key.  Be sure to use only alphabetical characters 
 and spaces.
 
-The associated moodle_ATTO_button plugin allows a button to be added to the ATTO
-editor toolbar and the codes are then inserted by dialog
-
 Known bugs, Todos
 =================
-Add option to have link text or toggle button in embedded questions.
+The ATTO button has the tags hard-coded to the default configuration at the moment.
 
-The button has the tags hard-coded to the default configuration at the moment.
+Will not work with some advanced question types yet such as drag and drop. I admit
+to not knowing why this is.
 
-Will not work with some advanced question types yet such as drag and drop. I probably
-over-simplified the question form. Will check that.
+Documentation and screenshots to add to https://richardnz.net/simplequestion.html
 
 Questions and suggestions
 =========================
@@ -59,7 +57,7 @@ November 2017
 
 Moodle
 ======
-Tested in Moodle 3.4, 3.3.2+ Build 20171006 Version 2017051502.06
+Tested in Moodle 3.3 and 3.4
 Tested on Chrome, Firefox and Edge browsers
 Debian Stretch, Apache2, PHP 7.1, Postgres 9.2.
 Tracker: https://tracker.moodle.org/browse/CONTRIB-7081

@@ -7,7 +7,7 @@
 }
 
 .filter_simplequestion_controls a:link,
-.filter_simplequestion_controls  a:visited {
+.filter_simplequestion_controls a:visited {
     color: #FF6;
 }
 
@@ -18,18 +18,6 @@
 .filter_simplequestion_error {
    color:#FF0000;
 }
-.filter_simplequestion_link a:link, 
-.filter_simplequestion_link a:visited {
-   padding: 5px;
-   overflow:hidden;
-   background-color: #006;
-   color:#FF6;
-}
-.filter_simplequestion_link a:hover {
-     background-color: #136;
-     color: #FF6;
-   text-decoration: underline;
-}
-/* Hide the question info block */
+/* Hide the question info block and the breadcrumbs */
 #q1 .info { display:none; }
 #page-filter-simplequestion-preview .breadcrumb { display:none; }
