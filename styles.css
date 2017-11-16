@@ -19,6 +19,14 @@
 .filter_simplequestion_error {
    color:#FF0000;
 }
-.filter_simplequestion_embedded {
-	 border:none;
+.filter_simplequestion_link a:link, 
+.filter_simplequestion_link a:link {
+   padding: 5px;
+   overflow:hidden;
+   background-color: #006;
+   color:#FF6;
+}
+.filter_simplequestion_link a:hover {
+   color: #FF6;
+   text-decoration: underline;
 }

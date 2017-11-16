@@ -91,68 +91,35 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
      * @param string $linktext the text of the link
      * @return string the html required to embed the question
      */
-    public function embed_question($number, $link, $linktext) {
+    
+   public function embed_question($number, $link, $linktext) {
+   // Get the iFrame size from config
+   $def_config = get_config('filter_simplequestion');
+   $height = $def_config->height;
+   $width = $def_config->width;
+   
+    $html = '';
+    $html .= html_writer::start_tag('div',
+              array('class' => 'filter_simplequestion_link'));
+    $target = '#' . $number; // id of the collabsible div
+    $attributes = array('href' => $target, 'data-toggle' => 'collapse');
+    $html .= html_writer::start_tag('a', $attributes);
+    $html .= $linktext;
+    $html .= html_writer::end_tag('a');
+    $html .= html_writer::end_tag('div');
+   
+    // The collabsible div - toggles on link being clicked
+    $div_array = array('id' => $number, 'class' => 'collapse');
+    $html .= html_writer::start_tag('div', $div_array);
 
-        // Get the iFrame size from config
-        $def_config = get_config('filter_simplequestion');
-        $height = $def_config->height;
-        $width = $def_config->width;
-
-        $html = '';
-        $html .= html_writer::start_tag('div',
-              array('class' => 'filter_simplequestion_container'));
-
-        $target = '#' . $number; // id of the collabsible div
-        $attributes = array('href' => $target, 'data-toggle' => 'collapse');
-        $html .= html_writer::start_tag('a', $attributes);
-        $html .= $linktext;
-        $html .= html_writer::end_tag('a');
-     
-        // The collabsible div - toggles on link being clicked
-        $div_array = array('id' => $number, 'class' => 'collapse');
-        $html .= html_writer::start_tag('div', $div_array);
-
-        // the question preview page is embedded here
-        $attributes = array('height' => $height, 'width' => $width, 'src' => $link);
-        $html .= html_writer::start_tag('iframe', $attributes);
-        $html .= html_writer::end_tag('iframe');
-        $html .= html_writer::end_tag('div');
-        $html .= html_writer::end_tag('div');
-
-        return $html;
-    }
-    /**
-     * This function shows the form which displays and processes the question
-     * Extracted from preview.php to here
-     * @param string $actionurl the url to process the form
-     * @param quba $quba the question usage by activity instance
-     * @param int $slot the usage slot the question is in
-     * @param question $question the question instance
-     * @param array $options the display options for the question
-     */
-    public function display_question($actionurl, $quba, $slot, $question, $options) {
-        // Heading info
-        $title = get_string('previewquestion', 'filter_simplequestion',
-                format_string($question->name));
-        $this->page->set_heading($title);
-        echo $this->output->header();
-
-        // Start the simplified question form.
-        echo html_writer::start_tag('form', array('method' => 'post',
-                  'action' => $actionurl, 'enctype' => 'multipart/form-data',
-                  'id' => 'responseform'));
-        echo html_writer::start_tag('div');
-        echo html_writer::empty_tag('input', array('type' => 'hidden',
-                'name' => 'sesskey', 'value' => sesskey()));
-        echo html_writer::empty_tag('input', array('type' => 'hidden',
-                'name' => 'slots', 'value' => $slot));
-        echo html_writer::end_tag('div');
-
-        // Output the question.
-        echo $quba->render_question($slot, $options);
-
-        echo html_writer::end_tag('form');
-    }
+    // the question preview page is embedded here in an iframe        
+    $attributes = array('height'=>$height, 'width'=>$width,'src' => $link);
+    $html .= html_writer::start_tag('iframe', $attributes);
+    $html .= html_writer::end_tag('iframe');
+    $html .= html_writer::end_tag('div');
+    
+    return $html;
+   }
     /**
      * This function return the html required to display controls for
      * exiting back to course or module the form which displays and processes the question

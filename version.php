@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017110602;        
+$plugin->version   = 2017111601;        
 $plugin->requires  = 2017051500;        
 $plugin->component = 'filter_simplequestion';
 $plugin->maturity = MATURITY_BETA;

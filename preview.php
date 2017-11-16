@@ -151,6 +151,30 @@ if (data_submitted() && confirm_sesskey()) {
 }
 
 // Start output.
-$renderer->display_question($actionurl, $quba, $slot, $question, $options);
+$title = get_string('previewquestion', 'filter_simplequestion',
+                format_string($question->name));
+    //$headtags = question_engine::initialise_js() . $quba->render_question_head_html($slot);
+    $PAGE->set_heading($title);
+    echo $OUTPUT->header();
 
+    // Start the simplified question form.
+    echo html_writer::start_tag('form', array('method' => 'post',
+                'action' => $actionurl, 'enctype' => 'multipart/form-data',
+                'id' => 'responseform'));
+    echo html_writer::start_tag('div');
+    echo html_writer::empty_tag('input', array('type' => 'hidden',
+                'name' => 'sesskey', 'value' => sesskey()));
+    echo html_writer::empty_tag('input', array('type' => 'hidden',
+                'name' => 'slots', 'value' => $slot));
+    echo html_writer::end_tag('div');
+
+    // Output the question.
+    echo $quba->render_question($slot, $options, 1);
+
+    echo html_writer::end_tag('form');
+//$PAGE->requires->js_module('core_question_engine');
+//$PAGE->requires->strings_for_js(array(
+//    'closepreview',
+//), 'question');
+//$PAGE->requires->yui_module('moodle-question-preview', 'M.question.preview.init');
 $renderer->display_controls($popup);

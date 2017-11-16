@@ -43,6 +43,11 @@ defined('MOODLE_INTERNAL') || die();
 function filter_simplequestion_question_pluginfile($course, $context, $component,
          $filearea, $qubaid, $slot, $args,
          $forcedownload, array $options = array()) {
+    
+    // require_login($course)
+    // Do I need to clean this up, I can't see the need for some of the
+    // parameters here.  Eg qubaid and slot.                    
+
     $fs = get_file_storage();
     $relativepath = implode('/', $args);
     $fullpath = "/$context->id/$component/$filearea/$relativepath";
