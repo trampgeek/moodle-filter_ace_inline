@@ -42,7 +42,8 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('simplequestionsettings', 
             $heading, $description));
 
-    // Start and end tags
+    // Start and end tags - disabled until ATTO button can handle them too
+    /*
     $settings->add(new admin_setting_configtext('filter_simplequestion/starttag',
             get_string('settings_start_tag', 'filter_simplequestion'),
             get_string('settings_start_tag_desc', 'filter_simplequestion'),
@@ -52,7 +53,7 @@ if ($ADMIN->fulltree) {
             get_string('settings_end_tag', 'filter_simplequestion'),
             get_string('settings_end_tag_desc', 'filter_simplequestion'), 
             $END_TAG, PARAM_TEXT));
-
+    */
     // Maximum length of text link
     $settings->add(new admin_setting_configtext('filter_simplequestion/linklimit',
             get_string('settings_linklimit', 'filter_simplequestion'),

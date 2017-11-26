@@ -30,9 +30,7 @@ $string['clean_up_usages'] = 'Clean old question usages for Insert question';
 
 // Settings strings
 $string['settings_heading'] = 'Insert Question settings';
-$string['settings_desc'] = 'Change the settings for this filter.  
-                            Note: if you change the tags, existing uses will fail.
-                            <br /> This is a one time setup!';
+$string['settings_desc'] = 'Change the settings for this filter.';
 $string['settings_start_tag'] = 'Start tag';
 $string['settings_end_tag'] = 'End tag';
 $string['settings_start_tag_desc'] = 'Tag that marks the start of the question';

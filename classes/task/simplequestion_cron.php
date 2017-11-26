@@ -45,13 +45,24 @@ class simplequestion_cron extends \core\task\scheduled_task {
         global $DB;
         // We delete simplequestion previews periodically via cron. 
         // They don't contain anything of value as we are not tracking responses
+        // or attempt results beyond the immediate feedback.
         $component = 'filter_simplequestion';
         $behaviour = 'immediatefeedback';
 
         $count = $DB->count_records('question_usages', 
                    array('component'=>$component, 'preferredbehaviour'=>$behaviour));
       
-       if ($count > 100) {
+       if ($count > 0) {
+           // get the usage id's
+           $qubaids = $DB->get_records('question_usages', 
+                   array('component'=>$component, 'preferredbehaviour'=>$behaviour));
+
+           // delete from attempts
+           foreach ($qubaids as $qubaid) {
+               $DB->delete_records('question_attempts',
+                   array('questionusageid'=>$qubaid->id, 'behaviour'=>$behaviour));    
+           }
+           // delete the usages
            $DB->delete_records('question_usages',
                    array('component'=>$component, 'preferredbehaviour'=>$behaviour));
        }

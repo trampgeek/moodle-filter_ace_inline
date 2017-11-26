@@ -25,14 +25,13 @@
  * 
  */
 $tasks = array(
-  // If I have this right, run every other day at 02:21 AM
-  // Admins can run any time and adjust via task scheduler
-  // The cron will delete simplequestion records when the table gets large  
+  // The cron will delete all simplequestion records 
+  // Run every 10 minutes - normally won't have much to do.
   array('classname' => 'filter_simplequestion\task\simplequestion_cron',
         'blocking' => 0,      
-        'minute' => '21',
-        'hour' => '2',
-        'day' => '*/2',
+        'minute' => '*/10',
+        'hour' => '*',
+        'day' => '*',
         'dayofweek' => '*',
         'month' => '*'
     )

@@ -96,12 +96,13 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
      * @return string the html required to embed the question
      */  
     public function embed_question($number, $link, $linktext) {
-        $this->page->requires->js_call_amd(
-                'filter_simplequestion/toggle', 'init');
         $html = '';
-        $togglebutton = html_writer::tag('button', $linktext,
-                array('class'=>'filter_simplequestion_button btn btn-primary'));
-        $html .= html_writer::div($togglebutton,
+        $data_target_id = 'filter_simplequestion_' . $number;
+        $togglelink = html_writer::tag('button', $linktext, 
+                array('data-toggle'=>'collapse', 
+                      'data-target'=>'#' . $data_target_id));
+
+        $html .= html_writer::div($togglelink,
                 'filter_simplequestion_buttoncontainer');
       
         // Get the iFrame size from config
@@ -110,9 +111,11 @@ class filter_simplequestion_renderer extends plugin_renderer_base {
         $width = $def_config->width;
       
         // The hidden div - toggles on button link being clicked
+        // Uses bootstrap collapsible 
+        // (eg https://www.w3schools.com/bootstrap/bootstrap_collapse.asp)
         $container_div_attributes =
-                array('id' => 'filter_simplequestion_' . $number,
-                      'class' => 'filter_simplequestion_container hide');
+                array('id' => $data_target_id,
+                      'class' => 'collapse');
         $html .= html_writer::start_tag('div', $container_div_attributes);
 
         // the question preview page is embedded here in an iframe    

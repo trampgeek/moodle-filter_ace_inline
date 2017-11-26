@@ -6,6 +6,10 @@
     color: #FF6;
 }
 
+.filter_simplequestion_buttoncontainer {
+    display:inline-block;
+}
+
 .filter_simplequestion_controls a:link,
 .filter_simplequestion_controls a:visited {
     color: #FF6;

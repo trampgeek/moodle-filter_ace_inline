@@ -41,10 +41,9 @@ and spaces.
 
 Known bugs, Todos
 =================
-The ATTO button has the tags hard-coded to the default configuration at the moment.
+The ATTO button has the tags hard-coded to the default configuration at the moment. 
 
-Will not work with some advanced question types yet such as drag and drop. I admit
-to not knowing why this is.
+Will not work with some advanced question types yet such as drag and drop. I admit to not knowing why this is.
 
 Documentation and screenshots to add to https://richardnz.net/simplequestion.html
 
