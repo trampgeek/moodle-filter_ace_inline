@@ -30,7 +30,9 @@ $string['clean_up_usages'] = 'Clean old question usages for Insert question';
 
 // Settings strings
 $string['settings_heading'] = 'Insert Question settings';
-$string['settings_desc'] = 'Change the settings for this filter.';
+$string['settings_desc'] = 'Change the settings for this filter. <br />
+        NOTE: If you change the start and end tags any existing uses will fail. 
+        Set this up only when you first enable the filter!';
 $string['settings_start_tag'] = 'Start tag';
 $string['settings_end_tag'] = 'End tag';
 $string['settings_start_tag_desc'] = 'Tag that marks the start of the question';
@@ -39,15 +41,17 @@ $string['settings_key'] = 'Encoding key (alphabetical only)';
 $string['settings_key_desc'] = 'Secret key to encode the question id (alphabetical characters only)';
 $string['settings_linklimit'] = 'Link lengths';
 $string['settings_linklimit_desc'] = 'Maximum length of the text string that links to a question';
-/*
-$string['settings_displaymode'] = 'Display mode';
-$string['settings_displaymode_desc'] = 'Show in popup? If unchecked question will be embedded in sliding panel.
-                        <br /> <br />If embedded, select size of iframe below.';
-*/
+$string['settings_displaymode'] = 'Default display mode';
+$string['settings_displaymode_desc'] = "embedded in iFrame or popup window";
+$string['embed'] = 'embed';
+$string['popup'] = 'popup';
+
 // size of iframe
-$string['settings_height'] = 'iFrame height';
+//$string['size_settings_heading'] = 'iFrame settings';
+//$string['size_settings_desc'] = 'These only apply to embedded questions.';
+$string['settings_height'] = 'iFrame height (embedded)';
 $string['settings_height_desc'] = 'Enter whole number (pixels)';
-$string['settings_width'] = 'iFrame width';
+$string['settings_width'] = 'iFrame width (embedded)';
 $string['settings_width_desc'] = 'Enter whole number (pixels)';
 
 // errors

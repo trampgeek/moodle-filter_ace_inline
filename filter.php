@@ -163,8 +163,8 @@ function filter_simplequestion_insert_questions($str, $needle, $limit, $linktext
 
             // Update the text to replace the filtered string
             $newstring = substr_replace($newstring, $question, $initpos,
-                    $endpos - $initpos + 1);
-            $initpos = $endpos + 1;
+                    $endpos - $initpos + strlen($limit));
+            $initpos = $endpos + strlen($limit);
         }
     }
     return $newstring;

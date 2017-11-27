@@ -14,7 +14,7 @@ A simple implementation of a text filter for Moodle.
 In this version the user places special codes within text anywhere in Moodle which 
 can then be replaced by a link to a question number in the database.  
 
-The code is of the form {QUESTION:linktext|xxx|display} where xxx is the question id
+The code is of the form {{QUESTION:linktext|xxx|display}} where xxx is the question id
 number and display is the display mode (embed or popup).  
 
 The plugin moodle_atto_question allows a teacher to insert the question codes
@@ -28,7 +28,7 @@ the original id number is not displayed by preview.php.
 
 Version
 =======
-1.5 still in beta testing, help welcome.
+1.5.2 still in beta testing, help welcome.
 
 Configuration
 =============
@@ -39,13 +39,14 @@ div - the size of the iframe is configurable.
 You can change the encryption key.  Be sure to use only alphabetical characters 
 and spaces.
 
+Documentation
+=================
+Documentation and screenshots at https://open-learning.co.nz/course/view.php?id=16
+Guest login permitted.
+
 Known bugs, Todos
 =================
-The ATTO button has the tags hard-coded to the default configuration at the moment. 
-
-Will not work with some advanced question types yet such as drag and drop. I admit to not knowing why this is.
-
-Documentation and screenshots to add to https://richardnz.net/simplequestion.html
+Will not work with some advanced question types yet such as drag and drop. 
 
 Questions and suggestions
 =========================

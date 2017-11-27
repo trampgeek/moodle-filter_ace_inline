@@ -26,8 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017112702;        
+$plugin->version   = 2017112802;        
 $plugin->requires  = 2017051500;        
 $plugin->component = 'filter_simplequestion';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.5.1'; // updated cron
+$plugin->release = 'v1.5.2'; // updated settings
