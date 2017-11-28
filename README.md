@@ -13,6 +13,7 @@ with opening and closing tags {{CONTENT:arbitrary content}}
 and then shows it in an alert box via an AMD module.
 
 The text is replaced by a button with a fixed label.
+
 Version
 =======
 1.0
@@ -24,7 +25,29 @@ but these are unused.
 
 Documentation
 =============
-This!
+Thanks to justin Hunt.
+
+Download the zip or clone the repo.
+
+Edit all the files in this directory and its subdirectories and change
+all the instances of the string "simplemodel" to your atto plugin name
+(eg "widget"). Don't do this manually. Use an IDE or a programmers text
+editor like TextWrangler (mac) or Notepad++ (pc)
+  
+If you are using Linux, you could also use the following command
+$ find . -type f -exec sed -i 's/simplemodal/widget/g' {} \;
+
+On a mac, use:
+$ find . -type f -exec sed -i '' 's/simplemodal/widget/g' {} \;
+
+Rename the file lang/en/filter_simplemodal.php to lang/en/filter_widget.php
+where "widget" is the name of your text filter plugin
+
+Place the plugin folder folder into the /filter folder of the moodle directory.
+
+Modify version.php and set the initial version of your module.
+
+Visit Settings > Site Administration > Notifications, and let Moodle guide you through the install.
 
 Known bugs, Todos, Suggestions
 ==============================
