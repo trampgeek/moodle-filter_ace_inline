@@ -21,9 +21,9 @@
  * @copyright  2013 Jayesh Anandani
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * Modified for use in filter_simplequestion by Richard Jones http://richardnz/net
+ * Modified for use in filter_simplemodal by Richard Jones http://richardnz/net
  *
- * @package  filter_simplequestion
+ * @package  filter_simplemodal
  * @category files
  * @param stdClass $course course settings object
  * @param stdClass $context context object
@@ -40,7 +40,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function filter_simplequestion_question_pluginfile($course, $context, $component,
+function filter_simplemodal_question_pluginfile($course, $context, $component,
          $filearea, $qubaid, $slot, $args,
          $forcedownload, array $options = array()) {
     

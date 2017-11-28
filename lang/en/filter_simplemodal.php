@@ -14,41 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Strings for component 'filter_simplequestion', language 'en'
+ * Strings for component 'filter_simplemodal', language 'en'
  *
  * @package    filter
- * @subpackage simplequestion
+ * @subpackage simplemodal
  * @copyright  2017 Richard Jones https://richardnz.net
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['filtername'] = 'Insert question';
-$string['link_text'] = 'Click for question';
-$string['answer_question'] = 'Submit answer';
-$string['previewquestion'] = 'Question: {$a}';
-$string['clean_up_usages'] = 'Clean old question usages for Insert question';
+$string['filtername'] = 'Insert content';
 
 // Settings strings
-$string['settings_heading'] = 'Insert Question settings';
+$string['settings_heading'] = 'Insert content settings';
 $string['settings_desc'] = 'Change the settings for this filter. <br />
-        NOTE: If you change the start and end tags any existing uses will fail. 
-        Set this up only when you first enable the filter!';
+        IMPORTANT: Change these on first use only!';
 $string['settings_start_tag'] = 'Start tag';
 $string['settings_end_tag'] = 'End tag';
-$string['settings_start_tag_desc'] = 'Tag that marks the start of the question';
-$string['settings_end_tag_desc'] = 'Tag that marks the end of the question';
-$string['settings_key'] = 'Encoding key (alphabetical only)';
-$string['settings_key_desc'] = 'Secret key to encode the question id (alphabetical characters only)';
-$string['settings_linklimit'] = 'Link lengths';
-$string['settings_linklimit_desc'] = 'Maximum length of the text string that links to a question';
-$string['settings_displaymode'] = 'Default display mode';
-$string['settings_displaymode_desc'] = "embedded in iFrame or popup window";
-$string['embed'] = 'embed';
-$string['popup'] = 'popup';
-
-// size of iframe
-//$string['size_settings_heading'] = 'iFrame settings';
-//$string['size_settings_desc'] = 'These only apply to embedded questions.';
+$string['settings_start_tag_desc'] = 'Tag that marks the start of the content';
+$string['settings_end_tag_desc'] = 'Tag that marks the end of the content';
+$string['button_label'] = "Click me";
+// size of modal
 $string['settings_height'] = 'iFrame height (embedded)';
 $string['settings_height_desc'] = 'Enter whole number (pixels)';
 $string['settings_width'] = 'iFrame width (embedded)';
@@ -65,6 +50,6 @@ $string['link_text_error'] = 'Invalid characters in link';
 $string['link_number_error'] = 'Please check your question id';
 $string['unknown_error'] = 'Unknown error - bad format?';
 
-//Question form controls
+//Modal form controls
 $string['click_link'] = "Click the question link again to close frame";
 $string['use_close'] = "Close the window to return to your course";

@@ -1,52 +1,36 @@
 Source code repository
 =====================
-https://github.com/richardjonesnz/moodle_filter_simplequestion
+https://github.com/richardjonesnz/moodle_filter_simplemodal
 
 Short Description
 =================
-This is a very simple implementation of a question filter. It allows questions to be
-inserted anywhere in Moodle editable text.
+A template for filters
 
 Long Description
 ===============
-A simple implementation of a text filter for Moodle. 
+A text filter template.  The filter interprets text marked 
+with opening and closing tags {{CONTENT:arbitrary content}} 
+and then shows it in an alert box via an AMD module.
 
-In this version the user places special codes within text anywhere in Moodle which 
-can then be replaced by a link to a question number in the database.  
-
-The code is of the form {{QUESTION:linktext|xxx|display}} where xxx is the question id
-number and display is the display mode (embed or popup).  
-
-The plugin moodle_atto_question allows a teacher to insert the question codes
-via a button which triggers a dialog box.
-
-You can find the question number by looking at the questions in your question bank. 
-Click the preview question link and look in the URL, the first id is the question's id number. 
-
-Question number xxx is replaced by a simple encryption technique such that 
-the original id number is not displayed by preview.php.
-
+The text is replaced by a button with a fixed label.
 Version
 =======
-1.5.2 still in beta testing, help welcome.
+1.0
 
 Configuration
 =============
-The start and end tags are configurable as is the link text length.
-The question can be displayed as a popup or within an iframe embedded in a hidden 
-div - the size of the iframe is configurable.
-
-You can change the encryption key.  Be sure to use only alphabetical characters 
-and spaces.
+The tags can be configured.  It has height and width config 
+but these are unused.
 
 Documentation
-=================
-Documentation and screenshots at https://open-learning.co.nz/course/view.php?id=16
-Guest login permitted.
+=============
+This!
 
-Known bugs, Todos
-=================
-Will not work with some advanced question types yet such as drag and drop. 
+Known bugs, Todos, Suggestions
+==============================
+You can make the button text configurable if you like.
+You could develop it into a model panel that shows interesting things.
+You can adapt it to multiple buttons - but would need an id for each one.
 
 Questions and suggestions
 =========================
@@ -57,7 +41,5 @@ November 2017
 
 Moodle
 ======
-Tested in Moodle 3.3 and 3.4
-Tested on Chrome, Firefox and Edge browsers
-Debian Stretch, Apache2, PHP 7.1, Postgres 9.2.
-Tracker: https://tracker.moodle.org/browse/CONTRIB-7081
+Tested in 3.4
+Tested on Chrome

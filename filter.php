@@ -18,25 +18,23 @@
  * Basic email protection filter.
  *
  * @package    filter
- * @subpackage simplequestion
+ * @subpackage simplemodal
  * @copyright  2017 Richard Jones (https://richardnz.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 /**
- * This filter looks for question tags in Moodle text and
- * replaces them with questions from the question bank.
+ * This filter looks for content tags in Moodle text and
+ * replaces them with specified user-defined content.
  * @see filter_manager::apply_filter_chain()
  */
-class filter_simplequestion extends moodle_text_filter {
+class filter_simplemodal extends moodle_text_filter {
     /**
-     * This function looks for question tags in Moodle text and
+     * This function looks for tags in Moodle text and
      * replaces them with questions from the question bank.
-     * Tags have the format {QUESTION:link text|xxx|mode} where:
-     *          - link text is the text that links to the question
-     *          - xxx is the id of a question
-     *          - mode is popup or embed
+     * Tags have the format {{CONTENT:xxx}} where:
+     *          - xxx is the user specified content
      * @param string $text to be processed by the text
      * @param array $options filter options
      * @return string text after processing
@@ -46,24 +44,22 @@ class filter_simplequestion extends moodle_text_filter {
 
         // Basic test to avoid work
         if (!is_string($text)) {
-            // non string data can not be filtered anyway
+            // non string content can not be filtered anyway
             return $text;
         }
 
         // Admin might need to change these at some point - eg to double curlies,
         // therefore defined in {@link settings.php} with default values
-        $def_config = get_config('filter_simplequestion');
+        $def_config = get_config('filter_simplemodal');
         $starttag = $def_config->starttag;
         $endtag = $def_config->endtag;
-        $linktextlimit = $def_config->linklimit;
-        $key = $def_config->key;
 
         // Do a quick check to see if we have a tag
         if (strpos($text, $starttag) === false) {
             return $text;
         }
 
-        $renderer = $PAGE->get_renderer('filter_simplequestion');
+        $renderer = $PAGE->get_renderer('filter_simplemodal');
         // Check our context and get the course id
         $coursectx = $this->context->get_course_context(false);
         if (!$coursectx) {
@@ -71,10 +67,10 @@ class filter_simplequestion extends moodle_text_filter {
         }
         $courseid = $coursectx->instanceid;
 
-        // There may be a question or questions in here somewhere so continue
-        // Get the question numbers and positions in the text and call the
+        // There may be a tag in here somewhere so continue
+        // Get the contents and positions in the text and call the
         // renderer to deal with them
-        $text = filter_simplequestion_insert_questions($text, $starttag, $endtag, $linktextlimit, $renderer, $key, $courseid);
+        $text = filter_simplemodal_insert_content($text, $starttag, $endtag, $courseid, $renderer);
         return $text;
     }
 }
@@ -83,88 +79,29 @@ class filter_simplequestion extends moodle_text_filter {
  * function to replace question filter text with actual question
  *
  * @param string $str text to be processed
- * @param string $needle start tag pattern to be searched for
- * @param string $limit end tag for text to replace
- * @param string $linktextlimit maximum characters allowed in a link
- * @param renderer $renderer - filter renderer
- * @param string $key - key of alphabetic characters used to encode question number
+ * @param string $starttag start tag pattern to be searched for
+ * @param string $endtag end tag for text to replace
  * @param int $courseid id of course text is in
+ * @param renderer $renderer - filter renderer
  * @return a replacement text string
  */
-function filter_simplequestion_insert_questions($str, $needle, $limit, $linktextlimit,
-        $renderer, $key, $courseid) {
+function filter_simplemodal_insert_content($str, $starttag, $endtag, $courseid, $renderer) {
 
     $newstring = $str;
     // While we have the start tag in the text
-    while (strpos($newstring, $needle) !== false) {
-        $initpos = strpos($newstring, $needle);
+    while (strpos($newstring, $starttag) !== false) {
+        $initpos = strpos($newstring, $starttag);
         if ($initpos !== false) {
-            $pos = $initpos + strlen($needle);  // get up to string
-            $endpos = strpos($newstring, $limit);
-            $data = substr($newstring, $pos, $endpos - $pos); // extract question data
-            // Get the parameters
-            $params = explode('|', $data);
-
-            // Run some checks - errors are returned if required
-            $verified = true;
-
-            if (count($params) == 3 ) {
-
-                $linktext = trim($params[0]);
-                $number = $params[1];
-                $popup = trim($params[2]);
-
-                // Clean the text strings
-                $linktext = filter_var($linktext, FILTER_SANITIZE_STRING);
-                $popup = filter_var($popup, FILTER_SANITIZE_STRING);
-
-            } else {
-
-                // Invalid parameter count
-                $question = get_string('param_number_error', 'filter_simplequestion');
-                $verified = false;
-            }
-
-            if ($verified) {
-                // Check the display mode
-                if ( ($popup != 'embed') && ($popup != 'popup') ) {
-                    // Invalid display mode
-                    $question = get_string('pop_param_error', 'filter_simplequestion');
-                    $verified = false;
-                }
-            }
-
-            if ($verified) {
-                // Check the number (must be integer)
-                if (filter_var($number, FILTER_VALIDATE_INT) === false) {
-                    // Invalid number string
-                    $question = get_string('link_number_error', 'filter_simplequestion');
-                    $verified = false;
-                }
-            }
-
-            // Check the link text for length
-            if ($verified) {
-                if (strlen($linktext) > $linktextlimit) {
-                    $question = $linktext . get_string('link_text_length',
-                            'filter_simplequestion');
-                    $verified = false;
-                }
-            }
-
-            if ($verified) {
-                // Render the question link
-                // Encrypt question number
-                $en = \filter_simplequestion\utility\tools::encrypt($number, $key);
-                $question = $renderer->get_question($en, $linktext, $popup, $courseid);
-            } else {
-                $question = $renderer->get_error($question);
-            }
-
+            $pos = $initpos + strlen($starttag);  // get up to string
+            $endpos = strpos($newstring, $endtag);
+            $content = substr($newstring, $pos, $endpos - $pos); // extract content
+            // Clean the string
+            $content = filter_var($content, FILTER_SANITIZE_STRING);
+            $content = $renderer->get_content($content, $courseid);
             // Update the text to replace the filtered string
-            $newstring = substr_replace($newstring, $question, $initpos,
-                    $endpos - $initpos + strlen($limit));
-            $initpos = $endpos + strlen($limit);
+            $newstring = substr_replace($newstring, $content, $initpos,
+                    $endpos - $initpos + strlen($endtag));
+            $initpos = $endpos + strlen($endtag);
         }
     }
     return $newstring;

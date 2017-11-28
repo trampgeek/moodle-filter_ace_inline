@@ -18,7 +18,7 @@
  * Version details
  *
  * @package    filter
- * @subpackage simplequestion
+ * @subpackage simplemodal
  * @copyright  2017 Richard Jones (https://richardnz.net/)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -26,8 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017112802;        
+$plugin->version   = 2017112804;        
 $plugin->requires  = 2017051500;        
-$plugin->component = 'filter_simplequestion';
+$plugin->component = 'filter_simplemodal';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.5.2'; // updated settings
+$plugin->release = 'v1.0'; // updated settings
