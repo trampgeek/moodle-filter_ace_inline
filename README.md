@@ -4,7 +4,7 @@ https://github.com/richardjonesnz/moodle_filter_simplemodal
 
 Short Description
 =================
-A template for filters
+A template for filters - used in the MoodleBites for Developers Level 1 course run by Moodle partner HRDNZ.  https://www.moodlebites.com.
 
 Long Description
 ===============
@@ -25,7 +25,7 @@ but these are unused.
 
 Documentation
 =============
-Thanks to justin Hunt.
+Thanks to Justin Hunt.
 
 Download the zip or clone the repo.
 
