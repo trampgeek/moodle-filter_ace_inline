@@ -28,36 +28,18 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
 
     // default values for filter.php
-    $START_TAG = '{{CONTENT:';
-    $END_TAG = '}}';
-    $HEIGHT = 600;
-    $WIDTH = 450;
+    $BUTTON_LABEL = get_string('default_button_label', 'filter_ace_inline');
 
     // language strings
     $heading = get_string('settings_heading', 'filter_ace_inline');
     $description = get_string('settings_desc', 'filter_ace_inline');
 
-    $settings->add(new admin_setting_heading('ace_inlinesettings', 
+    $settings->add(new admin_setting_heading('ace_inlinesettings',
             $heading, $description));
 
-    
-    $settings->add(new admin_setting_configtext('filter_ace_inline/starttag',
-            get_string('settings_start_tag', 'filter_ace_inline'),
-            get_string('settings_start_tag_desc', 'filter_ace_inline'),
-            $START_TAG, PARAM_TEXT));
-    
-    $settings->add(new admin_setting_configtext('filter_ace_inline/endtag',
-            get_string('settings_end_tag', 'filter_ace_inline'),
-            get_string('settings_end_tag_desc', 'filter_ace_inline'), 
-            $END_TAG, PARAM_TEXT));
-    
-    $settings->add(new admin_setting_configtext('filter_ace_inline/height',
-            get_string('settings_height', 'filter_ace_inline'),
-            get_string('settings_height_desc', 'filter_ace_inline'), 
-            $HEIGHT, PARAM_INT));
-    
-    $settings->add(new admin_setting_configtext('filter_ace_inline/width',
-            get_string('settings_width', 'filter_ace_inline'),
-            get_string('settings_width_desc', 'filter_ace_inline'), 
-            $WIDTH, PARAM_INT));
+
+    $settings->add(new admin_setting_configtext('filter_ace_inline/button_label',
+            get_string('settings_button_label', 'filter_ace_inline'),
+            get_string('settings_button_label_desc', 'filter_ace_inline'),
+            $BUTTON_LABEL, PARAM_TEXT));
 }

@@ -22,9 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['filtername'] = 'Insert content';
+$string['filtername'] = 'Ace inline';
 
 // Settings strings
 $string['settings_heading'] = 'Ace inline filter settings';
 $string['settings_desc'] = 'Change the settings for this filter.';
-$string['inline_button_label'] = "Try it!";
+$string['settings_button_label'] = 'Button label';
+$string['settings_button_label_desc'] = 'The label for the "Try it!" button that
+    the user clicks to run the code';
+$string['default_button_label'] = "Try it!";

@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function($) {
+define([], function() {
     /**
      * Replace all <pre> elements in the document rooted at root that have
      * class ace-highlight-code with Ace editor windows that display the
@@ -57,7 +57,7 @@ define(['jquery'], function($) {
                 mode: mode,
                 showGutter: (element.hasAttribute("show-line-numbers") || element.classList.contains("show-line-numbers")),
                 firstLineNumber: startLineNumber
-            }, function(highlighted) {
+            }, function() {
                     var fontSize = "14px";
                     if (element.hasAttribute("font-size")) {
                         fontSize = element.getAttribute("font-size");
@@ -73,9 +73,9 @@ define(['jquery'], function($) {
     }
 
     return {
-        init: function(config) {
+        init: function() {
             if (window.ace) {
-                applyAceHighlighting(ace, document);
+                applyAceHighlighting(window.ace, document);
             }
         }
     };

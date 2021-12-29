@@ -61,10 +61,10 @@ class filter_ace_inline extends moodle_text_filter {
         }
 
         $config = array(
-            'button_label' => get_config('filter_ace_inline', 'inline_button_label')
+            'button_label' => get_config('filter_ace_inline', 'button_label')
         );
-        $this->do_ace_highlight($text, $config);
-        $this->do_ace_interactive($text, $config);
+        $this->do_ace_highlight($text, array($config));
+        $this->do_ace_interactive($text, array($config));
         return $text;
     }
 
