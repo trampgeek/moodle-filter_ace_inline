@@ -77,7 +77,7 @@ Additional control of the display and behaviour is via text attributes as follow
 
 Version
 =======
-1.0
+0.1
 
 Configuration
 =============
