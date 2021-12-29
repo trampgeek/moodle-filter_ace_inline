@@ -33,12 +33,13 @@ Additional control of the display and behaviour is via text attributes as follow
     by the Ace editor for
     syntax colouring and, in the case of the ace-interactive-code, the language
     for running the code on the Jobe server. Default: python3. Example:
-        \<pre class="ace-highlight-code" lang="c">
+
+        <pre class="ace-highlight-code" lang="c">
         #include <stdio.h>
         int main() {
             puts("Hello world");
         }
-        \</pre>
+        </pre>
 
 
 2. show-line-numbers. This attribute sets whether or not line number are shown.
@@ -54,20 +55,22 @@ Additional control of the display and behaviour is via text attributes as follow
 5. output-lines. This sets the size (number of rows) of the text area
    that displays the output of the code when executed via the Try it! button.
    Relevant only to ace-interactive-code elements. Default 1. Example:
-        \<pre class="ace-highlight-code" output-lines="10">
+
+        <pre class="ace-highlight-code" output-lines="10">
         # Default lang = python
         for i in range(10):
             print(i, i * i)
-        \/pre>
+        <pre>
 
 6. button-name. This sets the text within the Try it! button.
    Relevant only to ace-interactive-code elements. Default 'Try it!'.
    Example:
-        \<pre class="ace-highlight-code" button-name="Run" output-lines="10">
+
+        <pre class="ace-highlight-code" button-name="Run" output-lines="10">
         # Default lang = python
         for i in range(10):
             print(i, i * i)
-        \</pre>
+        </pre>
 
 7. jobe-server. This sets the URL of the Jobe server to be used to run the job.
    Relevant only to ace-interactive-code elements. Default: whatever is set
