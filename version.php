@@ -18,16 +18,16 @@
  * Version details
  *
  * @package    filter
- * @subpackage simplemodal
- * @copyright  2017 Richard Jones (https://richardnz.net/)
+ * @subpackage ace_inline
+ * @copyright  2021 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017112804;        
-$plugin->requires  = 2017051500;        
-$plugin->component = 'filter_simplemodal';
+$plugin->version   = 2021123101;
+$plugin->requires  = 2017051500;
+$plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.0'; // updated settings
+$plugin->release = 'v0.1'; // updated settings

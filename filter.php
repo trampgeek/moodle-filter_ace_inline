@@ -15,94 +15,90 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Basic email protection filter.
+ * Ace inline filter for displaying and possibly editing and running code.
  *
  * @package    filter
- * @subpackage simplemodal
- * @copyright  2017 Richard Jones (https://richardnz.net)
+ * @subpackage ace_inline
+ * @copyright  2021 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
-/**
- * This filter looks for content tags in Moodle text and
- * replaces them with specified user-defined content.
- * @see filter_manager::apply_filter_chain()
- */
-class filter_simplemodal extends moodle_text_filter {
-    /**
-     * This function looks for tags in Moodle text and
-     * replaces them with questions from the question bank.
-     * Tags have the format {{CONTENT:xxx}} where:
-     *          - xxx is the user specified content
-     * @param string $text to be processed by the text
-     * @param array $options filter options
-     * @return string text after processing
-     */
-    function filter($text, array $options = array()) {
-        global $PAGE;
 
+require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
+
+/**
+ * This filter looks for <pre> elements of class 'ace-highlight-code' or
+ * 'ace-interactive-code' in Moodle question text and
+ * replaces them an Ace editor panel to allow display and (for ace-interactive-code)
+ * editing and execution, of program code.
+ */
+class filter_ace_inline extends moodle_text_filter {
+    /*
+     * Add the javascript to load the Ace editor.
+     *
+     * @param moodle_page $page The current page.
+     * @param context $context The current context.
+     */
+    public function setup($page, $context) {
+        qtype_coderunner_util::load_ace();
+    }
+
+    /**
+     * This function does the appropriate replacement of the <pre> elements
+     * with the Ace editor and (for ace-interactive) Try it! button.
+     * Only text within Moodle questions (usually but not necessarily description
+     * questions) is subject to replacement.
+     * @param {string} $text to be processed
+     * @param {array} $options filter options
+     * @return {string} text after processing
+     */
+    public function filter($text, array $options = array()) {
         // Basic test to avoid work
         if (!is_string($text)) {
             // non string content can not be filtered anyway
             return $text;
         }
 
-        // Admin might need to change these at some point - eg to double curlies,
-        // therefore defined in {@link settings.php} with default values
-        $def_config = get_config('filter_simplemodal');
-        $starttag = $def_config->starttag;
-        $endtag = $def_config->endtag;
-
-        // Do a quick check to see if we have a tag
-        if (strpos($text, $starttag) === false) {
-            return $text;
-        }
-
-        $renderer = $PAGE->get_renderer('filter_simplemodal');
-        // Check our context and get the course id
-        $coursectx = $this->context->get_course_context(false);
-        if (!$coursectx) {
-            return $text;
-        }
-        $courseid = $coursectx->instanceid;
-
-        // There may be a tag in here somewhere so continue
-        // Get the contents and positions in the text and call the
-        // renderer to deal with them
-        $text = filter_simplemodal_insert_content($text, $starttag, $endtag, $courseid, $renderer);
+        $config = array(
+            'button_label' => get_config('filter_ace_inline', 'inline_button_label')
+        );
+        $this->do_ace_highlight($text, $config);
+        $this->do_ace_interactive($text, $config);
         return $text;
     }
-}
-/**
- *
- * function to replace question filter text with actual question
- *
- * @param string $str text to be processed
- * @param string $starttag start tag pattern to be searched for
- * @param string $endtag end tag for text to replace
- * @param int $courseid id of course text is in
- * @param renderer $renderer - filter renderer
- * @return a replacement text string
- */
-function filter_simplemodal_insert_content($str, $starttag, $endtag, $courseid, $renderer) {
 
-    $newstring = $str;
-    // While we have the start tag in the text
-    while (strpos($newstring, $starttag) !== false) {
-        $initpos = strpos($newstring, $starttag);
-        if ($initpos !== false) {
-            $pos = $initpos + strlen($starttag);  // get up to string
-            $endpos = strpos($newstring, $endtag);
-            $content = substr($newstring, $pos, $endpos - $pos); // extract content
-            // Clean the string
-            $content = filter_var($content, FILTER_SANITIZE_STRING);
-            $content = $renderer->get_content($content, $courseid);
-            // Update the text to replace the filtered string
-            $newstring = substr_replace($newstring, $content, $initpos,
-                    $endpos - $initpos + strlen($endtag));
-            $initpos = $endpos + strlen($endtag);
+    /**
+     * Process the given text by replacing any <pre> elements of class
+     * ace-highlight-code with an ace code high-lighted version.
+     * The actual work is done by JavaScript; this function just calls the
+     * appropriate function.
+     * @param {string} $text The text to be processed.
+     * @param {array} $config The plugin configuration info.
+     * @return {string} The processed text
+     */
+    public function do_ace_highlight($text, $config) {
+        global $PAGE;
+        if (strpos($text, 'ace-highlight-code') !== null) {
+            $PAGE->requires->js_call_amd('filter_ace_inline/highlight_code', 'init', $config);
         }
+
+        return $text;
     }
-    return $newstring;
+
+    /**
+     * Process the given text by replacing any <pre> elements of class
+     * ace-interactive-code with an ace editor plus a Try it! button.
+     * @param {string} $text The text to be processed.
+     * @param {array} $config The plugin configuration info.
+     * @return {string} The processed text
+     */
+    public function do_ace_interactive($text, $config) {
+        global $PAGE;
+        if (strpos($text, 'ace-interactive-code') !== null) {
+            $PAGE->requires->js_call_amd('filter_ace_inline/interactive_code', 'init', $config);
+        }
+
+        return $text;
+    }
 }

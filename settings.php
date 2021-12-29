@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * filter simplemodal admin settings and defaults
+ * filter ace_inline admin settings and defaults
  *
  * @package    filter
- * @subpackage simplemodal
+ * @subpackage ace_inline
  * @copyright  2017 Richard Jones (@link https://richardnz.net/)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,30 +34,30 @@ if ($ADMIN->fulltree) {
     $WIDTH = 450;
 
     // language strings
-    $heading = get_string('settings_heading', 'filter_simplemodal');
-    $description = get_string('settings_desc', 'filter_simplemodal');
+    $heading = get_string('settings_heading', 'filter_ace_inline');
+    $description = get_string('settings_desc', 'filter_ace_inline');
 
-    $settings->add(new admin_setting_heading('simplemodalsettings', 
+    $settings->add(new admin_setting_heading('ace_inlinesettings', 
             $heading, $description));
 
     
-    $settings->add(new admin_setting_configtext('filter_simplemodal/starttag',
-            get_string('settings_start_tag', 'filter_simplemodal'),
-            get_string('settings_start_tag_desc', 'filter_simplemodal'),
+    $settings->add(new admin_setting_configtext('filter_ace_inline/starttag',
+            get_string('settings_start_tag', 'filter_ace_inline'),
+            get_string('settings_start_tag_desc', 'filter_ace_inline'),
             $START_TAG, PARAM_TEXT));
     
-    $settings->add(new admin_setting_configtext('filter_simplemodal/endtag',
-            get_string('settings_end_tag', 'filter_simplemodal'),
-            get_string('settings_end_tag_desc', 'filter_simplemodal'), 
+    $settings->add(new admin_setting_configtext('filter_ace_inline/endtag',
+            get_string('settings_end_tag', 'filter_ace_inline'),
+            get_string('settings_end_tag_desc', 'filter_ace_inline'), 
             $END_TAG, PARAM_TEXT));
     
-    $settings->add(new admin_setting_configtext('filter_simplemodal/height',
-            get_string('settings_height', 'filter_simplemodal'),
-            get_string('settings_height_desc', 'filter_simplemodal'), 
+    $settings->add(new admin_setting_configtext('filter_ace_inline/height',
+            get_string('settings_height', 'filter_ace_inline'),
+            get_string('settings_height_desc', 'filter_ace_inline'), 
             $HEIGHT, PARAM_INT));
     
-    $settings->add(new admin_setting_configtext('filter_simplemodal/width',
-            get_string('settings_width', 'filter_simplemodal'),
-            get_string('settings_width_desc', 'filter_simplemodal'), 
+    $settings->add(new admin_setting_configtext('filter_ace_inline/width',
+            get_string('settings_width', 'filter_ace_inline'),
+            get_string('settings_width_desc', 'filter_ace_inline'), 
             $WIDTH, PARAM_INT));
 }
