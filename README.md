@@ -6,7 +6,8 @@ Short Description
 =================
 A Moodle filter that displays code inline using the Ace editor, possibly also
 allowing a simple REPL mode if a sufficiently recent version of the CodeRunner
-question type plug in is installed.
+question type plugin is installed (currently only the 4.1.1 development
+version).
 
 Long Description
 ================
