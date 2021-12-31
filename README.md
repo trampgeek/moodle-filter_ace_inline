@@ -9,7 +9,7 @@ allowing a simple REPL mode if a sufficiently recent version of the CodeRunner
 question type plug in is installed.
 
 Long Description
-===============
+================
 A text filter for displaying program code and optionally allowing interaction with it.
 Code is displayed using the Ace editor, with syntax colouring appropriate to
 the specified language (default, Python). If the 'interactive' mode is
@@ -27,55 +27,96 @@ In the second case the code is displayed in an editable form and in addition
 a 'Try it!' button allows immediate execution of the code on the Jobe
 server, with output displayed in-line.
 
-Additional control of the display and behaviour is via text attributes as follows:
+Additional control of the display and behaviour is via attributes of the
+\<pre> element as follows. All attribute names start with 'data-' to ensure
+that the HTML still validates.
 
- 1. lang. This attribute sets the language to be used
+ 1. data-lang. This attribute sets the language to be used
     by the Ace editor for
     syntax colouring and, in the case of the ace-interactive-code, the language
     for running the code on the Jobe server. Default: python3. Example:
 
-        <pre class="ace-highlight-code" lang="c">
+        <pre class="ace-highlight-code" data-lang="c">
         #include <stdio.h>
         int main() {
             puts("Hello world");
         }
         </pre>
 
+2. data-start-line-number. Sets the line number used for the first displayed line of
+   code, if line numbers are to be shown. Set to 'none' for no line numbers.
+   Default is 'none' for ace-highlight-code elements and '1' for ace-interactive-code
+   elements.
 
-2. show-line-numbers. This attribute sets whether or not line number are shown.
-   Its value is interpreted as a logical value by JavaScript. Use 0 or 'false'
-   to turn off line numbers. All other values are interpreted as 'true'.
-   Default: false for ace-highlight-code, true for ace-interactive-code.
+3. data-font-size. Sets the display font size used by Ace. Default 14px.
 
-3. start-line-number. Sets the line number used for the first displayed line of
-   code. Default 1. Relevant only if show-line-numbers is true.
+Further attributes relevant to ace-interactive-code elements only:
 
-4. font-size. Sets the display font size used by Ace. Default 14px.
-
-5. output-lines. This sets the size (number of rows) of the text area
+1. data-output-lines. This sets the size (number of rows) of the text area
    that displays the output of the code when executed via the Try it! button.
    Relevant only to ace-interactive-code elements. Default 1. Example:
 
-        <pre class="ace-highlight-code" output-lines="10">
+        <pre class="ace-interactive-code" data-output-lines="10">
         # Default lang = python
         for i in range(10):
             print(i, i * i)
         <pre>
 
-6. button-name. This sets the text within the Try it! button.
+2. data-button-name. This sets the text within the Try it! button.
    Relevant only to ace-interactive-code elements. Default 'Try it!'.
    Example:
 
-        <pre class="ace-highlight-code" button-name="Run" output-lines="10">
+        <pre class="ace-interactive-code" data-button-name="Run" data-output-lines="10">
         # Default lang = python
         for i in range(10):
             print(i, i * i)
         </pre>
 
-7. jobe-server. This sets the URL of the Jobe server to be used to run the job.
-   Relevant only to ace-interactive-code elements. Default: whatever is set
-   by the administrator via the plugin's setting form (which itself defaults
-   to the server(s) used by CodeRunner).
+3. data-stdin. This string value defines the standard input "file" to be used for the
+   run. HTML5 allows multiline attribute values, so newlines can be inserted into
+   the string. For example:
+
+        <pre class="ace-interactive-code" data-output-lines="2"
+             data-stdin="I am line 1
+        and I am line 2
+        ">
+        print(input())
+        print(input())
+        </pre>
+
+4. data-files. This is a JSON specification that defines any additional files
+   to be loaded into the working directory. Attribute names are file names and
+   attribute values are file contents. Since this is JSON, newlines in file
+   contents should be represented as \n. For example:
+
+        <pre class="ace-interactive-code" data-output-lines="2"
+             data-files='{"blah.txt": "I am line 1\nAnd I am line 2\n"}'>
+        print(open("blah.txt").read())
+        </pre>
+
+5. data-params. This is a JSON object that defines any Jobe sandbox parameters that
+   are to have non-standard values, such as `cputime` and `memorylimit`. This
+   shouldn't generally be needed.
+
+HTML-escaping of code within the \<PRE> element
+==============================================
+
+When using ace-interactive-code elements, problems arise when program code contains characters that have special meaning
+to the browser, i.e. are part of the HTML syntax. For example, in C:
+
+        #include &lt;stdio.h&gt;
+
+To ensure characters like '\<', '\&' etc are not interpreted by the browser, such
+special characters should be uri-encoded, e.g. as \&lt;, \&amp; etc.
+
+For example, an interactive helloworld program in C would be defined in HTML as
+
+        <pre class="ace-interactive-code" data-lang="c">
+        #include &lt;stdio.h&gt;
+        int main() {
+            puts("Hello world!\n");
+        }
+        </pre>
 
 
 Version
@@ -89,3 +130,4 @@ from that used by CodeRunner. This provides an extra level of security and isola
 any possible load placed on the jobe server by use of this plugin from the
 normal production jobe server.
 
+gi

@@ -29,15 +29,17 @@ define(['jquery'], function($) {
     /**
      * Add a UI div containing a Try it! button and a text area to display the
      * results of a button click.
-     * @param {string} buttonName The label for the button.
      * @param {html_element} editNode The Ace edit node after which the div should be inserted.
      * @param {object} aceSession The Ace editor session.
-     * @param {int} outputLines The number of lines to allocate to the output text area.
+     * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
+     * Keys are button-name, output-lines, lang, stdin, files, params.
      */
-    function addUi(buttonName, editNode, aceSession, outputLines) {
+    function addUi(editNode, aceSession, uiParameters) {
         var button = $("<div><button type='button' class='btn btn-secondary' " +
-                "style='margin-bottom:6px;padding:2px 8px;'>" + buttonName + "</button></div>");
-        var outputTextarea = $("<textarea readonly rows='" + outputLines +
+                "style='margin-bottom:6px;padding:2px 8px;'>" +
+                uiParameters['button-name'] + "</button></div>");
+        var outputTextarea = $("<textarea readonly rows='" +
+                uiParameters['output-lines'] +
                 "' style='font-family:monospace; font-size:12px;width:100%'></textarea>");
         editNode.after(button);
         button.after(outputTextarea);
@@ -48,8 +50,10 @@ define(['jquery'], function($) {
                     methodname: 'qtype_coderunner_run_in_sandbox',
                     args: {
                         sourcecode: aceSession.getValue(),
-                        language: 'python3',
-                        stdin: ''
+                        language: uiParameters['lang'],
+                        stdin: uiParameters['stdin'],
+                        files: uiParameters['files'],
+                        params: uiParameters['params']
                     },
                     done: function(responseJson) {
                         var response = JSON.parse(responseJson);
@@ -57,7 +61,7 @@ define(['jquery'], function($) {
                         outputTextarea.val(text);
                     },
                     fail: function(error) {
-                        alert("System error: please report: " + error);
+                        alert("System error: please report: " + error.message + ' ' + error.debuginfo);
                     }
                 }]);
             });
@@ -75,43 +79,48 @@ define(['jquery'], function($) {
      * @param {object} config the config parameters from the admin settings panel.
      */
     function applyAceInteractive(ace, root, config) {
-        var codeElements = root.getElementsByClassName('ace-interactive-code');
         var mode = "ace/mode/python"; // Default is Python.
-        var outputLines = 1;
-        var showLineNumbers = true;
-        var buttonName = config['button_label'];
-        var editNode, editor, text, numLines;
+        let codeElements = root.getElementsByClassName('ace-interactive-code');
+
+        var text, attrName, attr, numLines, value, dataName;
+        var showLineNumbers;
 
         for (var i=0; i < codeElements.length; i++) {
+            let uiParameters = {
+                'lang': 'python3',
+                'font-size': '11pt',
+                'output-lines': 1,
+                'start-line-number': 1,
+                'button-name': config['button_label'],
+                'stdin': '',
+                'files': '',
+                'params': ''
+            };
             let pre = codeElements[i];
-            // Only do not-yet-processed PRE elements within a question
-            // (so not in author edit mode).
-            if (pre.nodeName !== 'PRE' || pre.hasAttribute('processing-done') ||
-                !pre.closest("div[id^='question']")) {
+            if (pre.nodeName !== 'PRE' || pre.hasAttribute('data-processing-done') ||
+                    !pre.closest("div[id^='question']")) {
                 continue;
             }
 
+            for (attrName in uiParameters) {
+                dataName = 'data-' + attrName;
+                attr = pre.attributes.getNamedItem(dataName);
+                if (attr) {
+                    value = attr.value;
+                    if (attrName === 'start-line-number' && value.toLowerCase() === 'none') {
+                        value = null;
+                    } else if (attrName === 'start-line-number' || attrName === 'output-lines') {
+                        value = parseInt(value);
+                    }
+                    uiParameters[attrName] = value;
+                }
+            }
+            showLineNumbers = uiParameters['start-line-number'] ? true : false;
             let jqpre = $(pre);
-            text = jqpre.html();
+            var text = jqpre.text();
             numLines = text.split("\n").length;
-            if (pre.hasAttribute("lang")) {
-                mode = "ace/mode/" + pre.getAttribute("lang");
-            }
-            if (pre.hasAttribute("outputlines")) {
-                outputLines = parseInt(pre.getAttribute("outputlines"));
-            }
-            if (pre.hasAttribute("hidelinenumbers")) {
-                showLineNumbers = false;
-            }
-            if (pre.hasAttribute("showlinenumbers")) {
-                showLineNumbers = true;
-            }
 
-            if (pre.hasAttribute("buttonname")) {
-                buttonName = pre.getAttribute("buttonname");
-            }
-
-            editNode = $("<div></div>"); // Ace editor manages this
+            let editNode = $("<div></div>"); // Ace editor manages this
             editNode.css({
                 width: "100%",
                 margin: "6px",
@@ -120,21 +129,26 @@ define(['jquery'], function($) {
 
             jqpre.after(editNode);    // Insert the edit node
 
-            editor = ace.edit(editNode.get(0), {
+            let aceConfig = {
                 newLineMode: "unix",
                 mode: mode,
                 maxLines: numLines,
-                fontSize: "11pt",
+                fontSize: uiParameters['font-size'],
                 showLineNumbers: showLineNumbers,
                 showGutter: showLineNumbers,
                 highlightActiveLine: showLineNumbers
-            });
+            };
+            if (showLineNumbers) {
+                aceConfig['firstLineNumber'] = uiParameters['start-line-number'];
+            }
+            let editor = ace.edit(editNode.get(0), aceConfig);
             editor.$blockScrolling = Infinity;
 
             let session = editor.getSession();
             session.setValue(text);
-            addUi(buttonName, editNode, session, outputLines);  // Add a button and text area for output.
-            pre.setAttribute('processing-done', '');
+            // Add a button and text area for output.
+            addUi(editNode, session, uiParameters);
+            pre.setAttribute('data-processing-done', '');
             jqpre.hide();
 
         }
