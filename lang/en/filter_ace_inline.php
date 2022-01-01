@@ -30,4 +30,11 @@ $string['settings_desc'] = 'Change the settings for this filter.';
 $string['settings_button_label'] = 'Button label';
 $string['settings_button_label_desc'] = 'The label for the "Try it!" button that
     the user clicks to run the code';
-$string['default_button_label'] = "Try it!";
+$string['default_button_label'] = 'Try it!';
+$string['result_compilation_error'] = 'Compilation error';
+$string['result_runtime_error'] = 'Runtime error';
+$string['result_time_limit'] = 'Time limit exceeded';
+$string['result_memory_limit'] = 'Memory limit exceeded';
+$string['result_server_overload'] = 'Jobe server overloaded. Try again later?';
+$string['result_unknown_error'] = 'Unknown error from Jobe server';
+

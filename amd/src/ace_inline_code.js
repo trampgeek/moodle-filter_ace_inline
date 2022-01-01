@@ -16,8 +16,8 @@
  */
 
 /**
- * JavaScript for implementing the highlight_code functionality of the
- * ace_line filter (q.v.)
+ * JavaScript for implementing both the ace_highlight_code and ace_interactive_code
+ * functionality of the ace_line filter (q.v.)
  *
  * @module filter_ace_inline/highlight_code
  * @copyright  Richard Lobb, 2021, The University of Canterbury
@@ -65,6 +65,45 @@ define(['jquery'], function($) {
         }
         return uiParameters;
     }
+
+    /**
+     * Get the specified language string using
+     * AJAX and plug it into the given textarea
+     * @param {string} langStringName The language string name.
+     * @param {DOMnode} textarea The textarea into which the error message
+     * should be plugged.
+     */
+    function setLangString(langStringName, textarea) {
+        require(['core/str'], function(str) {
+            var promise = str.get_string(langStringName, 'filter_ace_inline');
+            $.when(promise).then(function(message) {
+                textarea.val("*** " + message + " ***");
+            });
+        });
+    }
+
+    /**
+     * Get the appropriate language string error message for the given resultCode using
+     * AJAX and plug it into the given textarea.
+     * @param {int} resultCode The 'result' field of the Jobe return value.
+     * @param {DOMnode} textarea The textarea into which the error message
+     * should be plugged.
+     */
+    function setErrorMessage(resultCode, textarea) {
+        if (resultCode == 11) {
+            setLangString('result_compilation_error', textarea);
+        } else if (resultCode == 12) {
+            setLangString('result_runtime_error', textarea);
+        } else if (resultCode == 13) {
+            setLangString('result_time_limit', textarea);
+        } else if (resultCode == 17) {
+            setLangString('result_memory_limit', textarea);
+        } else if (resultCode == 21) {
+            setLangString('result_server_overload', textarea);
+        } else {
+            setLangString('result_unknown_error', textarea);
+        }
+    }
     /**
      * Add a UI div containing a Try it! button and a text area to display the
      * results of a button click.
@@ -96,8 +135,12 @@ define(['jquery'], function($) {
                     },
                     done: function(responseJson) {
                         var response = JSON.parse(responseJson);
-                        var text = response.cmpinfo + response.output + response.stderr;
-                        outputTextarea.val(text);
+                        if (response.result === 15) { // Is it RESULT_SUCCESS?
+                            var text = response.cmpinfo + response.output + response.stderr;
+                            outputTextarea.val(text);
+                        } else { // Oops. Plug in an error message instead.
+                            setErrorMessage(response.result, outputTextarea);
+                        }
                     },
                     fail: function(error) {
                         alert("System error: please report: " + error.message + ' ' + error.debuginfo);
@@ -145,7 +188,7 @@ define(['jquery'], function($) {
             'readonly': false,
             'stdin': '',
             'files': '',
-            'params': ''
+            'params': '{"cputime": 1}'
         };
         applyAceAndBuildUi(ace, root, 'ace-interactive-code', defaultParams);
     }
@@ -165,6 +208,11 @@ define(['jquery'], function($) {
     function applyAceAndBuildUi(ace, root, className, defaultParams) {
         var text, numLines;
         var showLineNumbers;
+        var css = {
+            width: "100%",
+            margin: "6px",
+            "line-height": "1.3"
+        };
         var mode = "ace/mode/python"; // Default is Python.
         var codeElements = root.getElementsByClassName(className);
 
@@ -181,11 +229,7 @@ define(['jquery'], function($) {
             numLines = text.split("\n").length;
 
             let editNode = $("<div></div>"); // Ace editor manages this
-            editNode.css({
-                width: "100%",
-                margin: "6px",
-                "line-height": "1.3"
-            });
+            editNode.css(css);
 
             jqpre.after(editNode);    // Insert the edit node
 
@@ -202,10 +246,9 @@ define(['jquery'], function($) {
                 aceConfig['firstLineNumber'] = uiParameters['start-line-number'];
             }
             let editor = ace.edit(editNode.get(0), aceConfig);
-            if (uiParameters['readonly'] !== null) {
+            if (uiParameters['readonly']) {
                 editor.setReadOnly(true);
             }
-            editor.$blockScrolling = Infinity;
 
             let session = editor.getSession();
             session.setValue(text);

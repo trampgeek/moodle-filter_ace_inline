@@ -29,8 +29,10 @@ a 'Try it!' button allows immediate execution of the code on the Jobe
 server, with output displayed in-line.
 
 Additional control of the display and behaviour is via attributes of the
-\<pre> element as follows. All attribute names start with 'data-' to ensure
-that the HTML still validates.
+\<pre> element as follows. All attribute names should start with 'data-' to ensure
+that the HTML still validates. However, the 'data-' prefix can be dropped if
+you don't care about HTML5 validation. For example the 'data-lang' attribute
+can just be 'lang'.
 
  1. data-lang. This attribute sets the language to be used
     by the Ace editor for
@@ -73,7 +75,10 @@ Further attributes relevant to ace-interactive-code elements only:
             print(i, i * i)
         </pre>
 
-3. data-stdin. This string value defines the standard input "file" to be used for the
+3. data-readonly. This disables editing of the code, so students can only run
+    the supplied code without modification.
+
+4. data-stdin. This string value defines the standard input "file" to be used for the
    run. HTML5 allows multiline attribute values, so newlines can be inserted into
    the string. For example:
 
@@ -85,7 +90,7 @@ Further attributes relevant to ace-interactive-code elements only:
         print(input())
         </pre>
 
-4. data-files. This is a JSON specification that defines any additional files
+5. data-files. This is a JSON specification that defines any additional files
    to be loaded into the working directory. Attribute names are file names and
    attribute values are file contents. Since this is JSON, newlines in file
    contents should be represented as \n. For example:
@@ -95,9 +100,9 @@ Further attributes relevant to ace-interactive-code elements only:
         print(open("blah.txt").read())
         </pre>
 
-5. data-params. This is a JSON object that defines any Jobe sandbox parameters that
+6. data-params. This is a JSON object that defines any Jobe sandbox parameters that
    are to have non-standard values, such as `cputime` and `memorylimit`. This
-   shouldn't generally be needed.
+   shouldn't generally be needed. Default: '{"cputime": 1}'.
 
 HTML-escaping of code within the \<PRE> element
 ==============================================
