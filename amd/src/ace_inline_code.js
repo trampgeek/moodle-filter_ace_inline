@@ -124,6 +124,7 @@ define(['jquery'], function($) {
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
             button.on('click', function() {
+                outputTextarea.val('');
                 ajax.call([{
                     methodname: 'qtype_coderunner_run_in_sandbox',
                     args: {
