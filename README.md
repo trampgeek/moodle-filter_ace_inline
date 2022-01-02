@@ -39,10 +39,11 @@ can just be 'lang'.
     syntax colouring and, in the case of the ace-interactive-code, the language
     for running the code on the Jobe server. Default: python3. Example:
 
-        <pre class="ace-highlight-code" data-lang="c">
-        #include <stdio.h>
-        int main() {
-            puts("Hello world");
+        <pre class="ace-highlight-code" data-lang="java">
+        public class hello {
+            public static void main(String[] args) {
+                System.out.println("Hello world!");
+            }
         }
         </pre>
 
@@ -55,34 +56,24 @@ can just be 'lang'.
 
 Further attributes relevant to ace-interactive-code elements only:
 
-1. data-output-lines. This sets the size (number of rows) of the text area
-   that displays the output of the code when executed via the Try it! button.
-   Relevant only to ace-interactive-code elements. Default 1. Example:
-
-        <pre class="ace-interactive-code" data-output-lines="10">
-        # Default lang = python
-        for i in range(10):
-            print(i, i * i)
-        <pre>
-
-2. data-button-name. This sets the text within the Try it! button.
-   Relevant only to ace-interactive-code elements. Default 'Try it!'.
+1. data-button-name. This sets the text within the Try it! button.
+   Default 'Try it!'.
    Example:
 
-        <pre class="ace-interactive-code" data-button-name="Run" data-output-lines="10">
+        <pre class="ace-interactive-code" data-button-name="Run">
         # Default lang = python
         for i in range(10):
             print(i, i * i)
         </pre>
 
-3. data-readonly. This disables editing of the code, so students can only run
+2. data-readonly. This disables editing of the code, so students can only run
     the supplied code without modification.
 
-4. data-stdin. This string value defines the standard input "file" to be used for the
+3. data-stdin. This string value defines the standard input "file" to be used for the
    run. HTML5 allows multiline attribute values, so newlines can be inserted into
    the string. For example:
 
-        <pre class="ace-interactive-code" data-output-lines="2"
+        <pre class="ace-interactive-code"
              data-stdin="I am line 1
         and I am line 2
         ">
@@ -90,19 +81,36 @@ Further attributes relevant to ace-interactive-code elements only:
         print(input())
         </pre>
 
-5. data-files. This is a JSON specification that defines any additional files
+4. data-files. This is a JSON specification that defines any additional files
    to be loaded into the working directory. Attribute names are file names and
    attribute values are file contents. Since this is JSON, newlines in file
    contents should be represented as \n. For example:
 
-        <pre class="ace-interactive-code" data-output-lines="2"
+        <pre class="ace-interactive-code"
              data-files='{"blah.txt": "I am line 1\nAnd I am line 2\n"}'>
         print(open("blah.txt").read())
         </pre>
 
-6. data-params. This is a JSON object that defines any Jobe sandbox parameters that
+5. data-params. This is a JSON object that defines any Jobe sandbox parameters that
    are to have non-standard values, such as `cputime` and `memorylimit`. This
-   shouldn't generally be needed. Default: '{"cputime": 1}'.
+   shouldn't generally be needed. Default: '{"cputime": 2}'.
+
+6. data-prefix. This string value is code to be inserted in front of the
+   contents of the ace editor before sending the program to the Jobe server
+   for execution. An extra newline is *not* inserted between the two strings,
+   so if you want one you
+   must include it explicitly.
+
+7. data-suffix. This string value is code to be inserted in front of the
+   contents of the ace editor before sending the program to the Jobe server
+   for execution. An extra newline is *not* inserted between the two strings,
+   so if you want one you
+   must include it explicitly.
+
+9. data-html-output. If this attribute is present (with any value) the output
+   from the run is interpreted as raw HTML.
+   The output from the program is simply wrapped in a \<div> element and inserted
+   directly after the Try it! button.
 
 HTML-escaping of code within the \<PRE> element
 ==============================================
@@ -115,7 +123,7 @@ to the browser, i.e. are part of the HTML syntax. For example, in C:
 To ensure characters like '\<', '\&' etc are not interpreted by the browser, such
 special characters should be uri-encoded, e.g. as \&lt;, \&amp; etc.
 
-For example, an interactive helloworld program in C would be defined in HTML as
+For example, an interactive hello world program in C would be defined in HTML as
 
         <pre class="ace-interactive-code" data-lang="c">
         #include &lt;stdio.h&gt;
@@ -124,6 +132,8 @@ For example, an interactive helloworld program in C would be defined in HTML as
         }
         </pre>
 
+Within the Ace editor the student just sees the URI-encoded characters as
+'\<', '\&' etc
 
 Version
 =======

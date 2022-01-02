@@ -27,14 +27,32 @@
 
 define(['jquery'], function($) {
     /**
+     * Escape text special HTML characters.
+     * @param {string} text
+     * @returns {string} text with various special chars replaced with equivalent
+     * html entities. Newlines are replaced with <br>.
+     */
+    function escapeHtml(text) {
+      var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        ' ': '&nbsp;',
+        "\n": '<br>'
+      };
+
+      return text.replace(/[&<>"' \n]/g, function(m) { return map[m]; });
+    }
+    /**
      * Extract from the given DOM pre element its various attributes.
      * @param {DOMElement} pre The <pre> element from the DOM.
      * @param {object} defaultParams An object with the default UI parameters.
      * @returns {object} The original defaultParams object with any attributes
      * that exist with in the <pre> element replaced by the pre element
      * attributes. As special cases if there is a start-line-number parameter
-     * with the value 'none', start-line-number is set to null and if there is
-     * a readonly attribute with any value, readonly is set to true.
+     * with the value 'none', start-line-number is set to null.
      */
     function getUiParameters(pre, defaultParams) {
         var attrName, attr, value, dataName;
@@ -50,18 +68,13 @@ define(['jquery'], function($) {
             }
             if (attr) {
                 value = attr.value;
-                if (attrName === 'start-line-number' && value.toLowerCase() === 'none') {
-                    value = null;
-                } else if (attrName === 'start-line-number' || attrName === 'output-lines') {
-                    value = parseInt(value);
+                if (attrName === 'start-line-number') {
+                    value = value.toLowerCase() === 'none' ? null : parseInt(value);
                 }
             } else {
                 value = defaultParams[attrName];
             }
             uiParameters[attrName] = value;
-        }
-        if (uiParameters['readonly'] !== false) {
-            uiParameters['readonly'] = true; // If this attribute exists in the pre, it's true.
         }
         return uiParameters;
     }
@@ -72,12 +85,14 @@ define(['jquery'], function($) {
      * @param {string} langStringName The language string name.
      * @param {DOMnode} textarea The textarea into which the error message
      * should be plugged.
+     * @param {string} additionalText Extra text to follow the result code.
      */
-    function setLangString(langStringName, textarea) {
+    function setLangString(langStringName, textarea, additionalText) {
         require(['core/str'], function(str) {
             var promise = str.get_string(langStringName, 'filter_ace_inline');
             $.when(promise).then(function(message) {
-                textarea.val("*** " + message + " ***");
+                textarea.show();
+                textarea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
             });
         });
     }
@@ -88,47 +103,60 @@ define(['jquery'], function($) {
      * @param {int} resultCode The 'result' field of the Jobe return value.
      * @param {DOMnode} textarea The textarea into which the error message
      * should be plugged.
+     * @param {string} additionalText Extra text to follow the result code.
      */
-    function setErrorMessage(resultCode, textarea) {
+    function setErrorMessage(resultCode, textarea, additionalText) {
         if (resultCode == 11) {
-            setLangString('result_compilation_error', textarea);
+            setLangString('result_compilation_error', textarea, additionalText);
         } else if (resultCode == 12) {
-            setLangString('result_runtime_error', textarea);
+            setLangString('result_runtime_error', textarea, additionalText);
         } else if (resultCode == 13) {
-            setLangString('result_time_limit', textarea);
+            setLangString('result_time_limit', textarea, additionalText);
         } else if (resultCode == 17) {
-            setLangString('result_memory_limit', textarea);
+            setLangString('result_memory_limit', textarea, additionalText);
         } else if (resultCode == 21) {
-            setLangString('result_server_overload', textarea);
+            setLangString('result_server_overload', textarea, additionalText);
         } else {
-            setLangString('result_unknown_error', textarea);
+            setLangString('result_unknown_error', textarea, additionalText);
         }
     }
     /**
      * Add a UI div containing a Try it! button and a text area to display the
-     * results of a button click.
+     * results of a button click. If uiParameters['html-output'] is non-null,
+     * the text area is used only for error output, and the output of the run
+     * is inserted directly into the DOM after the (usually hidden) textarea.
      * @param {html_element} editNode The Ace edit node after which the div should be inserted.
      * @param {object} aceSession The Ace editor session.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
-     * Keys are button-name, output-lines, lang, stdin, files, params.
+     * Keys are button-name, lang, stdin, files, params.
      */
     function addUi(editNode, aceSession, uiParameters) {
+        var htmlOutput = uiParameters['html-output'] !== null;
         var button = $("<div><button type='button' class='btn btn-secondary' " +
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button></div>");
-        var outputTextarea = $("<textarea readonly rows='" +
-                uiParameters['output-lines'] +
-                "' style='font-family:monospace; font-size:12px;width:100%'></textarea>");
+        var outputText = $("<p style='font-family:monospace; font-size:12px;width:100%; " +
+                "background-color:white;border:1px gray;padding:5px'></p>");
         editNode.after(button);
-        button.after(outputTextarea);
+        button.after(outputText);
+        outputText.hide();
+
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
             button.on('click', function() {
-                outputTextarea.val('');
+                outputText.html('');
+                if (htmlOutput) {
+                    outputText.hide();
+                }
+                var next = outputText.next('div.filter-ace-inline-html');
+                if (next) {
+                    next.remove();
+                }
+                var code = uiParameters.prefix + aceSession.getValue() + uiParameters.suffix;
                 ajax.call([{
                     methodname: 'qtype_coderunner_run_in_sandbox',
                     args: {
-                        sourcecode: aceSession.getValue(),
+                        sourcecode: code,
                         language: uiParameters['lang'],
                         stdin: uiParameters['stdin'],
                         files: uiParameters['files'],
@@ -136,11 +164,20 @@ define(['jquery'], function($) {
                     },
                     done: function(responseJson) {
                         var response = JSON.parse(responseJson);
+                        var text = response.cmpinfo + response.output + response.stderr;
                         if (response.result === 15) { // Is it RESULT_SUCCESS?
-                            var text = response.cmpinfo + response.output + response.stderr;
-                            outputTextarea.val(text);
+                            if (htmlOutput) {
+                                var html = $("<div class='filter-ace-inline-html '" +
+                                        "style='background-color:#EFF;padding:5px;" +
+                                        "margin-bottom:10px'>" +
+                                        response.output + "</div>");
+                                outputText.after(html);
+                            } else {
+                                outputText.show();
+                                outputText.html(escapeHtml(text));
+                            }
                         } else { // Oops. Plug in an error message instead.
-                            setErrorMessage(response.result, outputTextarea);
+                            setErrorMessage(response.result, outputText, text);
                         }
                     },
                     fail: function(error) {
@@ -183,13 +220,15 @@ define(['jquery'], function($) {
             'isInteractive': true,
             'lang': 'python3',
             'font-size': '11pt',
-            'output-lines': 1,
             'start-line-number': 1,
             'button-name': config['button_label'],
-            'readonly': false,
+            'readonly': null,
             'stdin': '',
             'files': '',
-            'params': '{"cputime": 1}'
+            'params': '{"cputime": 2}',
+            'prefix': '',
+            'suffix': '',
+            'html-output': null
         };
         applyAceAndBuildUi(ace, root, 'ace-interactive-code', defaultParams);
     }
@@ -237,22 +276,24 @@ define(['jquery'], function($) {
             let aceConfig = {
                 newLineMode: "unix",
                 mode: mode,
-                maxLines: numLines,
+                minLines: numLines,
+                maxLines: 50,
                 fontSize: uiParameters['font-size'],
                 showLineNumbers: showLineNumbers,
                 showGutter: showLineNumbers,
+                autoScrollEditorIntoView: true,
                 highlightActiveLine: showLineNumbers
             };
             if (showLineNumbers) {
                 aceConfig['firstLineNumber'] = uiParameters['start-line-number'];
             }
             let editor = ace.edit(editNode.get(0), aceConfig);
-            if (uiParameters['readonly']) {
+            let session = editor.getSession();
+            session.setValue(text);
+            if (uiParameters.readonly !== null) {
                 editor.setReadOnly(true);
             }
 
-            let session = editor.getSession();
-            session.setValue(text);
             // Add a button and text area for output.
             if (uiParameters['isInteractive']) {
                 addUi(editNode, session, uiParameters);
