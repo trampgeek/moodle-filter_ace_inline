@@ -136,7 +136,7 @@ define(['jquery'], function($) {
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button></div>");
         var outputText = $("<p style='font-family:monospace; font-size:12px;width:100%; " +
-                "background-color:white;border:1px gray;padding:5px'></p>");
+                "background-color:white;border:1px gray;padding:5px;margin-bottom:20px'></p>");
         editNode.after(button);
         button.after(outputText);
         outputText.hide();
@@ -169,7 +169,7 @@ define(['jquery'], function($) {
                             if (htmlOutput) {
                                 var html = $("<div class='filter-ace-inline-html '" +
                                         "style='background-color:#EFF;padding:5px;" +
-                                        "margin-bottom:10px'>" +
+                                        "margin-bottom:20px'>" +
                                         response.output + "</div>");
                                 outputText.after(html);
                             } else {
@@ -269,6 +269,9 @@ define(['jquery'], function($) {
             numLines = text.split("\n").length;
 
             let editNode = $("<div></div>"); // Ace editor manages this
+            if (!uiParameters.isInteractive) {
+                css['margin-bottom'] = '20px';  // More space below if not button.
+            }
             editNode.css(css);
 
             jqpre.after(editNode);    // Insert the edit node
@@ -285,7 +288,7 @@ define(['jquery'], function($) {
                 highlightActiveLine: showLineNumbers
             };
             if (showLineNumbers) {
-                aceConfig['firstLineNumber'] = uiParameters['start-line-number'];
+                aceConfig.firstLineNumber = uiParameters['start-line-number'];
             }
             let editor = ace.edit(editNode.get(0), aceConfig);
             let session = editor.getSession();
@@ -295,7 +298,7 @@ define(['jquery'], function($) {
             }
 
             // Add a button and text area for output.
-            if (uiParameters['isInteractive']) {
+            if (uiParameters.isInteractive) {
                 addUi(editNode, session, uiParameters);
             }
             pre.setAttribute('data-processing-done', '');
