@@ -120,6 +120,60 @@ define(['jquery'], function($) {
             setLangString('result_unknown_error', textarea, additionalText);
         }
     }
+
+
+    /**
+     * Handle a click on the Try it! button.
+     * @param {object} ajax The core Moodle ajax module.
+     * @param {html_element} outputText The HTML <p> element in which to display output.
+     * @param {object} aceSession The Ace editor session.
+     * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
+     * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
+     */
+    function handleButtonClick(ajax, outputText, aceSession, uiParameters) {
+        var htmlOutput = uiParameters['html-output'] !== null;
+        outputText.html('');
+        if (htmlOutput) {
+            outputText.hide();
+        }
+        var next = outputText.next('div.filter-ace-inline-html');
+        if (next) {
+            next.remove();
+        }
+        var code = uiParameters.prefix + aceSession.getValue() + uiParameters.suffix;
+        ajax.call([{
+            methodname: 'qtype_coderunner_run_in_sandbox',
+            args: {
+                sourcecode: code,
+                language: uiParameters['lang'],
+                stdin: uiParameters['stdin'],
+                files: uiParameters['files'],
+                params: uiParameters['params']
+            },
+            done: function(responseJson) {
+                var response = JSON.parse(responseJson);
+                var text = response.cmpinfo + response.output + response.stderr;
+                if (response.result === 15) { // Is it RESULT_SUCCESS?
+                    if (htmlOutput) {
+                        var html = $("<div class='filter-ace-inline-html '" +
+                                "style='background-color:#EFF;padding:5px;" +
+                                "margin-bottom:20px'>" +
+                                response.output + "</div>");
+                        outputText.after(html);
+                    } else {
+                        outputText.show();
+                        outputText.html(escapeHtml(text));
+                    }
+                } else { // Oops. Plug in an error message instead.
+                    setErrorMessage(response.result, outputText, text);
+                }
+            },
+            fail: function(error) {
+                alert("System error: please report: " + error.message + ' ' + error.debuginfo);
+            }
+        }]);
+    }
+
     /**
      * Add a UI div containing a Try it! button and a paragraph to display the
      * results of a button click (hidden until button clicked).
@@ -132,7 +186,6 @@ define(['jquery'], function($) {
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
     function addUi(editNode, aceSession, uiParameters) {
-        var htmlOutput = uiParameters['html-output'] !== null;
         var button = $("<div><button type='button' class='btn btn-secondary' " +
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button></div>");
@@ -141,54 +194,15 @@ define(['jquery'], function($) {
         editNode.after(button);
         button.after(outputText);
         outputText.hide();
-
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
             button.on('click', function() {
-                outputText.html('');
-                if (htmlOutput) {
-                    outputText.hide();
-                }
-                var next = outputText.next('div.filter-ace-inline-html');
-                if (next) {
-                    next.remove();
-                }
-                var code = uiParameters.prefix + aceSession.getValue() + uiParameters.suffix;
-                ajax.call([{
-                    methodname: 'qtype_coderunner_run_in_sandbox',
-                    args: {
-                        sourcecode: code,
-                        language: uiParameters['lang'],
-                        stdin: uiParameters['stdin'],
-                        files: uiParameters['files'],
-                        params: uiParameters['params']
-                    },
-                    done: function(responseJson) {
-                        var response = JSON.parse(responseJson);
-                        var text = response.cmpinfo + response.output + response.stderr;
-                        if (response.result === 15) { // Is it RESULT_SUCCESS?
-                            if (htmlOutput) {
-                                var html = $("<div class='filter-ace-inline-html '" +
-                                        "style='background-color:#EFF;padding:5px;" +
-                                        "margin-bottom:20px'>" +
-                                        response.output + "</div>");
-                                outputText.after(html);
-                            } else {
-                                outputText.show();
-                                outputText.html(escapeHtml(text));
-                            }
-                        } else { // Oops. Plug in an error message instead.
-                            setErrorMessage(response.result, outputText, text);
-                        }
-                    },
-                    fail: function(error) {
-                        alert("System error: please report: " + error.message + ' ' + error.debuginfo);
-                    }
-                }]);
+                handleButtonClick(ajax, outputText, aceSession, uiParameters);
             });
-            M.util.js_complete('core/ajax');
         });
+        M.util.js_complete('core/ajax');
     }
+
 
     /**
      * Replace any PRE elements of class ace-highlight-code with a
@@ -199,13 +213,12 @@ define(['jquery'], function($) {
      */
     function applyAceHighlighting(ace, root) {
         var defaultParams = {
-            'isInteractive': false,
             'lang': 'python3',
             'font-size': '11pt',
             'start-line-number': null,
             'readonly': true
         };
-        applyAceAndBuildUi(ace, root, 'ace-highlight-code', defaultParams);
+        applyAceAndBuildUi(ace, root, false, defaultParams);
     }
 
     /**
@@ -218,7 +231,6 @@ define(['jquery'], function($) {
      */
     function applyAceInteractive(ace, root, config) {
         var defaultParams = {
-            'isInteractive': true,
             'lang': 'python3',
             'font-size': '11pt',
             'start-line-number': 1,
@@ -231,80 +243,71 @@ define(['jquery'], function($) {
             'suffix': '',
             'html-output': null
         };
-        applyAceAndBuildUi(ace, root, 'ace-interactive-code', defaultParams);
+        applyAceAndBuildUi(ace, root, true, defaultParams);
     }
 
     /**
      * Replace all <pre> elements in the document rooted at root that have
      * the given className with an Ace editor windows that display the
-     * code in whatever language has been set. Also, if the given defaultParams
-     * object has a true attribute isInteractive, provide a Try it! button
-     * that runs the code.
+     * code in whatever language has been set.
      * @param {object} ace The Ace editor code.
      * @param {object} root The root of the HTML document to modify.
-     * @param {string} className The className that any target PRE must have.
+     * @param {bool} isInteractive True for ace-interactive otherwise false.
      * @param {object} defaultParams An object defining the allowed pre attributes
      * that control the state of the Ace editor and the (optional) UI.
      */
-    function applyAceAndBuildUi(ace, root, className, defaultParams) {
-        var text, numLines;
-        var showLineNumbers;
+    function applyAceAndBuildUi(ace, root, isInteractive, defaultParams) {
+        var MAX_WINDOW_LINES = 50;
+        var mode = "ace/mode/python"; // Default is Python.
+        var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
+        var codeElements = root.getElementsByClassName(className);
         var css = {
             width: "100%",
             margin: "6px",
+            "margin-bottom": isInteractive ? "6px" : "20px",
             "line-height": "1.3"
         };
-        var mode = "ace/mode/python"; // Default is Python.
-        var codeElements = root.getElementsByClassName(className);
 
         for (var i=0; i < codeElements.length; i++) {
             var pre = codeElements[i];
-            if (pre.nodeName !== 'PRE' || pre.hasAttribute('data-processing-done') ||
-                    !pre.closest("div[id^='question']")) {
-                continue;
-            }
-            let uiParameters = getUiParameters(pre, defaultParams);
-            showLineNumbers = uiParameters['start-line-number'] ? true : false;
-            let jqpre = $(pre);
-            var text = jqpre.text();
-            numLines = text.split("\n").length;
+            if (pre.nodeName === 'PRE'  && pre.closest("div[id^='question']")
+                    && pre.style.display !== 'none') {
+                let uiParameters = getUiParameters(pre, defaultParams);
+                var showLineNumbers = uiParameters['start-line-number'] ? true : false;
+                let jqpre = $(pre);
+                var text = jqpre.text();
+                var numLines = text.split("\n").length;
 
-            let editNode = $("<div></div>"); // Ace editor manages this
-            if (!uiParameters.isInteractive) {
-                css['margin-bottom'] = '20px';  // More space below if not button.
-            }
-            editNode.css(css);
+                let editNode = $("<div></div>"); // Ace editor manages this
+                editNode.css(css);
+                jqpre.after(editNode);    // Insert the edit node
 
-            jqpre.after(editNode);    // Insert the edit node
+                let aceConfig = {
+                    newLineMode: "unix",
+                    mode: mode,
+                    minLines: numLines,
+                    maxLines: MAX_WINDOW_LINES,
+                    fontSize: uiParameters['font-size'],
+                    showLineNumbers: showLineNumbers,
+                    firstLineNumber: uiParameters['start-line-number'],
+                    showGutter: showLineNumbers,
+                    autoScrollEditorIntoView: true,
+                    highlightActiveLine: showLineNumbers
+                };
 
-            let aceConfig = {
-                newLineMode: "unix",
-                mode: mode,
-                minLines: numLines,
-                maxLines: 50,
-                fontSize: uiParameters['font-size'],
-                showLineNumbers: showLineNumbers,
-                showGutter: showLineNumbers,
-                autoScrollEditorIntoView: true,
-                highlightActiveLine: showLineNumbers
-            };
-            if (showLineNumbers) {
-                aceConfig.firstLineNumber = uiParameters['start-line-number'];
-            }
-            let editor = ace.edit(editNode.get(0), aceConfig);
-            let session = editor.getSession();
-            session.setValue(text);
-            if (uiParameters.readonly !== null) {
-                editor.setReadOnly(true);
-            }
+                let editor = ace.edit(editNode.get(0), aceConfig);
+                let session = editor.getSession();
+                session.setValue(text);
+                if (uiParameters.readonly !== null) {
+                    editor.setReadOnly(true);
+                }
 
-            // Add a button and text area for output.
-            if (uiParameters.isInteractive) {
-                addUi(editNode, session, uiParameters);
+                // Add a button and text area for output if ace-interactive-code.
+                if (isInteractive) {
+                    addUi(editNode, session, uiParameters);
+                }
+                jqpre.hide();  // NB this sets display = 'none', checked above.
             }
-            pre.setAttribute('data-processing-done', '');
-            jqpre.hide();
-
         }
     }
 
