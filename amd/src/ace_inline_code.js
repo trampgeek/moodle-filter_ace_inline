@@ -100,24 +100,28 @@ define(['jquery'], function($) {
     /**
      * Get the appropriate language string error message for the given resultCode using
      * AJAX and plug it into the given textarea.
-     * @param {int} resultCode The 'result' field of the Jobe return value.
+     * @param {int} errorCode The 'error' field of the sandbox return value.
      * @param {DOMnode} textarea The textarea into which the error message
      * should be plugged.
-     * @param {string} additionalText Extra text to follow the result code.
+     * @param {string} additionalText Extra text to follow the language string.
      */
-    function setErrorMessage(resultCode, textarea, additionalText) {
-        if (resultCode == 11) {
-            setLangString('result_compilation_error', textarea, additionalText);
-        } else if (resultCode == 12) {
-            setLangString('result_runtime_error', textarea, additionalText);
-        } else if (resultCode == 13) {
-            setLangString('result_time_limit', textarea, additionalText);
-        } else if (resultCode == 17) {
-            setLangString('result_memory_limit', textarea, additionalText);
-        } else if (resultCode == 21) {
-            setLangString('result_server_overload', textarea, additionalText);
+    function setErrorMessage(errorCode, textarea, additionalText) {
+        if (errorCode == 1 || errorCode == 4) {
+            setLangString('error_access_denied', textarea, additionalText);
+        } else if (errorCode == 3) {
+            setLangString('error_unknown_langauge', textarea, additionalText);
+        } else if (errorCode == 5) {
+            setLangString('error_submission_limit_reached', textarea, additionalText);
+        } else if (errorCode == 9) {
+            setLangString('error_sandbox_server_overload', textarea, additionalText);
+        } else if (errorCode == -1) {
+            setLangString('error_timeout', textarea, additionalText);
+        } else if (errorCode == -2) {
+            setLangString('error_memory_limit', textarea, additionalText);
+        } else if (errorCode == -3) {
+            setLangString('error_jobe_unknown', textarea, additionalText);
         } else {
-            setLangString('result_unknown_error', textarea, additionalText);
+            setLangString('error_unknown_runtime', textarea, additionalText);
         }
     }
 
@@ -153,7 +157,9 @@ define(['jquery'], function($) {
             done: function(responseJson) {
                 var response = JSON.parse(responseJson);
                 var text = response.cmpinfo + response.output + response.stderr;
-                if (response.result === 15) { // Is it RESULT_SUCCESS?
+                if (response.error === 0 && (response.result === 15 ||
+                        response.result == 11 || response.result == 12)) {
+                    // If no errors or compilation error or runtime error
                     if (htmlOutput) {
                         var html = $("<div class='filter-ace-inline-html '" +
                                 "style='background-color:#EFF;padding:5px;" +
@@ -164,12 +170,18 @@ define(['jquery'], function($) {
                         outputText.show();
                         outputText.html(escapeHtml(text));
                     }
-                } else { // Oops. Plug in an error message instead.
-                    setErrorMessage(response.result, outputText, text);
+                } else if (response.error === 0 && response.result === 13) { // Timeout
+                    setErrorMessage(-1, outputText, text);
+                } else if (response.error === 0 && response.result === 17) { // Memory limit reached
+                    setErrorMessage(-2, outputText, text);
+                } else if (response.error !== 0) {
+                    setErrorMessage(-3, outputText, ' (Jobe error code ' + response.error + ')');
+                } else {
+                    setErrorMessage(-4, outputText, ' (Response result code ' + response.result + ')');
                 }
             },
             fail: function(error) {
-                alert("System error: please report: " + error.message + ' ' + error.debuginfo);
+                alert("System error, please report: " + error.message);
             }
         }]);
     }
