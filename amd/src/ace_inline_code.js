@@ -121,14 +121,15 @@ define(['jquery'], function($) {
         }
     }
     /**
-     * Add a UI div containing a Try it! button and a text area to display the
-     * results of a button click. If uiParameters['html-output'] is non-null,
-     * the text area is used only for error output, and the output of the run
-     * is inserted directly into the DOM after the (usually hidden) textarea.
+     * Add a UI div containing a Try it! button and a paragraph to display the
+     * results of a button click (hidden until button clicked).
+     * If uiParameters['html-output'] is non-null,
+     * the output paragraph is used only for error output, and the output of the run
+     * is inserted directly into the DOM after the (usually hidden) paragraph.
      * @param {html_element} editNode The Ace edit node after which the div should be inserted.
      * @param {object} aceSession The Ace editor session.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
-     * Keys are button-name, lang, stdin, files, params.
+     * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
     function addUi(editNode, aceSession, uiParameters) {
         var htmlOutput = uiParameters['html-output'] !== null;
@@ -308,15 +309,17 @@ define(['jquery'], function($) {
     }
 
     return {
-        initAceInteractive: function(config) {
-            if (window.ace) {
-                applyAceInteractive(window.ace, document, config);
+        initAceInteractive: async function(config) {
+            while (!window.ace) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
+            applyAceInteractive(window.ace, document, config);
         },
-        initAceHighlighting: function() {
-            if (window.ace) {
-                applyAceHighlighting(window.ace, document);
+        initAceHighlighting: async function() {
+            while (!window.ace) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
+            applyAceHighlighting(window.ace, document);
         }
     };
 });
