@@ -122,6 +122,9 @@ the following additional attributes.
    The output from the program is simply wrapped in a \<div> element and inserted
    directly after the Try it! button.
 
+10. data-max-output-length. The maximum length of an output string (more or less).
+   Output greater than this is truncated. Default 10,000.
+
 ## HTML-escaping of code within the \<PRE> element
 
 When using ace-highlight-code or ace-interactive-code elements,

@@ -38,5 +38,6 @@ $string['error_sandbox_server_overload'] = 'Jobe server overload';
 $string['error_jobe_unknown'] = 'Unknown error from Jobe server';
 $string['error_timeout'] = 'Time limit exceeded';
 $string['error_memory_limit'] = 'Memory limit exceeded';
+$string['error_excessive_output'] = 'Excessive output';
 $string['error_unknown_runtime'] = 'Unknown runtime error';
 
