@@ -2,7 +2,7 @@
 
 Richard Lobb
 
-Version 0.1, 4 January 2022.
+Version 0.2, 6 January 2022.
 
 github repo: https://github.com/trampgeek/moodle_filter_ace_inline
 
@@ -11,8 +11,10 @@ github repo: https://github.com/trampgeek/moodle_filter_ace_inline
 A Moodle filter that displays code inline using the Ace editor, possibly also
 allowing a simple REPL mode if a sufficiently recent version of the CodeRunner
 question type plugin is installed (currently only the 4.1.1 development
-version). It is intended for use by teachers to allow students to run simple
-pre-defined code snippets and to experiment with modifying those snippets.
+version). It allows teachers to display in any content page programs or code
+fragments with syntax highlighting. The code can also be made runnable inline,
+allowing students to see the output and to experiment by modifying the code
+and re-running. The user is, however, not allowed to enter standard input.
 
 ## Detailed Description
 
@@ -24,9 +26,8 @@ The latter capability requires that the CodeRunner question type is also
 installed (version xx.yy or later), with an associated Jobe server available.
 
 The filter interprets HTML \<pre> elements with a class of either
-'ace-highlight-code' or 'ace-interactive-code', but only in the context
-of a Moodle question (usually not a real question but rather a so-called
-'Description' question). The contents of the \<pre> element should be code.
+'ace-highlight-code' or 'ace-interactive-code' in any content page.
+The contents of the \<pre> element should be code.
 In the first case the text is simply displayed
 with the Ace text editor for syntax highlighting, but is read-only.
 In the second case the code is displayed in an editable form and in addition
