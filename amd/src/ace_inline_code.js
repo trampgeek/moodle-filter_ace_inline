@@ -209,7 +209,7 @@ define(['jquery'], function($) {
                 }
             },
             fail: function(error) {
-                alert("System error, please report: " + error.message);
+                alert(error.message);
             }
         }]);
     }
@@ -230,7 +230,7 @@ define(['jquery'], function($) {
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button></div>");
         var outputDisplayArea = $("<p style='font-family:monospace; font-size:12px;width:100%; " +
-                "background-color:white;border:1px gray;padding:5px;margin-bottom:20px'></p>");
+                "background-color:#eff;border:1px gray;padding:5px;margin-bottom:20px'></p>");
         editNode.after(button);
         button.after(outputDisplayArea);
         outputDisplayArea.hide();
@@ -311,8 +311,7 @@ define(['jquery'], function($) {
 
         for (var i=0; i < codeElements.length; i++) {
             var pre = codeElements[i];
-            if (pre.nodeName === 'PRE'  && pre.closest("div[id^='question']")
-                    && pre.style.display !== 'none') {
+            if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
                 let uiParameters = getUiParameters(pre, defaultParams);
                 var showLineNumbers = uiParameters['start-line-number'] ? true : false;
                 let jqpre = $(pre);
