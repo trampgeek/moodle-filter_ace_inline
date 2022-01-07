@@ -192,8 +192,7 @@ define(['jquery'], function($) {
                         outputDisplayArea.html(escapeHtml(text));
                     } else { // HTML output case - just plug in the raw html to the DOM.
                         var html = $("<div class='filter-ace-inline-html '" +
-                                "style='background-color:#EFF;padding:5px;" +
-                                "margin-bottom:20px'>" +
+                                "style='background-color:#eff;padding:5px;'" +
                                 response.output + "</div>");
                         outputDisplayArea.after(html);
                     }
@@ -229,8 +228,8 @@ define(['jquery'], function($) {
         var button = $("<div><button type='button' class='btn btn-secondary' " +
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button></div>");
-        var outputDisplayArea = $("<p style='font-family:monospace; font-size:12px;width:100%; " +
-                "background-color:#eff;border:1px gray;padding:5px;margin-bottom:20px'></p>");
+        var outputDisplayArea = $("<p style='font-family:monospace; font-size:12px;width:100%;" +
+                "background-color:#eff;border:1px gray;padding:5px;'></p>");
         editNode.after(button);
         button.after(outputDisplayArea);
         outputDisplayArea.hide();
@@ -305,7 +304,6 @@ define(['jquery'], function($) {
         var css = {
             width: "100%",
             margin: "6px",
-            "margin-bottom": isInteractive ? "6px" : "20px",
             "line-height": "1.3"
         };
 
@@ -353,16 +351,28 @@ define(['jquery'], function($) {
 
     return {
         initAceInteractive: async function(config) {
-            while (!window.ace) {
-                await new Promise(resolve => setTimeout(resolve, 1000));
+            if (!window.applyAceInteractive) { // Do it once only.
+                while (!window.ace) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+                applyAceInteractive(window.ace, document, config);
+                // Add a hook for use by dynamically generated content.
+                window.applyAceInteractive = function () {
+                    applyAceInteractive(window.ace, document, config);
+                };
             }
-            applyAceInteractive(window.ace, document, config);
         },
         initAceHighlighting: async function() {
-            while (!window.ace) {
-                await new Promise(resolve => setTimeout(resolve, 1000));
+            if (!window.applyAceHighlighting) { // Do it once only.
+                while (!window.ace) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
             }
             applyAceHighlighting(window.ace, document);
+            // Add a hook for use by dynamically generated content.
+            window.applyAceHighlighting = function () {
+                applyAceHighlighting(window.ace, document);
+            };
         }
     };
 });
