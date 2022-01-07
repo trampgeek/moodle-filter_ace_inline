@@ -92,7 +92,7 @@ class filter_ace_inline extends moodle_text_filter {
      */
     public function do_ace_interactive($text, $config) {
         global $PAGE;
-        PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceInteractive', $config);
+        $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceInteractive', $config);
         return $text;
     }
 }
