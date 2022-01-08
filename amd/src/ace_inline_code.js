@@ -343,6 +343,8 @@ define(['jquery'], function($) {
                 // Add a button and text area for output if ace-interactive-code.
                 if (isInteractive) {
                     addUi(editNode, session, uiParameters);
+                } else {
+                    editor.renderer.$cursorLayer.element.style.display = "none"; // Hide cursor.
                 }
                 jqpre.hide();  // NB this sets display = 'none', checked above.
             }
@@ -351,7 +353,7 @@ define(['jquery'], function($) {
 
     return {
         initAceInteractive: async function(config) {
-            if (!window.applyAceInteractive) { // Do it once only.
+            if (!window.ace_inline_code_interactive_done) { // Do it once only.
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
@@ -361,18 +363,20 @@ define(['jquery'], function($) {
                     applyAceInteractive(window.ace, document, config);
                 };
             }
+            window.ace_inline_code_interactive_done = true;
         },
         initAceHighlighting: async function() {
-            if (!window.applyAceHighlighting) { // Do it once only.
+            if (!window.ace_inline_code_highlighting_done) { // Do it once only.
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
-            }
-            applyAceHighlighting(window.ace, document);
-            // Add a hook for use by dynamically generated content.
-            window.applyAceHighlighting = function () {
                 applyAceHighlighting(window.ace, document);
-            };
+                // Add a hook for use by dynamically generated content.
+                window.applyAceHighlighting = function () {
+                    applyAceHighlighting(window.ace, document);
+                };
+            }
+            window.ace_inline_code_highlighting_done = true;
         }
     };
 });
