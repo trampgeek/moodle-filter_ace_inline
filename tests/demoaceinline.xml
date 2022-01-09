@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 11942  -->
+  <question type="description">
+    <name>
+      <text>TestAceInline</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h1>A Test/Demo of the Ace-inline Filter<br></h1>
+<h2>Highlighting code</h2>
+<p>The simplest use of the filter is to let the Ace editor do syntax colouring
+    of code. This is achieved by putting the code into a HTML &lt;pre&gt; element with the
+    class <i>ace-highlight-code</i>. The default language is python; if you want another
+    language you should add to the pre element an attribute like <i>data-lang="java"</i>.
+    Here are two examples, the first in Python, the second in Java.</p>
+<h3>A python example</h3>
+<pre class="ace-highlight-code">print("Some squares")
+for i in range(10):
+    print(i, i ** 2)</pre>
+
+<h3>A Java example</h3>
+<pre class="ace-highlight-code" data-lang="java">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+}</pre>
+<p>Note: for strict HTML5 compliance, all non-standard element attributes must be
+    prefixed with 'data-', which is why the language attribute is called 'data-lang'
+    rather than just 'lang'. However, if you don't care about such compliance, you can
+    drop the prefix; the code will still work but will not pass HTML5 validator checks.
+    All code in this test/demo question use the full 'data-' form for attributes.
+</p>
+<h2>Options for highlighting</h2>
+<p>Line numbers are not shown by default, but an attribute <i>data-start-line-number</i> can be added to set the line number to use on the first line. Its default value is <i>none</i>, resulting in no line numbers being displayed. If non-none, the
+    usual value is '1', but other values can be used in special cases, for example if
+    code is broken into two separate highlighted segments.</p>
+<p>There is also an optional attribute <i>data-font-size</i> to set the font size
+    within the Ace editor.</p>
+<p>The following example shows the Java hello world program with line numbers
+    starting at 5 and a font-size of 16 pts.</p>
+<pre class="ace-highlight-code" data-lang="java" data-font-size="16pt" start-line-number="5">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+}</pre>
+<h2>Making code interactive</h2>
+<p>If the class of the HTML &lt;pre&gt; element containing the code is instead set to <i>ace-interactive-code</i>, a <i>Try it!</i> button is added below the Ace editor panel. When clicked, the code is sent to the CodeRunner sandbox (usually a Jobe server) for execution and the result is displayed below the button. The code can be edited and re-run an arbitrary number of times.</p>
+<p>Here are firstly the same two examples from above, but with class <i>ace-interactive-code</i>, and then C and C++ hello world programs. An extra blank line is being displayed in these cases by moving the terminating '&lt;/pre&gt;' onto a new line rather than putting it hard up against the last non-whitespace character in the code. This makes it clear that all the editable code is being displayed,
+    but you might prefer not to do this - your call.
+</p>
+<h3>A python example</h3>
+<pre class="ace-interactive-code">print("Hello squares")
+for i in range(10):
+    print(i, i ** 2)
+</pre>
+
+<h3>A Java example</h3>
+<pre class="ace-interactive-code" data-lang="java">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+     }
+ }
+</pre>
+<h2>Hello world in C</h2>
+<pre class="ace-interactive-code" data-lang="c">#include &lt;stdio.h&gt;
+int main() {
+    puts("Hello world!");
+}
+</pre>
+<h2>Hello world in C++</h2>
+<pre class="ace-interactive-code" data-lang="cpp">#include &lt;iostream&gt;
+using namespace std;
+int main() {
+    cout &lt;&lt; "Hello world" &lt;&lt; endl;
+}
+</pre>
+<h2>Providing standard input</h2>
+<p>Users cannot provide standard input to ace-interactive-code samples,
+    as the facility is intended for demonstrating code rather than for
+    writing useful programs. In the unlikely case that the code does
+    try to read standard input, however, the question author can provide
+    a standard input string using the attribute data-stdin. Since HTML5
+    allows multiline literal strings, the stdin stream can be multiline
+    too.
+</p>
+<p>The following example shows a Python program that reads standard
+    input until EOF. The stdin attribute here is
+</p>
+<pre>Chaos reigns within.
+Reflect, repent, and reboot.
+Order shall return.</pre>
+
+<pre class="ace-interactive-code" data-stdin="Chaos reigns within.
+Reflect, repent, and reboot.
+Order shall return.
+">while 1:
+    try:
+        print(input())
+    except EOFError:
+        break
+</pre>
+<h2>Providing files</h2>
+<p>As with reading stdin, it is not usual to use 'ace-interactive-code' examples to read files. However, it is possible to define an attribute <i>data-files</i> which is a JSON object that provides a map from filename to file contents. Since JSON strings cannot contain newline characters, they must be represented within the JSON as '\n'.
+</p>
+<p>Here's a trivial example, with a 2-line file 'blah.txt':</p>
+<pre class="ace-interactive-code" data-files="{&quot;blah.txt&quot;: &quot;I am line 1\nAnd I am line 2\n&quot;}">print(open("blah.txt").read())
+</pre>
+
+<h2>Other ace-interactive-code options</h2>
+<p>Other attributes that can be used with ace-interactive-code elements are:</p>
+<table class="table table-bordered" style="width:auto">
+    <tbody>
+        <tr>
+            <th>Attribute</th>
+            <th>Meaning</th>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-button-name</pre>
+            </td>
+            <td>Sets the label to use for the button instead of 'Try it!'</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-start-line-number</pre>
+            </td>
+            <td>Can be set to 'none' to suppress line numbers or to an integer to start numbering with the given value</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-readonly</pre>
+            </td>
+            <td>If set (to any value) the supplied code cannot be edited by the user</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-prefix</pre>
+            </td>
+            <td>Defines code that will be inserted before the code within the &lt;pre&gt; block (so the student doesn't see it). An extra newline is not inserted between the prefix and the visible code - you must insert it explicitly if you want one.</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-suffix</pre>
+            </td>
+            <td>Defines code that will be inserted after the code within the &lt;pre&gt; block (so the student doesn't see it). An extra newline is not inserted between the visible code and the suffix - you must insert it explicitly if you want one.</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-html-output</pre>
+            </td>
+            <td>If set (to any value) the output from the program is interpreted as raw html to insert into the DOM, rather than being escaped and displayed in a &lt;p&gt; element. </td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-params</pre>
+            </td>
+            <td>A JSON-encoded object defining sandbox params, such as cputime, memorylimit. Rarely useful.<br></td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-max-output-length</pre>
+            </td>
+            <td>The limit to the displayed length of stdout and stderr strings. Strings longer than this are truncated prior to display. Default: 10,000.<br></td>
+        </tr>
+
+    </tbody>
+</table>
+
+<h2>A simple data-html-output example</h2>
+<p>The following example shows how the data-html-output option works. It's only rarely useful in isolation but in conjunction with data-prefix and data-suffix it can be used by question authors to provide arbitrary output. The following example also changes the button name.<br></p>
+
+<pre class="ace-interactive-code" data-html-output="" data-button-name="Let's do it!">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
+print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
+</pre>
+<h2>Displaying matplotlib images</h2>
+<p>By using data-prefix, data-suffix and html-output it is possible to define an ace-interactive-code block that will let students run matplotlib code and display both the textual output from the question and any output images. Defining arbitrary code blocks within HTML element attributes is very clumsy, because HTML special characters like '&lt;', '&amp;', quote characters etc need to be represented as html-entities. Fortunately though you should only ever need to write one such example, and can then reuse it with different &lt;pre&gt; contents. Here is an example (inspect the HTML at your peril):
+</p>
+<pre class="ace-interactive-code" data-html-output="" data-params="{&quot;cputime&quot;: 5}" prefix="import os, tempfile, base64, sys, io, html
+os.environ[&quot;MPLCONFIGDIR&quot;] = tempfile.mkdtemp()
+import matplotlib as _mpl
+_mpl.use(&quot;Agg&quot;)
+def make_data_uri(filename):
+    with open(filename, &quot;br&quot;) as fin:
+        contents = fin.read()
+    contents_b64 = base64.b64encode(contents).decode(&quot;utf8&quot;)
+    return &quot;data:image/png;base64,{}&quot;.format(contents_b64)
+_saved_stdout_ = sys.stdout
+sys.stdout = io.StringIO()
+" suffix="
+output = sys.stdout.getvalue()
+sys.stdout = _saved_stdout_
+if output:
+    output = html.escape(output).replace(' ', '&nbsp;').replace('\n', '<br>')
+    print(f'<div><p style=&quot;font-family:monospace;font-size:11pt;padding:5px;&quot;>{output}</p></div>')
+figs = _mpl.pyplot.get_fignums()
+for i, fig in enumerate(figs):
+    _mpl.pyplot.figure(fig)
+    filename = f'image{i}.png'
+    _mpl.pyplot.savefig(filename, bbox_inches='tight')
+    print(f'<img src=&quot;{make_data_uri(filename)}&quot;>')
+">import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate some text output
+print("I am a line of output")
+print("And so am I")
+
+# Now the graph plotting
+axes = plt.axes()
+xs = np.linspace(0, 4 * np.pi, 200)
+ys = np.sin(xs)
+axes.plot(xs, ys)
+axes.set_title("Two cycles of a sine wave")
+plt.show()
+</pre>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+
+</quiz>
