@@ -8,31 +8,38 @@ github repo: https://github.com/trampgeek/moodle_filter_ace_inline
 
 ## Introduction
 
-A Moodle filter that displays code inline using the Ace editor, possibly also
-allowing a simple REPL mode if a sufficiently recent version of the CodeRunner
-question type plugin is installed (currently only the 4.1.1 development
-version). It allows teachers to display in any content page programs or code
-fragments with syntax highlighting. The code can also be made runnable inline,
-allowing students to see the output and to experiment by modifying the code
-and re-running. The user is, however, not allowed to enter standard input.
+A Moodle filter for displaying program code and optionally allowing interaction with it.
+Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than
+PHP and operates
+on the rendered HTML rather than the original text. Question authors need
+to use an HTML editor to define the DOM elements that will be targetted by the
+filter.
 
-## Detailed Description
+The plugin really provides two separate filter operations:
 
-A text filter for displaying program code and optionally allowing interaction with it.
-Code is displayed using the Ace editor, with syntax colouring appropriate to
-the specified language (default, Python). If the 'interactive' mode is
-enabled the code can be run using a hot-line to the Jobe ("JOb Engine") server.
-The latter capability requires that the CodeRunner question type is also
-installed (version xx.yy or later), with an associated Jobe server available.
+ 1. HTML \<pre> elements with a class of 'ace-highlight-code' are displayed
+    using the JavaScript Ace code editor in read-only mode. This provides
+    syntax colouring of the code.
 
-The filter interprets HTML \<pre> elements with a class of either
-'ace-highlight-code' or 'ace-interactive-code' in any content page.
-The contents of the \<pre> element should be code.
-In the first case the text is simply displayed
-with the Ace text editor for syntax highlighting, but is read-only.
-In the second case the code is displayed in an editable form and in addition
-a 'Try it!' button allows immediate execution of the code on the Jobe
-server, with output displayed in-line.
+ 2. HTML \<pre> elements with a class of 'ace-interactive-code' are also
+    displayed using the Ace code editor, but with editing enabled. In addition,
+    a button labelled by default `Try it!` allows the student to execute the
+    current state of the code and observe the outcome. With sufficient
+    ingenuity on the part of the question author,
+    graphical output and images can be displayed, too. The student
+    is not able to enter standard input so this filter does not provide a
+    fully interactive shell, although the question author can pre-define
+    'canned' standard input and even supply pseudo text files to be read by
+    the code.
+
+The plugin requires the CodeRunner plugin to be installed first, since that
+furnishes the Ace editor required for filter operations. CodeRunner version 4.1.1
+or later is required. In addition, the
+ace-interactive-code filter requires that the system administrator has enabled
+the CodeRunner sandbox web service (still regarded as experimental) which is
+disabled by default. The `Try it!` button send the code from the Ace editor
+to the CodeRunner sandbox (usually a Jobe server) for execution using that
+web service.
 
 ### ace-highlight-code parameters
 
@@ -64,21 +71,22 @@ can just be 'lang'.
 
 ### ace-interactive-code-parameters
 
-In addition to the above 3 parameters, ace-interactive-code elements can have
-the following additional attributes.
+In addition to the above, ace-interactive-code elements can have
+the following attributes.
 
 1. data-button-name. This sets the text within the Try it! button.
    Default 'Try it!'.
    Example:
 
-        <pre class="ace-interactive-code" data-button-name="Run">
+        <pre class="ace-interactive-code" data-button-name="Run me!">
         # Default lang = python
         for i in range(10):
             print(i, i * i)
         </pre>
 
 2. data-readonly. This disables editing of the code, so students can only run
-    the supplied code without modification.
+    the supplied code without modification. The `Try it!` button is still displayed
+    and operational.
 
 3. data-stdin. This string value defines the standard input "file" to be used for the
    run. HTML5 allows multiline attribute values, so newlines can be inserted into
@@ -104,27 +112,32 @@ the following additional attributes.
 
 5. data-params. This is a JSON object that defines any Jobe sandbox parameters that
    are to have non-standard values, such as `cputime` and `memorylimit`. This
-   shouldn't generally be needed. Default: '{"cputime": 2}'.
+   shouldn't generally be needed. Default: '{"cputime": 2}'. Note that the maximum
+   cputime is set via the administrative interface and any attempt
+   to exceed that is silently overridden, using the administrator-defined
+   maximum instead.
 
 6. data-prefix. This string value is code to be inserted in front of the
    contents of the ace editor before sending the program to the Jobe server
    for execution. An extra newline is *not* inserted between the two strings,
-   so if you want one you
-   must include it explicitly.
+   so if you want one you must include it explicitly.
 
 7. data-suffix. This string value is code to be inserted in front of the
    contents of the ace editor before sending the program to the Jobe server
    for execution. An extra newline is *not* inserted between the two strings,
-   so if you want one you
-   must include it explicitly.
+   so if you want one you must include it explicitly.
 
-9. data-html-output. If this attribute is present (with any value) the output
+8. data-html-output. If this attribute is present (with any value) the output
    from the run is interpreted as raw HTML.
    The output from the program is simply wrapped in a \<div> element and inserted
-   directly after the Try it! button.
+   directly after the Try it! button. And example of a ace-interactive-code
+   panel that that uses data-prefix, data-suffix and data-html-output to provide
+   Matplotlib graphical output in Python is included in the repo `tests` folder
+   (the file `demoaceinline.xml`).
 
-10. data-max-output-length. The maximum length of an output string (more or less).
-   Output greater than this is truncated. Default 10,000.
+
+9. data-max-output-length. The maximum length of an output string (more or less).
+   Output greater than this is truncated. Default 10,000 characters.
 
 ## HTML-escaping of code within the \<PRE> element
 
@@ -159,9 +172,18 @@ Download the plugin from the repository, and unzip the code into
 Then visit Site administration > Notifications. You should receive the usual
 prompting about updating the database to incorporate the new plugin.
 
-The
+To use the ace-interactive-code filter, you will also need to enable the
+sandbox web service option within the CodeRunner plugin settings. You should
+read carefully the other related CodeRunner web service settings and consider
+the various implications. Setting up a separate jobe server for the web service
+is recommended if heavy usage of ace-interactive-code is likely in order to
+mitigate against overload of the main jobe server, which is generally or far
+more importance. Consider also what value to use for the maximum submission
+rate by any given Moodle user as this limits the potential for abuse by any
+student.
 
-The plugin settings allow an administrator to change the default button name
+The only plugin setting provided directly by this plugin rather than the
+CodeRunner web service allow an administrator to change the default button name
 for ace-interactive-code elements (default name: *Try it!*).
 
 ## Demo/test
