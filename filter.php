@@ -72,7 +72,10 @@ class filter_ace_inline extends moodle_text_filter {
      * Process the given text by replacing any <pre> elements of class
      * ace-highlight-code with an ace code high-lighted version.
      * The actual work is done by JavaScript; this function just calls the
-     * appropriate function.
+     * appropriate function. The call to strpos is required regardless becuase
+     * apparently Mathjax generates a small content fragment, which is passed
+     * through all filters, on all content pages, even editing pages. We
+     * don't wish to use our filter on pages being edited.
      * @param {string} $text The text to be processed.
      * @param {array} $config The plugin configuration info.
      * @return {string} The processed text
@@ -89,6 +92,10 @@ class filter_ace_inline extends moodle_text_filter {
     /**
      * Process the given text by replacing any <pre> elements of class
      * ace-interactive-code with an ace editor plus a Try it! button.
+     * The call to strpos is required regardless becuase
+     * apparently Mathjax generates a small content fragment, which is passed
+     * through all filters, on all content pages, even editing pages. We
+     * don't wish to use our filter on pages being edited.
      * @param {string} $text The text to be processed.
      * @param {array} $config The plugin configuration info.
      * @return {string} The processed text
