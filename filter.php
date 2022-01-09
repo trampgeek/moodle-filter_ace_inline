@@ -79,7 +79,10 @@ class filter_ace_inline extends moodle_text_filter {
      */
     public function do_ace_highlight($text) {
         global $PAGE;
-        $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceHighlighting');
+        if (strpos($text, 'ace-highlight-code') !== false) {
+            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceHighlighting');
+        }
+
         return $text;
     }
 
@@ -92,7 +95,10 @@ class filter_ace_inline extends moodle_text_filter {
      */
     public function do_ace_interactive($text, $config) {
         global $PAGE;
-        $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceInteractive', $config);
+        if (strpos($text, 'ace-interactive-code') !== false) {
+            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceInteractive', $config);
+        }
+
         return $text;
     }
 }
