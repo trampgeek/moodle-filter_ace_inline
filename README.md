@@ -41,6 +41,9 @@ disabled by default. The `Try it!` button send the code from the Ace editor
 to the CodeRunner sandbox (usually a Jobe server) for execution using that
 web service.
 
+There is a page demonstrating the use of this filter on the CodeRunner site
+(here)[https://coderunner.org.nz/mod/page/view.php?id=529](https://coderunner.org.nz/mod/page/view.php?id=529).
+
 ### ace-highlight-code parameters
 
 Additional control of the display and behaviour is via attributes of the
