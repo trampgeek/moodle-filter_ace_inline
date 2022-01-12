@@ -26,6 +26,7 @@
 
 
 define(['jquery'], function($) {
+    var RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
     /**
      * Escape text special HTML characters.
      * @param {string} text
@@ -126,7 +127,7 @@ define(['jquery'], function($) {
             [0, 11, ''], // RESULT_COMPILATION_ERROR
             [0, 12, ''], // RESULT_RUNTIME_ERROR
             [0, 13, 'error_timeout'], // RESULT TIME_LIMIT
-            [0, 15, ''], // RESULT_SUCCESS
+            [0, RESULT_SUCCESS, ''], // RESULT_SUCCESS
             [0, 17, 'error_memory_limit'], // RESULT_MEMORY_LIMIT
             [0, 21, 'error_sandbox_server_overload'], // RESULT_SERVER_OVERLOAD
             [0, 30, 'error_excessive_output']  // RESULT OUTPUT_LIMIT
@@ -158,7 +159,7 @@ define(['jquery'], function($) {
      * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
      * @param {object} aceSession The Ace editor session.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
-     * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
+     * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
      */
     function handleButtonClick(ajax, outputDisplayArea, aceSession, uiParameters) {
         var htmlOutput = uiParameters['html-output'] !== null;
@@ -171,7 +172,12 @@ define(['jquery'], function($) {
         if (next) {
             next.remove();
         }
-        var code = uiParameters.prefix + aceSession.getValue() + uiParameters.suffix;
+        var code = aceSession.getValue();
+        var mapFunc = uiParameters['code-mapper'];
+        if (mapFunc) {
+            code = window[mapFunc](code);
+        }
+        code = uiParameters['prefix'] + code + uiParameters['suffix'];
         ajax.call([{
             methodname: 'qtype_coderunner_run_in_sandbox',
             args: {
@@ -186,11 +192,12 @@ define(['jquery'], function($) {
                 var error = diagnose(response);
                 if (error === '') {
                     // If no errors or compilation error or runtime error
-                    if (!htmlOutput) {  // Normal (non-html) case.
+                    if (!htmlOutput || response.result !== RESULT_SUCCESS) {
+                        // Either it's not HTML output or it is but we have compilation or runtime errors.
                         var text = combinedOutput(response, maxLen);
                         outputDisplayArea.show();
                         outputDisplayArea.html(escapeHtml(text));
-                    } else { // HTML output case - just plug in the raw html to the DOM.
+                    } else { // Valid HTML output - just plug in the raw html to the DOM.
                         var html = $("<div class='filter-ace-inline-html '" +
                                 "style='background-color:#eff;padding:5px;'" +
                                 response.output + "</div>");
@@ -277,9 +284,10 @@ define(['jquery'], function($) {
             'readonly': null,
             'stdin': '',
             'files': '',
-            'params': '{"cputime": 2}',
             'prefix': '',
             'suffix': '',
+            'params': '{"cputime": 2}',
+            'code-mapper': null,
             'html-output': null,
             'max-output-length': 10000
         };
