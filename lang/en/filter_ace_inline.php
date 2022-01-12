@@ -40,4 +40,3 @@ $string['error_timeout'] = 'Time limit exceeded';
 $string['error_memory_limit'] = 'Memory limit exceeded';
 $string['error_excessive_output'] = 'Excessive output';
 $string['error_unknown_runtime'] = 'Unknown runtime error';
-
