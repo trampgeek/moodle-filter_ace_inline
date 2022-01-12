@@ -120,17 +120,24 @@ the following attributes.
    to exceed that is silently overridden, using the administrator-defined
    maximum instead.
 
-6. data-prefix. This string value is code to be inserted in front of the
+6. data-code-mapper. This string value must be the name of a global JavaScript
+   function (usually defined in a \<script> element preceding the \<div>)
+   that takes the Ace editor code as a parameter and returns a modified version,
+   e.g. with extra code inserted. If used in conjunction with data-prefix
+   and data-suffix (below), the code-mapper function is applied first and then
+   the prefix and/or suffix code is added.
+
+7. data-prefix. This string value is code to be inserted in front of the
    contents of the ace editor before sending the program to the Jobe server
    for execution. An extra newline is *not* inserted between the two strings,
    so if you want one you must include it explicitly.
 
-7. data-suffix. This string value is code to be inserted in front of the
+8. data-suffix. This string value is code to be inserted in front of the
    contents of the ace editor before sending the program to the Jobe server
    for execution. An extra newline is *not* inserted between the two strings,
    so if you want one you must include it explicitly.
 
-8. data-html-output. If this attribute is present (with any value) the output
+9. data-html-output. If this attribute is present (with any value) the output
    from the run is interpreted as raw HTML.
    The output from the program is simply wrapped in a \<div> element and inserted
    directly after the Try it! button. And example of a ace-interactive-code
@@ -138,8 +145,7 @@ the following attributes.
    Matplotlib graphical output in Python is included in the repo `tests` folder
    (the file `demoaceinline.xml`).
 
-
-9. data-max-output-length. The maximum length of an output string (more or less).
+10. data-max-output-length. The maximum length of an output string (more or less).
    Output greater than this is truncated. Default 10,000 characters.
 
 ## HTML-escaping of code within the \<PRE> element
