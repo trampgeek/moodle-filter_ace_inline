@@ -197,8 +197,16 @@ for ace-interactive-code elements (default name: *Try it!*).
 
 ## Demo/test
 
-The unzipped repo contains a file `testaceinline.xml` which is an XML export
-or a question that demonstrates most of the capabilities of the filter. It
+There is a page demonstrating most of the capabilities of this filter
+on the CodeRunner site
+[here](https://coderunner.org.nz/mod/page/view.php?id=529). The underlying HTML
+on that page is mostly the same as in the file
+`[testaceinline.xml](https://github.com/trampgeek/ace_inline/blob/master/tests/demoaceinline.xml)`,
+which is included in
+the github repo, in the *tests* folder. If you want to experiment yourself, you can
+download that file and import it as an xml question into the question bank on
+your moodle system. Open it for editing and switch to HTML mode to see how it
+is set up. It
 includes a final complex example of a python3 ace-interactive-code element
 that runs numpy and matplotlib, displaying any output graphs as images in
 addition to any text output. This final example needs to have numpy and
