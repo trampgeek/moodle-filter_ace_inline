@@ -134,15 +134,25 @@ Order shall return.
         </tr>
         <tr>
             <td>
+                <pre>data-code-mapper</pre>
+            </td>
+            <td>The name of a global JavaScript function (i.e. an attribute of the window
+                object) that takes as a parameter the code from the Ace editor and returns a
+                modified version. This can be used to perform arbitrary transformations of the
+                code the student is writing into some other program. If prefix or suffix code is
+                supplied (see below) it is added after the code-mapper has been used.</td>
+        </tr>
+        <tr>
+            <td>
                 <pre>data-prefix</pre>
             </td>
-            <td>Defines code that will be inserted before the code within the &lt;pre&gt; block (so the student doesn't see it). An extra newline is not inserted between the prefix and the visible code - you must insert it explicitly if you want one.</td>
+            <td>Defines code that will be inserted before the code from the Ace editor (so the student doesn't see it). An extra newline is not inserted between the prefix and the visible code - you must insert it explicitly if you want one.</td>
         </tr>
         <tr>
             <td>
                 <pre>data-suffix</pre>
             </td>
-            <td>Defines code that will be inserted after the code within the &lt;pre&gt; block (so the student doesn't see it). An extra newline is not inserted between the visible code and the suffix - you must insert it explicitly if you want one.</td>
+            <td>Defines code that will be inserted after the code from the Ace editor (so the student doesn't see it). An extra newline is not inserted between the visible code and the suffix - you must insert it explicitly if you want one.</td>
         </tr>
         <tr>
             <td>
@@ -167,38 +177,82 @@ Order shall return.
 </table>
 
 <h2>A simple data-html-output example</h2>
-<p>The following example shows how the data-html-output option works. It's only rarely useful in isolation but in conjunction with data-prefix and data-suffix it can be used by question authors to provide arbitrary output. The following example also changes the button name.<br></p>
+<p>The following example shows how the data-html-output option works. It's only rarely useful in isolation but in conjunction with data-code-mapper and/or data-prefix and data-suffix it can be used by question authors to provide arbitrary output. The following example also changes the button name.<br></p>
 
 <pre class="ace-interactive-code" data-html-output="" data-button-name="Let's do it!">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
 print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
 </pre>
-<h2>Displaying matplotlib images</h2>
-<p>By using data-prefix, data-suffix and html-output it is possible to define an ace-interactive-code block that will let students run matplotlib code and display both the textual output from the question and any output images. Defining arbitrary code blocks within HTML element attributes is very clumsy, because HTML special characters like '&lt;', '&amp;', quote characters etc need to be represented as html-entities. Fortunately though you should only ever need to write one such example, and can then reuse it with different &lt;pre&gt; contents. Here is an example (inspect the HTML at your peril):
+
+<h2>A simple use of code-mapper</h2>
+<p>In this case we define (using a &lt;script&gt; element) a function called <i>doubler</i> that returns its
+    parameter concatenated onto itself. The &lt;pre&gt; element that wraps the following code has the attribute data-code-mapper set to 'doubler'.
 </p>
-<pre class="ace-interactive-code" data-html-output="" data-params="{&quot;cputime&quot;: 5}" prefix="import os, tempfile, base64, sys, io, html
-os.environ[&quot;MPLCONFIGDIR&quot;] = tempfile.mkdtemp()
-import matplotlib as _mpl
-_mpl.use(&quot;Agg&quot;)
+<script>
+    function doubler(s) {
+        return s + s;
+    }
+</script>
+<pre class="ace-interactive-code" data-code-mapper="doubler">print("Hello world!")
+</pre>
+<h2>A simple use of data-prefix</h2>
+<p>In the above example showing the use of stdin, the <i>input()</i> function was called and the result printed. But if students are using <i>input()</i> interactively, they expect to see what they enter from the keyboard echoed to the screen. To achieve such an effect in Python, prefix code could be added that simulates this echoing. For example, here's a program that asks the student for their name and age and prints a message telling them their age next year.The <i>data-stdin</i> attribute of the &lt;pre&gt; element has been set to contain the two lines 'jeremy' and '11'.
+</p>
+<pre class="ace-interactive-code" data-stdin="Jeremy
+11
+" data-prefix="_saved_input = input
+def input(prompt=''):
+    print(prompt, end='')
+    line = _saved_input()
+    print(line)
+    return line
+">name = input("What's your name? ")
+age = int(input("How old are you? "))
+print(f"Hi {name}, next year you'll be {age + 1}")
+</pre>
+
+<h2>Displaying matplotlib images</h2>
+<p>By using the data-code-mapper option (and/or data-prefix and data-suffix) in conjunction with html-output it is possible, with some difficulty, to define an ace-interactive-code block that will let students run matplotlib code and display both the textual output from the question and any output images. Here is an example (inspect the HTML at your peril):
+</p>
+
+<script>
+    function matplotlibwrapper(code) {
+        var escapedCode = code.replace(/"/g, '\\"');
+        var progToRun = `import subprocess, base64, html, os
+
 def make_data_uri(filename):
-    with open(filename, &quot;br&quot;) as fin:
+    with open(filename, "br") as fin:
         contents = fin.read()
-    contents_b64 = base64.b64encode(contents).decode(&quot;utf8&quot;)
-    return &quot;data:image/png;base64,{}&quot;.format(contents_b64)
-_saved_stdout_ = sys.stdout
-sys.stdout = io.StringIO()
-" suffix="
-output = sys.stdout.getvalue()
-sys.stdout = _saved_stdout_
-if output:
-    output = html.escape(output).replace(' ', '&nbsp;').replace('\n', '<br>')
-    print(f'<div><p style=&quot;font-family:monospace;font-size:11pt;padding:5px;&quot;>{output}</p></div>')
-figs = _mpl.pyplot.get_fignums()
+    contents_b64 = base64.b64encode(contents).decode("utf8")
+    return "data:image/png;base64,{}".format(contents_b64)
+
+prog_to_exec = """import os, tempfile
+os.environ["MPLCONFIGDIR"] = tempfile.mkdtemp()
+import matplotlib as _mpl
+_mpl.use("Agg")
+` + escapedCode + `figs = _mpl.pyplot.get_fignums()
 for i, fig in enumerate(figs):
     _mpl.pyplot.figure(fig)
     filename = f'image{i}.png'
     _mpl.pyplot.savefig(filename, bbox_inches='tight')
-    print(f'<img src=&quot;{make_data_uri(filename)}&quot;>')
-">import matplotlib.pyplot as plt
+"""
+with open('prog.py', 'w') as outfile:
+    outfile.write(prog_to_exec)
+    
+result = subprocess.run(['python3', 'prog.py'], capture_output=True, text=True)
+print('<div>')
+output = result.stdout + result.stderr
+if output:
+    output = html.escape(output).replace(' ', '&nbsp;').replace('\\n', '<br>')
+    print(f'<p style="font-family:monospace;font-size:11pt;padding:5px;">{output}</p>')
+
+for fname in os.listdir():
+    if fname.endswith('png'):
+        print(f'<img src="{make_data_uri(fname)}">')
+`;
+        return progToRun;
+    }
+</script>
+<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" data-params="{&quot;cputime&quot;: 5}">import matplotlib.pyplot as plt
 import numpy as np
 
 # Generate some text output
@@ -207,10 +261,13 @@ print("And so am I")
 
 # Now the graph plotting
 axes = plt.axes()
-xs = np.linspace(0, 4 * np.pi, 200)
-ys = np.sin(xs)
+xs = np.linspace(0, 720, 200)
+ys = np.sin(2 * np.pi * xs / 360)
 axes.plot(xs, ys)
-axes.set_title("Two cycles of a sine wave")
+axes.set_title("y = sin(x)")
+axes.set_xlabel('x (degrees)')
+axes.set_ylabel('y')
+axes.grid()
 plt.show()
 </pre>]]></text>
     </questiontext>
