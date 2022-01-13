@@ -11,7 +11,7 @@ github repo: https://github.com/trampgeek/moodle_filter_ace_inline
 A Moodle filter for displaying program code and optionally allowing interaction with it.
 Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than
 PHP and operates
-on the rendered HTML rather than the original text. Question authors need
+on the rendered HTML rather than the original text. Authors need
 to use an HTML editor to define the DOM elements that will be targetted by the
 filter.
 
@@ -25,10 +25,10 @@ The plugin really provides two separate filter operations:
     displayed using the Ace code editor, but with editing enabled. In addition,
     a button labelled by default `Try it!` allows the student to execute the
     current state of the code and observe the outcome. With sufficient
-    ingenuity on the part of the question author,
+    ingenuity on the part of the author,
     graphical output and images can be displayed, too. The student
     is not able to enter standard input so this filter does not provide a
-    fully interactive shell, although the question author can pre-define
+    fully interactive shell, although the author can pre-define
     'canned' standard input and even supply pseudo text files to be read by
     the code.
 
@@ -121,7 +121,7 @@ the following attributes.
    maximum instead.
 
 6. data-code-mapper. This string value must be the name of a global JavaScript
-   function (usually defined in a \<script> element preceding the \<div>)
+   function (usually defined in a \<script> element preceding the \<pre> element)
    that takes the Ace editor code as a parameter and returns a modified version,
    e.g. with extra code inserted. If used in conjunction with data-prefix
    and data-suffix (below), the code-mapper function is applied first and then
