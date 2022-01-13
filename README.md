@@ -140,7 +140,7 @@ the following attributes.
 9. data-html-output. If this attribute is present (with any value) the output
    from the run is interpreted as raw HTML.
    The output from the program is simply wrapped in a \<div> element and inserted
-   directly after the Try it! button. And example of a ace-interactive-code
+   directly after the Try it! button. An example of a ace-interactive-code
    panel that that uses data-prefix, data-suffix and data-html-output to provide
    Matplotlib graphical output in Python is included in the repo `tests` folder
    (the file `demoaceinline.xml`).
