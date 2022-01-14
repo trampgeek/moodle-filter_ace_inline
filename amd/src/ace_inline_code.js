@@ -286,7 +286,7 @@ define(['jquery'], function($) {
             'files': '',
             'prefix': '',
             'suffix': '',
-            'params': '{"cputime": 2}',
+            'params': '{"cputime": 5}',
             'code-mapper': null,
             'html-output': null,
             'max-output-length': 10000
