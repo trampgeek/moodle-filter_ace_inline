@@ -310,7 +310,6 @@ define(['jquery'], function($) {
         var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
         var codeElements = root.getElementsByClassName(className);
         var css = {
-            width: "100%",
             margin: "6px",
             "line-height": "1.3"
         };
@@ -325,6 +324,7 @@ define(['jquery'], function($) {
                 var numLines = text.split("\n").length;
 
                 let editNode = $("<div></div>"); // Ace editor manages this
+                css['min-width'] = pre.offsetWidth;
                 editNode.css(css);
                 jqpre.after(editNode);    // Insert the edit node
 
@@ -337,6 +337,7 @@ define(['jquery'], function($) {
                     showLineNumbers: showLineNumbers,
                     firstLineNumber: uiParameters['start-line-number'],
                     showGutter: showLineNumbers,
+                    showPrintMargin: false,
                     autoScrollEditorIntoView: true,
                     highlightActiveLine: showLineNumbers
                 };
