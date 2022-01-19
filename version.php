@@ -30,7 +30,7 @@ $plugin->version   = 2022011904;
 $plugin->requires  = 2017051500;
 $plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v0.1'; // updated settings
+$plugin->release = 'v0.3';
 $plugin->dependencies = array(
-    'qtype_coderunner' => 2022010800
+    'qtype_coderunner' => 2022012000
 );
