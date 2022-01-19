@@ -64,7 +64,7 @@ class filter_ace_inline extends moodle_text_filter {
             'button_label' => get_config('filter_ace_inline', 'button_label')
         );
         $this->do_ace_highlight($text);
-        $this->do_ace_interactive($text, array($config));
+        $this->do_ace_interactive($text, $config);
         return $text;
     }
 
@@ -78,12 +78,13 @@ class filter_ace_inline extends moodle_text_filter {
      * don't wish to use our filter on pages being edited.
      * @param {string} $text The text to be processed.
      * @param {array} $config The plugin configuration info.
-     * @return {string} The processed text
+     * @return {string} The processed text.
      */
     public function do_ace_highlight($text) {
         global $PAGE;
         if (strpos($text, 'ace-highlight-code') !== false) {
-            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceHighlighting');
+            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
+                    'initAceHighlighting');
         }
 
         return $text;
@@ -97,13 +98,14 @@ class filter_ace_inline extends moodle_text_filter {
      * through all filters, on all content pages, even editing pages. We
      * don't wish to use our filter on pages being edited.
      * @param {string} $text The text to be processed.
-     * @param {array} $config The plugin configuration info.
+     * @param {assoc array} $config The plugin configuration info.
      * @return {string} The processed text
      */
     public function do_ace_interactive($text, $config) {
-        global $PAGE;
+        global $PAGE, $COURSE;
         if (strpos($text, 'ace-interactive-code') !== false) {
-            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code', 'initAceInteractive', $config);
+            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
+                    'initAceInteractive', array($config));
         }
 
         return $text;

@@ -2,9 +2,9 @@
 
 Richard Lobb
 
-Version 0.2, 6 January 2022.
+Version 0.3, 20 January 2022.
 
-github repo: https://github.com/trampgeek/moodle_filter_ace_inline
+github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
 ## Introduction
 
@@ -201,7 +201,7 @@ There is a page demonstrating most of the capabilities of this filter
 on the CodeRunner site
 [here](https://coderunner.org.nz/mod/page/view.php?id=529). The underlying HTML
 on that page is mostly the same as in the file
-`[testaceinline.xml](https://github.com/trampgeek/ace_inline/blob/master/tests/demoaceinline.xml)`,
+`[testaceinline.xml](https://github.com/trampgeek/moodle-filter_ace_inline/blob/master/tests/demoaceinline.xml)`,
 which is included in
 the github repo, in the *tests* folder. If you want to experiment yourself, you can
 download that file and import it as an xml question into the question bank on

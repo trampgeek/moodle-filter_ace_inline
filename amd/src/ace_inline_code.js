@@ -177,15 +177,16 @@ define(['jquery'], function($) {
         if (mapFunc) {
             code = window[mapFunc](code);
         }
-        code = uiParameters['prefix'] + code + uiParameters['suffix'];
+        code = uiParameters.prefix + code + uiParameters.suffix;
         ajax.call([{
             methodname: 'qtype_coderunner_run_in_sandbox',
             args: {
+                contextid: M.cfg.contextid,
                 sourcecode: code,
-                language: uiParameters['lang'],
-                stdin: uiParameters['stdin'],
-                files: uiParameters['files'],
-                params: uiParameters['params']
+                language: uiParameters.lang,
+                stdin: uiParameters.stdin,
+                files: uiParameters.files,
+                params: uiParameters.params
             },
             done: function(responseJson) {
                 var response = JSON.parse(responseJson);
@@ -273,7 +274,7 @@ define(['jquery'], function($) {
      * @param {object} ace The JavaScript Ace editor object.
      * @param {DOMElement} root The root of the tree in which the actions should
      * be applied.
-     * @param {object} config The plugin configuration (settings).
+     * @param {string} config The plugin configuration settings.
      */
     function applyAceInteractive(ace, root, config) {
         var defaultParams = {
@@ -324,7 +325,7 @@ define(['jquery'], function($) {
                 var numLines = text.split("\n").length;
 
                 let editNode = $("<div></div>"); // Ace editor manages this
-                css['min-width'] = pre.offsetWidth;
+                css['min-width'] = pre.scrollWidth;
                 editNode.css(css);
                 jqpre.after(editNode);    // Insert the edit node
 
