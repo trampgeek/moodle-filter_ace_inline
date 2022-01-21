@@ -168,10 +168,8 @@ define(['jquery'], function($) {
         if (htmlOutput) {
             outputDisplayArea.hide();
         }
-        var next = outputDisplayArea.next('div.filter-ace-inline-html');
-        if (next) {
-            next.remove();
-        }
+        outputDisplayArea.next('div.filter-ace-inline-html').remove();
+
         var code = aceSession.getValue();
         var mapFunc = uiParameters['code-mapper'];
         if (mapFunc) {
@@ -199,6 +197,8 @@ define(['jquery'], function($) {
                         outputDisplayArea.show();
                         outputDisplayArea.html(escapeHtml(text));
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
+                        // Repeat the deletion of previous output in case of multiple button clicks.
+                        outputDisplayArea.next('div.filter-ace-inline-html').remove();
                         var html = $("<div class='filter-ace-inline-html '" +
                                 "style='background-color:#eff;padding:5px;'" +
                                 response.output + "</div>");
