@@ -33,7 +33,8 @@ The plugin really provides two separate filter operations:
     the code.
 
 The plugin requires the CodeRunner plugin to be installed first, since that
-furnishes the Ace editor required for filter operations. CodeRunner version 4.1.1
+furnishes the Ace editor required for filter operations.
+CodeRunner version 4.2.1
 or later is required. In addition, the
 ace-interactive-code filter requires that the system administrator has enabled
 the CodeRunner sandbox web service (still regarded as experimental) which is
