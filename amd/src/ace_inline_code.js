@@ -39,12 +39,10 @@ define(['jquery'], function($) {
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
-        "'": '&#039;',
-        ' ': '&nbsp;',
-        "\n": '<br>'
+        "'": '&#039;'
       };
 
-      return text.replace(/[&<>"' \n]/g, function(m) { return map[m]; });
+      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
     /**
      * Extract from the given DOM pre element its various attributes.
@@ -237,8 +235,8 @@ define(['jquery'], function($) {
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button>");
         var buttonDiv = $("<div></div>");
-        var outputDisplayArea = $("<p style='font-family:monospace; font-size:12px;width:100%;" +
-                "background-color:#eff;border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></p>");
+        var outputDisplayArea = $("<pre style='width:100%;white-space:pre-wrap;background-color:#eff;" +
+                "border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></pre>");
         buttonDiv.append(button);
         editNode.after(buttonDiv);
         buttonDiv.after(outputDisplayArea);
