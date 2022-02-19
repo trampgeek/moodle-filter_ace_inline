@@ -233,13 +233,15 @@ define(['jquery'], function($) {
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
     function addUi(editNode, aceSession, uiParameters) {
-        var button = $("<div><button type='button' class='btn btn-secondary' " +
+        var button = $("<button type='button' class='btn btn-secondary' " +
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
-                uiParameters['button-name'] + "</button></div>");
+                uiParameters['button-name'] + "</button>");
+        var buttonDiv = $("<div></div>");
         var outputDisplayArea = $("<p style='font-family:monospace; font-size:12px;width:100%;" +
                 "background-color:#eff;border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></p>");
-        editNode.after(button);
-        button.after(outputDisplayArea);
+        buttonDiv.append(button);
+        editNode.after(buttonDiv);
+        buttonDiv.after(outputDisplayArea);
         outputDisplayArea.hide();
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
