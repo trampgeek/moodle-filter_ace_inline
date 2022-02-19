@@ -216,7 +216,7 @@ print(f"Hi {name}, next year you'll be {age + 1}")
 
 <script>
 function matplotlibwrapper(code) {
-            var escapedCode = code.replace(/"/g, '\\"');
+            var escapedCode = code.replace(/\\/g,'\\\\').replace(/"/g, '\\"');
             var progToRun = `import subprocess, base64, html, os
 
 def make_data_uri(filename):
@@ -238,7 +238,7 @@ for i, fig in enumerate(figs):
 """
 with open('prog.py', 'w') as outfile:
     outfile.write(prog_to_exec)
-    
+
 result = subprocess.run(['python3', 'prog.py'], capture_output=True, text=True)
 print('<div>')
 output = result.stdout + result.stderr
