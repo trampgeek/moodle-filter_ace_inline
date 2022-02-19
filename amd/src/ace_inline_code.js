@@ -292,7 +292,7 @@ define(['jquery'], function($) {
             'params': '{"cputime": 5}',
             'code-mapper': null,
             'html-output': null,
-            'max-output-length': 10000
+            'max-output-length': 30000
         };
         applyAceAndBuildUi(ace, root, true, defaultParams);
     }
