@@ -237,7 +237,7 @@ define(['jquery'], function($) {
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button></div>");
         var outputDisplayArea = $("<p style='font-family:monospace; font-size:12px;width:100%;" +
-                "background-color:#eff;border:1px gray;padding:5px;overflow-wrap:break-word;'></p>");
+                "background-color:#eff;border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></p>");
         editNode.after(button);
         button.after(outputDisplayArea);
         outputDisplayArea.hide();
