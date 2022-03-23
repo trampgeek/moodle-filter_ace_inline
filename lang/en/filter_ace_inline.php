@@ -24,7 +24,7 @@
 
 $string['filtername'] = 'Ace inline';
 
-// Settings strings
+// Settings strings.
 $string['settings_heading'] = 'Ace inline filter settings';
 $string['settings_desc'] = 'Change the settings for this filter.';
 $string['settings_button_label'] = 'Button label';

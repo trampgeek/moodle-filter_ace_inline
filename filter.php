@@ -54,9 +54,9 @@ class filter_ace_inline extends moodle_text_filter {
      * @return {string} text after processing
      */
     public function filter($text, array $options = array()) {
-        // Basic test to avoid work
+        // Basic test to avoid work.
         if (!is_string($text)) {
-            // non string content can not be filtered anyway
+            // Non-string content can not be filtered anyway.
             return $text;
         }
 

@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
 
-    // default values for filter.php
-    $BUTTON_LABEL = get_string('default_button_label', 'filter_ace_inline');
+    // Default values for filter.php.
+    $buttonlabel = get_string('default_button_label', 'filter_ace_inline');
 
-    // language strings
+    // Language strings.
     $heading = get_string('settings_heading', 'filter_ace_inline');
     $description = get_string('settings_desc', 'filter_ace_inline');
 
@@ -41,5 +41,5 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext('filter_ace_inline/button_label',
             get_string('settings_button_label', 'filter_ace_inline'),
             get_string('settings_button_label_desc', 'filter_ace_inline'),
-            $BUTTON_LABEL, PARAM_TEXT));
+            $buttonlabel, PARAM_TEXT));
 }
