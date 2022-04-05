@@ -26,7 +26,9 @@
 
 
 define(['jquery'], function($) {
-    var RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
+    const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
+    const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
+    const ACE_LIGHT_THEME = 'ace/theme/textmate';
     /**
      * Escape text special HTML characters.
      * @param {string} text
@@ -348,6 +350,14 @@ define(['jquery'], function($) {
                 session.setValue(text);
                 if (uiParameters.readonly !== null) {
                     editor.setReadOnly(true);
+                }
+
+                // Set light or dark theme according to user's prefers-color-scheme.
+                // Default to light.
+                if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    editor.setTheme(ACE_DARK_THEME);
+                } else {
+                    editor.setTheme(ACE_LIGHT_THEME);
                 }
 
                 // Add a button and text area for output if ace-interactive-code.
