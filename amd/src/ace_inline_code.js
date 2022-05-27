@@ -317,14 +317,14 @@ define(['jquery'], function($) {
             "line-height": "1.3"
         };
 
-        for (var i=0; i < codeElements.length; i++) {
-            var pre = codeElements[i];
+        for (let i=0; i < codeElements.length; i++) {
+            let pre = codeElements[i];
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
                 let uiParameters = getUiParameters(pre, defaultParams);
-                var showLineNumbers = uiParameters['start-line-number'] ? true : false;
+                let showLineNumbers = uiParameters['start-line-number'] ? true : false;
                 let jqpre = $(pre);
-                var text = jqpre.text();
-                var numLines = text.split("\n").length;
+                let text = jqpre.text();
+                let numLines = text.split("\n").length;
 
                 let editNode = $("<div></div>"); // Ace editor manages this
                 css['min-width'] = pre.scrollWidth;
@@ -374,6 +374,7 @@ define(['jquery'], function($) {
     return {
         initAceInteractive: async function(config) {
             if (!window.ace_inline_code_interactive_done) { // Do it once only.
+                window.ace_inline_code_interactive_done = true;
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
@@ -383,10 +384,10 @@ define(['jquery'], function($) {
                     applyAceInteractive(window.ace, document, config);
                 };
             }
-            window.ace_inline_code_interactive_done = true;
         },
         initAceHighlighting: async function() {
             if (!window.ace_inline_code_highlighting_done) { // Do it once only.
+                window.ace_inline_code_highlighting_done = true;
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
@@ -396,7 +397,6 @@ define(['jquery'], function($) {
                     applyAceHighlighting(window.ace, document);
                 };
             }
-            window.ace_inline_code_highlighting_done = true;
         }
     };
 });
