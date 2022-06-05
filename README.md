@@ -2,7 +2,7 @@
 
 Richard Lobb
 
-Version 0.3, 20 January 2022.
+Version 0.4, 5 June 2022.
 
 github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -55,7 +55,8 @@ can just be 'lang'.
 
  1. data-lang. This attribute sets the language to be used
     by the Ace editor for
-    syntax colouring and, in the case of the ace-interactive-code, the language
+    syntax colouring (if data-ace-lang is not set - see next item)
+    and, in the case of the ace-interactive-code, the language
     for running the code on the Jobe server. Default: python3. Example:
 
         <pre class="ace-highlight-code" data-lang="java">
@@ -66,12 +67,16 @@ can just be 'lang'.
         }
         </pre>
 
-2. data-start-line-number. Sets the line number used for the first displayed line of
+ 2. data-ace-lang. If set and non-empty, sets the language used by the Ace
+    editor for syntax colouring, allowing for example a python script to be
+    used on Jobe to run code entered by the user in R.
+
+3. data-start-line-number. Sets the line number used for the first displayed line of
    code, if line numbers are to be shown. Set to 'none' for no line numbers.
    Default is 'none' for ace-highlight-code elements and '1' for ace-interactive-code
    elements.
 
-3. data-font-size. Sets the display font size used by Ace. Default 14px.
+4. data-font-size. Sets the display font size used by Ace. Default 14px.
 
 ### ace-interactive-code-parameters
 
