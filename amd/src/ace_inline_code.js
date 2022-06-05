@@ -317,6 +317,14 @@ define(['jquery'], function($) {
             margin: "6px",
             "line-height": "1.3"
         };
+        var aceModeMap = {  // Ace modes for various languages.
+            'c': 'c_cpp',
+            'cpp': 'c_cpp',
+            'js': 'javascript',
+            'c++': 'c_cpp',
+            'python2': 'python',
+            'python3': 'python'
+        };
 
         for (let i=0; i < codeElements.length; i++) {
             let pre = codeElements[i];
@@ -324,8 +332,8 @@ define(['jquery'], function($) {
                 let uiParameters = getUiParameters(pre, defaultParams);
                 let showLineNumbers = uiParameters['start-line-number'] ? true : false;
                 let aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters['lang'];
-                if (aceLang === 'python3') {
-                    aceLang = 'python';
+                if (aceLang in aceModeMap) {
+                    aceLang = aceModeMap[aceLang];
                 }
                 let mode = 'ace/mode/' + aceLang;
                 let jqpre = $(pre);
