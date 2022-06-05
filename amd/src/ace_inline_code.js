@@ -263,6 +263,7 @@ define(['jquery'], function($) {
     function applyAceHighlighting(ace, root) {
         var defaultParams = {
             'lang': 'python3',
+            'ace-lang': '',
             'font-size': '11pt',
             'start-line-number': null,
             'readonly': true
@@ -281,6 +282,7 @@ define(['jquery'], function($) {
     function applyAceInteractive(ace, root, config) {
         var defaultParams = {
             'lang': 'python3',
+            'ace-lang': '',
             'font-size': '11pt',
             'start-line-number': 1,
             'button-name': config['button_label'],
@@ -309,7 +311,6 @@ define(['jquery'], function($) {
      */
     function applyAceAndBuildUi(ace, root, isInteractive, defaultParams) {
         var MAX_WINDOW_LINES = 50;
-        var mode = "ace/mode/python"; // Default is Python.
         var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
         var codeElements = root.getElementsByClassName(className);
         var css = {
@@ -322,6 +323,11 @@ define(['jquery'], function($) {
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
                 let uiParameters = getUiParameters(pre, defaultParams);
                 let showLineNumbers = uiParameters['start-line-number'] ? true : false;
+                let aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters['lang'];
+                if (aceLang === 'python3') {
+                    aceLang = 'python';
+                }
+                let mode = 'ace/mode/' + aceLang;
                 let jqpre = $(pre);
                 let text = jqpre.text();
                 let numLines = text.split("\n").length;
