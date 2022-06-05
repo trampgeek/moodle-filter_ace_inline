@@ -26,11 +26,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022052700;
+$plugin->version   = 2022060-500;
 $plugin->requires  = 2017051500;
 $plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v0.4';
+$plugin->release = 'v0.5';
 $plugin->dependencies = array(
     'qtype_coderunner' => 2022012000
 );
