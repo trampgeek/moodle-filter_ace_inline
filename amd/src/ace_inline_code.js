@@ -259,14 +259,16 @@ define(['jquery'], function($) {
      * @param {object} ace The JavaScript Ace editor object.
      * @param {DOMElement} root The root of the tree in which highlighting should
      * be applied.
+     * @param {string} config The plugin configuration settings.
      */
-    function applyAceHighlighting(ace, root) {
+    function applyAceHighlighting(ace, root, config) {
         var defaultParams = {
             'lang': 'python3',
             'ace-lang': '',
             'font-size': '11pt',
             'start-line-number': null,
-            'readonly': true
+            'readonly': true,
+            'dark_theme_mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(ace, root, false, defaultParams);
     }
@@ -294,7 +296,8 @@ define(['jquery'], function($) {
             'params': '{"cputime": 5}',
             'code-mapper': null,
             'html-output': null,
-            'max-output-length': 30000
+            'max-output-length': 30000,
+            'dark_theme_mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(ace, root, true, defaultParams);
     }
@@ -313,6 +316,8 @@ define(['jquery'], function($) {
         var MAX_WINDOW_LINES = 50;
         var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
         var codeElements = root.getElementsByClassName(className);
+        var darkMode = defaultParams['dark_theme_mode']; // 0, 1, 2 for never, sometimes, always
+
         var css = {
             margin: "6px",
             "line-height": "1.3"
@@ -372,7 +377,8 @@ define(['jquery'], function($) {
 
                 // Set light or dark theme according to user's prefers-color-scheme.
                 // Default to light.
-                if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
+                        window.matchMedia("(prefers-color-scheme: dark)").matches)) {
                     editor.setTheme(ACE_DARK_THEME);
                 } else {
                     editor.setTheme(ACE_LIGHT_THEME);
@@ -403,16 +409,16 @@ define(['jquery'], function($) {
                 };
             }
         },
-        initAceHighlighting: async function() {
+        initAceHighlighting: async function(config) {
             if (!window.ace_inline_code_highlighting_done) { // Do it once only.
                 window.ace_inline_code_highlighting_done = true;
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
-                applyAceHighlighting(window.ace, document);
+                applyAceHighlighting(window.ace, document, config);
                 // Add a hook for use by dynamically generated content.
                 window.applyAceHighlighting = function () {
-                    applyAceHighlighting(window.ace, document);
+                    applyAceHighlighting(window.ace, document, config);
                 };
             }
         }

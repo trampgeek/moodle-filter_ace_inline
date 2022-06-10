@@ -30,6 +30,13 @@ $string['settings_desc'] = 'Change the settings for this filter.';
 $string['settings_button_label'] = 'Button label';
 $string['settings_button_label_desc'] = 'The label for the "Try it!" button that
     the user clicks to run the code';
+$string['settings_dark_theme'] = 'Set when to use dark theme';
+$string['settings_dark_never'] = 'Never';
+$string['settings_dark_always'] = 'Always';
+$string['settings_dark_preference'] = 'When OS or browser prefers dark';
+$string['settings_dark_theme_desc'] = 'Select when to use a dark theme for Ace
+        instead of the default light theme';
+
 $string['default_button_label'] = 'Try it!';
 $string['error_access_denied'] = 'Sandbox server access denied';
 $string['error_unknown_language'] = 'Unknown language requested';

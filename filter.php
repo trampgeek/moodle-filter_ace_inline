@@ -61,9 +61,10 @@ class filter_ace_inline extends moodle_text_filter {
         }
 
         $config = array(
-            'button_label' => get_config('filter_ace_inline', 'button_label')
+            'button_label' => get_config('filter_ace_inline', 'button_label'),
+            'dark_theme_mode' => get_config('filter_ace_inline', 'dark_theme_mode')
         );
-        $this->do_ace_highlight($text);
+        $this->do_ace_highlight($text, $config);
         $this->do_ace_interactive($text, $config);
         return $text;
     }
@@ -80,11 +81,11 @@ class filter_ace_inline extends moodle_text_filter {
      * @param {array} $config The plugin configuration info.
      * @return {string} The processed text.
      */
-    public function do_ace_highlight($text) {
+    public function do_ace_highlight($text, $config) {
         global $PAGE;
         if (strpos($text, 'ace-highlight-code') !== false) {
             $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
-                    'initAceHighlighting');
+                    'initAceHighlighting', array($config));
         }
 
         return $text;

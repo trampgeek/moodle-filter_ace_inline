@@ -37,6 +37,17 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('ace_inlinesettings',
             $heading, $description));
 
+    $darkoptions = [
+        0 => get_string('settings_dark_never', 'filter_ace_inline'),
+        1 => get_string('settings_dark_preference', 'filter_ace_inline'),
+        2 => get_string('settings_dark_always', 'filter_ace_inline')];
+
+    $settings->add(new admin_setting_configselect(
+        "filter_ace_inline/dark_theme_mode",
+        get_string('settings_dark_theme', 'filter_ace_inline'),
+        get_string('settings_dark_theme_desc', 'filter_ace_inline'),
+        0, $darkoptions));
+
 
     $settings->add(new admin_setting_configtext('filter_ace_inline/button_label',
             get_string('settings_button_label', 'filter_ace_inline'),
