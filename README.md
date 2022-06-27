@@ -182,7 +182,7 @@ Within the Ace editor the student just sees the URI-encoded characters as
 
 Download the plugin from the repository, and unzip the code into
 
-        \<moodlehome>/filter/ace_inline_code
+        \<moodlehome>/filter/ace_inline
 
 Then visit Site administration > Notifications. You should receive the usual
 prompting about updating the database to incorporate the new plugin.
