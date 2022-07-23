@@ -318,10 +318,6 @@ define(['jquery'], function($) {
         var codeElements = root.getElementsByClassName(className);
         var darkMode = defaultParams['dark_theme_mode']; // 0, 1, 2 for never, sometimes, always
 
-        var css = {
-            margin: "6px",
-            "line-height": "1.3"
-        };
         var aceModeMap = {  // Ace modes for various languages (default: use language name).
             'c': 'c_cpp',
             'cpp': 'c_cpp',
@@ -350,7 +346,13 @@ define(['jquery'], function($) {
                 let numLines = text.split("\n").length;
 
                 let editNode = $("<div></div>"); // Ace editor manages this
-                css['min-width'] = pre.scrollWidth;
+                let width = pre.scrollWidth;
+                let css = {
+                    "margin-top": "6px",
+                    "margin-bottom": "6px",
+                    "line-height": "1.3",
+                    "min-width": width
+                };
                 editNode.css(css);
                 jqpre.after(editNode);    // Insert the edit node
 
