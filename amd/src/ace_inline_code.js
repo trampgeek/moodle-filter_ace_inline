@@ -394,7 +394,6 @@ define(['jquery'], function($) {
         if (aceWidestLine > width) {
             editNode.css({'min-width': Math.ceil(aceWidestLine) + "px"});
         }
-        console.log("Pre width: " + width + ", Ace width: " + aceWidestLine);
         session.setValue(text);
         editor.setTheme(theme);
         if (uiParameters.readonly !== null) {
