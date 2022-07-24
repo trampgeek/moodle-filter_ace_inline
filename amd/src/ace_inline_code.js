@@ -256,12 +256,11 @@ define(['jquery'], function($) {
     /**
      * Replace any PRE elements of class ace-highlight-code with a
      * readonly Ace editor window.
-     * @param {object} ace The JavaScript Ace editor object.
      * @param {DOMElement} root The root of the tree in which highlighting should
      * be applied.
      * @param {string} config The plugin configuration settings.
      */
-    function applyAceHighlighting(ace, root, config) {
+    function applyAceHighlighting(root, config) {
         var defaultParams = {
             'lang': 'python3',
             'ace-lang': '',
@@ -270,18 +269,17 @@ define(['jquery'], function($) {
             'readonly': true,
             'dark_theme_mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
         };
-        applyAceAndBuildUi(ace, root, false, defaultParams);
+        applyAceAndBuildUi(root, false, defaultParams);
     }
 
     /**
      * Replace any PRE elements of class ace-interactive-code with an
      * Ace editor window and a Try it! button that allows the code to be run.
-     * @param {object} ace The JavaScript Ace editor object.
      * @param {DOMElement} root The root of the tree in which the actions should
      * be applied.
      * @param {string} config The plugin configuration settings.
      */
-    function applyAceInteractive(ace, root, config) {
+    function applyAceInteractive(root, config) {
         var defaultParams = {
             'lang': 'python3',
             'ace-lang': '',
@@ -299,25 +297,49 @@ define(['jquery'], function($) {
             'max-output-length': 30000,
             'dark_theme_mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
         };
-        applyAceAndBuildUi(ace, root, true, defaultParams);
+        applyAceAndBuildUi(root, true, defaultParams);
     }
 
     /**
-     * Replace all <pre> elements in the document rooted at root that have
-     * the given className with an Ace editor windows that display the
-     * code in whatever language has been set.
-     * @param {object} ace The Ace editor code.
-     * @param {object} root The root of the HTML document to modify.
-     * @param {bool} isInteractive True for ace-interactive otherwise false.
-     * @param {object} defaultParams An object defining the allowed pre attributes
-     * that control the state of the Ace editor and the (optional) UI.
+     * Return the length of the given line when rendered by the given Ace editor.
+     * @param {Ace-renderer} renderer The Ace renderer.
+     * @param {String} line The line whose length is being checked.
+     * @return {int} The length of the rendered line in pixels.
      */
-    function applyAceAndBuildUi(ace, root, isInteractive, defaultParams) {
-        var MAX_WINDOW_LINES = 50;
-        var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
-        var codeElements = root.getElementsByClassName(className);
-        var darkMode = defaultParams['dark_theme_mode']; // 0, 1, 2 for never, sometimes, always
+    function lineLength(renderer, line) {
+      var chars = renderer.session.$getStringScreenWidth(line)[0];
 
+      var width = Math.max(chars, 2) * renderer.characterWidth // text size
+        + 2 * renderer.$padding // padding
+        + 2  // little extra for the cursor
+        + 0; // add border width if needed
+
+      return width;
+    }
+
+    /**
+     * Return the longest of an array of strings.
+     * @param {array} lines An array of lines
+     * @return {String} The longest of the lines
+     */
+    function longest(lines) {
+        var longest = '';
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].length > longest.length) {
+                longest = lines[i];
+            }
+        }
+        return longest;
+    }
+    /**
+     * Replace the given PRE element with an element managed by the Ace editor.
+     * @param {type} pre The PRE element to be be replaced by an Ace editor.
+     * @param {bool} isInteractive True for ace-interactive otherwise false.
+     * @param {type} theme Ace theme to use
+     * @param {type} uiParameters the User Interface parameters for the element.
+     */
+    function applyToPre(pre, isInteractive, theme, uiParameters) {
+        var MAX_WINDOW_LINES = 50;
         var aceModeMap = {  // Ace modes for various languages (default: use language name).
             'c': 'c_cpp',
             'cpp': 'c_cpp',
@@ -329,70 +351,98 @@ define(['jquery'], function($) {
             'python2': 'python',
             'python3': 'python'
         };
+        var showLineNumbers = uiParameters['start-line-number'] ? true : false;
+        var aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters['lang'];
+        aceLang = aceLang.toLowerCase();
+        if (aceLang in aceModeMap) {
+            aceLang = aceModeMap[aceLang];
+        }
+        var mode = 'ace/mode/' + aceLang;
+        var jqpre = $(pre);
+        var text = jqpre.text();
+        var lines = text.split("\n");
+        var numLines = lines.length;
+        var longestLine = longest(lines);
+
+        var editNode = $("<div></div>"); // Ace editor manages this
+        var width = pre.scrollWidth;  // Our first guess at a minimum width.
+        var css = {
+            "margin": "6px 0px 6px 0px", // Top, right, bottom, left
+            "line-height": "1.3",
+            "min-width": width + "px"
+        };
+        editNode.css(css);
+        jqpre.after(editNode);    // Insert the edit node
+
+        var aceConfig = {
+            newLineMode: "unix",
+            mode: mode,
+            minLines: numLines,
+            maxLines: MAX_WINDOW_LINES,
+            fontSize: uiParameters['font-size'],
+            showLineNumbers: showLineNumbers,
+            firstLineNumber: uiParameters['start-line-number'],
+            showGutter: showLineNumbers,
+            showPrintMargin: false,
+            autoScrollEditorIntoView: true,
+            highlightActiveLine: showLineNumbers
+        };
+
+        var editor = window.ace.edit(editNode.get(0), aceConfig);
+        var session = editor.getSession();
+        var aceWidestLine = lineLength(editor.renderer, longestLine);
+        if (aceWidestLine > width) {
+            editNode.css({'min-width': Math.ceil(aceWidestLine) + "px"});
+        }
+        console.log("Pre width: " + width + ", Ace width: " + aceWidestLine);
+        session.setValue(text);
+        editor.setTheme(theme);
+        if (uiParameters.readonly !== null) {
+            editor.setReadOnly(true);
+        }
+
+        // Add a button and text area for output if ace-interactive-code.
+        if (isInteractive) {
+            addUi(editNode, session, uiParameters);
+        } else {
+            editor.renderer.$cursorLayer.element.style.display = "none"; // Hide cursor.
+        }
+        jqpre.hide();  // NB this sets display = 'none', checked above.
+
+        // After rendering, update the container min-width if the rendered
+        // length of the longest lines exceeds the preset min-width.
+
+    }
+
+    /**
+     * Replace all <pre> elements in the document rooted at root that have
+     * the given className with an Ace editor windows that display the
+     * code in whatever language has been set.
+     * @param {object} root The root of the HTML document to modify.
+     * @param {bool} isInteractive True for ace-interactive otherwise false.
+     * @param {object} defaultParams An object defining the allowed pre attributes
+     * that control the state of the Ace editor and the (optional) UI.
+     */
+    function applyAceAndBuildUi(root, isInteractive, defaultParams) {
+        var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
+        var codeElements = root.getElementsByClassName(className);
+        var darkMode = defaultParams['dark_theme_mode']; // 0, 1, 2 for never, sometimes, always
+        var theme = null;
+
+        // Use light or dark theme according to user's prefers-color-scheme.
+        // Default to light.
+        if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            theme = ACE_DARK_THEME;
+        } else {
+            theme = ACE_LIGHT_THEME;
+        }
 
         for (let i=0; i < codeElements.length; i++) {
             let pre = codeElements[i];
+            let uiParameters = getUiParameters(pre, defaultParams);
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
-                let uiParameters = getUiParameters(pre, defaultParams);
-                let showLineNumbers = uiParameters['start-line-number'] ? true : false;
-                let aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters['lang'];
-                aceLang = aceLang.toLowerCase();
-                if (aceLang in aceModeMap) {
-                    aceLang = aceModeMap[aceLang];
-                }
-                let mode = 'ace/mode/' + aceLang;
-                let jqpre = $(pre);
-                let text = jqpre.text();
-                let numLines = text.split("\n").length;
-
-                let editNode = $("<div></div>"); // Ace editor manages this
-                let width = pre.scrollWidth;
-                let css = {
-                    "margin-top": "6px",
-                    "margin-bottom": "6px",
-                    "line-height": "1.3",
-                    "min-width": width
-                };
-                editNode.css(css);
-                jqpre.after(editNode);    // Insert the edit node
-
-                let aceConfig = {
-                    newLineMode: "unix",
-                    mode: mode,
-                    minLines: numLines,
-                    maxLines: MAX_WINDOW_LINES,
-                    fontSize: uiParameters['font-size'],
-                    showLineNumbers: showLineNumbers,
-                    firstLineNumber: uiParameters['start-line-number'],
-                    showGutter: showLineNumbers,
-                    showPrintMargin: false,
-                    autoScrollEditorIntoView: true,
-                    highlightActiveLine: showLineNumbers
-                };
-
-                let editor = ace.edit(editNode.get(0), aceConfig);
-                let session = editor.getSession();
-                session.setValue(text);
-                if (uiParameters.readonly !== null) {
-                    editor.setReadOnly(true);
-                }
-
-                // Set light or dark theme according to user's prefers-color-scheme.
-                // Default to light.
-                if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
-                        window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-                    editor.setTheme(ACE_DARK_THEME);
-                } else {
-                    editor.setTheme(ACE_LIGHT_THEME);
-                }
-
-                // Add a button and text area for output if ace-interactive-code.
-                if (isInteractive) {
-                    addUi(editNode, session, uiParameters);
-                } else {
-                    editor.renderer.$cursorLayer.element.style.display = "none"; // Hide cursor.
-                }
-                jqpre.hide();  // NB this sets display = 'none', checked above.
+                applyToPre(pre, isInteractive, theme, uiParameters);
             }
         }
     }
@@ -404,10 +454,10 @@ define(['jquery'], function($) {
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
-                applyAceInteractive(window.ace, document, config);
+                applyAceInteractive(document, config);
                 // Add a hook for use by dynamically generated content.
                 window.applyAceInteractive = function () {
-                    applyAceInteractive(window.ace, document, config);
+                    applyAceInteractive(document, config);
                 };
             }
         },
@@ -417,10 +467,10 @@ define(['jquery'], function($) {
                 while (!window.ace) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
-                applyAceHighlighting(window.ace, document, config);
+                applyAceHighlighting(document, config);
                 // Add a hook for use by dynamically generated content.
                 window.applyAceHighlighting = function () {
-                    applyAceHighlighting(window.ace, document, config);
+                    applyAceHighlighting(document, config);
                 };
             }
         }
