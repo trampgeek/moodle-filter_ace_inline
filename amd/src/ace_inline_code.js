@@ -71,6 +71,8 @@ define(['jquery'], function($) {
                 value = attr.value;
                 if (attrName === 'start-line-number') {
                     value = value.toLowerCase() === 'none' ? null : parseInt(value);
+                } else if (attrName === 'file-taids') {
+                    value = JSON.parse(value);
                 }
             } else {
                 value = defaultParams[attrName];
@@ -153,6 +155,46 @@ define(['jquery'], function($) {
         return response.cmpinfo + limit(response.output) + limit(response.stderr);
     }
 
+    /**{object} uiParameters
+     *
+     * @param {object} uiParameters The various parameters (mostly attributes of the pre element)
+     * @returns {string} The specified standard input or an empty string if no
+     * stdin specified.
+     */
+    function getStdin(uiParameters) {
+        let taid = uiParameters['stdin-taid'];
+        let stdin = uiParameters['stdin'];
+        if (taid) {
+            return $('#' + taid).val();
+        } else if (stdin) {
+            return stdin;
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     *
+     * @param {object} uiParameters The various parameters (mostly attributes of the pre element)
+     * @returns {string} An JSON-encoding of an object that defines one or more
+     * filename:filecontents mappings.
+     */
+    function getFiles(uiParameters) {
+        let taids = uiParameters['file-taids'];
+        let files = uiParameters['files'];
+        if (!$.isEmptyObject(taids)) {
+            let map = {};
+            for (var filename in taids) {
+                let id = taids[filename];
+                let value = $('#' + id).val();
+                map[filename] = value;
+            }
+            return JSON.stringify(map);
+        } else {
+            return files;
+        }
+    }
+
     /**
      * Handle a click on the Try it! button.
      * @param {object} ajax The core Moodle ajax module.
@@ -182,8 +224,8 @@ define(['jquery'], function($) {
                 contextid: M.cfg.contextid,
                 sourcecode: code,
                 language: uiParameters.lang,
-                stdin: uiParameters.stdin,
-                files: uiParameters.files,
+                stdin: getStdin(uiParameters),
+                files: getFiles(uiParameters),
                 params: uiParameters.params
             },
             done: function(responseJson) {
@@ -267,7 +309,7 @@ define(['jquery'], function($) {
             'font-size': '11pt',
             'start-line-number': null,
             'readonly': true,
-            'dark_theme_mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
+            'dark-theme-mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, false, defaultParams);
     }
@@ -288,14 +330,16 @@ define(['jquery'], function($) {
             'button-name': config['button_label'],
             'readonly': null,
             'stdin': '',
+            'stdin-taid': '',
             'files': '',
+            'file-taids': {},
             'prefix': '',
             'suffix': '',
             'params': '{"cputime": 5}',
             'code-mapper': null,
             'html-output': null,
             'max-output-length': 30000,
-            'dark_theme_mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
+            'dark-theme-mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, true, defaultParams);
     }
@@ -335,10 +379,9 @@ define(['jquery'], function($) {
      * Replace the given PRE element with an element managed by the Ace editor.
      * @param {type} pre The PRE element to be be replaced by an Ace editor.
      * @param {bool} isInteractive True for ace-interactive otherwise false.
-     * @param {type} theme Ace theme to use
      * @param {type} uiParameters the User Interface parameters for the element.
      */
-    function applyToPre(pre, isInteractive, theme, uiParameters) {
+    function applyToPre(pre, isInteractive, uiParameters) {
         var MAX_WINDOW_LINES = 50;
         var aceModeMap = {  // Ace modes for various languages (default: use language name).
             'c': 'c_cpp',
@@ -351,6 +394,18 @@ define(['jquery'], function($) {
             'python2': 'python',
             'python3': 'python'
         };
+        var darkMode = uiParameters['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
+        var theme = null;
+
+        // Use light or dark theme according to user's prefers-color-scheme.
+        // Default to light.
+        if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            theme = ACE_DARK_THEME;
+        } else {
+            theme = ACE_LIGHT_THEME;
+        }
+
         var showLineNumbers = uiParameters['start-line-number'] ? true : false;
         var aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters['lang'];
         aceLang = aceLang.toLowerCase();
@@ -425,23 +480,12 @@ define(['jquery'], function($) {
     function applyAceAndBuildUi(root, isInteractive, defaultParams) {
         var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
         var codeElements = root.getElementsByClassName(className);
-        var darkMode = defaultParams['dark_theme_mode']; // 0, 1, 2 for never, sometimes, always
-        var theme = null;
-
-        // Use light or dark theme according to user's prefers-color-scheme.
-        // Default to light.
-        if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
-                window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-            theme = ACE_DARK_THEME;
-        } else {
-            theme = ACE_LIGHT_THEME;
-        }
 
         for (let i=0; i < codeElements.length; i++) {
             let pre = codeElements[i];
             let uiParameters = getUiParameters(pre, defaultParams);
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
-                applyToPre(pre, isInteractive, theme, uiParameters);
+                applyToPre(pre, isInteractive, uiParameters);
             }
         }
     }

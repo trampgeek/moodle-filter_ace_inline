@@ -35,8 +35,8 @@ $string['settings_dark_never'] = 'Never';
 $string['settings_dark_always'] = 'Always';
 $string['settings_dark_preference'] = 'When OS or browser prefers dark';
 $string['settings_dark_theme_desc'] = 'Select when to use a dark theme for Ace
-        instead of the default light theme';
-
+instead of the default light theme. Can be overridden by an individual instance.
+\'sometimes\' behaves according to the browser\'s response to the \'prefers-color-scheme:dark\' media query.';
 $string['default_button_label'] = 'Try it!';
 $string['error_access_denied'] = 'Sandbox server access denied';
 $string['error_unknown_language'] = 'Unknown language requested';
