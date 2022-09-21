@@ -2,7 +2,7 @@
 
 Richard Lobb
 
-Version 0.5, 21 September 2022.
+Version 0.7, 21 September 2022.
 
 github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -247,7 +247,7 @@ matplotlib installed on the jobe server; they're not there by default.
 
 ## Change History
 
- * Version 0.5, 21 September 2022. Introduced new attributes *stdin-taid* and
+ * Version 0.7, 21 September 2022. Introduced new attributes *stdin-taid* and
    *file-taids* to allow standard input or file contents to be loaded from
    text areas within the same page. Also added the capability of switching
    to dark mode both at a system default level and within any particular instance
