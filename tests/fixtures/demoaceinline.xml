@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-<!-- question: 29124  -->
+<!-- question: 29128  -->
   <question type="description">
     <name>
       <text>TestAceInline</text>
@@ -95,40 +95,8 @@ Order shall return.
     except EOFError:
         break
 </pre>
-<h2>Providing files (the new approved way)</h2>
-<p>It isn't possible to have ace-interactive-code examples that read files from the user's own storage device. But in a similar way to how standard input is provided, it is possible to set up one or more text areas, the contents of which are sent to the Jobe server as files. The file names and corresponding textarea ids are specified by a JSON-valued &lt;pre&gt; attribute <em>data-file-taids</em>.</p>
-<div>
-    <div style="float:left; padding-right:10px;">
-        <p style="margin-bottom:0px;">File 'blah.txt':</p>
-        <textarea id="blah" rows="5" cols="30">blah1
-blah2
-blah3</textarea>
-    </div>
-    <div>
-        <p style="margin-bottom:0px">File 'twaddle.txt':</p>
-        <textarea id="twaddle" rows="5" cols="30">twaddle1
-twaddle2
-twaddle3</textarea>
-    </div>
-</div>
-<pre class="ace-interactive-code" data-file-taids="{&quot;blah.txt&quot;: &quot;blah&quot;, &quot;twaddle.txt&quot;: &quot;twaddle&quot;}">with open('blah.txt') as infile1:
-    lines1 = infile1.read().splitlines()
-with open('twaddle.txt') as infile2:
-    lines2 = infile2.read().splitlines()
-
-print("File contents, interleaved")
-for i in range(max(len(lines1), len(lines2))):
-    if i &lt; len(lines1):
-        print(f'File1: {lines1[i]}')
-    if i &lt; len(lines2):
-        print(f'File2: {lines2[i]}')
-</pre>
-<h2>Providing files (the old deprecated way)</h2>
-<p>As with reading stdin, it is not usual to use 'ace-interactive-code' examples to read files. However, it is possible to define an attribute <em>data-files</em> which is a JSON object that provides a map from filename to file contents. Since JSON strings cannot contain newline characters, they must be represented within the JSON as '\n'.
-</p>
-<p>Here's a trivial example, with a 2-line file 'blah.txt':</p>
-<pre class="ace-interactive-code" data-files="{&quot;blah.txt&quot;: &quot;I am line 1\nAnd I am line 2\n&quot;, &quot;blah2.txt&quot;: &quot;I am blah2&quot;}">print(open("blah.txt").read())
-</pre>
+<h2>Providing files</h2>
+<p>It is not usual to use 'ace-interactive-code' examples to read files. At present there are a couple of ways of passing in named strings as pseudo files (see the table of options below), but they're not very satisfactory. I'm looking into ways to upload files as part of the run. It may or may not happen. Watch this space!</p>
 
 <h2>The complete set of ace-interactive-code options</h2>
 <p>The complete set of ace-interactive-code elements is as follows.&nbsp;Attributes in bold have not been introduced above.</p>
@@ -187,7 +155,8 @@ for i in range(max(len(lines1), len(lines2))):
         </tr>
         <tr>
             <td>
-                <pre>data-file-taids</pre>
+                <pre>data-file-taids
+(may soon also be deprecated!)</pre>
             </td>
             <td>A JSON string defining a mapping from filenames to textarea element IDs containing the file contents.</td>
         </tr>
