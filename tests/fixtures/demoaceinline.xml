@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-<!-- question: 29149  -->
+<!-- question: 29151  -->
   <question type="description">
     <name>
       <text>TestAceInline</text>
@@ -114,7 +114,8 @@ with open('raw.txt') as infile:
     else:
         print(escape(raw))
 </pre>
-<h3><br></h3><h3>File upload example: an HTML encoder</h3>
+<h3><br></h3>
+<h3>File upload example: an HTML encoder</h3>
 <p>Select a single file of type <em>.txt</em>, then click <em>Try it!</em></p>
 <input type="file" id="file-uploader" multiple="1">
 <pre class="ace-interactive-code" data-file-upload-id="file-uploader">import os
@@ -208,7 +209,7 @@ else:
         </tr>
         <tr>
             <td>
-                <pre>data-max-lines</pre>
+                <pre>data-min-lines</pre>
             </td>
             <td>The minimum number of lines to display in the Ace editor. Default 4.<br></td>
         </tr>
