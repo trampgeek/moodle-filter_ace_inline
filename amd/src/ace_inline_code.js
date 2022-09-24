@@ -24,11 +24,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/*jshint esversion: 8 */
 
 define(['jquery'], function($) {
     const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
     const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
     const ACE_LIGHT_THEME = 'ace/theme/textmate';
+    const MIN_WINDOW_LINES = 4;
+    const MAX_WINDOW_LINES = 50;
+
+    let uploadFiles = {};
     /**
      * Escape text special HTML characters.
      * @param {string} text
@@ -36,7 +41,7 @@ define(['jquery'], function($) {
      * html entities. Newlines are replaced with <br>.
      */
     function escapeHtml(text) {
-      var map = {
+      const map = {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
@@ -56,28 +61,32 @@ define(['jquery'], function($) {
      * with the value 'none', start-line-number is set to null.
      */
     function getUiParameters(pre, defaultParams) {
-        var attrName, attr, value, dataName;
-        var uiParameters = {};
+        let uiParameters = {};
 
-        for (attrName in defaultParams) {
-            attr = pre.attributes.getNamedItem(attrName);
-            if (attr) {
-                dataName = attrName;
-            } else {  // Try data- as a prefix if 'raw' access fails.
-                dataName = 'data-' + attrName;
-                attr = pre.attributes.getNamedItem(dataName);
-            }
-            if (attr) {
-                value = attr.value;
-                if (attrName === 'start-line-number') {
-                    value = value.toLowerCase() === 'none' ? null : parseInt(value);
-                } else if (attrName === 'file-taids') {
-                    value = JSON.parse(value);
+        for (const attrName in defaultParams) {
+            if (defaultParams.hasOwnProperty(attrName)) { // Redundant but shuts up jshint
+                let value = '', dataName = '';
+                let attr = pre.attributes.getNamedItem(attrName);
+                if (attr) {
+                    dataName = attrName;
+                } else {  // Try data- as a prefix if 'raw' access fails.
+                    dataName = 'data-' + attrName;
+                    attr = pre.attributes.getNamedItem(dataName);
                 }
-            } else {
-                value = defaultParams[attrName];
+                if (attr) {
+                    value = attr.value;
+                    if (attrName === 'start-line-number') {
+                        value = value.toLowerCase() === 'none' ? null : parseInt(value);
+                    } else if (attrName === 'min-lines' || attrName === 'max-lines') {
+                        value = parseInt(value);
+                    } else if (attrName === 'file-taids') {
+                        value = JSON.parse(value);
+                    }
+                } else {
+                    value = defaultParams[attrName];
+                }
+                uiParameters[attrName] = value;
             }
-            uiParameters[attrName] = value;
         }
         return uiParameters;
     }
@@ -92,7 +101,7 @@ define(['jquery'], function($) {
      */
     function setLangString(langStringName, textarea, additionalText) {
         require(['core/str'], function(str) {
-            var promise = str.get_string(langStringName, 'filter_ace_inline');
+            const promise = str.get_string(langStringName, 'filter_ace_inline');
             $.when(promise).then(function(message) {
                 textarea.show();
                 textarea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
@@ -120,7 +129,7 @@ define(['jquery'], function($) {
         // Each row is response.error, response.result, langstring
         // response.result is ignored if response.error is non-zero.
         // Any condition not in the table is deemed an "Unknown runtime error".
-        var ERROR_RESPONSES = [
+        const ERROR_RESPONSES = [
             [1, 0, 'error_access_denied'], // Sandbox AUTH_ERROR
             [2, 0, 'error_unknown_language'], // Sandbox WRONG_LANG_ID
             [3, 0, 'error_access_denied'], // Sandbox ACCESS_DENIED
@@ -134,8 +143,7 @@ define(['jquery'], function($) {
             [0, 21, 'error_sandbox_server_overload'], // RESULT_SERVER_OVERLOAD
             [0, 30, 'error_excessive_output']  // RESULT OUTPUT_LIMIT
         ];
-        for (var i=0; i < ERROR_RESPONSES.length; i++) {
-            var row = ERROR_RESPONSES[i];
+        for (const row of ERROR_RESPONSES) {
             if (row[0] == response.error && (response.error != 0 || response.result == row[1])) {
                 return row[2];
             }
@@ -151,7 +159,7 @@ define(['jquery'], function($) {
      * @param {int} maxLen The maximum length of the trimmed stringlen.
      */
     function combinedOutput(response, maxLen) {
-        var limit = s => s.length <= maxLen ? s : s.substr(0, maxLen) + '... (truncated)';
+        const limit = s => s.length <= maxLen ? s : s.substr(0, maxLen) + '... (truncated)';
         return response.cmpinfo + limit(response.output) + limit(response.stderr);
     }
 
@@ -162,8 +170,8 @@ define(['jquery'], function($) {
      * stdin specified.
      */
     function getStdin(uiParameters) {
-        let taid = uiParameters['stdin-taid'];
-        let stdin = uiParameters['stdin'];
+        const taid = uiParameters['stdin-taid'];
+        const stdin = uiParameters.stdin;
         if (taid) {
             return $('#' + taid).val();
         } else if (stdin) {
@@ -179,20 +187,28 @@ define(['jquery'], function($) {
      * @returns {string} An JSON-encoding of an object that defines one or more
      * filename:filecontents mappings.
      */
-    function getFiles(uiParameters) {
-        let taids = uiParameters['file-taids'];
-        let files = uiParameters['files'];
+    async function getFiles(uiParameters) {
+        const taids = uiParameters['file-taids'];
+        let map = {};
+
         if (!$.isEmptyObject(taids)) {
-            let map = {};
-            for (var filename in taids) {
-                let id = taids[filename];
-                let value = $('#' + id).val();
-                map[filename] = value;
+            for (const filename in taids) {
+                if (taids.hasOwnProperty(filename)) {
+                    const id = taids[filename];
+                    const value = $('#' + id).val();
+                    map[filename] = value;
+                }
             }
-            return JSON.stringify(map);
-        } else {
-            return files;
         }
+
+        // Merge in any explicitly uploaded files.
+        for (const name in uploadFiles) {
+            if (uploadFiles.hasOwnProperty(name)) {
+                map[name] = uploadFiles[name]; // Copy contents across.
+            }
+        }
+
+        return Promise.resolve(JSON.stringify(map));
     }
 
     /**
@@ -203,17 +219,17 @@ define(['jquery'], function($) {
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
      */
-    function handleButtonClick(ajax, outputDisplayArea, aceSession, uiParameters) {
-        var htmlOutput = uiParameters['html-output'] !== null;
-        var maxLen = uiParameters['max-output-length'];
+    async function handleButtonClick(ajax, outputDisplayArea, aceSession, uiParameters) {
+        const htmlOutput = uiParameters['html-output'] !== null;
+        const maxLen = uiParameters['max-output-length'];
         outputDisplayArea.html('');
         if (htmlOutput) {
             outputDisplayArea.hide();
         }
         outputDisplayArea.next('div.filter-ace-inline-html').remove();
 
-        var code = aceSession.getValue();
-        var mapFunc = uiParameters['code-mapper'];
+        let code = aceSession.getValue();
+        const mapFunc = uiParameters['code-mapper'];
         if (mapFunc) {
             code = window[mapFunc](code);
         }
@@ -225,23 +241,23 @@ define(['jquery'], function($) {
                 sourcecode: code,
                 language: uiParameters.lang,
                 stdin: getStdin(uiParameters),
-                files: getFiles(uiParameters),
+                files: await getFiles(uiParameters),
                 params: uiParameters.params
             },
             done: function(responseJson) {
-                var response = JSON.parse(responseJson);
-                var error = diagnose(response);
+                const response = JSON.parse(responseJson);
+                const error = diagnose(response);
                 if (error === '') {
                     // If no errors or compilation error or runtime error
                     if (!htmlOutput || response.result !== RESULT_SUCCESS) {
                         // Either it's not HTML output or it is but we have compilation or runtime errors.
-                        var text = combinedOutput(response, maxLen);
+                        const text = combinedOutput(response, maxLen);
                         outputDisplayArea.show();
                         outputDisplayArea.html(escapeHtml(text));
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
                         // Repeat the deletion of previous output in case of multiple button clicks.
                         outputDisplayArea.next('div.filter-ace-inline-html').remove();
-                        var html = $("<div class='filter-ace-inline-html '" +
+                        const html = $("<div class='filter-ace-inline-html '" +
                                 "style='background-color:#eff;padding:5px;'" +
                                 response.output + "</div>");
                         outputDisplayArea.after(html);
@@ -249,7 +265,7 @@ define(['jquery'], function($) {
                 } else {
                     // If an error occurs, display the language string in the
                     // outputDisplayArea plus additional info.
-                    var extra = response.error == 0 ? combinedOutput(response, maxLen) : '';
+                    let extra = response.error == 0 ? combinedOutput(response, maxLen) : '';
                     if (error === 'error_unknown_runtime') {
                         extra += response.error ? '(Sandbox error code ' + response.error + ')' :
                                 '(Run result: ' + response.result + ')';
@@ -274,12 +290,12 @@ define(['jquery'], function($) {
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
-    function addUi(editNode, aceSession, uiParameters) {
-        var button = $("<button type='button' class='btn btn-secondary' " +
+    async function addUi(editNode, aceSession, uiParameters) {
+        const button = $("<button type='button' class='btn btn-secondary' " +
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button>");
-        var buttonDiv = $("<div></div>");
-        var outputDisplayArea = $("<pre style='width:100%;white-space:pre-wrap;background-color:#eff;" +
+        const buttonDiv = $("<div></div>");
+        const outputDisplayArea = $("<pre style='width:100%;white-space:pre-wrap;background-color:#eff;" +
                 "border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></pre>");
         buttonDiv.append(button);
         editNode.after(buttonDiv);
@@ -303,13 +319,15 @@ define(['jquery'], function($) {
      * @param {string} config The plugin configuration settings.
      */
     function applyAceHighlighting(root, config) {
-        var defaultParams = {
+        const defaultParams = {
             'lang': 'python3',
             'ace-lang': '',
             'font-size': '11pt',
             'start-line-number': null,
+            'min-lines': MIN_WINDOW_LINES,
+            'max-lines': MAX_WINDOW_LINES,
             'readonly': true,
-            'dark-theme-mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
+            'dark-theme-mode': config.dark_theme_mode  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, false, defaultParams);
     }
@@ -322,24 +340,26 @@ define(['jquery'], function($) {
      * @param {string} config The plugin configuration settings.
      */
     function applyAceInteractive(root, config) {
-        var defaultParams = {
+        const defaultParams = {
             'lang': 'python3',
             'ace-lang': '',
             'font-size': '11pt',
             'start-line-number': 1,
-            'button-name': config['button_label'],
+            'button-name': config.button_label,
             'readonly': null,
             'stdin': '',
             'stdin-taid': '',
-            'files': '',
             'file-taids': {},
+            'file-upload-id': null,
             'prefix': '',
             'suffix': '',
             'params': '{"cputime": 5}',
             'code-mapper': null,
             'html-output': null,
+            'min-lines': MIN_WINDOW_LINES,
+            'max-lines': MAX_WINDOW_LINES,
             'max-output-length': 30000,
-            'dark-theme-mode': config['dark_theme_mode']  // 0, 1, 2 for never, sometimes, always
+            'dark-theme-mode': config.ark_theme_mode  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, true, defaultParams);
     }
@@ -351,12 +371,11 @@ define(['jquery'], function($) {
      * @return {int} The length of the rendered line in pixels.
      */
     function lineLength(renderer, line) {
-      var chars = renderer.session.$getStringScreenWidth(line)[0];
-
-      var width = Math.max(chars, 2) * renderer.characterWidth // text size
-        + 2 * renderer.$padding // padding
-        + 2  // little extra for the cursor
-        + 0; // add border width if needed
+      const chars = renderer.session.$getStringScreenWidth(line)[0];
+      const width = Math.max(chars, 2) * renderer.characterWidth + // text size
+        2 * renderer.$padding + // padding
+        2  + // little extra for the cursor
+        0; // add border width if needed
 
       return width;
     }
@@ -367,23 +386,59 @@ define(['jquery'], function($) {
      * @return {String} The longest of the lines
      */
     function longest(lines) {
-        var longest = '';
-        for (var i = 0; i < lines.length; i++) {
-            if (lines[i].length > longest.length) {
-                longest = lines[i];
+        let longest = '';
+        for (const line of lines) {
+            if (line.length > longest.length) {
+                longest = line;
             }
         }
         return longest;
     }
+
+    /**
+     * Set up an onchange handler for file uploads. When the user selects
+     * a file, a FileReader is created to read the contents. While the read
+     * is in progress, a data-busy attribute is set. When the read is complete
+     * a data-file-contents object is defined to map name to contents.
+     * @param {HTMLelement} uploadElementId The input element of type file.
+     */
+    async function setupFileHandler(uploadElementId) {
+
+        /**
+         * Read a single file.
+         * @param {file} file A file from an 'input type=file' element filelist.
+         * @returns {Promise} A promise wrapping the given file's contents.
+         */
+        function readOneFile(file){
+            return new Promise((resolve, reject) => {
+              var rdr = new FileReader();
+              rdr.onload = () => {
+                resolve(rdr.result);
+              };
+              rdr.onerror = reject;
+              rdr.readAsText(file);
+            });
+        }
+
+        const element = $('#' + uploadElementId);
+        element.prop('multiple', '1');  // Workaround for the fact Moodle strips this.
+        element.change(async () => {
+            uploadFiles = {};
+            const files = element.prop('files');
+            for (const file of files) {
+                uploadFiles[file.name] = await readOneFile(file);
+            }
+        });
+    }
+
     /**
      * Replace the given PRE element with an element managed by the Ace editor.
-     * @param {type} pre The PRE element to be be replaced by an Ace editor.
+     * @param {HTMLelement} pre The PRE element to be be replaced by an Ace editor.
      * @param {bool} isInteractive True for ace-interactive otherwise false.
      * @param {type} uiParameters the User Interface parameters for the element.
      */
-    function applyToPre(pre, isInteractive, uiParameters) {
-        var MAX_WINDOW_LINES = 50;
-        var aceModeMap = {  // Ace modes for various languages (default: use language name).
+    async function applyToPre(pre, isInteractive, uiParameters) {
+        const aceModeMap = {  // Ace modes for various languages (default: use language name).
             'c': 'c_cpp',
             'cpp': 'c_cpp',
             'js': 'javascript',
@@ -394,8 +449,8 @@ define(['jquery'], function($) {
             'python2': 'python',
             'python3': 'python'
         };
-        var darkMode = uiParameters['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
-        var theme = null;
+        const darkMode = uiParameters['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
+        let theme = null;
 
         // Use light or dark theme according to user's prefers-color-scheme.
         // Default to light.
@@ -406,22 +461,26 @@ define(['jquery'], function($) {
             theme = ACE_LIGHT_THEME;
         }
 
-        var showLineNumbers = uiParameters['start-line-number'] ? true : false;
-        var aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters['lang'];
+        if (uiParameters['file-upload-id']) {
+            setupFileHandler(uiParameters['file-upload-id']);
+        }
+
+        const showLineNumbers = uiParameters['start-line-number'] ? true : false;
+        let aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters.lang;
         aceLang = aceLang.toLowerCase();
         if (aceLang in aceModeMap) {
             aceLang = aceModeMap[aceLang];
         }
-        var mode = 'ace/mode/' + aceLang;
-        var jqpre = $(pre);
-        var text = jqpre.text();
-        var lines = text.split("\n");
-        var numLines = lines.length;
-        var longestLine = longest(lines);
+        const mode = 'ace/mode/' + aceLang;
+        const jqpre = $(pre);
+        const text = jqpre.text();
+        const lines = text.split("\n");
+        const numLines = lines.length;
+        const longestLine = longest(lines);
 
-        var editNode = $("<div></div>"); // Ace editor manages this
-        var width = pre.scrollWidth;  // Our first guess at a minimum width.
-        var css = {
+        const editNode = $("<div></div>"); // Ace editor manages this
+        const width = pre.scrollWidth;  // Our first guess at a minimum width.
+        const css = {
             "margin": "6px 0px 6px 0px", // Top, right, bottom, left
             "line-height": "1.3",
             "min-width": width + "px"
@@ -432,8 +491,8 @@ define(['jquery'], function($) {
         var aceConfig = {
             newLineMode: "unix",
             mode: mode,
-            minLines: numLines,
-            maxLines: MAX_WINDOW_LINES,
+            minLines: Math.max(numLines, uiParameters['min-lines']),
+            maxLines: uiParameters['max-lines'],
             fontSize: uiParameters['font-size'],
             showLineNumbers: showLineNumbers,
             firstLineNumber: uiParameters['start-line-number'],
@@ -443,9 +502,9 @@ define(['jquery'], function($) {
             highlightActiveLine: showLineNumbers
         };
 
-        var editor = window.ace.edit(editNode.get(0), aceConfig);
-        var session = editor.getSession();
-        var aceWidestLine = lineLength(editor.renderer, longestLine);
+        const editor = window.ace.edit(editNode.get(0), aceConfig);
+        const session = editor.getSession();
+        const aceWidestLine = lineLength(editor.renderer, longestLine);
         if (aceWidestLine > width) {
             editNode.css({'min-width': Math.ceil(aceWidestLine) + "px"});
         }
@@ -477,13 +536,12 @@ define(['jquery'], function($) {
      * @param {object} defaultParams An object defining the allowed pre attributes
      * that control the state of the Ace editor and the (optional) UI.
      */
-    function applyAceAndBuildUi(root, isInteractive, defaultParams) {
-        var className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
-        var codeElements = root.getElementsByClassName(className);
+    async function applyAceAndBuildUi(root, isInteractive, defaultParams) {
+        const className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
+        const codeElements = root.getElementsByClassName(className);
 
-        for (let i=0; i < codeElements.length; i++) {
-            let pre = codeElements[i];
-            let uiParameters = getUiParameters(pre, defaultParams);
+        for (const pre of codeElements) {
+            const uiParameters = getUiParameters(pre, defaultParams);
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
                 applyToPre(pre, isInteractive, uiParameters);
             }

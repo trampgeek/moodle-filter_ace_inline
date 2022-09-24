@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-<!-- question: 29128  -->
+<!-- question: 29149  -->
   <question type="description">
     <name>
       <text>TestAceInline</text>
@@ -96,7 +96,42 @@ Order shall return.
         break
 </pre>
 <h2>Providing files</h2>
-<p>It is not usual to use 'ace-interactive-code' examples to read files. At present there are a couple of ways of passing in named strings as pseudo files (see the table of options below), but they're not very satisfactory. I'm looking into ways to upload files as part of the run. It may or may not happen. Watch this space!</p>
+<p>Files can uploaded into the working directory of the program in two different ways. Both require the author to add additional HTML elements to the page.</p>
+
+<ol>
+    <li>Named strings, or pseudo-files, can be defined by the <code>data-file-taids</code> attribute. This is a JSON object mapping filenames (fixed by the question author) to the IDs of textareas on the same page. The user can enter text into the textareas to define the pseudo-file contents prior to clicking Try it! The question author can hide the textareas if they wish to fix the file contents, e.g. as support files for the run.</li>
+    <li>Actual files can be uploaded by the user via a standard &lt;input type="file"&gt; element by the <code>data-file-upload-id</code> attribute, which is the HTML element ID of the &lt;input&gt; element.</li>
+</ol>
+<p>If both attributes are defined, files uploaded via the uploader override any identically named pseudo-files.</p>
+<h3>Pseudo file example: an HTML encoder</h3>
+<p>Copy the text that you wish to HTML encode into the text area, then click <em>Try it!</em></p>
+<textarea id="raw-text" rows="10" cols="80"></textarea>
+<pre class="ace-interactive-code" data-file-taids="{&quot;raw.txt&quot;: &quot;raw-text&quot;}">from html import escape
+with open('raw.txt') as infile:
+    raw = infile.read()
+    if len(raw.strip()) == 0:
+        print("NO INPUT SUPPLIED!")
+    else:
+        print(escape(raw))
+</pre>
+<h3><br></h3><h3>File upload example: an HTML encoder</h3>
+<p>Select a single file of type <em>.txt</em>, then click <em>Try it!</em></p>
+<input type="file" id="file-uploader" multiple="1">
+<pre class="ace-interactive-code" data-file-upload-id="file-uploader">import os
+from html import escape
+text_files = [filename for filename in os.listdir() if filename.endswith('.txt')]
+if len(text_files) == 0:
+    print("No '.txt' files found!")
+elif len(text_files) != 1:
+    print("Please upload only a single .txt file")
+else:
+    with open(text_files[0]) as infile:
+        raw = infile.read()
+        if len(raw.strip()) == 0:
+            print("EMPTY FILE!")
+        else:
+            print(escape(raw))
+</pre>
 
 <h2>The complete set of ace-interactive-code options</h2>
 <p>The complete set of ace-interactive-code elements is as follows.&nbsp;Attributes in bold have not been introduced above.</p>
@@ -146,19 +181,17 @@ Order shall return.
         </tr>
         <tr>
             <td>
-                <pre>data-files (deprecated)</pre>
+                <pre>data-file-upload-id</pre>
             </td>
-            <td>A JSON string defining a mapping from filename to file contents. Deprecated in favour of <code>data-file-taids.</code>
-            </td>
+            <td>The ID of an HTML input element of type file, which can be used to select multiple files for uploading into the working directory when Try it! is clicked.</td>
             <td>
             </td>
         </tr>
         <tr>
             <td>
-                <pre>data-file-taids
-(may soon also be deprecated!)</pre>
+                <pre>data-file-taids<br></pre>
             </td>
-            <td>A JSON string defining a mapping from filenames to textarea element IDs containing the file contents.</td>
+            <td>A JSON string defining a mapping from pseudo-filenames to textarea element IDs containing the pseudo-file contents. When Try it! is clicked, a file is created for each listed textarea and uploaded to the working directory.&nbsp;</td>
         </tr>
         <tr>
             <td>
@@ -172,6 +205,18 @@ Order shall return.
                 <pre>data-html-output</pre>
             </td>
             <td>If set (to any value) the output from the program is interpreted as raw html to insert into the DOM, rather than being escaped and displayed in a &lt;p&gt; element. </td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-max-lines</pre>
+            </td>
+            <td>The minimum number of lines to display in the Ace editor. Default 4.<br></td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-max-lines</pre>
+            </td>
+            <td>The maximum number of lines to display in the Ace editor without a scrollbar. Default 50.<br></td>
         </tr>
         <tr>
             <td>
@@ -260,7 +305,7 @@ print(f"Hi {name}, next year you'll be {age + 1}")
 </pre>
 
 <h2>Displaying matplotlib images</h2>
-<p>By using the <em>data-code-mapper </em>option (and/or <em>data-prefix </em>and <em>data-suffix</em>) in conjunction with <em>data-html-output</em> it is possible, with some difficulty, to define an ace-interactive-code block that will let students run matplotlib code and display both the textual output from the question and any output images. Here is an example, which also shows the use of the dark-theme mode. Inspect the HTML at your peril!
+<p>By using the <em>data-code-mapper </em>option (and/or <em>data-prefix </em>and <em>data-suffix</em>) in conjunction with <em>data-html-output</em> it is possible, with some difficulty, to define an ace-interactive-code block that will let students run matplotlib code and display both the textual output from the question and any output images. Here is an example, which also shows the use of the dark-theme mode and the use of the <em>data-max-lines</em> attribute (set to 15). Inspect the HTML at your peril!
 </p>
 
 <script>
@@ -302,7 +347,7 @@ for fname in os.listdir():
         return progToRun;
     }
 </script>
-<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" data-params="{&quot;cputime&quot;: 5}" data-dark-theme-mode="2">import matplotlib.pyplot as plt
+<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" data-params="{&quot;cputime&quot;: 5}" data-dark-theme-mode="2" data-max-lines="15">import matplotlib.pyplot as plt
 import numpy as np
 
 # Generate some text output

@@ -26,11 +26,13 @@ The plugin really provides two separate filter operations:
     a button labelled by default `Try it!` allows the student to execute the
     current state of the code and observe the outcome. With sufficient
     ingenuity on the part of the author,
-    graphical output and images can be displayed, too. The student
-    is not able to enter standard input so this filter does not provide a
-    fully interactive shell, although the author can pre-define
-    'canned' standard input and even supply pseudo text files to be read by
-    the code.
+    graphical output and images can be displayed, too. By adding additional
+    html elements and linking the \<pre> element to them, the author can
+    allow users to enter standard input to the run and even upload files.
+
+It should be noted that the 'interactive' elements are interactive only in the
+sense that the user can edit and run them; the user cannot interact with the
+code while it is running.
 
 The plugin requires the CodeRunner plugin to be installed first, since that
 furnishes the Ace editor required for filter operations.
@@ -114,23 +116,20 @@ the following attributes.
    be taken when the Try it! button is clicked. Overrides data-stdin if both
    are given (and data-stdin is deprecated).
 
-5. data-files. DEPRECATED. This is a JSON specification that defines any additional
-   files to be loaded into the working directory. Attribute names are file names
-   and attribute values are file contents. Since this is JSON, newlines in file
-   contents should be represented as \n. For example:
-
-        <pre class="ace-interactive-code"
-             data-files='{"blah.txt": "I am line 1\nAnd I am line 2\n"}'>
-        print(open("blah.txt").read())
-        </pre>
-
-6. data-file-taids. This is a JSON specification that maps from filename(s)
+5. data-file-taids. This attribute provides a pseudo-file interface where
+   the user is able to treat one or more supplementary textarea elements like
+   files, entering the pseudo-file contents into the textarea(s) before clicking
+   the Try it! button. The attribute is a JSON specification that maps from filename(s)
    to the ID(s) of textareas, or other HTML elements with a val() method, that
    will be used to provide the job with one or more files in the working
    directory. For each attribute, a file of the specified filename is created
    and the contents of that file are the contents of the associated textarea
    at the time the Try it! button is clicked. If data-files is also specified,
    it is ignored. [data-files is deprecated].
+
+6. data-file-ipload-id. This attribute is the ID of an \<input type="file>
+   element. The user can select one or more files using this element and the
+   files are uploaded into the program's working space when it is run.
 
 7. data-params. This is a JSON object that defines any Jobe sandbox parameters that
    are to have non-standard values, such as `cputime` and `memorylimit`. This
@@ -164,10 +163,14 @@ the following attributes.
    Matplotlib graphical output in Python is included in the repo `tests` folder
    (the file `demoaceinline.xml`).
 
-12. data-max-output-length. The maximum length of an output string (more or less).
+12. data-min-lines. The minimum number of lines to display in the Ace editor.
+
+13. data-max-lines. The maximum number of lines to display in the Ace editor.
+
+14. data-max-output-length. The maximum length of an output string (more or less).
    Output greater than this is truncated. Default 10,000 characters.
 
-13. data-dark-theme-mode. Selects when to use a dark mode for the Ace editor.
+15. data-dark-theme-mode. Selects when to use a dark mode for the Ace editor.
    Has values 0, 1 or 2 for no, maybe and yes. If 1 (maybe) is chosen,
    the dark theme will be used if the browser's prefers-color-scheme:dark media
    query returns a match, so this may change with browser, operating system or
@@ -246,6 +249,12 @@ addition to any text output. This final example needs to have numpy and
 matplotlib installed on the jobe server; they're not there by default.
 
 ## Change History
+
+ * Version 0.8.2, 25 September 2022. Introduce data-file-upload-id attribute
+   allowing the user to select files to upload into the workspace on Jobe when
+   the code is run. Introduce data-max-lines and data-min-lines to set limits
+   on size of Ace window. Remove old data-files attribute. Plus refactor
+   code to avoid all use of old-fashioned 'var' declarations in JavaScript.
 
  * Version 0.7, 21 September 2022. Introduced new attributes *stdin-taid* and
    *file-taids* to allow standard input or file contents to be loaded from
