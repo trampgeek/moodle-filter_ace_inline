@@ -30,7 +30,7 @@ define(['jquery'], function($) {
     const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
     const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
     const ACE_LIGHT_THEME = 'ace/theme/textmate';
-    const MIN_WINDOW_LINES = 4;
+    const MIN_WINDOW_LINES = 1;
     const MAX_WINDOW_LINES = 50;
 
     let uploadFiles = {};
@@ -81,6 +81,8 @@ define(['jquery'], function($) {
                         value = parseInt(value);
                     } else if (attrName === 'file-taids') {
                         value = JSON.parse(value);
+                    } else if (attrName === 'hidden') {
+                        value = true; // If the 'hidden' attribute exists, it's True!
                     }
                 } else {
                     value = defaultParams[attrName];
@@ -215,11 +217,11 @@ define(['jquery'], function($) {
      * Handle a click on the Try it! button.
      * @param {object} ajax The core Moodle ajax module.
      * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
-     * @param {object} aceSession The Ace editor session.
+     * @param {string} code The code to be run.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
      */
-    async function handleButtonClick(ajax, outputDisplayArea, aceSession, uiParameters) {
+    async function handleButtonClick(ajax, outputDisplayArea, code, uiParameters) {
         const htmlOutput = uiParameters['html-output'] !== null;
         const maxLen = uiParameters['max-output-length'];
         outputDisplayArea.html('');
@@ -228,7 +230,6 @@ define(['jquery'], function($) {
         }
         outputDisplayArea.next('div.filter-ace-inline-html').remove();
 
-        let code = aceSession.getValue();
         const mapFunc = uiParameters['code-mapper'];
         if (mapFunc) {
             code = window[mapFunc](code);
@@ -285,12 +286,12 @@ define(['jquery'], function($) {
      * If uiParameters['html-output'] is non-null,
      * the output paragraph is used only for error output, and the output of the run
      * is inserted directly into the DOM after the (usually hidden) paragraph.
-     * @param {html_element} editNode The Ace edit node after which the div should be inserted.
-     * @param {object} aceSession The Ace editor session.
+     * @param {html_element} insertionPoint The HTML element after which the div should be inserted.
+     * @param {function} getCode A function that retrieves the code to be run.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
-    async function addUi(editNode, aceSession, uiParameters) {
+    async function addUi(insertionPoint, getCode, uiParameters) {
         const button = $("<button type='button' class='btn btn-secondary' " +
                 "style='margin-bottom:6px;padding:2px 8px;'>" +
                 uiParameters['button-name'] + "</button>");
@@ -298,13 +299,13 @@ define(['jquery'], function($) {
         const outputDisplayArea = $("<pre style='width:100%;white-space:pre-wrap;background-color:#eff;" +
                 "border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></pre>");
         buttonDiv.append(button);
-        editNode.after(buttonDiv);
+        $(insertionPoint).after(buttonDiv);
         buttonDiv.after(outputDisplayArea);
         outputDisplayArea.hide();
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
             button.on('click', function() {
-                handleButtonClick(ajax, outputDisplayArea, aceSession, uiParameters);
+                handleButtonClick(ajax, outputDisplayArea, getCode(), uiParameters);
             });
         });
         M.util.js_complete('core/ajax');
@@ -344,6 +345,7 @@ define(['jquery'], function($) {
             'lang': 'python3',
             'ace-lang': '',
             'font-size': '11pt',
+            'hidden': false,
             'start-line-number': 1,
             'button-name': config.button_label,
             'readonly': null,
@@ -431,13 +433,14 @@ define(['jquery'], function($) {
         });
     }
 
+
     /**
-     * Replace the given PRE element with an element managed by the Ace editor.
-     * @param {HTMLelement} pre The PRE element to be be replaced by an Ace editor.
-     * @param {bool} isInteractive True for ace-interactive otherwise false.
-     * @param {type} uiParameters the User Interface parameters for the element.
+     *
+     * @param {html element} pre The pre element that the Ace editor is replacing.
+     * @param {object} uiParameters The UI parameters from the Pre element + defaults.
+     * @param {bool} isInteractive True if the code is interactive.
      */
-    async function applyToPre(pre, isInteractive, uiParameters) {
+    async function setUpAce(pre, uiParameters, isInteractive) {
         const aceModeMap = {  // Ace modes for various languages (default: use language name).
             'c': 'c_cpp',
             'cpp': 'c_cpp',
@@ -461,9 +464,6 @@ define(['jquery'], function($) {
             theme = ACE_LIGHT_THEME;
         }
 
-        if (uiParameters['file-upload-id']) {
-            setupFileHandler(uiParameters['file-upload-id']);
-        }
 
         const showLineNumbers = uiParameters['start-line-number'] ? true : false;
         let aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters.lang;
@@ -516,15 +516,34 @@ define(['jquery'], function($) {
 
         // Add a button and text area for output if ace-interactive-code.
         if (isInteractive) {
-            addUi(editNode, session, uiParameters);
+            const getCode = () => editor.getSession().getValue();
+            addUi(editNode, getCode, uiParameters);
         } else {
             editor.renderer.$cursorLayer.element.style.display = "none"; // Hide cursor.
         }
+    }
+
+    /**
+     * Replace the given PRE element with an element managed by the Ace editor,
+     * unless 'hidden' is true, in which case we just hide the PRE.
+     * @param {HTMLelement} pre The PRE element to be be replaced by an Ace editor.
+     * @param {bool} isInteractive True for ace-interactive otherwise false.
+     * @param {type} uiParameters the User Interface parameters for the element.
+     */
+    async function applyToPre(pre, isInteractive, uiParameters) {
+        const jqpre = $(pre);
+        if (uiParameters['file-upload-id']) {
+            setupFileHandler(uiParameters['file-upload-id']);
+        }
+
+        if (!uiParameters.hidden) {
+            setUpAce(pre, uiParameters, isInteractive);
+        } else if (isInteractive) { // Code is hidden but there's still a button to run it.
+            const getCode = () => jqpre.text();
+            addUi(pre, getCode, uiParameters);
+        }
+
         jqpre.hide();  // NB this sets display = 'none', checked above.
-
-        // After rendering, update the container min-width if the rendered
-        // length of the longest lines exceeds the preset min-width.
-
     }
 
     /**

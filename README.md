@@ -2,7 +2,7 @@
 
 Richard Lobb
 
-Version 0.7, 21 September 2022.
+Version 0.8, 28 September 2022.
 
 github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -249,6 +249,12 @@ addition to any text output. This final example needs to have numpy and
 matplotlib installed on the jobe server; they're not there by default.
 
 ## Change History
+
+ * Version 0.8.3, 28 September 2022. Introduce a data-hidden attribute that hides
+   the code to be executed, allowing authors to set up applet-like elements
+   that read data from UI elements or files and display output inline when the
+   button (probably renamed) is clicked. Also set data-min-lines default to 1;
+   4 was a bad idea.
 
  * Version 0.8.2, 25 September 2022. Introduce data-file-upload-id attribute
    allowing the user to select files to upload into the workspace on Jobe when
