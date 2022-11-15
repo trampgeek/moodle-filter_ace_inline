@@ -38,10 +38,35 @@ class behat_ace_inline extends behat_base {
     }
     
     /**
+     * Checks if the programming language is correct, else throws an
+     * expectation error with message.
+     * 
+     * @Given the programming language is :langString
+     * @throws ExpectationException The error message.
+     * @param string $langString The expected language string.
+     */
+    public function program_set_to($langString) {
+        
+        //Assume if python, is default as per settings.
+        if (!preg_match("/python/i", $langString)) {
+            $xpath = "//pre[@data-lang='$langString']";
+        }
+        else {
+            $xpath = "//pre";
+        }
+        $error = "Language is not set as $langString";
+        $driver = $this->getSession()->getDriver();
+        if (!$driver->find($xpath)) {
+            throw new ExpectationException($error, $this->getSession());
+        }
+        
+    }
+    
+    /**
      * Checks if expected word has syntax highlighting
      * 
      * @Then I should see :typeString highlighting on :textString  
-     * @throws ExpectedException The error message.
+     * @throws ExpectationException The error message.
      * @param string $typeString The type of highlighting expected
      * @param string $textString The expected keyword as a string.
      */
@@ -82,13 +107,19 @@ class behat_ace_inline extends behat_base {
             case 'string':
                 $acetype = 'ace_string';
                 break;
+            case 'include':
+                $acetype = 'ace_constant ace_other';
+                break;
             case 'constant':
                 $acetype = 'ace_constant ace_language';
+                break;
+            case 'function':
+                $acetype = 'ace_support ace_function';
                 break;
             default:
                 $acetype = 'error';
         }
         return ($acetype);
     }
-   
+    
 }
