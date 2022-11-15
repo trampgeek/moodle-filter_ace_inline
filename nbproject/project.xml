@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.php.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/php-project/1">
-            <name>moodle_filter_ace_inline</name>
+            <name>ace_inline</name>
         </data>
     </configuration>
 </project>

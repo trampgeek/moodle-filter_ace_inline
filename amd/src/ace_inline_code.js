@@ -361,7 +361,7 @@ define(['jquery'], function($) {
             'min-lines': MIN_WINDOW_LINES,
             'max-lines': MAX_WINDOW_LINES,
             'max-output-length': 30000,
-            'dark-theme-mode': config.ark_theme_mode  // 0, 1, 2 for never, sometimes, always
+            'dark-theme-mode': config.dark_theme_mode  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, true, defaultParams);
     }
