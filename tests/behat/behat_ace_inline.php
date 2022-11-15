@@ -38,20 +38,57 @@ class behat_ace_inline extends behat_base {
     }
     
     /**
-     * Checks if expected keyword has syntax highlighting
+     * Checks if expected word has syntax highlighting
      * 
-     * @Then /^I should see syntax highlighting on "(?P<expected>(?:[^"]|\\")*)"$/ 
+     * @Then I should see :typeString highlighting on :textString  
      * @throws ExpectedException The error message.
-     * @param string $expected The expected keyword as a string.
+     * @param string $typeString The type of highlighting expected
+     * @param string $textString The expected keyword as a string.
      */
-    public function i_should_see_syntax($expected) {
-        $xpath = "//span[@class='ace_keyword' and contains(text(), $expected)]";
-        $error = "'{$expected}' is not formatted as a keyword";
+    public function i_should_see_highlighting($typeString, $textString) {
+        
+        //Parse the typeString.
+        $acetype = $this->parse_type_string($typeString);
+
+        //Check if there is a <span> containing the expected text of that class-type.
+        $xpath = "//span[@class='$acetype' and contains(text(), $textString)]";
+        $error = "'{$textString}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
         if (!$driver->find($xpath)) {
+            if ($acetype == 'error') {
+                $error = "'{$typeString}' is not a valid type";
+            }
             throw new ExpectationException($error, $this->getSession());
         }
     }
     
-
+    /**
+     * Parses a string input and returns the corresponding acetype identifier
+     * for highlight-checking purposes.
+     * 
+     * @param string $input The string to be parsed.
+     * @return string The corresponding acetype identifier.
+     */
+    private function parse_type_string($input) {
+        
+        //Handle some basic identifiers; enough to identify a language
+        switch ($input) {
+            case 'identifier':
+                $acetype = 'ace_identifier';
+                break;
+            case 'keyword':
+                $acetype = 'ace_keyword';
+                break;
+            case 'string':
+                $acetype = 'ace_string';
+                break;
+            case 'constant':
+                $acetype = 'ace_constant ace_language';
+                break;
+            default:
+                $acetype = 'error';
+        }
+        return ($acetype);
+    }
+   
 }
