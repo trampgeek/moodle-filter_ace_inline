@@ -78,13 +78,57 @@ class behat_ace_inline extends behat_base {
 
         //Check if there is a <span> containing the expected text of that class-type.
         //Needs starts-with as C's function tag is particular and boolean flags.
-        $xpath = "//span[starts-with(@class, '$acetype')and contains(text(), $textString)]";
+        $xpath = "//span[starts-with(@class, '$acetype') and contains(text(), $textString)]";
         $error = "'{$textString}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
         if (!$driver->find($xpath)) {
             if ($acetype == 'error') {
                 $error = "'{$typeString}' is not a valid type";
             }
+            throw new ExpectationException($error, $this->getSession());
+        }
+    }
+    
+    /**
+     * Checks if the starting line is the correct line to start from. Searches
+     * the text for the correct active line and gets the number. Assumes ace starts
+     * from specified line and line++ per line.
+     * 
+     * @Then I should see lines starting at :number
+     * @param string $number The number expected to be found at the start.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_lines_starting_at($number) {
+        
+        //Changes the number to a quoted number for exact number.
+        $quotedNumber = "\"{$number}\"";
+        
+        //Checks to see if the first line starts with the right number
+        $xpath = "//div[contains(@class, 'ace_gutter-active-line')and text()=$quotedNumber]";
+        $driver = $this->getSession()->getDriver();
+        $error = "Code does not start at line {$quotedNumber}";
+        if (!$driver->find($xpath)) {
+            throw new ExpectationException($error, $this->getSession());
+        }
+    }
+    
+    /**
+     * Checks if the font-size is as specified. Takes in a font-size in 
+     * format "11pt" etc. and checks if the style contains specified font-size.
+     * 
+     * @Then I should see font sized :fontSize
+     * @param string $fontSize The size on the font in format "11pt" etc.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_font_size($fontSize) {
+      
+        //Turn the font size into an appropriate string to search in style.
+        $fontString = "'{$fontSize};'";
+        
+        $xpath = "//div[starts-with(@class, ' ace_editor') and contains(@style, $fontString)]";
+        $driver = $this->getSession()->getDriver();
+        $error = "Font size is not {$fontSize}";
+        if (!$driver->find($xpath)) {
             throw new ExpectationException($error, $this->getSession());
         }
     }
