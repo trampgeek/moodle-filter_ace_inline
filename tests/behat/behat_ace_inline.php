@@ -59,7 +59,6 @@ class behat_ace_inline extends behat_base {
         if (!$driver->find($xpath)) {
             throw new ExpectationException($error, $this->getSession());
         }
-        
     }
     
     /**
@@ -100,6 +99,7 @@ class behat_ace_inline extends behat_base {
      */
     private function parse_type_string($input) {
         
+        //A array map of keywords to identifiers.
         $array = [
             "identifier" => "ace_identifier",
             "keyword" => "ace_keyword",
