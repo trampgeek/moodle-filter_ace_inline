@@ -6,9 +6,8 @@
             <text>javascriptdemo</text>
         </name>
         <questiontext format="html">
-        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Java syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Java designed to test ace and nonsensical C and Python</p>
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo JavaScript syntax-highlighting test, therefore contains nonsensical (but syntactically valid) JavaScript designed to test ace and nonsensical Java, C and Python</p>
 <br> <pre class="ace-highlight-code" data-lang="javascript">
-import java.util.ArrayList;
 
 /** Info
 */
