@@ -14,7 +14,7 @@ Feature: Visual checks for Python syntax highlighting
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I enable ace inline filter
+    And I have enabled ace inline filter
     And I am on the "Course 1" "core_question > course question import" page logged in as teacher
     And I upload "filter/ace_inline/tests/fixtures/pythondemo.xml" file to "Import" filemanager
     And I set the field "id_format_xml" to "1"

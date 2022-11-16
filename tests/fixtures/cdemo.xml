@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-    <!--  question: 233   -->
+    <!--  question: 154   -->
     <question type="description">
         <name>
-            <text>javademo</text>
+            <text>cdemo</text>
         </name>
         <questiontext format="html">
-        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Java syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Java designed to test ace and nonsensical C and Python</p>
-<br> <pre class="ace-highlight-code" data-lang="java">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo C(++) syntax-highlighting test, therefore contains nonsensical (but syntactically valid) C designed to test ace and nonsensical Java and Python</p>
+<br> <pre class="ace-highlight-code" data-lang="c">
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main(void) {
+    cout << "Hello world" << endl;
+    putchar('x');
+    bool this = true;
+}
+
 import java.util.ArrayList;
 
-/** Info
-*/
 public abstract class Demo {
 
     public static void main(String[] args) {
@@ -20,31 +28,15 @@ public abstract class Demo {
     boolean True = true;
     Boolean False = false;
     
-    Integer.toString(42);
-    
-    for (int i; i < 30; i++) {
-        null;
-    }
 }
+
+let
 
 def other():
     """something"""
     return None;
     
-function trial()
-{
-    let or = 'one';
-    for (const a of "js") {
-        var hi = 0;
-    }
-    return;
-}
 
-#include <stdio.h>
-int main(void) {
-    putchar('x');
-    bool true; 
-}
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>
         </questiontext>

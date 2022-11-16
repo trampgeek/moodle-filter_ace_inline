@@ -31,7 +31,7 @@ class behat_ace_inline extends behat_base {
     /**
      * Enables the ace inline functionality globally for testing purposes.
      * 
-     * @Given /^I enable ace inline filter/
+     * @Given /^I have enabled ace inline filter/
      */
     public function i_enable_ace_inline() {
         filter_set_global_state('ace_inline', TEXTFILTER_ON, 0);
@@ -63,7 +63,9 @@ class behat_ace_inline extends behat_base {
     }
     
     /**
-     * Checks if expected word has syntax highlighting
+     * Checks if expected word has syntax highlighting. Takes in the 
+     * type expected and the text expected and searches for the text
+     * within a <span> container of the appropriate type.
      * 
      * @Then I should see :typeString highlighting on :textString  
      * @throws ExpectationException The error message.
@@ -76,7 +78,8 @@ class behat_ace_inline extends behat_base {
         $acetype = $this->parse_type_string($typeString);
 
         //Check if there is a <span> containing the expected text of that class-type.
-        $xpath = "//span[@class='$acetype' and contains(text(), $textString)]";
+        //Needs starts-with as C's function tag is particular and boolean constant tags.
+        $xpath = "//span[starts-with(@class, '$acetype')and contains(text(), $textString)]";
         $error = "'{$textString}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
         if (!$driver->find($xpath)) {

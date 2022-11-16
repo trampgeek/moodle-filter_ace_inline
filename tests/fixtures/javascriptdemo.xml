@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-    <!--  question: 233   -->
+    <!--  question: 533   -->
     <question type="description">
         <name>
-            <text>javademo</text>
+            <text>javascriptdemo</text>
         </name>
         <questiontext format="html">
         <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Java syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Java designed to test ace and nonsensical C and Python</p>
-<br> <pre class="ace-highlight-code" data-lang="java">
+<br> <pre class="ace-highlight-code" data-lang="javascript">
 import java.util.ArrayList;
 
 /** Info
 */
+function trial()
+{
+    let or = 'one';
+    for (const a of "js") {
+        var hi = 0;
+    }
+    return;
+}
+
 public abstract class Demo {
 
     public static void main(String[] args) {
@@ -31,15 +40,6 @@ def other():
     """something"""
     return None;
     
-function trial()
-{
-    let or = 'one';
-    for (const a of "js") {
-        var hi = 0;
-    }
-    return;
-}
-
 #include <stdio.h>
 int main(void) {
     putchar('x');
