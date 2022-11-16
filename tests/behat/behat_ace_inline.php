@@ -78,7 +78,7 @@ class behat_ace_inline extends behat_base {
         $acetype = $this->parse_type_string($typeString);
 
         //Check if there is a <span> containing the expected text of that class-type.
-        //Needs starts-with as C's function tag is particular and boolean constant tags.
+        //Needs starts-with as C's function tag is particular and boolean flags.
         $xpath = "//span[starts-with(@class, '$acetype')and contains(text(), $textString)]";
         $error = "'{$textString}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
@@ -92,36 +92,31 @@ class behat_ace_inline extends behat_base {
     
     /**
      * Parses a string input and returns the corresponding acetype identifier
-     * for highlight-checking purposes.
+     * for highlight-checking purposes. Identifier is just generic-type
+     * span class.
      * 
      * @param string $input The string to be parsed.
      * @return string The corresponding acetype identifier.
      */
     private function parse_type_string($input) {
         
-        //Handle some basic identifiers; enough to identify a language
-        switch ($input) {
-            case 'identifier':
-                $acetype = 'ace_identifier';
-                break;
-            case 'keyword':
-                $acetype = 'ace_keyword';
-                break;
-            case 'string':
-                $acetype = 'ace_string';
-                break;
-            case 'include':
-                $acetype = 'ace_constant ace_other';
-                break;
-            case 'constant':
-                $acetype = 'ace_constant ace_language';
-                break;
-            case 'function':
-                $acetype = 'ace_support ace_function';
-                break;
-            default:
-                $acetype = 'error';
+        $array = [
+            "identifier" => "ace_identifier",
+            "keyword" => "ace_keyword",
+            "string" => "ace_string",
+            "include" => "ace_constant ace_other",
+            "constant" => "ace_constant ace_language",
+            "function" => "ace_support ace_function",
+            "sqltype" => "ace_storage ace_type"
+        ];
+        
+        if (isset($array[$input])) {
+            $acetype = $array[$input];
         }
+        else {
+            $acetype = "error";
+        }
+        
         return ($acetype);
     }
     
