@@ -45,6 +45,7 @@ Feature: Visual checks for any UI specified customisation
 
   Scenario: Checks if setting the ACE highlighting language still runs independently from CodeRunner
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    And I should see "identifier" highlighting on "print"
     And I should not see "This ran Python"
     Then I press "notJS"
     Then I should see "This ran Python"

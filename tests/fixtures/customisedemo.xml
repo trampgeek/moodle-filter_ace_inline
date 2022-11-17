@@ -25,14 +25,14 @@
 }</pre>
 
 <pre class="ace-interactive-code" data-lang="python" data-button-name="Run me" >def some_function():
-    print("this")
+    return
     
 }</pre>
 
-<pre class="ace-interactive-code" data-ace-lang="javascript" data-button-name="notJS">def some_function():
+<pre class="ace-interactive-code" data-ace-lang="javascript" data-button-name="notJS">def other_function():
     alpha_list = ("This", "ran", "Python")
     print(" ".join(alpha_list))
-some_function()
+other_function()
 </pre>
 
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
