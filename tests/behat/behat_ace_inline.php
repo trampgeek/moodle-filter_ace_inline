@@ -164,4 +164,14 @@ class behat_ace_inline extends behat_base {
         return ($acetype);
     }
     
+    /**
+     * Sets the webserver sandbox to enabled for testing purposes.
+     * 
+     * @Given /^the webserver sandbox is enabled/
+     */
+    public function the_sandbox_is_enabled() {
+        
+        set_config('wsenabled', 1, 'qtype_coderunner');
+    }
+    
 }

@@ -7,10 +7,32 @@
         </name>
         <questiontext format="html">
         <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo showing different customisable options</p>
-<br> <pre class="ace-highlight-code" data-lang="java" data-font-size="16pt" start-line-number="5">public class hello {
+<br> <pre class="ace-interactive-code" data-lang="java" data-font-size="16pt" data-start-line-number="5" data-max-lines="6">public class hello {
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
+    
+    String shown = "I should see this line";
+    String hidden = "I should not see this line";
+}
+</pre>
+<pre class="ace-highlight-code" data-lang="java" data-min-lines="2">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+    
+    String cutoff = "This should not be cut off";
+}</pre>
+
+<pre class="ace-interactive-code" data-lang="python" data-button-name="Run me" >def some_function():
+    print("this")
+    
+}</pre>
+
+<pre class="ace-interactive-code" data-ace-lang="javascript" data-button-name="notJS">def some_function():
+    alpha_list = ("This", "ran", "Python")
+    print(" ".join(alpha_list))
+some_function()
 </pre>
 
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
