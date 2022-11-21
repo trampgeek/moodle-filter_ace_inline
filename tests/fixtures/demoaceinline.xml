@@ -223,7 +223,7 @@ else:
             <td>
                 <pre>data-max-output-length</pre>
             </td>
-            <td>The limit to the displayed length of stdout and stderr strings. Strings longer than this are truncated prior to display. Default: 10,000.<br></td>
+            <td>The limit to the displayed length of stdout and stderr strings. Strings longer than this are truncated prior to display. Default: 30,000.<br></td>
         </tr>
         <tr>
             <td>
@@ -236,18 +236,6 @@ else:
                 <pre>data-prefix</pre>
             </td>
             <td>Defines code that will be inserted before the code from the Ace editor (so the student doesn't see it). An extra newline is not inserted between the prefix and the visible code - you must insert it explicitly if you want one.</td>
-        </tr>
-        <tr>
-            <td>
-                <pre>data-readonly</pre>
-            </td>
-            <td>If set, to any value, prevents the user modifying the supplied code.</td>
-        </tr>
-        <tr>
-            <td>
-                <pre>data-start-line-number</pre>
-            </td>
-            <td>Sets the number to use for the first line of code in the Ace editor. Default 1.</td>
         </tr>
         <tr>
             <td>

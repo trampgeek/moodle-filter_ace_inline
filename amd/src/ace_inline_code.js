@@ -32,6 +32,7 @@ define(['jquery'], function($) {
     const ACE_LIGHT_THEME = 'ace/theme/textmate';
     const MIN_WINDOW_LINES = 1;
     const MAX_WINDOW_LINES = 50;
+    const MAX_OUTPUT_LENGTH = 30000;
 
     let uploadFiles = {};
     /**
@@ -79,8 +80,6 @@ define(['jquery'], function($) {
                         value = value.toLowerCase() === 'none' ? null : parseInt(value);
                     } else if (attrName === 'min-lines' || attrName === 'max-lines') {
                         value = parseInt(value);
-                    } else if (attrName === 'file-taids') {
-                        value = JSON.parse(value);
                     } else if (attrName === 'hidden') {
                         value = true; // If the 'hidden' attribute exists, it's True!
                     }
@@ -190,10 +189,16 @@ define(['jquery'], function($) {
      * filename:filecontents mappings.
      */
     async function getFiles(uiParameters) {
-        const taids = uiParameters['file-taids'];
+        let taids = uiParameters['file-taids'];
         let map = {};
 
         if (!$.isEmptyObject(taids)) {
+            // Catches JSON parse errors for file names.
+            try {
+                taids = JSON.parse(taids);
+            } catch (SyntaxError) {
+                return Promise.resolve('error');
+            }
             for (const filename in taids) {
                 if (taids.hasOwnProperty(filename)) {
                     const id = taids[filename];
@@ -360,8 +365,8 @@ define(['jquery'], function($) {
             'html-output': null,
             'min-lines': MIN_WINDOW_LINES,
             'max-lines': MAX_WINDOW_LINES,
-            'max-output-length': 30000,
-            'dark-theme-mode': config.ark_theme_mode  // 0, 1, 2 for never, sometimes, always
+            'max-output-length': MAX_OUTPUT_LENGTH,
+            'dark-theme-mode': config.dark_theme_mode  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, true, defaultParams);
     }

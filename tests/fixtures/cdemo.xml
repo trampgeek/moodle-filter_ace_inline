@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 154   -->
+    <question type="description">
+        <name>
+            <text>cdemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo C(++) syntax-highlighting test, therefore contains nonsensical (but syntactically valid) C designed to test ace and nonsensical Java and Python</p>
+<br> <pre class="ace-highlight-code" data-lang="c">
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main(void) {
+    cout << "Hello world" << endl;
+    putchar('x');
+    bool this = true;
+}
+
+import java.util.ArrayList;
+
+public abstract class Demo {
+
+    public static void main(String[] args) {
+    System.out.println("running");
+    
+    boolean True = true;
+    Boolean False = false;
+    
+}
+
+let
+
+def other():
+    """something"""
+    return None;
+    
+
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+

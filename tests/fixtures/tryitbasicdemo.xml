@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 111   -->
+    <question type="description">
+        <name>
+            <text>tryitbasicdemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">Below are three implementations of basic Try it! functions in Java, Python and C.&nbsp;</p>
+<pre class="ace-interactive-code" data-lang="java" data-button-name="Java">public class hello {
+    public static void main(String[] args) {
+    	String output = "";
+        String[] list = new String[] {"T", "h", "i", "s", " ", "r", "a", "n", " ", "J", "a", "v", "a"};
+        for (int i = 0; i &lt; 13; i++) {
+        	output += list[i];
+        }
+        System.out.println(output);
+    }
+}</pre>
+
+<pre class="ace-interactive-code" data-button-name="Python">def some_function():
+    alpha_list = ("This", "ran", "Python")
+    print(" ".join(alpha_list))
+some_function()
+</pre>
+
+<pre class="ace-interactive-code" data-lang="c" data-button-name="C">#include &lt;stdio.h&gt;
+int main() {
+	char beta[11] = {'T', 'h', 'i', 's', ' ', 'r', 'a', 'n', ' ', 'C', '\0'};
+	printf("%s", beta);
+  }
+</pre>
+<p dir="ltr" style="text-align: left;"><br></p> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+

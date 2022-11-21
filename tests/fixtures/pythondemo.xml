@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 60   -->
+    <question type="description">
+        <name>
+            <text>pythondemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Python syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Python designed to test ace and nonsensical Java and C</p>
+<br> <pre class="ace-highlight-code">
+import math as m
+
+MATH_CONSTANT = 42
+
+class Dummy:
+	"""Class"""
+  
+  def nothing(self, 0, alpha):
+  	while True:
+    	pass
+      
+    if False:
+    	None
+    elif True:
+    	print(f"{gamma} is wrong")
+    else:
+    	break
+    
+    for i in range(30):
+    	i += 1
+    
+    try:
+    	alpha = 90
+    except ValueError:
+    	alpha = "beta"
+  return
+  
+public class demo {
+	public static void main(String[] args) {
+  	System.out.println("No good");
+        null;
+  }
+}
+
+#include <stdio.h>
+int main(void) {
+    putchar('x');
+    true;
+}
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
