@@ -35,6 +35,15 @@
 other_function()
 </pre>
 
+<pre class="ace-interactive-code" data-max-output-length="10" data-lang="c" data-button-name="uptoten">#include &lt;stdio.h&gt;
+int main() {
+	size_t i = 0;
+	for (; i &lt; 40000; i++) {
+		printf("%lu", i);
+ }
+ }
+</pre>
+
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>
         </questiontext>

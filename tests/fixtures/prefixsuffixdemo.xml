@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 232   -->
+    <question type="description">
+        <name>
+            <text>prefixsuffixdemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This contains demonstrations of uses of interacting with prefixed inputs.</p>
+<br> <textarea id="textarea" rows="5" cols="20">Jacob
+11</textarea>
+<pre class="ace-interactive-code" data-stdin-taid="textarea" data-button-name="prefix" data-prefix="_saved_input = input
+def input(prompt=''):
+    print(prompt, end='')
+    line = _saved_input()
+    print(line)
+    return line
+">name = input("What's your name? ")
+age = int(input("How old are you? "))
+print(f"Hi {name}, next year you'll be {age + 1}")
+</pre>
+
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+

@@ -32,7 +32,7 @@ define(['jquery'], function($) {
     const ACE_LIGHT_THEME = 'ace/theme/textmate';
     const MIN_WINDOW_LINES = 1;
     const MAX_WINDOW_LINES = 50;
-    const MAX_OUTPUT_LINES = 30000;
+    const MAX_OUTPUT_LENGTH = 30000;
 
     let uploadFiles = {};
     /**
@@ -365,7 +365,7 @@ define(['jquery'], function($) {
             'html-output': null,
             'min-lines': MIN_WINDOW_LINES,
             'max-lines': MAX_WINDOW_LINES,
-            'max-output-length': MAX_OUTPUT_LINES,
+            'max-output-length': MAX_OUTPUT_LENGTH,
             'dark-theme-mode': config.dark_theme_mode  // 0, 1, 2 for never, sometimes, always
         };
         applyAceAndBuildUi(root, true, defaultParams);

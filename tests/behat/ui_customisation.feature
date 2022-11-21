@@ -22,11 +22,11 @@ Feature: Visual checks for any UI specified customisation
     And I press "id_submitbutton"
     Then I press "Continue"
 
-  Scenario: Checks the text is starting at the right position
+  Scenario: Checks the text is starting at the right position (set to start at 5)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     Then I should see lines starting at "5"
   
-  Scenario: Checks the font size has changed appropriately when set
+  Scenario: Checks the font size has changed appropriately when set (set to 16pt size)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     Then I should see font sized "16pt"
   
@@ -50,5 +50,10 @@ Feature: Visual checks for any UI specified customisation
     And I should not see "This ran Python"
     Then I press "notJS"
     Then I should see "This ran Python"
+
+  Scenario: Checks if setting the max output length gives the appropriate output (maxed tp 1-
+    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    And I press "uptoten"
+    Then I should see "0123456789... (truncated)"
 
 
