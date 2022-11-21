@@ -80,8 +80,6 @@ define(['jquery'], function($) {
                         value = value.toLowerCase() === 'none' ? null : parseInt(value);
                     } else if (attrName === 'min-lines' || attrName === 'max-lines') {
                         value = parseInt(value);
-                    } else if (attrName === 'file-taids') {
-                        value = JSON.parse(value);
                     } else if (attrName === 'hidden') {
                         value = true; // If the 'hidden' attribute exists, it's True!
                     }
@@ -191,10 +189,16 @@ define(['jquery'], function($) {
      * filename:filecontents mappings.
      */
     async function getFiles(uiParameters) {
-        const taids = uiParameters['file-taids'];
+        let taids = uiParameters['file-taids'];
         let map = {};
 
         if (!$.isEmptyObject(taids)) {
+            // Catches JSON parse errors for file names.
+            try {
+                taids = JSON.parse(taids);
+            } catch (SyntaxError) {
+                return Promise.resolve('error');
+            }
             for (const filename in taids) {
                 if (taids.hasOwnProperty(filename)) {
                     const id = taids[filename];
