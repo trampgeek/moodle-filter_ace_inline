@@ -164,7 +164,8 @@ define(['jquery'], function($) {
         return response.cmpinfo + limit(response.output) + limit(response.stderr);
     }
 
-    /**{object} uiParameters
+    /**
+     * Gets the uiParameter of 'stdin-taid' which should be the id of an element 
      *
      * @param {object} uiParameters The various parameters (mostly attributes of the pre element)
      * @returns {string} The specified standard input or an empty string if no
@@ -183,6 +184,9 @@ define(['jquery'], function($) {
     }
 
     /**
+     * Gets the uiParameter 'file-taids' and parses it if it is JSON. Promises an
+     * arbitrary non-JSON object for error handling in the run_in_sandbox.php, else
+     * promises a JSON object of appropriate mappings
      *
      * @param {object} uiParameters The various parameters (mostly attributes of the pre element)
      * @returns {string} An JSON-encoding of an object that defines one or more

@@ -37,4 +37,9 @@ Feature: Checks that prefix and suffix code customisation is implemented correct
     And I press "prefix"
     Then I should see "Hi Jessica, next year you'll be 24"
 
+  Scenario: Checks the suffix can run and give correct output
+    When I am on the "prefixsuffixdemo" "core_question > preview" page logged in as teacher
+    And I press "mystery"
+    Then I should see "desrever"
+
 

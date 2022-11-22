@@ -25,6 +25,8 @@
  */
 
 use Behat\Mink\Exception\ExpectationException as ExpectationException;
+use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
+
 
 class behat_ace_inline extends behat_base {
     
@@ -174,4 +176,45 @@ class behat_ace_inline extends behat_base {
         set_config('wsenabled', 1, 'qtype_coderunner');
     }
     
+    /**
+     * Presses a named button. Checks if there is an error,
+     * 
+     * @Then there is an alert of :error when I press :button
+     * @param string The expected error message when alerted
+     * @param string The name of the alert button.
+     */
+    public function there_is_an_alert_when_I_click($errorText, $button) {
+        
+        // Gets the item of the button.
+        $xpath = "//button[@type='button' and text()='$button']";
+        $session = $this->getSession();
+        $item = $session->getSelectorsHandler()->selectorToXpath('xpath', $xpath);
+        $element = $session->getPage()->find('xpath', $item);
+        
+        //Makes sure there is an element before continuing.
+        if ($element) {
+            $element->click();
+        } else {
+            throw new ExpectationException("No button '{$button}'", $this->getSession());
+        }
+        try {
+            // Gets you to wait for the pending JS alert by sleeping. 
+            sleep(1);
+            // Gets the alert and its text.
+            $alert = $this->getSession()->getDriver()->getWebDriver()->switchTo()->alert();
+            $alertText = $alert->getText();
+        } catch (NoSuchAlertException $ex) {
+            throw new ExpectationException("No alert was triggered appropriately", $this->getSession());
+        }
+        
+        // Throws an error if expected error text doesn't match alert.
+        if (!str_contains($alertText, $errorText)) {
+            throw new ExpectationException("Wrong alert; alert given: {$alertText}", $this->getSession());
+        } else {
+            // To stop the Behat tests from throwing their own errors.
+            $alert->accept();
+        }
+    }
+    
+ 
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 232   -->
+    <question type="description">
+        <name>
+            <text>taidsdemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This contains demonstrations of uses of interacting with taids for input.</p>
+<br> <textarea id="textarea" rows="5" cols="40">Hel
+lo
+ World
+!</textarea>
+<pre class="ace-interactive-code" data-stdin-taid="textarea" data-button-name="taids">def read_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    print(output)
+read_me()
+</pre>
+
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+
