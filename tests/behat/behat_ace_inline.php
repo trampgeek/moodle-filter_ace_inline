@@ -177,9 +177,9 @@ class behat_ace_inline extends behat_base {
     }
     
     /**
-     * Presses a named button. Checks if there is an error,
+     * Presses a named button. Checks if there is a specified error text displayed.
      * 
-     * @Then there is an alert of :error when I press :button
+     * @Then I should see an alert of :error when I press :button
      * @param string The expected error message when alerted
      * @param string The name of the alert button.
      */

@@ -22,6 +22,21 @@ lo
 read_me()
 </pre>
 
+<textarea id="randombox" rows="5" cols="40">Yo
+u should
+ not see this
+!</textarea>
+<pre class="ace-interactive-code" data-stdin-taid="wrongid" data-button-name="wrongname">def read_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    print(output)
+read_me()
+</pre>
+
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>
         </questiontext>

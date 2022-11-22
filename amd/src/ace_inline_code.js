@@ -94,18 +94,22 @@ define(['jquery'], function($) {
 
     /**
      * Get the specified language string using
-     * AJAX and plug it into the given textarea
+     * AJAX and plug it into the given textarea. If no specified textarea, then an alert is triggered.
      * @param {string} langStringName The language string name.
      * @param {DOMnode} textarea The textarea into which the error message
-     * should be plugged.
+     * should be plugged. If null, creates an alert
      * @param {string} additionalText Extra text to follow the result code.
      */
     function setLangString(langStringName, textarea, additionalText) {
         require(['core/str'], function(str) {
             const promise = str.get_string(langStringName, 'filter_ace_inline');
             $.when(promise).then(function(message) {
-                textarea.show();
-                textarea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
+                if (textarea === null) {
+                    alert(message + additionalText);
+                } else {
+                    textarea.show();
+                    textarea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
+                }
             });
         });
     }
@@ -165,8 +169,7 @@ define(['jquery'], function($) {
     }
 
     /**
-     * Gets the uiParameter of 'stdin-taid' which should be the id of an element 
-     *
+     * Gets the uiParameter of 'stdin-taid' which should be the id of an element.
      * @param {object} uiParameters The various parameters (mostly attributes of the pre element)
      * @returns {string} The specified standard input or an empty string if no
      * stdin specified.
@@ -175,7 +178,14 @@ define(['jquery'], function($) {
         const taid = uiParameters['stdin-taid'];
         const stdin = uiParameters.stdin;
         if (taid) {
-            return $('#' + taid).val();
+            let output = $('#' + taid).val();
+            // Handles invalid textarea names.
+            if (!output) {
+                setLangString('error_taid_invalid', null, taid);
+                return '';
+            } else {
+                return output;
+            }
         } else if (stdin) {
             return stdin;
         } else {
@@ -268,7 +278,7 @@ define(['jquery'], function($) {
                         // Repeat the deletion of previous output in case of multiple button clicks.
                         outputDisplayArea.next('div.filter-ace-inline-html').remove();
                         const html = $("<div class='filter-ace-inline-html '" +
-                                "style='background-color:#eff;padding:5px;'" +
+                                "style='background-color:#eff;padding:5px;'>" +
                                 response.output + "</div>");
                         outputDisplayArea.after(html);
                     }

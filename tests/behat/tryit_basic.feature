@@ -45,4 +45,4 @@ Feature: Basic Try it! button checks to make sure the code runs
 
   Scenario: Checks that an incorrect language throws an appropriate error
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
-    And there is an alert of 'qtype_coderunner/Language "notalanguage" is not known' when I press "nolanguage" 
+    And I should see an alert of 'qtype_coderunner/Language "notalanguage" is not known' when I press "nolanguage" 
