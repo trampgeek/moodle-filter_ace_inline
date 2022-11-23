@@ -44,6 +44,7 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
 
   Scenario: Checks that one can see an alert when an incorrect id is inputted
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
-    Then I should see an alert of "Id not found for element: wrongid" when I press "wrongname"
+    And I press "wrongname"
+    Then I should see "Id not found for element"
 
 

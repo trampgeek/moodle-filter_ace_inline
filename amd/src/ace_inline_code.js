@@ -93,23 +93,19 @@ define(['jquery'], function($) {
     }
 
     /**
-     * Get the specified language string using
-     * AJAX and plug it into the given textarea. If no specified textarea, then an alert is triggered.
+     * Set the specified language string using
+     * AJAX and put it into the outputTextArea
      * @param {string} langStringName The language string name.
-     * @param {DOMnode} textarea The textarea into which the error message
-     * should be plugged. If null, creates an alert
+     * should be plugged.
      * @param {string} additionalText Extra text to follow the result code.
+     * @param {object} outputTextArea Pre-formatted area to put text.
+     * @returns string The text to be outputed in a box.
      */
-    function setLangString(langStringName, textarea, additionalText) {
+    function setLangString(langStringName, additionalText, outputTextArea) {
         require(['core/str'], function(str) {
             const promise = str.get_string(langStringName, 'filter_ace_inline');
-            $.when(promise).then(function(message) {
-                if (textarea === null) {
-                    alert(message + additionalText);
-                } else {
-                    textarea.show();
-                    textarea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
-                }
+            $.when(promise).done(function(message) {
+                outputTextArea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
             });
         });
     }
@@ -172,7 +168,7 @@ define(['jquery'], function($) {
      * Gets the uiParameter of 'stdin-taid' which should be the id of an element.
      * @param {object} uiParameters The various parameters (mostly attributes of the pre element)
      * @returns {string} The specified standard input or an empty string if no
-     * stdin specified.
+     * stdin specified or null if not valid.
      */
     function getStdin(uiParameters) {
         const taid = uiParameters['stdin-taid'];
@@ -181,8 +177,7 @@ define(['jquery'], function($) {
             let output = $('#' + taid).val();
             // Handles invalid textarea names.
             if (!output) {
-                setLangString('error_taid_invalid', null, taid);
-                return '';
+                return null;
             } else {
                 return output;
             }
@@ -228,32 +223,49 @@ define(['jquery'], function($) {
                 map[name] = uploadFiles[name]; // Copy contents across.
             }
         }
-
         return Promise.resolve(JSON.stringify(map));
     }
 
     /**
-     * Handle a click on the Try it! button.
-     * @param {object} ajax The core Moodle ajax module.
+     * Handle a click on the Try it! button; pre-checks the std-taids for valid ids.
      * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
      * @param {string} code The code to be run.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
+     * @returns {string} code of the code to run, else null but executes errors if needed.
      */
-    async function handleButtonClick(ajax, outputDisplayArea, code, uiParameters) {
-        const htmlOutput = uiParameters['html-output'] !== null;
-        const maxLen = uiParameters['max-output-length'];
-        outputDisplayArea.html('');
-        if (htmlOutput) {
-            outputDisplayArea.hide();
-        }
-        outputDisplayArea.next('div.filter-ace-inline-html').remove();
+    function handleButtonClick(outputDisplayArea, code, uiParameters) {
+        cleanOutput(outputDisplayArea);
+        outputDisplayArea.show();
 
         const mapFunc = uiParameters['code-mapper'];
         if (mapFunc) {
             code = window[mapFunc](code);
         }
         code = uiParameters.prefix + code + uiParameters.suffix;
+        if (getStdin(uiParameters) !== null) {
+            return code;
+        } else {
+            outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
+            const textArea = createTextNode();
+            setLangString('error_user_params', 'Id not found for element', textArea);
+            handleOutput('', outputDisplayArea, textArea);
+            return null;
+        }
+    }
+
+    /**
+     * Executes the code through CodeRunner run_in_sandbox.
+     * @param {object} ajax The core Moodle ajax module.
+     * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
+     * @param {string} code The code to be run.
+     * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
+     * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
+     */
+    async function executeCode(ajax, outputDisplayArea, code, uiParameters) {
+        const htmlOutput = uiParameters['html-output'] !== null;
+        const maxLen = uiParameters['max-output-length'];
+        const outputTextArea = createTextNode();
         ajax.call([{
             methodname: 'qtype_coderunner_run_in_sandbox',
             args: {
@@ -265,18 +277,20 @@ define(['jquery'], function($) {
                 params: uiParameters.params
             },
             done: function(responseJson) {
+                cleanOutput(outputDisplayArea);
                 const response = JSON.parse(responseJson);
                 const error = diagnose(response);
                 if (error === '') {
-                    // If no errors or compilation error or runtime error
+                    // If no errors or compilation error or runtime error.
                     if (!htmlOutput || response.result !== RESULT_SUCCESS) {
                         // Either it's not HTML output or it is but we have compilation or runtime errors.
                         const text = combinedOutput(response, maxLen);
-                        outputDisplayArea.show();
-                        outputDisplayArea.html(escapeHtml(text));
+                        // If there is an execution error, change the background colour.
+                        if (response.result !== RESULT_SUCCESS) {
+                            outputDisplayArea.css({backgroundColor: '#faa'});
+                        }
+                        handleOutput(text, outputDisplayArea, outputTextArea);
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
-                        // Repeat the deletion of previous output in case of multiple button clicks.
-                        outputDisplayArea.next('div.filter-ace-inline-html').remove();
                         const html = $("<div class='filter-ace-inline-html '" +
                                 "style='background-color:#eff;padding:5px;'>" +
                                 response.output + "</div>");
@@ -284,21 +298,65 @@ define(['jquery'], function($) {
                     }
                 } else {
                     // If an error occurs, display the language string in the
-                    // outputDisplayArea plus additional info.
+                    // outputDisplayArea plus additional info, for non-sandbox errors.
                     let extra = response.error == 0 ? combinedOutput(response, maxLen) : '';
                     if (error === 'error_unknown_runtime') {
                         extra += response.error ? '(Sandbox error code ' + response.error + ')' :
-                                '(Run result: ' + response.result + ')';
+                            '(Run result: ' + response.result + ')';
                     }
-                    setLangString(error, outputDisplayArea, extra);
+                    outputDisplayArea.css({backgroundColor: '#faa'});
+                    handleOutput('', outputDisplayArea, outputTextArea);
+                    setLangString(error, extra, outputTextArea);
                 }
             },
             fail: function(error) {
-                alert(error.message);
+                cleanOutput(outputDisplayArea);
+                // Change the outputDisplayArea to something more ominious...
+                outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
+                handleOutput('', outputDisplayArea, outputTextArea);
+                setLangString('error_user_params', error.message, outputTextArea);
             }
         }]);
     }
-
+    /**
+     * Makes and returns a pre-node to contain the output text.
+     * @returns {object} The pre-node to make the text.
+     */
+    function createTextNode() {
+        // Create a pre-node to contain text.
+        const outputTextArea = $("<pre class='output-text-area'</pre>");
+        outputTextArea.css({
+            overflowWrap: 'break-word',
+            whiteSpace: 'pre-wrap',
+            width: '100%',
+            overflow: 'auto',
+            maxHeight:'600px',
+            marginTop: '0px',
+            marginBottom: '0px'
+        });
+        return outputTextArea;
+    }
+    /**
+     * Handles and displays all output into the outputDisplayArea, by inserting the
+     * text into the outputTextArea, and then into the outputDisplayArea. Error
+     * output is inserted before this function.
+     * @param {type} text The text message to be displayed.
+     * @param {type} outputDisplayArea The outputDisplayArea for the output.
+     * @param {type} outputTextArea The outputTextArea for pre-formatted text.
+     */
+    function handleOutput(text, outputDisplayArea, outputTextArea) {
+        outputTextArea.html(escapeHtml(text));
+        outputDisplayArea.append(outputTextArea);
+    }
+    /**
+     * Cleans the outputDisplayArea and resets to normal.
+     * @param {type} outputDisplayArea Resets the output box.
+     */
+    function cleanOutput(outputDisplayArea) {
+        outputDisplayArea.html('');
+        outputDisplayArea.next('div.filter-ace-inline-html').remove();
+        outputDisplayArea.css({backgroundColor: '#eff'});
+    }
     /**
      * Add a UI div containing a Try it! button and a paragraph to display the
      * results of a button click (hidden until button clicked).
@@ -311,12 +369,19 @@ define(['jquery'], function($) {
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
     async function addUi(insertionPoint, getCode, uiParameters) {
-        const button = $("<button type='button' class='btn btn-secondary' " +
-                "style='margin-bottom:6px;padding:2px 8px;'>" +
+        const button = $("<button type='button' class='btn btn-secondary' /button>" +
                 uiParameters['button-name'] + "</button>");
+        button.css({
+            marginBottom: '6px',
+            padding: '2px 8px'
+        });
         const buttonDiv = $("<div></div>");
-        const outputDisplayArea = $("<pre style='width:100%;white-space:pre-wrap;background-color:#eff;" +
-                "border:1px gray;padding:5px;overflow-wrap:break-word;max-height:600px;overflow:auto;'></pre>");
+        const outputDisplayArea = $("<div class='output-display-area' /div>");
+        outputDisplayArea.css({
+            backgroundColor: '#eff',
+            padding: '5px 10px 5px',
+            verticalAlign: 'middle'
+        });
         buttonDiv.append(button);
         $(insertionPoint).after(buttonDiv);
         buttonDiv.after(outputDisplayArea);
@@ -324,7 +389,11 @@ define(['jquery'], function($) {
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
             button.on('click', function() {
-                handleButtonClick(ajax, outputDisplayArea, getCode(), uiParameters);
+                const code = handleButtonClick(outputDisplayArea, getCode(), uiParameters);
+                // UI parameters get checked first; and if no error, then runs through.
+                if (code !== null) {
+                    executeCode(ajax, outputDisplayArea, code, uiParameters);
+                }
             });
         });
         M.util.js_complete('core/ajax');

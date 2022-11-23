@@ -24,7 +24,7 @@ read_me()
 
 <textarea id="randombox" rows="5" cols="40">Yo
 u should
- not see this
+ not use this
 !</textarea>
 <pre class="ace-interactive-code" data-stdin-taid="wrongid" data-button-name="wrongname">def read_me():
     output = ""
