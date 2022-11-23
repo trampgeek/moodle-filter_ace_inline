@@ -287,7 +287,7 @@ define(['jquery'], function($) {
                         const text = combinedOutput(response, maxLen);
                         // If there is an execution error, change the background colour.
                         if (response.result !== RESULT_SUCCESS) {
-                            outputDisplayArea.css({backgroundColor: '#faa'});
+                            outputDisplayArea.css({backgroundColor: '#fcc'});
                         }
                         handleOutput(text, outputDisplayArea, outputTextArea);
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
@@ -304,7 +304,7 @@ define(['jquery'], function($) {
                         extra += response.error ? '(Sandbox error code ' + response.error + ')' :
                             '(Run result: ' + response.result + ')';
                     }
-                    outputDisplayArea.css({backgroundColor: '#faa'});
+                    outputDisplayArea.css({backgroundColor: '#fcc'});
                     handleOutput('', outputDisplayArea, outputTextArea);
                     setLangString(error, extra, outputTextArea);
                 }
