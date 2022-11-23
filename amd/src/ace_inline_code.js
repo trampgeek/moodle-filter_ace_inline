@@ -247,9 +247,7 @@ define(['jquery'], function($) {
             return code;
         } else {
             outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
-            const textArea = createTextNode();
-            setLangString('error_user_params', 'Id not found for element', textArea);
-            handleOutput('', outputDisplayArea, textArea);
+            setLangString('error_user_params', 'Id not found for element', outputDisplayArea.find('.filter-ace-output-text'));
             return null;
         }
     }
@@ -265,7 +263,7 @@ define(['jquery'], function($) {
     async function executeCode(ajax, outputDisplayArea, code, uiParameters) {
         const htmlOutput = uiParameters['html-output'] !== null;
         const maxLen = uiParameters['max-output-length'];
-        const outputTextArea = createTextNode();
+
         ajax.call([{
             methodname: 'qtype_coderunner_run_in_sandbox',
             args: {
@@ -287,12 +285,13 @@ define(['jquery'], function($) {
                         const text = combinedOutput(response, maxLen);
                         // If there is an execution error, change the background colour.
                         if (response.result !== RESULT_SUCCESS) {
-                            outputDisplayArea.css({backgroundColor: '#fcc'});
+                            outputDisplayArea.css({backgroundColor: '#ffd'});
                         }
-                        handleOutput(text, outputDisplayArea, outputTextArea);
+                        outputDisplayArea.find('.filter-ace-output-text').html(escapeHtml(text));
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
+                        outputDisplayArea.css({marginBottom: '0px'});
                         const html = $("<div class='filter-ace-inline-html '" +
-                                "style='background-color:#eff;padding:5px;'>" +
+                                "style='background-color:#eff;padding:5px;margin-bottom:10px;'>" +
                                 response.output + "</div>");
                         outputDisplayArea.after(html);
                     }
@@ -304,58 +303,28 @@ define(['jquery'], function($) {
                         extra += response.error ? '(Sandbox error code ' + response.error + ')' :
                             '(Run result: ' + response.result + ')';
                     }
-                    outputDisplayArea.css({backgroundColor: '#fcc'});
-                    handleOutput('', outputDisplayArea, outputTextArea);
-                    setLangString(error, extra, outputTextArea);
+                    outputDisplayArea.css({backgroundColor: '#ffd'});
+                    setLangString(error, extra, outputDisplayArea.find('.filter-ace-output-text'));
                 }
             },
             fail: function(error) {
                 cleanOutput(outputDisplayArea);
                 // Change the outputDisplayArea to something more ominious...
                 outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
-                handleOutput('', outputDisplayArea, outputTextArea);
-                setLangString('error_user_params', error.message, outputTextArea);
+                setLangString('error_user_params', error.message, outputDisplayArea.find('.filter-ace-output-text'));
             }
         }]);
     }
+
     /**
-     * Makes and returns a pre-node to contain the output text.
-     * @returns {object} The pre-node to make the text.
-     */
-    function createTextNode() {
-        // Create a pre-node to contain text.
-        const outputTextArea = $("<pre class='output-text-area'</pre>");
-        outputTextArea.css({
-            overflowWrap: 'break-word',
-            whiteSpace: 'pre-wrap',
-            width: '100%',
-            overflow: 'auto',
-            maxHeight:'600px',
-            marginTop: '0px',
-            marginBottom: '0px'
-        });
-        return outputTextArea;
-    }
-    /**
-     * Handles and displays all output into the outputDisplayArea, by inserting the
-     * text into the outputTextArea, and then into the outputDisplayArea. Error
-     * output is inserted before this function.
-     * @param {type} text The text message to be displayed.
-     * @param {type} outputDisplayArea The outputDisplayArea for the output.
-     * @param {type} outputTextArea The outputTextArea for pre-formatted text.
-     */
-    function handleOutput(text, outputDisplayArea, outputTextArea) {
-        outputTextArea.html(escapeHtml(text));
-        outputDisplayArea.append(outputTextArea);
-    }
-    /**
-     * Cleans the outputDisplayArea and resets to normal.
+     * Cleans the outputDisplayArea and resets to normal, removing any next nodes found.
+     * html objects.
      * @param {type} outputDisplayArea Resets the output box.
      */
     function cleanOutput(outputDisplayArea) {
-        outputDisplayArea.html('');
+        outputDisplayArea.find('.filter-ace-output-text').html('');
         outputDisplayArea.next('div.filter-ace-inline-html').remove();
-        outputDisplayArea.css({backgroundColor: '#eff'});
+        outputDisplayArea.css({backgroundColor: '#eff', marginBottom: '10px'});
     }
     /**
      * Add a UI div containing a Try it! button and a paragraph to display the
@@ -369,29 +338,44 @@ define(['jquery'], function($) {
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
      */
     async function addUi(insertionPoint, getCode, uiParameters) {
+        // Create the button-node for execution.
         const button = $("<button type='button' class='btn btn-secondary' /button>" +
                 uiParameters['button-name'] + "</button>");
         button.css({
             marginBottom: '6px',
             padding: '2px 8px'
         });
+        // Create the div-node to contain pre-node.
         const buttonDiv = $("<div></div>");
-        const outputDisplayArea = $("<div class='output-display-area' /div>");
+        const outputDisplayArea = $("<div class='filter-ace-output-display'/div>");
         outputDisplayArea.css({
             backgroundColor: '#eff',
             padding: '5px 10px 5px',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            marginBottom: '10px'
+        });
+        // Create a pre-node to contain text.
+        const outputTextArea = $("<pre class='filter-ace-output-text'></pre>");
+        outputTextArea.css({
+            overflowWrap: 'break-word',
+            whiteSpace: 'pre-wrap',
+            width: '100%',
+            overflow: 'auto',
+            maxHeight:'600px',
+            marginTop: '0px',
+            marginBottom: '0px'
         });
         buttonDiv.append(button);
         $(insertionPoint).after(buttonDiv);
         buttonDiv.after(outputDisplayArea);
+        outputDisplayArea.append(outputTextArea);
         outputDisplayArea.hide();
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
             button.on('click', function() {
                 const code = handleButtonClick(outputDisplayArea, getCode(), uiParameters);
-                // UI parameters get checked first; and if no error, then runs through.
-                if (code !== null) {
+                // UI parameters get checked first; and if no error, then returns code.
+                if (code !== null) { // If there was an error.
                     executeCode(ajax, outputDisplayArea, code, uiParameters);
                 }
             });
