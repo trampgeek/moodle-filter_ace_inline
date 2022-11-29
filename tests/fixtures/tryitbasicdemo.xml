@@ -6,7 +6,7 @@
             <text>tryitbasicdemo</text>
         </name>
         <questiontext format="html">
-        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">Below are three implementations of basic Try it! functions in Java, Python and C.&nbsp;</p>
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">Below are three implementations of basic Try it! functions in Java, Python and C. Also has an undefined language.&nbsp;</p>
 <pre class="ace-interactive-code" data-lang="java" data-button-name="Java">public class hello {
     public static void main(String[] args) {
     	String output = "";
@@ -30,6 +30,12 @@ int main() {
 	printf("%s", beta);
   }
 </pre>
+
+
+<pre class="ace-interactive-code" data-lang="notalanguage" data-button-name="nolanguage">def this_shouldnt_run():
+   print('no'+'no'+'no'+'no')
+</pre>
+
 <p dir="ltr" style="text-align: left;"><br></p> ]]>
         </text>
         </questiontext>

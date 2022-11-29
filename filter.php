@@ -48,7 +48,8 @@ class filter_ace_inline extends moodle_text_filter {
      * This function does the appropriate replacement of the <pre> elements
      * with the Ace editor and (for ace-interactive) Try it! button.
      * Only text within Moodle questions (usually but not necessarily description
-     * questions) is subject to replacement.
+     * questions) is subject to replacement. Also checks if text needs to be parsed
+     * if making questions in Moodle Editor.
      * @param {string} $text to be processed
      * @param {array} $options filter options
      * @return {string} text after processing
@@ -59,7 +60,7 @@ class filter_ace_inline extends moodle_text_filter {
             // Non-string content can not be filtered anyway.
             return $text;
         }
-
+                        
         $config = array(
             'button_label' => get_config('filter_ace_inline', 'button_label'),
             'dark_theme_mode' => get_config('filter_ace_inline', 'dark_theme_mode')
@@ -108,7 +109,8 @@ class filter_ace_inline extends moodle_text_filter {
             $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
                     'initAceInteractive', array($config));
         }
-
         return $text;
     }
+    
+    
 }

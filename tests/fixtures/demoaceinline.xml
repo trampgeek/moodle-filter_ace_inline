@@ -64,7 +64,7 @@ int main() {
 </pre>
 <h2></h2>
 <h2>Providing standard input (the new approved way)</h2>
-<p>Using stdin in conjunction wiht ace-interactive-code samples is problematic if users are expecting an interactive prompt-read-prompt-read style of standard input. This really isn't possible with this filter because clicking Try it! simply sends a job to the jobe server for execution and then displays the results. However, the author can provide the user with a text area into which they can enter any standard input (in general, multiple lines) which are then read on demand by the program. The <em>data-stdin-taid</em>&nbsp;attribute of the &lt;pre&gt; element specifies the text area (or other HTML element with a val() method) to be used in this way. For example:</p>
+<p>Using stdin in conjunction with ace-interactive-code samples is problematic if users are expecting an interactive prompt-read-prompt-read style of standard input. This really isn't possible with this filter because clicking Try it! simply sends a job to the jobe server for execution and then displays the results. However, the author can provide the user with a text area into which they can enter any standard input (in general, multiple lines) which are then read on demand by the program. The <em>data-stdin-taid</em>&nbsp;attribute of the &lt;pre&gt; element specifies the text area (or other HTML element with a val() method) to be used in this way. For example:</p>
 <p>Standard input:</p>
 <textarea id="demo-stdin" rows="4" cols="50">Here are three lines of standard input.
 You can edit them yourself before
@@ -336,7 +336,7 @@ for fname in os.listdir():
         return progToRun;
     }
 </script>
-<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" data-params="{&quot;cputime&quot;: 5}" data-dark-theme-mode="2" data-max-lines="15">import matplotlib.pyplot as plt
+<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" "{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-dark-theme-mode="2" data-max-lines="15">import matplotlib.pyplot as plt
 import numpy as np
 
 # Generate some text output

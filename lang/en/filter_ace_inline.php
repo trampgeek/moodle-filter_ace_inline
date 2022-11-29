@@ -39,6 +39,8 @@ instead of the default light theme. Can be overridden by an individual instance.
 \'sometimes\' behaves according to the browser\'s response to the \'prefers-color-scheme:dark\' media query.';
 $string['default_button_label'] = 'Try it!';
 $string['error_access_denied'] = 'Sandbox server access denied';
+$string['error_element_unknown'] = 'Id not found for element';
+$string['error_user_params'] = 'User Config Error';
 $string['error_unknown_language'] = 'Unknown language requested';
 $string['error_submission_limit_reached'] = 'Jobe sandbox submission limit reached';
 $string['error_sandbox_server_overload'] = 'Jobe server overload';
@@ -47,3 +49,4 @@ $string['error_timeout'] = 'Time limit exceeded';
 $string['error_memory_limit'] = 'Memory limit exceeded';
 $string['error_excessive_output'] = 'Excessive output';
 $string['error_unknown_runtime'] = 'Unknown runtime error';
+
