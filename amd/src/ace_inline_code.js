@@ -93,19 +93,16 @@ define(['jquery'], function($) {
     }
 
     /**
-     * Set the specified language string using
-     * AJAX and put it into the outputTextArea
+     * Get the specified language string and return a promise with the respective
+     * language string output.
      * @param {string} langStringName The language string name.
      * should be plugged.
-     * @param {string} additionalText Extra text to follow the result code.
-     * @param {object} outputTextArea Pre-formatted area to put text.
-     * @returns string The text to be outputed in a box.
+     * @returns {string} Promise with the language string output.
      */
-    function setLangString(langStringName, additionalText, outputTextArea) {
-        require(['core/str'], function(str) {
-            const promise = str.get_string(langStringName, 'filter_ace_inline');
-            $.when(promise).done(function(message) {
-                outputTextArea.html(escapeHtml("*** " + message + " ***\n" + additionalText));
+    async function getLangString(langStringName) {
+        return new Promise((resolve) => {
+            require(['core/str'], function(str) {
+                resolve(str.get_string(langStringName, 'filter_ace_inline'));
             });
         });
     }
@@ -234,7 +231,7 @@ define(['jquery'], function($) {
      * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
      * @returns {string} code of the code to run, else null but executes errors if needed.
      */
-    function handleButtonClick(outputDisplayArea, code, uiParameters) {
+    async function handleButtonClick(outputDisplayArea, code, uiParameters) {
         cleanOutput(outputDisplayArea);
         outputDisplayArea.show();
 
@@ -247,7 +244,9 @@ define(['jquery'], function($) {
             return code;
         } else {
             outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
-            setLangString('error_user_params', 'Id not found for element', outputDisplayArea.find('.filter-ace-output-text'));
+            let text = await getLangString('error_user_params');
+            text = '*** ' + text + ' ***\n' + await getLangString('error_element_unknown');
+            outputDisplayArea.find('.filter-ace-output-text').html(escapeHtml(text));
             return null;
         }
     }
@@ -263,7 +262,8 @@ define(['jquery'], function($) {
     async function executeCode(ajax, outputDisplayArea, code, uiParameters) {
         const htmlOutput = uiParameters['html-output'] !== null;
         const maxLen = uiParameters['max-output-length'];
-
+        let text = '';
+        let langString = '';
         ajax.call([{
             methodname: 'qtype_coderunner_run_in_sandbox',
             args: {
@@ -282,12 +282,11 @@ define(['jquery'], function($) {
                     // If no errors or compilation error or runtime error.
                     if (!htmlOutput || response.result !== RESULT_SUCCESS) {
                         // Either it's not HTML output or it is but we have compilation or runtime errors.
-                        const text = combinedOutput(response, maxLen);
+                        text += combinedOutput(response, maxLen);
                         // If there is an execution error, change the background colour.
                         if (response.result !== RESULT_SUCCESS) {
                             outputDisplayArea.css({backgroundColor: '#ffd'});
                         }
-                        outputDisplayArea.find('.filter-ace-output-text').html(escapeHtml(text));
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
                         outputDisplayArea.css({marginBottom: '0px'});
                         const html = $("<div class='filter-ace-inline-html '" +
@@ -304,18 +303,33 @@ define(['jquery'], function($) {
                             '(Run result: ' + response.result + ')';
                     }
                     outputDisplayArea.css({backgroundColor: '#ffd'});
-                    setLangString(error, extra, outputDisplayArea.find('.filter-ace-output-text'));
+                    langString += error;
+                    text += extra;
                 }
+               displayTextOutput(text, langString, outputDisplayArea);
             },
             fail: function(error) {
                 cleanOutput(outputDisplayArea);
                 // Change the outputDisplayArea to something more ominious...
                 outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
-                setLangString('error_user_params', error.message, outputDisplayArea.find('.filter-ace-output-text'));
-            }
+                langString += 'error_user_params';
+                text += error.message;
+                displayTextOutput(text, langString, outputDisplayArea);
+            },
         }]);
     }
-
+    /**
+     * Displays the text in the specified outputdisplay area.
+     * @param {string} text Test to be displayed
+     * @param {string} langString LangString for error-handling.
+     * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
+     */
+    async function displayTextOutput(text, langString, outputDisplayArea) {
+        if (langString !== '') {
+            text = "*** " + await getLangString(langString) + " ***\n" + text;
+        }
+        outputDisplayArea.find('.filter-ace-output-text').html(escapeHtml(text));
+    }
     /**
      * Cleans the outputDisplayArea and resets to normal, removing any next nodes found.
      * html objects.
@@ -372,8 +386,8 @@ define(['jquery'], function($) {
         outputDisplayArea.hide();
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
-            button.on('click', function() {
-                const code = handleButtonClick(outputDisplayArea, getCode(), uiParameters);
+            button.on('click', async function() {
+                const code = await handleButtonClick(outputDisplayArea, getCode(), uiParameters);
                 // UI parameters get checked first; and if no error, then returns code.
                 if (code !== null) { // If there was an error.
                     executeCode(ajax, outputDisplayArea, code, uiParameters);
@@ -632,9 +646,12 @@ define(['jquery'], function($) {
         const codeElements = root.getElementsByClassName(className);
 
         for (const pre of codeElements) {
-            const uiParameters = getUiParameters(pre, defaultParams);
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
-                applyToPre(pre, isInteractive, uiParameters);
+                applyToPre(pre, isInteractive, getUiParameters(pre, defaultParams));
+            } else if (pre.nodeName === 'CODE' && pre.style.display !== 'none') { // For Markdown.
+                if (pre.parentNode !== null) {
+                    applyToPre(pre.parentNode, isInteractive, getUiParameters(pre.parentNode, defaultParams));
+                }
             }
         }
     }
