@@ -38,6 +38,17 @@ class behat_ace_inline extends behat_base {
     public function i_enable_ace_inline() {
         filter_set_global_state('ace_inline', TEXTFILTER_ON, 0);
     }
+        
+    /**
+     * Sets the webserver sandbox to enabled for testing purposes.
+     * 
+     * @Given /^the webserver sandbox is enabled/
+     */
+    public function the_sandbox_is_enabled() {
+        
+        set_config('wsenabled', 1, 'qtype_coderunner');
+    }
+    
     
     /**
      * Checks if the programming language is correct, else throws an
@@ -165,23 +176,13 @@ class behat_ace_inline extends behat_base {
         
         return ($acetype);
     }
-    
-    /**
-     * Sets the webserver sandbox to enabled for testing purposes.
-     * 
-     * @Given /^the webserver sandbox is enabled/
-     */
-    public function the_sandbox_is_enabled() {
-        
-        set_config('wsenabled', 1, 'qtype_coderunner');
-    }
-    
+
     /**
      * Presses a named button. Checks if there is a specified error text displayed.
      * 
      * @Then I should see an alert of :error when I press :button
-     * @param string The expected error message when alerted
-     * @param string The name of the alert button.
+     * @param string $errorText The expected error message when alerted
+     * @param string $button The name of the alert button.
      */
     public function there_is_an_alert_when_I_click($errorText, $button) {
         
@@ -216,5 +217,36 @@ class behat_ace_inline extends behat_base {
         }
     }
     
- 
+    
+    /**
+     * Checks if there is an HTML <div> containing the text.
+     * 
+     * @Then I should see the HTML div containing :text
+     * @param string $text The text you should see in the <div>
+     */
+    public function i_see_html_div_containing($text) {
+        $xpath = "//div[contains(@class, 'ace-inline-html') and contains(@text(), $text)]";
+        $driver = $this->getSession()->getDriver();
+        $error = "{$text} was not found in the HTML div";
+        if (!$driver->find($xpath)) {
+            throw new ExpectationException($error, $this->getSession());
+        }
+    }
+    
+    /**
+     * Checks if there is an HTML <div> containing the class.
+     * 
+     * @Then I should see a div with class :class
+     * @param string $class The string of the class to check in the <div>.
+     */
+    public function i_see_div_class($class) {
+        $xpath = "//div[contains(@class, $class)]";
+        $driver = $this->getSession()->getDriver();
+        $error = "{$class} was not a class found in the HTML div";
+        if (!$driver->find($xpath)) {
+            throw new ExpectationException($error, $this->getSession());
+        }
+        
+    }
+    
 }

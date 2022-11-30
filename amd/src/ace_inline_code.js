@@ -89,6 +89,14 @@ define(['jquery'], function($) {
                 uiParameters[attrName] = value;
             }
         }
+        // Takes the data-lang from the class if edited using Prism TinyMCE editor filter.
+        const splitClass = uiParameters['class'].split(" ");
+        // Left open so can deal with more attributes if desired.
+        splitClass.forEach((attribute) => {
+            if (attribute.startsWith('language')) {
+                uiParameters['lang'] = attribute.replace('language-', '');
+            }
+        });
         return uiParameters;
     }
 
@@ -171,7 +179,7 @@ define(['jquery'], function($) {
         const taid = uiParameters['stdin-taid'];
         const stdin = uiParameters.stdin;
         if (taid) {
-            let output = $('#' + taid).val();
+            const output = $('#' + taid).val();
             // Handles invalid textarea names.
             if (!output) {
                 return null;
@@ -209,7 +217,11 @@ define(['jquery'], function($) {
                 if (taids.hasOwnProperty(filename)) {
                     const id = taids[filename];
                     const value = $('#' + id).val();
-                    map[filename] = value;
+                    if (!value) {
+                        return Promise.resolve('bad_id');
+                    } else {
+                        map[filename] = value;
+                    }
                 }
             }
         }
@@ -224,7 +236,7 @@ define(['jquery'], function($) {
     }
 
     /**
-     * Handle a click on the Try it! button; pre-checks the std-taids for valid ids.
+     * Handle a click on the Try it! button; pre-checks the taids for valid ids.
      * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
      * @param {string} code The code to be run.
      * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
@@ -240,9 +252,26 @@ define(['jquery'], function($) {
             code = window[mapFunc](code);
         }
         code = uiParameters.prefix + code + uiParameters.suffix;
-        if (getStdin(uiParameters) !== null) {
+        // Get the parameters by parsing.
+        const stdin = getStdin(uiParameters);
+        const files = await getFiles(uiParameters);
+        // If html/markup is the chosen language; change uiParameters and wrap in Python.
+        if ((uiParameters['lang'] === 'markup') || (uiParameters['lang'] === 'html')) {
+            outputDisplayArea.css({marginBottom: '0px'});
+            // Save for returning to old language.
+            uiParameters['prev-lang'] = uiParameters['lang'];
+            uiParameters['html-output'] = true;
+            uiParameters['lang'] = 'python3';
+            code = "print('''" + code + "''')";
+            return code;
+        }
+        // If textareas are found, pass in the output areas into the UI parameters.
+        if (stdin !== null && files !== 'bad_id' ) {
+            uiParameters['stdin-parse'] = stdin;
+            uiParameters['file-parse'] = files;
             return code;
         } else {
+            // Make it display an error.
             outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
             let text = await getLangString('error_user_params');
             text = '*** ' + text + ' ***\n' + await getLangString('error_element_unknown');
@@ -270,8 +299,8 @@ define(['jquery'], function($) {
                 contextid: M.cfg.contextid,
                 sourcecode: code,
                 language: uiParameters.lang,
-                stdin: getStdin(uiParameters),
-                files: await getFiles(uiParameters),
+                stdin: uiParameters['stdin-parse'],
+                files: uiParameters['file-parse'],
                 params: uiParameters.params
             },
             done: function(responseJson) {
@@ -391,6 +420,8 @@ define(['jquery'], function($) {
                 // UI parameters get checked first; and if no error, then returns code.
                 if (code !== null) { // If there was an error.
                     executeCode(ajax, outputDisplayArea, code, uiParameters);
+                    // Return to old language.
+                    uiParameters['lang'] = uiParameters['prev-lang'] ? uiParameters['prev-lang'] : uiParameters['lang'];
                 }
             });
         });
@@ -407,6 +438,7 @@ define(['jquery'], function($) {
      */
     function applyAceHighlighting(root, config) {
         const defaultParams = {
+            'class': 'ace_highlight_code',
             'lang': 'python3',
             'ace-lang': '',
             'font-size': '11pt',
@@ -428,6 +460,7 @@ define(['jquery'], function($) {
      */
     function applyAceInteractive(root, config) {
         const defaultParams = {
+            'class': 'ace_interactive_code',
             'lang': 'python3',
             'ace-lang': '',
             'font-size': '11pt',
@@ -499,7 +532,7 @@ define(['jquery'], function($) {
          */
         function readOneFile(file){
             return new Promise((resolve, reject) => {
-              var rdr = new FileReader();
+              let rdr = new FileReader();
               rdr.onload = () => {
                 resolve(rdr.result);
               };
@@ -536,7 +569,8 @@ define(['jquery'], function($) {
             'octave': 'matlab',
             'c++': 'c_cpp',
             'python2': 'python',
-            'python3': 'python'
+            'python3': 'python',
+            'markup': 'html'
         };
         const darkMode = uiParameters['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
         let theme = null;
@@ -549,8 +583,8 @@ define(['jquery'], function($) {
         } else {
             theme = ACE_LIGHT_THEME;
         }
-
-
+        // Handle the one case of python3 in JOBE.
+        uiParameters.lang = uiParameters.lang === 'python' ? 'python3' : uiParameters.lang;
         const showLineNumbers = uiParameters['start-line-number'] ? true : false;
         let aceLang = uiParameters['ace-lang'] ? uiParameters['ace-lang'] : uiParameters.lang;
         aceLang = aceLang.toLowerCase();
@@ -574,7 +608,7 @@ define(['jquery'], function($) {
         editNode.css(css);
         jqpre.after(editNode);    // Insert the edit node
 
-        var aceConfig = {
+        let aceConfig = {
             newLineMode: "unix",
             mode: mode,
             minLines: Math.max(numLines, uiParameters['min-lines']),
@@ -644,7 +678,6 @@ define(['jquery'], function($) {
     async function applyAceAndBuildUi(root, isInteractive, defaultParams) {
         const className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
         const codeElements = root.getElementsByClassName(className);
-
         for (const pre of codeElements) {
             if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
                 applyToPre(pre, isInteractive, getUiParameters(pre, defaultParams));

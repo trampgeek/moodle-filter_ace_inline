@@ -336,7 +336,7 @@ for fname in os.listdir():
         return progToRun;
     }
 </script>
-<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" "{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-dark-theme-mode="2" data-max-lines="15">import matplotlib.pyplot as plt
+<pre class="ace-interactive-code" data-html-output="" data-code-mapper="matplotlibwrapper" data-params="{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-dark-theme-mode="2" data-max-lines="15">import matplotlib.pyplot as plt
 import numpy as np
 
 # Generate some text output
