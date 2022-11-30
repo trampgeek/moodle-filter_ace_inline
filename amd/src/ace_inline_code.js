@@ -257,7 +257,7 @@ define(['jquery'], function($) {
         const files = await getFiles(uiParameters);
         // If html/markup is the chosen language; change uiParameters and wrap in Python.
         if ((uiParameters['lang'] === 'markup') || (uiParameters['lang'] === 'html')) {
-            outputDisplayArea.css({marginBottom: '0px'});
+            outputDisplayArea.attr('class', 'filter-ace-inline-output-html');
             // Save for returning to old language.
             uiParameters['prev-lang'] = uiParameters['lang'];
             uiParameters['html-output'] = true;
@@ -272,10 +272,10 @@ define(['jquery'], function($) {
             return code;
         } else {
             // Make it display an error.
-            outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
+            outputDisplayArea.attr('class', 'filter-ace-inline-output-error');
             let text = await getLangString('error_user_params');
             text = '*** ' + text + ' ***\n' + await getLangString('error_element_unknown');
-            outputDisplayArea.find('.filter-ace-output-text').html(escapeHtml(text));
+            outputDisplayArea.find('.filter-ace-inline-output-text').html(escapeHtml(text));
             return null;
         }
     }
@@ -312,26 +312,25 @@ define(['jquery'], function($) {
                     if (!htmlOutput || response.result !== RESULT_SUCCESS) {
                         // Either it's not HTML output or it is but we have compilation or runtime errors.
                         text += combinedOutput(response, maxLen);
-                        // If there is an execution error, change the background colour.
+                        // If there is an execution error, change the output class.
                         if (response.result !== RESULT_SUCCESS) {
-                            outputDisplayArea.css({backgroundColor: '#ffd'});
+                            outputDisplayArea.attr('class', 'filter-ace-inline-output-error');
                         }
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
-                        outputDisplayArea.css({marginBottom: '0px'});
-                        const html = $("<div class='filter-ace-inline-html '" +
-                                "style='background-color:#eff;padding:5px;margin-bottom:10px;'>" +
+                        outputDisplayArea.attr('class', 'filter-ace-inline-output-html');
+                        const html = $("<div class='filter-ace-inline-html'>" +
                                 response.output + "</div>");
                         outputDisplayArea.after(html);
                     }
                 } else {
                     // If an error occurs, display the language string in the
                     // outputDisplayArea plus additional info, for non-sandbox errors.
+                    outputDisplayArea.attr('class', 'filter-ace-inline-output-error');
                     let extra = response.error == 0 ? combinedOutput(response, maxLen) : '';
                     if (error === 'error_unknown_runtime') {
                         extra += response.error ? '(Sandbox error code ' + response.error + ')' :
                             '(Run result: ' + response.result + ')';
                     }
-                    outputDisplayArea.css({backgroundColor: '#ffd'});
                     langString += error;
                     text += extra;
                 }
@@ -340,7 +339,7 @@ define(['jquery'], function($) {
             fail: function(error) {
                 cleanOutput(outputDisplayArea);
                 // Change the outputDisplayArea to something more ominious...
-                outputDisplayArea.css({border: '1px solid red', backgroundColor: '#faa'});
+                outputDisplayArea.attr('class', 'filter-ace-inline-output-user');
                 langString += 'error_user_params';
                 text += error.message;
                 displayTextOutput(text, langString, outputDisplayArea);
@@ -357,7 +356,7 @@ define(['jquery'], function($) {
         if (langString !== '') {
             text = "*** " + await getLangString(langString) + " ***\n" + text;
         }
-        outputDisplayArea.find('.filter-ace-output-text').html(escapeHtml(text));
+        outputDisplayArea.find('.filter-ace-inline-output-text').html(escapeHtml(text));
     }
     /**
      * Cleans the outputDisplayArea and resets to normal, removing any next nodes found.
@@ -365,9 +364,9 @@ define(['jquery'], function($) {
      * @param {type} outputDisplayArea Resets the output box.
      */
     function cleanOutput(outputDisplayArea) {
-        outputDisplayArea.find('.filter-ace-output-text').html('');
+        outputDisplayArea.find('.filter-ace-inline-output-text').html('');
         outputDisplayArea.next('div.filter-ace-inline-html').remove();
-        outputDisplayArea.css({backgroundColor: '#eff', marginBottom: '10px'});
+        outputDisplayArea.attr('class', 'filter-ace-inline-output-display');
     }
     /**
      * Add a UI div containing a Try it! button and a paragraph to display the
@@ -382,32 +381,13 @@ define(['jquery'], function($) {
      */
     async function addUi(insertionPoint, getCode, uiParameters) {
         // Create the button-node for execution.
-        const button = $("<button type='button' class='btn btn-secondary' /button>" +
+        const button = $("<button type='button' class='btn btn-secondary btn-ace-inline-execution' /button>" +
                 uiParameters['button-name'] + "</button>");
-        button.css({
-            marginBottom: '6px',
-            padding: '2px 8px'
-        });
         // Create the div-node to contain pre-node.
         const buttonDiv = $("<div></div>");
-        const outputDisplayArea = $("<div class='filter-ace-output-display'/div>");
-        outputDisplayArea.css({
-            backgroundColor: '#eff',
-            padding: '5px 10px 5px',
-            verticalAlign: 'middle',
-            marginBottom: '10px'
-        });
+        const outputDisplayArea = $("<div class='filter-ace-inline-output-display'/div>");
         // Create a pre-node to contain text.
-        const outputTextArea = $("<pre class='filter-ace-output-text'></pre>");
-        outputTextArea.css({
-            overflowWrap: 'break-word',
-            whiteSpace: 'pre-wrap',
-            width: '100%',
-            overflow: 'auto',
-            maxHeight:'600px',
-            marginTop: '0px',
-            marginBottom: '0px'
-        });
+        const outputTextArea = $("<pre class='filter-ace-inline-output-text'></pre>");
         buttonDiv.append(button);
         $(insertionPoint).after(buttonDiv);
         buttonDiv.after(outputDisplayArea);

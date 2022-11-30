@@ -1,1 +1,62 @@
-/* css file for ace_inline (currently empty))*/
+/**
+ * CSS style-sheet for Ace-inline-filter
+ */
+ 
+/* Standard output display box*/
+div[class='filter-ace-inline-output-display'] {
+    background-color: #eff;
+    padding: 5px 10px 5px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+/* Output display box for HTML*/
+div[class='filter-ace-inline-output-html'] {
+    background-color: #eff;
+    padding: 5px 10px 5px;
+    vertical-align: middle;
+    margin-bottom: 0px;
+}
+
+/* Output display box for HTML rendered*/
+div[class='filter-ace-inline-html'] {
+    background-color: #eff;
+    padding: 5px;
+    margin-bottom: 10px; 
+}
+
+/* Output display box for sandbox execution errors*/
+div[class='filter-ace-inline-output-error'] {
+    background-color: #ffd;
+    padding: 5px 10px 5px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+/* Output display box for user input errors*/
+div[class='filter-ace-inline-output-user'] {
+    border: 1px solid red;
+    background-color: #faa;
+    padding: 5px 10px 5px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+/* Inner pre-class containing text*/
+pre[class='filter-ace-inline-output-text'] {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+    overflow: auto;
+    max-height: 600px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/* Execution button*/
+button[class='btn-ace-inline-execution'] {
+    margin-bottom: 6px;
+    padding: 2px 8px;
+}
+
+
