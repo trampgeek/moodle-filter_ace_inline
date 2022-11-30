@@ -48,8 +48,7 @@ class filter_ace_inline extends moodle_text_filter {
      * This function does the appropriate replacement of the <pre> elements
      * with the Ace editor and (for ace-interactive) Try it! button.
      * Only text within Moodle questions (usually but not necessarily description
-     * questions) is subject to replacement. Also checks if text needs to be parsed
-     * if making questions in Moodle Editor.
+     * questions) is subject to replacement.
      * @param {string} $text to be processed
      * @param {array} $options filter options
      * @return {string} text after processing

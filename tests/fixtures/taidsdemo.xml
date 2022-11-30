@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quiz>
-    <!--  question: 232   -->
+    <!--  question: 552   -->
     <question type="description">
         <name>
             <text>taidsdemo</text>
@@ -36,6 +36,68 @@ u should
     print(output)
 read_me()
 </pre>
+
+<p><textarea id="file1" cols="40" rows="5">He
+llo
+ is it</textarea> <textarea id="file2" cols="40" rows="5"> me
+ you see
+?</textarea></p>
+<pre class="ace-interactive-code" data-file-taids="{&quot;file1.txt&quot;: &quot;file1&quot;, &quot;file2.txt&quot;: &quot;file2&quot;}" data-button-name="file-taids" data-mce-highlighted="false">def join_me(files):
+    output = ""
+    for file in files:
+        with open(file) as file:
+            text = file.read().splitlines()
+            for line in text:
+                output += line
+    print(output)
+join_me(["file1.txt", "file2.txt"])
+</pre>
+
+<p><textarea id="file0" cols="40" rows="5">He
+llo
+ is it</textarea> 
+<pre class="ace-interactive-code" data-file-taids="{&quot;file1.txt&quot;: &quot;file1&qu\quot;}" data-button-name="invalid-JSON" data-mce-highlighted="false">def join_me(files):
+    output = ""
+    for file in files:
+        with open(file) as file:
+            text = file.read().splitlines()
+            for line in text:
+                output += line
+    print(output)
+join_me(["file0.txt"])
+</pre>
+
+<p><textarea id="file3" cols="40" rows="5">poorid
+</textarea> 
+<pre class="ace-interactive-code" data-file-taids="{&quot;file1.txt&quot;: &quot;notafile&quot;}" data-button-name="wrongFile" data-mce-highlighted="false">def join_me(files):
+    output = ""
+    for file in files:
+        with open(file) as file:
+            text = file.read().splitlines()
+            for line in text:
+                output += line
+    print(output)
+join_me(["file3.txt"])
+</pre>
+
+<p><input id="file-uploader" multiple="multiple" type="file"></p>
+<pre class="ace-interactive-code" data-button-name="upload" data-file-upload-id="file-uploader" data-mce-highlighted="false">import os
+from html import escape
+text_files = [filename for filename in os.listdir() if filename.endswith('.txt')]
+if len(text_files) == 0:
+    print("No '.txt' files found!")
+elif len(text_files) != 1:
+    print("Please upload only a single .txt file")
+else:
+    with open(text_files[0]) as infile:
+        raw = infile.read()
+        if len(raw.strip()) == 0:
+            print("EMPTY FILE!")
+        else:
+            print(escape(raw))
+</pre>
+       
+
 
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>

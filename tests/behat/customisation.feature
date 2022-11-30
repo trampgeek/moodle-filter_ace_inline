@@ -51,9 +51,25 @@ Feature: Visual checks for any UI specified customisation
     Then I press "notJS"
     Then I should see "This ran Python"
 
-  Scenario: Checks if setting the max output length gives the appropriate output (maxed tp 1-
+  Scenario: Checks if setting the max output length gives the appropriate output
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I press "uptoten"
     Then I should see "0123456789... (truncated)"
 
+  Scenario: Checks if HTML output shows (twice to double-check handling)
+    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    And I press "HTML time"
+    Then I should see the HTML div containing "heading"
+    And I press "HTML time"
+    Then I should see the HTML div containing "heading"
 
+  Scenario: Checks for dark mode in ACE
+    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    Then I should see a div with class "ace-tomorrow-night"
+
+  Scenario: Checks if HTML output shows within editors with language-markup (twice to double-check handling)
+    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    And I press "HTML tiny"
+    Then I should see the HTML div containing "heading"
+    And I press "HTML tiny"
+    Then I should see the HTML div containing "heading"

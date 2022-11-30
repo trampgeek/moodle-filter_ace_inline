@@ -47,4 +47,36 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I press "wrongname"
     Then I should see "Id not found for element"
 
+  Scenario: Checks that the file-taids match correctly (done twice to check handling)
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I press "file-taids"
+    Then I should see "Hello is it me you see?"
+    And I press "file-taids"
+    Then I should see "Hello is it me you see?"
+
+  Scenario: Checks that a JSON parse error for file-taid mappings gives you a good response (done twice to check handling)
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I press "invalid-JSON"
+    Then I should not see "Hello is it"
+    And I should see "JSON record"
+    And I press "invalid-JSON"
+    Then I should not see "Hello is it"
+    And I should see "JSON record"
+
+  Scenario: Checks that when a valid JSON file-taid input maps with an element not listed, that it errors (done twice to check handling)
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I press "wrongFile"
+    Then I should see "Id not found for element"
+    And I press "wrongFile"
+    Then I should see "Id not found for element"
+
+  Scenario: Checks that when uploading a file, the file uploads correctly and is executed correctly (done twice to check uploading persistence handling)
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I press "upload"
+    Then I should see "No '.txt' files found"
+    And I press "upload"
+    Then I should see "No '.txt' files found"
+
+
+
 

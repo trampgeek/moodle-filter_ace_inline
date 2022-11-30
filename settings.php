@@ -26,6 +26,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
+    // Hopefully means that the default will be off.
+    filter_set_global_state('ace_inline', TEXTFILTER_OFF);
 
     // Default values for filter.php.
     $buttonlabel = get_string('default_button_label', 'filter_ace_inline');

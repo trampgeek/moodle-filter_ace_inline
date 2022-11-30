@@ -44,6 +44,16 @@ int main() {
  }
 </pre>
 
+<pre class="ace-interactive-code" data-dark-theme-mode="2" data-html-output="true" data-button-name="HTML time">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
+print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
+</pre>
+
+
+<pre class="ace-interactive-code language-markup" data-button-name="HTML tiny">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
+print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
+</pre>
+
+
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>
         </questiontext>
