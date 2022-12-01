@@ -63,6 +63,7 @@ define(['jquery'], function($) {
      */
     function getUiParameters(pre, defaultParams) {
         let uiParameters = {};
+        let modifiedLang = false;
 
         for (const attrName in defaultParams) {
             if (defaultParams.hasOwnProperty(attrName)) { // Redundant but shuts up jshint
@@ -76,12 +77,22 @@ define(['jquery'], function($) {
                 }
                 if (attr) {
                     value = attr.value;
-                    if (attrName === 'start-line-number') {
-                        value = value.toLowerCase() === 'none' ? null : parseInt(value);
-                    } else if (attrName === 'min-lines' || attrName === 'max-lines') {
-                        value = parseInt(value);
-                    } else if (attrName === 'hidden') {
-                        value = true; // If the 'hidden' attribute exists, it's True!
+                    switch (attrName) {
+                        case 'start-line-number':
+                            value = value.toLowerCase() === 'none' ? null : parseInt(value);
+                            break;
+                        case 'min-lines':
+                        case 'max-lines':
+                            value = parseInt(value);
+                            break;
+                        case 'hidden':
+                            value = true; // If the 'hidden' attribute exists, it's True!
+                            break;
+                        case 'lang':
+                            modifiedLang = true; // Keeps track of modifications, so no overrides.
+                            break;
+                        default:
+                            break;
                     }
                 } else {
                     value = defaultParams[attrName];
@@ -93,7 +104,7 @@ define(['jquery'], function($) {
         const splitClass = uiParameters['class'].split(" ");
         // Left open so can deal with more attributes if desired.
         splitClass.forEach((attribute) => {
-            if (attribute.startsWith('language')) {
+            if (attribute.startsWith('language') && modifiedLang === false) {
                 uiParameters['lang'] = attribute.replace('language-', '');
             }
         });
