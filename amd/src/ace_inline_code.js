@@ -647,8 +647,8 @@ define(['jquery'], function($) {
     }
 
     /**
-     * Replace all <pre> elements in the document rooted at root that have
-     * the given className with an Ace editor windows that display the
+     * Replace all <pre> and <code> elements in the document rooted at root that have
+     * the given className or ace-inline attribute, with an Ace editor windows that display the
      * code in whatever language has been set.
      * @param {object} root The root of the HTML document to modify.
      * @param {bool} isInteractive True for ace-interactive otherwise false.
@@ -657,14 +657,19 @@ define(['jquery'], function($) {
      */
     async function applyAceAndBuildUi(root, isInteractive, defaultParams) {
         const className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
-        const codeElements = root.getElementsByClassName(className);
-        for (const pre of codeElements) {
-            if (pre.nodeName === 'PRE' && pre.style.display !== 'none') {
-                applyToPre(pre, isInteractive, getUiParameters(pre, defaultParams));
-            } else if (pre.nodeName === 'CODE' && pre.style.display !== 'none') { // For Markdown.
-                if (pre.parentNode !== null) {
-                    applyToPre(pre.parentNode, isInteractive, getUiParameters(pre.parentNode, defaultParams));
+        const preElements = root.getElementsByTagName('pre');
+        for (const pre of preElements) {
+            if (pre.style.display !== 'none') {
+                if (pre.classList.contains(className) || (pre.getAttribute('ace-inline') === className)) {
+                    applyToPre(pre, isInteractive, getUiParameters(pre, defaultParams));
                 }
+            }
+        }
+        // For Markdown compatibility.
+        const codeElements = root.getElementsByTagName('code');
+        for (const code of codeElements) {
+            if (code.parentNode !== null && code.style.display !== 'none' && code.classList.contains(className)) {
+                applyToPre(code.parentNode, isInteractive, getUiParameters(code.parentNode, defaultParams));
             }
         }
     }
