@@ -1,58 +1,71 @@
 # The Moodle ace_inline filter
 
-Richard Lobb
+Richard Lobb, Michelle Hsieh
 
-Version 0.8, 28 September 2022.
+Version 1.0, 1 December 2022.
 
 github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
 ## Introduction
 
-A Moodle filter for displaying program code and optionally allowing interaction with it.
-Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than
-PHP and operates
-on the rendered HTML rather than the original text. Authors need
-to use an HTML editor to define the DOM elements that will be targetted by the
-filter.
+A Moodle filter for displaying and optionally interacting with program code by utilising the Moodle CodeRunner question type plugin. 
+Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than PHP and operates on the rendered HTML rather than the original text. This filter is applied over all HTML elements, therefore can be displayed throughout courses where the user can edit/create HTML elements.
 
-The plugin really provides two separate filter operations:
+As of Moodle 4.1, the following code adding and editing options are available:
+ 1. Utilising the new TinyMCE editor's 'Insert' > 'Code sample' option.
+    * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
+ 2. Editing the HTML directly in an HTML editor. 
+    * This option is recommended for code authors who require full functionality and are comfortable using HTML.
+ 3. Utilising MarkdownExtra, either in the Moodle editor or externally for importing questions.
+    * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This filter utilises current MarkdownExtra parsing, therefore only valid MarkdownExtra is compatible with this filter.
 
- 1. HTML \<pre> elements with a class of 'ace-highlight-code' are displayed
-    using the JavaScript Ace code editor in read-only mode. This provides
-    syntax colouring of the code.
+The plugin provides two separate filter operations:
+ 1. Syntax highlighting: HTML \<pre> elements with an attribute of **data-ace-highlight-code** are displayed using the JavaScript Ace code editor in read-only mode. This provides syntax colouring of the code.
 
- 2. HTML \<pre> elements with a class of 'ace-interactive-code' are also
-    displayed using the Ace code editor, but with editing enabled. In addition,
-    a button labelled by default `Try it!` allows the student to execute the
-    current state of the code and observe the outcome. With sufficient
-    ingenuity on the part of the author,
-    graphical output and images can be displayed, too. By adding additional
-    html elements and linking the \<pre> element to them, the author can
-    allow users to enter standard input to the run and even upload files.
+ 2. Code execution: HTML \<pre> elements with an attribute of **data-ace-interactive-code** are also displayed using the Ace code editor, but with editing enabled. In addition, a button labelled by default `Try it!` allows the student to execute the current state of the code and observe the outcome. With sufficient ingenuity on the part of the author, graphical output and images can be displayed, too (this option should be done by editing raw HTML). By adding additional html elements and linking the \<pre> element to them, the author can allow users to enter standard input to the run and even upload files.
 
-It should be noted that the 'interactive' elements are interactive only in the
-sense that the user can edit and run them; the user cannot interact with the
-code while it is running.
+It should be noted that the 'interactive' elements are interactive only in the sense that the user can edit and run them; the user cannot interact with the code whilst it is running. However, the code can be modified between executions. As this implementation is a filter, data is not stored persistently, and any changes to the code whilst the filter is activated will not be stored.
 
-The plugin requires the CodeRunner plugin to be installed first, since that
-furnishes the Ace editor required for filter operations.
-CodeRunner version 4.2.1
-or later is required. In addition, the
-ace-interactive-code filter requires that the system administrator has enabled
-the CodeRunner sandbox web service (still regarded as experimental) which is
-disabled by default. The `Try it!` button send the code from the Ace editor
-to the CodeRunner sandbox (usually a Jobe server) for execution using that
-web service.
+The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. CodeRunner version 4.2.1 or later is required. In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service (still regarded as experimental) which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
 
-There is a page demonstrating the use of this filter on the CodeRunner site
-[here](https://coderunner.org.nz/mod/page/view.php?id=529).
+There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=529).
+
+## Editor options
+To change text editors in Moodle, click on your user icon, and select "Editor preferences". A drop-down menu can allow a user to switch between editors. Markdown is implemented in "Plain Text Area" and can be selected from a drop-down menu below the implementation of the text editor. TinyMCE referenced is labelled "TinyMCE editor" (**not** the legacy version) and is available from Moodle version 4.1+.
+
+###  TinyMCE (Code sample)
+**How to use:**
+* Click "Insert" > "Code sample"
+* Select the programming language you wish to use
+* Either write your code normally in the "Code view" area, or copy and paste code into the area
+* Click "Save"
+* Click "View" > "Source code"
+* Locate the code in HTML and add **data-ace-highlight-code/data-ace-interactive-code** into the \<pre> element. Example:
+
+        <pre class="language-python" data-ace-interactive-code >
+        <code>
+	        def hello():
+	             print("Hello world!")
+	        hello()
+        </code>
+        </pre>
+
+* Save the question.
+* To edit the code again, double-click on the code block in the editor.
+* Ace-inline will be viewable outside of the editor; and in-built Prism formatting is visible within.
+
+**Caveats:**
+* Currently, the use of \<script> tags are not supported by TinyMCE. This includes using the Source Code option of TinyMCE. Therefore, avoid the use of any \<script> tags, and avoid editing code containing any tags in this editor as the HTML is **automatically stripped of \<script> tags upon editing and saving any material**.
+* Use the **'data-'** prefix for every starting parameter. TinyMCE will **strip away any non-'data' tags upon editing and saving the question**.
+* If you want to use another language which is not yet available on Code samples, the author should change the language to "HTML/XML" and add the parameter **data-lang=*'language'*** to the \<pre> tag. 
+* Alternatively, you can switch to Source Code view to edit your code and parameters.
 
 ### ace-highlight-code parameters
 
 Additional control of the display and behaviour is via attributes of the
 \<pre> element as follows. All attribute names should start with 'data-' to ensure
 that the HTML still validates. However, the 'data-' prefix can be dropped if
-you don't care about HTML5 validation. For example the 'data-lang' attribute
+you don't care about HTML5 validation (**Warning: the 'data-' prefix is necessary for Tiny Editors' compatibility. Tiny will strip out all attributes without 'data-' upon saving.**). For example the 'data-lang' attribute
 can just be 'lang'.
 
  1. data-lang. This attribute sets the language to be used
@@ -209,6 +222,14 @@ Download the plugin from the repository, and unzip the code into
 Then visit Site administration > Notifications. You should receive the usual
 prompting about updating the database to incorporate the new plugin.
 
+Once installed, visit Site administration > Plugins > Plugins overview > Additional plugins.
+From this page, click the icon next to "Text filters" and turn "Ace inline" to
+"Off, but available".
+
+This allows the individual teacher/administrator to set local settings for each
+course; if desired. To access individual course settings, click "More" > "Filters"
+and set Ace inline to "On".
+
 To use the ace-interactive-code filter, you will also need to enable the
 sandbox web service option within the CodeRunner plugin settings. You should
 read carefully the other related CodeRunner web service settings and consider
@@ -248,8 +269,33 @@ that runs numpy and matplotlib, displaying any output graphs as images in
 addition to any text output. This final example needs to have numpy and
 matplotlib installed on the jobe server; they're not there by default.
 
+## Unexpected behaviour in certain areas of Moodle
+
+Currently, in Moodle 4.1, the forum discussion (but not the general description) strips all tags aside from the "class" tag from any HTML elements. This is editor independent. By using the pre-existing [deprecated] method of setting the \<pre> **class='ace-interactive-code'** or **class='ace-highlight-code'** basic Python 3 functionality can be implemented.
+
+Alternatively, prefix the desired language with **language-** and insert this into the \<pre> class, alongside with **ace-highlight/interactive-code** option to implement basic functionality in the selected language.
+Example:
+
+        <pre class="language-python ace-interactive-code">
+        <code>
+	        def hello():
+	             print("Hello world!")
+	        hello()
+        </code>
+        </pre>
+
 ## Change History
 
+ * Version 1.0.0, 1 December 2022. 
+    * MarkdownExtra compatibility implemented.
+    * Moodle 4.1's Tiny MCE editor in-built Code sample compatibility implemented.
+    * Errors now show up consistently in the output area; and output boxes show different error colours and error messages.
+    * Major code refactor, including CSS handling.
+    * Comprehensive Behat tests implemented.
+    * Changed implementation to data-ace-highlight/interactive-code attribute on \<pre>.
+    * ReadMe is in process of being rewritten; up to TinyMCE.
+    * Unexpected behaviour in certain areas of Moodle added.
+   
  * Version 0.8.3, 28 September 2022. Introduce a data-hidden attribute that hides
    the code to be executed, allowing authors to set up applet-like elements
    that read data from UI elements or files and display output inline when the

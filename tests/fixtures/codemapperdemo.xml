@@ -19,7 +19,7 @@ ran()`
         }
     }
 </script>
-<pre class="ace-interactive-code" data-code-mapper="foo">will this run</pre>
+<pre data-ace-interactive-code data-code-mapper="foo">will this run</pre>
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>
         </questiontext>

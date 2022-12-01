@@ -225,7 +225,7 @@ class behat_ace_inline extends behat_base {
      * @param string $text The text you should see in the <div>
      */
     public function i_see_html_div_containing($text) {
-        $xpath = "//div[contains(@class, 'ace-inline-html') and contains(@text(), $text)]";
+        $xpath = "//div[contains(@class, 'filter-ace-inline-html') and contains(@text(), $text)]";
         $driver = $this->getSession()->getDriver();
         $error = "{$text} was not found in the HTML div";
         if (!$driver->find($xpath)) {

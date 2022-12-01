@@ -55,3 +55,18 @@ Feature: Basic Try it! checks with formatting for TinyMCE compatibility
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I press "badcode"
     Then I should see "SyntaxError"
+
+  Scenario: Checks that Tiny-formatted C when highlighted will not run
+    When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
+    And I should not see "This ran C"
+    Then I should not see "AlternativeB"
+
+  Scenario: Checks that (class='ace-interactive-code language-c') Tiny-formatted C can run (done twice to check consistency)
+    When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
+    And I should not see "This ran C"
+    Then I press "legacy"
+    Then I should see "This ran C"
+    Then I press "legacy"
+    Then I should see "This ran C"
+
+

@@ -73,3 +73,14 @@ Feature: Visual checks for any UI specified customisation
     Then I should see the HTML div containing "heading"
     And I press "HTML tiny"
     Then I should see the HTML div containing "heading"
+   
+  Scenario: Checks if the legacy "class='ace-highlight-code" still functions (twice to double-check handling)
+    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    And I press "Legacy"
+    Then I should see "This ran Python"
+    And I press "Legacy"
+    Then I should see "This ran Python"
+
+  Scenario: Checks if the legacy "class='ace-interactive-code'" still functions
+    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
+    And I should see "constant" highlighting on "True"

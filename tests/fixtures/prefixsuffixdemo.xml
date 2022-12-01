@@ -9,7 +9,7 @@
         <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This contains demonstrations of uses of interacting with prefixed and suffixed inputs.</p>
 <br> <textarea id="textarea" rows="5" cols="20">Jacob
 11</textarea>
-<pre class="ace-interactive-code" data-stdin-taid="textarea" data-button-name="prefix" data-prefix="_saved_input = input
+<pre data-ace-interactive-code data-stdin-taid="textarea" data-button-name="prefix" data-prefix="_saved_input = input
 def input(prompt=''):
     print(prompt, end='')
     line = _saved_input()
@@ -20,7 +20,7 @@ age = int(input("How old are you? "))
 print(f"Hi {name}, next year you'll be {age + 1}")
 </pre>
 
-<pre class="ace-interactive-code" data-button-name="mystery" data-suffix="def mystery_function(string):
+<pre data-ace-interactive-code data-button-name="mystery" data-suffix="def mystery_function(string):
     return ''.join(reversed(string))
 run_this('reversed')">def run_this(string):
     output = mystery_function(string) 
