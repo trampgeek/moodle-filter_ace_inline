@@ -11,7 +11,7 @@
 lo
  World
 !</textarea>
-<pre class="ace-interactive-code" data-stdin-taid="textarea" data-button-name="taids">def read_me():
+<pre data-ace-interactive-code data-stdin-taid="textarea" data-button-name="taids">def read_me():
     output = ""
     while True:
         try:
@@ -26,7 +26,7 @@ read_me()
 u should
  not use this
 !</textarea>
-<pre class="ace-interactive-code" data-stdin-taid="wrongid" data-button-name="wrongname">def read_me():
+<pre data-ace-interactive-code data-stdin-taid="wrongid" data-button-name="wrongname">def read_me():
     output = ""
     while True:
         try:
@@ -42,7 +42,7 @@ llo
  is it</textarea> <textarea id="file2" cols="40" rows="5"> me
  you see
 ?</textarea></p>
-<pre class="ace-interactive-code" data-file-taids="{&quot;file1.txt&quot;: &quot;file1&quot;, &quot;file2.txt&quot;: &quot;file2&quot;}" data-button-name="file-taids" data-mce-highlighted="false">def join_me(files):
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;file1&quot;, &quot;file2.txt&quot;: &quot;file2&quot;}" data-button-name="file-taids" data-mce-highlighted="false">def join_me(files):
     output = ""
     for file in files:
         with open(file) as file:
@@ -56,7 +56,7 @@ join_me(["file1.txt", "file2.txt"])
 <p><textarea id="file0" cols="40" rows="5">He
 llo
  is it</textarea> 
-<pre class="ace-interactive-code" data-file-taids="{&quot;file1.txt&quot;: &quot;file1&qu\quot;}" data-button-name="invalid-JSON" data-mce-highlighted="false">def join_me(files):
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;file1&qu\quot;}" data-button-name="invalid-JSON">def join_me(files):
     output = ""
     for file in files:
         with open(file) as file:
@@ -69,7 +69,7 @@ join_me(["file0.txt"])
 
 <p><textarea id="file3" cols="40" rows="5">poorid
 </textarea> 
-<pre class="ace-interactive-code" data-file-taids="{&quot;file1.txt&quot;: &quot;notafile&quot;}" data-button-name="wrongFile" data-mce-highlighted="false">def join_me(files):
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;notafile&quot;}" data-button-name="wrongFile">def join_me(files):
     output = ""
     for file in files:
         with open(file) as file:
@@ -81,7 +81,7 @@ join_me(["file3.txt"])
 </pre>
 
 <p><input id="file-uploader" multiple="multiple" type="file"></p>
-<pre class="ace-interactive-code" data-button-name="upload" data-file-upload-id="file-uploader" data-mce-highlighted="false">import os
+<pre data-ace-interactive-code data-button-name="upload" data-file-upload-id="file-uploader">import os
 from html import escape
 text_files = [filename for filename in os.listdir() if filename.endswith('.txt')]
 if len(text_files) == 0:

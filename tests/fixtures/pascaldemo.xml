@@ -7,7 +7,7 @@
         </name>
         <questiontext format="html">
         <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Pascal syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Pascal designed to test ace and nonsensical other languages</p>
-<br> <pre class="ace-highlight-code" data-lang="pascal">
+<br> <pre data-ace-highlight-code data-lang="pascal">
 
 program Demo;
 uses crt;

@@ -657,10 +657,11 @@ define(['jquery'], function($) {
      */
     async function applyAceAndBuildUi(root, isInteractive, defaultParams) {
         const className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
+        const alternativeName = isInteractive ? 'data-ace-interactive-code' : 'data-ace-highlight-code';
         const preElements = root.getElementsByTagName('pre');
         for (const pre of preElements) {
             if (pre.style.display !== 'none') {
-                if (pre.classList.contains(className) || (pre.getAttribute('ace-inline') === className)) {
+                if (pre.classList.contains(className) || pre.hasAttribute(alternativeName)) {
                     applyToPre(pre, isInteractive, getUiParameters(pre, defaultParams));
                 }
             }
@@ -668,8 +669,9 @@ define(['jquery'], function($) {
         // For Markdown compatibility.
         const codeElements = root.getElementsByTagName('code');
         for (const code of codeElements) {
-            if (code.parentNode !== null && code.style.display !== 'none' && code.classList.contains(className)) {
-                applyToPre(code.parentNode, isInteractive, getUiParameters(code.parentNode, defaultParams));
+            if (code.parentNode !== null && code.style.display !== 'none' &&
+                    (code.hasAttribute(alternativeName) || code.classList.contains(className))) {
+                applyToPre(code.parentNode, isInteractive, getUiParameters(code, defaultParams));
             }
         }
     }

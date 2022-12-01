@@ -8,11 +8,12 @@ github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
 ## Introduction
 
-A Moodle filter for displaying program code and optionally allowing interaction with it.
+A Moodle filter for displaying program code and (optionally) allowing interaction with it.
 Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than
 PHP and operates
-on the rendered HTML rather than the original text. Authors need
-to use an HTML editor to define the DOM elements that will be targetted by the
+on the rendered HTML rather than the original text. Authors can either use an
+an HTML editor, or the Moodle 4.1+ TinyMCE editor with the in-built Code Sample
+functionality to define the DOM elements that will be targetted by the
 filter.
 
 The plugin really provides two separate filter operations:
@@ -29,6 +30,11 @@ The plugin really provides two separate filter operations:
     graphical output and images can be displayed, too. By adding additional
     html elements and linking the \<pre> element to them, the author can
     allow users to enter standard input to the run and even upload files.
+
+ 3. The Tiny Editor (new TinyMCE) from Moodle 4.1 uses Prism in-editor highlighting
+    and allows more simplistic code editing in the format of a pop-up. 
+    HTML \<pre> elements will automatically be assigned a class of 'language-*'.
+    Two methods can be implemented to incorporate 
 
 It should be noted that the 'interactive' elements are interactive only in the
 sense that the user can edit and run them; the user cannot interact with the
@@ -52,7 +58,7 @@ There is a page demonstrating the use of this filter on the CodeRunner site
 Additional control of the display and behaviour is via attributes of the
 \<pre> element as follows. All attribute names should start with 'data-' to ensure
 that the HTML still validates. However, the 'data-' prefix can be dropped if
-you don't care about HTML5 validation. For example the 'data-lang' attribute
+you don't care about HTML5 validation (**Warning: the 'data-' prefix is necessary for Tiny Editors' compatibility. Tiny will strip out all attributes without 'data-' upon saving.**). For example the 'data-lang' attribute
 can just be 'lang'.
 
  1. data-lang. This attribute sets the language to be used
@@ -208,6 +214,14 @@ Download the plugin from the repository, and unzip the code into
 
 Then visit Site administration > Notifications. You should receive the usual
 prompting about updating the database to incorporate the new plugin.
+
+Once installed, visit Site administration > Plugins > Plugins overview > Additional plugins.
+From this page, click the icon next to "Text filters" and turn "Ace inline" to
+"Off, but available".
+
+This allows the individual teacher/administrator to set local settings for each
+course; if desired. To access individual course settings, click "More" > "Filters"
+and set Ace inline to "On".
 
 To use the ace-interactive-code filter, you will also need to enable the
 sandbox web service option within the CodeRunner plugin settings. You should

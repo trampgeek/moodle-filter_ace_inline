@@ -7,7 +7,7 @@
         </name>
         <questiontext format="html">
         <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Python syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Python designed to test ace and nonsensical Java and C</p>
-<br> <pre class="ace-highlight-code">
+<br> <pre data-ace-highlight-code >
 import math as m
 
 MATH_CONSTANT = 42

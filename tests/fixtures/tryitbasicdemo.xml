@@ -7,7 +7,7 @@
         </name>
         <questiontext format="html">
         <text> <![CDATA[ <p dir="ltr" style="text-align: left;">Below are three implementations of basic Try it! functions in Java, Python and C. Also has an undefined language.&nbsp;</p>
-<pre class="ace-interactive-code" data-lang="java" data-button-name="Java">public class hello {
+<pre data-ace-interactive-code data-lang="java" data-button-name="Java">public class hello {
     public static void main(String[] args) {
     	String output = "";
         String[] list = new String[] {"T", "h", "i", "s", " ", "r", "a", "n", " ", "J", "a", "v", "a"};
@@ -18,7 +18,7 @@
     }
 }</pre>
 
-<pre class="ace-interactive-code" data-readonly="true" data-button-name="Python">def some_function():
+<pre data-ace-interactive-code data-readonly="true" data-button-name="Python">def some_function():
     alpha_list = ("This", "ran", "Python")
     print(" ".join(alpha_list))
 some_function()
@@ -32,11 +32,11 @@ int main() {
 </pre>
 
 
-<pre class="ace-interactive-code" data-lang="notalanguage" data-button-name="nolanguage">def this_shouldnt_run():
+<pre data-ace-interactive-code data-lang="notalanguage" data-button-name="nolanguage">def this_shouldnt_run():
    print('no'+'no'+'no'+'no')
 </pre>
 
-<pre class="ace-interactive-code" data-button-name="badcode">def this_shouldnt_run():
+<pre data-ace-interactive-code data-button-name="badcode">def this_shouldnt_run():
    print('Oops,' + ' this
 </pre>
 

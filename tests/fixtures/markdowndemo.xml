@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 120   -->
+    <question type="description">
+        <name>
+            <text>markdowndemo</text>
+        </name>
+        <questiontext format="markdown">
+        <text> 
+<![CDATA[
+``` {data-ace-highlight-code= data-lang=python3}
+def basic()
+    return None
+```
+    
+``` {data-ace-interactive-code= data-lang=Java data-button-name=2markdown}
+public class hello {
+    public static void main(String[] args) {
+    	String output = "";
+        String[] list = new String[] {"T", "h", "i", "s", " ", "r", "a", "n", " ", "J", "a", "v", "a"};
+        for (int i = 0; i < 13; i++) {
+        	output += list[i];
+        }
+        System.out.println(output);
+    }
+}
+```
+    
+``` {.ace-interactive-code data-lang=python data-button-name=legacy}
+def some_program():
+    print("Toda" + "y is gonna" + " be the day")
+some_program()
+```
+
+]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
