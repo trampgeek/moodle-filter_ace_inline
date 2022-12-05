@@ -59,7 +59,6 @@ class filter_ace_inline extends moodle_text_filter {
             // Non-string content can not be filtered anyway.
             return $text;
         }
-                        
         $config = array(
             'button_label' => get_config('filter_ace_inline', 'button_label'),
             'dark_theme_mode' => get_config('filter_ace_inline', 'dark_theme_mode')
@@ -110,6 +109,4 @@ class filter_ace_inline extends moodle_text_filter {
         }
         return $text;
     }
-    
-    
 }

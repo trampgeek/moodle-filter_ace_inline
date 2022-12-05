@@ -52,6 +52,7 @@ define(['jquery'], function($) {
 
       return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
+
     /**
      * Extract from the given DOM pre element its various attributes.
      * @param {DOMElement} pre The <pre> element from the DOM.
@@ -192,11 +193,7 @@ define(['jquery'], function($) {
         if (taid) {
             const output = $('#' + taid).val();
             // Handles invalid textarea names.
-            if (!output) {
-                return null;
-            } else {
-                return output;
-            }
+            return output in window ? null : output;
         } else if (stdin) {
             return stdin;
         } else {
@@ -228,7 +225,7 @@ define(['jquery'], function($) {
                 if (taids.hasOwnProperty(filename)) {
                     const id = taids[filename];
                     const value = $('#' + id).val();
-                    if (!value) {
+                    if (value in window) {
                         return Promise.resolve('bad_id');
                     } else {
                         map[filename] = value;
@@ -283,7 +280,7 @@ define(['jquery'], function($) {
             return code;
         } else {
             // Make it display an error.
-            outputDisplayArea.attr('class', 'filter-ace-inline-output-error');
+            outputDisplayArea.attr('class', 'filter-ace-inline-output-user');
             let text = await getLangString('error_user_params');
             text = '*** ' + text + ' ***\n' + await getLangString('error_element_unknown');
             outputDisplayArea.find('.filter-ace-inline-output-text').html(escapeHtml(text));
@@ -357,6 +354,7 @@ define(['jquery'], function($) {
             },
         }]);
     }
+
     /**
      * Displays the text in the specified outputdisplay area.
      * @param {string} text Test to be displayed
@@ -369,6 +367,7 @@ define(['jquery'], function($) {
         }
         outputDisplayArea.find('.filter-ace-inline-output-text').html(escapeHtml(text));
     }
+
     /**
      * Cleans the outputDisplayArea and resets to normal, removing any next nodes found.
      * html objects.
@@ -379,6 +378,7 @@ define(['jquery'], function($) {
         outputDisplayArea.next('div.filter-ace-inline-html').remove();
         outputDisplayArea.attr('class', 'filter-ace-inline-output-display');
     }
+
     /**
      * Add a UI div containing a Try it! button and a paragraph to display the
      * results of a button click (hidden until button clicked).

@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload 
+@filter @filter_ace_inline @javascript @_file_upload
 Feature: Checks that HTML elements can be identified, else made and mapped appropriately
   In order to have questions which allow input into HTML/TextAreas
   As a teacher
@@ -42,7 +42,13 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I press "taids"
     Then I should see "Goodbye World!"
 
-  Scenario: Checks that one can see an alert when an incorrect id is inputted
+  Scenario: Checks that if there is no text in the input box, there is no user error.
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I press "emptyin"
+    Then I should not see "Id not found for element"
+    And I should see "I'm empty"
+  
+  Scenario: Checks that one can see an error when an incorrect id is inputted
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "wrongname"
     Then I should see "Id not found for element"
@@ -77,6 +83,11 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I press "upload"
     Then I should see "No '.txt' files found"
 
+  Scenario: Checks that if there is no text in the file, the appropriate text is displayed
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I press "hollow"
+    Then I should not see "Id not found for element"
+    And I should see "NO INPUT SUPPLIED!"
 
 
 
