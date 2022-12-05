@@ -1,0 +1,74 @@
+<quiz>
+<!--  question: 294   -->
+<question type="description">
+    <name>
+        <text>demotinymatplotlib</text>
+    </name>
+    <questiontext format="html">
+    <text>
+<![CDATA[
+<pre class="language-python" style="font-family: monospace; font-size: 11pt; padding: 5px;" data-ace-interactive-code=""
+data-prefix="import subprocess, base64, html, os
+
+def make_data_uri(filename):
+    with open(filename, &quot;br&quot;) as fin:
+        contents = fin.read()
+    contents_b64 = base64.b64encode(contents).decode(&quot;utf8&quot;)
+    return &quot;data:image/png;base64,{}&quot;.format(contents_b64)
+
+prog_to_exec = &quot;&quot;&quot;import os, tempfile
+os.environ[&quot;MPLCONFIGDIR&quot;] = tempfile.mkdtemp()
+
+import matplotlib as _mpl
+_mpl.use(&quot;Agg&quot;)\n"
+
+data-suffix="\nfigs = _mpl.pyplot.get_fignums()
+for i, fig in enumerate(figs):
+    _mpl.pyplot.figure(fig)
+    filename = f&quot;image{i}.png&quot;
+    _mpl.pyplot.savefig(filename, bbox_inches=&quot;tight&quot;) &quot;&quot;&quot;
+with open(&quot;prog.py&quot;, &quot;w&quot;) as outfile:
+    outfile.write(prog_to_exec)
+result = subprocess.run([&quot;python3&quot;, &quot;prog.py&quot;], capture_output=True, text=True)
+print('&lt;div&gt;')
+output = result.stdout + result.stderr
+if output:
+    output = html.escape(output).replace(' ', '&amp;nbsp;').replace('\\n', '&lt;br&gt;')
+    print(f'&lt;p style=&quot;font-family:monospace;font-size:11pt;padding:5px;&quot;&gt;{output}&lt;/p&gt;')
+
+for fname in os.listdir():
+    if fname.endswith('png'):
+        print(f'&lt;img src=&quot;{make_data_uri(fname)}&quot;&gt;')"
+        
+data-html-output="" data-params="{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-max-lines="15">
+<code>import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate some text output
+print("I am a line of output")
+print("And so am I")
+
+# Now the graph plotting
+axes = plt.axes()
+xs = np.linspace(0, 720, 200)
+ys = np.sin(2 * np.pi * xs / 360)
+axes.plot(xs, ys)
+axes.set_title("y = sin(x)")
+axes.set_xlabel('x (degrees)')
+axes.set_ylabel('y')
+axes.grid()
+plt.show()
+</code></pre>
+
+]]>
+    </text>
+    </questiontext>
+    <generalfeedback format="html">
+    <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+</question>
+</quiz>
