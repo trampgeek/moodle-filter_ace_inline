@@ -37,12 +37,25 @@ u should
 read_me()
 </pre>
 
+<textarea id="emptybox" rows="5" cols="40"></textarea>
+<pre data-ace-interactive-code data-stdin-taid="emptybox" data-button-name="emptyin">def size_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    if len(output) == 0:
+        print("I'm " + "empty")
+size_me()
+</pre>
+
 <p><textarea id="file1" cols="40" rows="5">He
 llo
  is it</textarea> <textarea id="file2" cols="40" rows="5"> me
  you see
 ?</textarea></p>
-<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;file1&quot;, &quot;file2.txt&quot;: &quot;file2&quot;}" data-button-name="file-taids" data-mce-highlighted="false">def join_me(files):
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;file1&quot;, &quot;file2.txt&quot;: &quot;file2&quot;}" data-button-name="file-taids">def join_me(files):
     output = ""
     for file in files:
         with open(file) as file:
@@ -97,7 +110,15 @@ else:
             print(escape(raw))
 </pre>
        
-
+<textarea id="raw-text" rows="10" cols="80"></textarea>
+<pre data-ace-interactive-code="" data-button-name="hollow" data-file-taids="{&quot;raw.txt&quot;: &quot;raw-text&quot;}">from html import escape
+with open('raw.txt') as infile:
+    raw = infile.read()
+    if len(raw.strip()) == 0:
+        print("NO" + " INPUT" + " SUPPLIED!")
+    else:
+        print(escape(raw))
+</pre>
 
 <p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
         </text>
