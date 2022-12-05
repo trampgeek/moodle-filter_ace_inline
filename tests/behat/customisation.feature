@@ -84,3 +84,4 @@ Feature: Visual checks for any UI specified customisation
   Scenario: Checks if the legacy "class='ace-interactive-code'" still functions
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I should see "constant" highlighting on "True"
+
