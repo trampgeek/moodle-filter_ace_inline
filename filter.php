@@ -27,6 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
 
 /**
+ * Class which implements the ace-inline filter.
+ * 
  * This filter looks for <pre> elements of class 'ace-highlight-code' or
  * 'ace-interactive-code' in Moodle question text and
  * replaces them an Ace editor panel to allow display and (for ace-interactive-code)

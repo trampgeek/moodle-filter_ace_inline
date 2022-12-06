@@ -27,6 +27,9 @@ use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
 
 /*
  * Class designed for behat tests for ace_inline specifically.
+ * 
+ * Contains all the definitions required for ace_inline
+ * Behat testing.
  */
 class behat_ace_inline extends behat_base {
 
@@ -46,6 +49,15 @@ class behat_ace_inline extends behat_base {
      */
     public function the_sandbox_is_enabled() {
         set_config('wsenabled', 1, 'qtype_coderunner');
+    }
+    
+    /**
+     * Sets the webserver maxCPU to 5 for testing purposes.
+     *
+     * @Given /^the cpu time is limited/
+     */
+    public function the_cpu_is_limited() {
+        set_config('wsmaxcputime', '5', 'qtype_coderunner');
     }
 
     /**
