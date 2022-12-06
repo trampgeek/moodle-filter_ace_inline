@@ -41,5 +41,3 @@ Feature: Checks that a user could implement MarkdownExtra styled code and it wor
     Then I should see "Today is gonna be the day"
     Then I press "legacy"
     Then I should see "Today is gonna be the day"
-
-

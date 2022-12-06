@@ -17,8 +17,7 @@
 /**
  * Ace inline filter for displaying and possibly editing and running code.
  *
- * @package    filter
- * @subpackage ace_inline
+ * @package    filter_ace_inline
  * @copyright  2021 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,6 +33,7 @@ require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
  * editing and execution, of program code.
  */
 class filter_ace_inline extends moodle_text_filter {
+
     /*
      * Add the javascript to load the Ace editor.
      *
@@ -50,7 +50,6 @@ class filter_ace_inline extends moodle_text_filter {
      * Only text within Moodle questions (usually but not necessarily description
      * questions) is subject to replacement.
      * @param {string} $text to be processed
-     * @param {array} $options filter options
      * @return {string} text after processing
      */
     public function filter($text, array $options = array()) {
@@ -98,7 +97,7 @@ class filter_ace_inline extends moodle_text_filter {
      * through all filters, on all content pages, even editing pages. We
      * don't wish to use our filter on pages being edited.
      * @param {string} $text The text to be processed.
-     * @param {assoc array} $config The plugin configuration info.
+     * @param {array} $config The plugin configuration info.
      * @return {string} The processed text
      */
     public function do_ace_interactive($text, $config) {

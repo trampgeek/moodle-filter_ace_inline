@@ -31,7 +31,7 @@ Feature: Visual checks for Pascal syntax highlighting
     And I should see "string" highlighting on "Demo2"
     And I should see "keyword" highlighting on "end"
     And I should see "keyword" highlighting on "begin"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "pascaldemo" "core_question > preview" page logged in as teacher
     And the programming language is "pascal"
@@ -40,4 +40,3 @@ Feature: Visual checks for Pascal syntax highlighting
     And I should see "identifier" highlighting on "stdio"
     And I should see "identifier" highlighting on "int"
     And I should see "identifier" highlighting on "let"
-    

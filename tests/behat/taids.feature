@@ -21,7 +21,7 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I set the field "id_format_xml" to "1"
     And I press "id_submitbutton"
     Then I press "Continue"
-   
+
   Scenario: Checks that correct taid can run and give correct output
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "taids"
@@ -47,7 +47,7 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I press "emptyin"
     Then I should not see "Id not found for element"
     And I should see "I'm empty"
-  
+
   Scenario: Checks that one can see an error when an incorrect id is inputted
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "wrongname"
@@ -88,6 +88,3 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I press "hollow"
     Then I should not see "Id not found for element"
     And I should see "NO INPUT SUPPLIED!"
-
-
-

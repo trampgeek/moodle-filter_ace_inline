@@ -16,8 +16,7 @@
 /**
  * Strings for component 'filter_ace_inline', language 'en'
  *
- * @package    filter
- * @subpackage ace_inline
+ * @package    filter_ace_inline
  * @copyright  2017 Richard Jones https://richardnz.net
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

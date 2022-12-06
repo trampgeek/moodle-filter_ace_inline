@@ -27,5 +27,3 @@ Feature: Codemapper functionality allows transformation of input code prior to e
     And I should not see "Yes, this ran Python"
     And I press "Try it!"
     Then I should see "Yes, this ran Python"
-  
-    

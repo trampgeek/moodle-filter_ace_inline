@@ -21,7 +21,7 @@ Feature: Checks that prefix and suffix code customisation is implemented correct
     And I set the field "id_format_xml" to "1"
     And I press "id_submitbutton"
     Then I press "Continue"
-   
+
   Scenario: Checks that prefix can run and give correct output
     When I am on the "prefixsuffixdemo" "core_question > preview" page logged in as teacher
     And I press "prefix"
@@ -41,5 +41,3 @@ Feature: Checks that prefix and suffix code customisation is implemented correct
     When I am on the "prefixsuffixdemo" "core_question > preview" page logged in as teacher
     And I press "mystery"
     Then I should see "desrever"
-
-

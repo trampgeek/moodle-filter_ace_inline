@@ -31,7 +31,7 @@ Feature: Visual checks for SQL syntax highlighting
     And I should see "function" highlighting on "count"
     And I should see "sqltype" highlighting on "int"
     And I should see "sqltype" highlighting on "varchar"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "sqldemo" "core_question > preview" page logged in as teacher
     And the programming language is "sql"
@@ -41,4 +41,3 @@ Feature: Visual checks for SQL syntax highlighting
     And I should see "identifier" highlighting on "while"
     And I should see "identifier" highlighting on "boolean"
     And I should see "identifier" highlighting on "let"
-    

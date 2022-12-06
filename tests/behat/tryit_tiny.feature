@@ -1,5 +1,5 @@
 @filter @filter_ace_inline @javascript @_file_upload
-Feature: Basic Try it! checks with formatting for TinyMCE compatibility 
+Feature: Basic Try it! checks with formatting for TinyMCE compatibility
   In order to make questions in Code Snippets in TinyMCE
   As a teacher
   I need to be able to make questions and have the correct output displayed and shown
@@ -50,7 +50,7 @@ Feature: Basic Try it! checks with formatting for TinyMCE compatibility
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I press "nolanguage"
     Then I should see "qtype_coderunner/Language"
-  
+
   Scenario: Checks that incorrect code written Tiny format displays the sandbox error
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I press "badcode"
@@ -68,5 +68,3 @@ Feature: Basic Try it! checks with formatting for TinyMCE compatibility
     Then I should see "This ran C"
     Then I press "legacy"
     Then I should see "This ran C"
-
-

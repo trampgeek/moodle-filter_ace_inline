@@ -31,7 +31,7 @@ Feature: Visual checks for Python syntax highlighting
     And I should see "string" highlighting on "Class"
     And I should see "keyword" highlighting on "None"
     And I should see "keyword" highlighting on "def"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "pythondemo" "core_question > preview" page logged in as teacher
     And the programming language is "python"
@@ -41,4 +41,3 @@ Feature: Visual checks for Python syntax highlighting
     And I should see "identifier" highlighting on "true"
     And I should see "identifier" highlighting on "void"
     And I should see "identifier" highlighting on "null"
-    

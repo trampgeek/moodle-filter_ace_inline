@@ -31,7 +31,7 @@ Feature: Visual checks for C(++) syntax highlighting
     And I should see "function" highlighting on "putchar"
     And I should see "string" highlighting on "Hello"
     And I should see "keyword" highlighting on "include"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "cdemo" "core_question > preview" page logged in as teacher
     And the programming language is "c"
@@ -41,4 +41,3 @@ Feature: Visual checks for C(++) syntax highlighting
     And I should see "identifier" highlighting on "Boolean"
     And I should see "identifier" highlighting on "boolean"
     And I should see "identifier" highlighting on "let"
-    

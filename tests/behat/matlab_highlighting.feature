@@ -30,7 +30,7 @@ Feature: Visual checks for Matlab syntax highlighting
     And I should see "keyword" highlighting on "for"
     And I should see "keyword" highlighting on "end"
     And I should see "string" highlighting on "trial"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "matlabdemo" "core_question > preview" page logged in as teacher
     And the programming language is "matlab"
@@ -40,4 +40,3 @@ Feature: Visual checks for Matlab syntax highlighting
     And I should see "identifier" highlighting on "static"
     And I should see "identifier" highlighting on "int"
     And I should see "identifier" highlighting on "def"
-    

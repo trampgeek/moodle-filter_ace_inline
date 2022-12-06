@@ -53,7 +53,7 @@ Feature: Basic Try it! button checks to make sure the code runs
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
     And I press "nolanguage"
     Then I should see "qtype_coderunner/Language"
-  
+
   Scenario: Checks that incorrect code (i.e. ran through sandbox, but code is written incorrectly) displays the sandbox error
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
     And I press "badcode"

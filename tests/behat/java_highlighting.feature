@@ -32,7 +32,7 @@ Feature: Visual checks for Java syntax highlighting
     And I should see "keyword" highlighting on "boolean"
     And I should see "function" highlighting on "System"
     And I should see "constant" highlighting on "null"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "javademo" "core_question > preview" page logged in as teacher
     And the programming language is "java"
@@ -48,4 +48,3 @@ Feature: Visual checks for Java syntax highlighting
     And I should see "identifier" highlighting on "let"
     And I should see "identifier" highlighting on "of"
     And I should see "identifier" highlighting on "function"
-    

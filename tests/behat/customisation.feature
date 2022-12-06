@@ -25,11 +25,11 @@ Feature: Visual checks for any UI specified customisation
   Scenario: Checks the text is starting at the right position (set to start at 5)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     Then I should see lines starting at "5"
-  
+
   Scenario: Checks the font size has changed appropriately when set (set to 16pt size)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     Then I should see font sized "16pt"
-  
+
   Scenario: Checks maximum number of lines displayed is exact
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I should see "I should see this line"
@@ -42,7 +42,7 @@ Feature: Visual checks for any UI specified customisation
   Scenario: Checks if the "Try it!" button can be customised (to "Run me" for this example)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     Then I should see "Run me"
-  
+
   Scenario: Checks if setting the ACE highlighting language still runs independently from CodeRunner
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I should see "identifier" highlighting on "print"
@@ -73,7 +73,7 @@ Feature: Visual checks for any UI specified customisation
     Then I should see the HTML div containing "heading"
     And I press "HTML tiny"
     Then I should see the HTML div containing "heading"
-   
+
   Scenario: Checks if the legacy "class='ace-highlight-code" still functions (twice to double-check handling)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I press "Legacy"
@@ -84,4 +84,3 @@ Feature: Visual checks for any UI specified customisation
   Scenario: Checks if the legacy "class='ace-interactive-code'" still functions
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I should see "constant" highlighting on "True"
-

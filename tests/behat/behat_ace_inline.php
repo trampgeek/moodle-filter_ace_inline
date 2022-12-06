@@ -25,7 +25,9 @@
 use Behat\Mink\Exception\ExpectationException as ExpectationException;
 use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
 
-
+/*
+ * Class designed for behat tests for ace_inline specifically.
+ */
 class behat_ace_inline extends behat_base {
 
     /**

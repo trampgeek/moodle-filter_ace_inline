@@ -29,7 +29,7 @@ Feature: Visual checks for JavaScript syntax highlighting
     And I should see "constant" highlighting on "true"
     And I should see "constant" highlighting on "null"
     And I should see "keyword" highlighting on "function"
-  
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "javascriptdemo" "core_question > preview" page logged in as teacher
     And the programming language is "javascript"
@@ -46,4 +46,3 @@ Feature: Visual checks for JavaScript syntax highlighting
     And I should see "identifier" highlighting on "abstract"
     And I should see "identifier" highlighting on "System"
     And I should see "identifier" highlighting on "boolean"
-    
