@@ -53,7 +53,7 @@ class filter_ace_inline extends moodle_text_filter {
      * Only text within Moodle questions (usually but not necessarily description
      * questions) is subject to replacement.
      *
-     * @see moodle_text_filter::filter()
+     * @see filter_manager::apply_filter_chain()
      * @param {string} $text to be processed.
      * @param {array} $options array.
      * @return {string} text after processing.
