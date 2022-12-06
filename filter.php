@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
 
 /**
  * Class which implements the ace-inline filter.
- * 
+ *
  * This filter looks for <pre> elements of class 'ace-highlight-code' or
  * 'ace-interactive-code' in Moodle question text and
  * replaces them an Ace editor panel to allow display and (for ace-interactive-code)
@@ -36,11 +36,11 @@ require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
  */
 class filter_ace_inline extends moodle_text_filter {
 
-    /*
+    /**
      * Add the javascript to load the Ace editor.
      *
-     * @param moodle_page $page The current page.
-     * @param context $context The current context.
+     * @param type $page The current page.
+     * @param type $context The current context.
      */
     public function setup($page, $context) {
         qtype_coderunner_util::load_ace();
@@ -51,8 +51,9 @@ class filter_ace_inline extends moodle_text_filter {
      * with the Ace editor and (for ace-interactive) Try it! button.
      * Only text within Moodle questions (usually but not necessarily description
      * questions) is subject to replacement.
-     * @param {string} $text to be processed
-     * @return {string} text after processing
+     * @param {string} $text to be processed.
+     * @param {array} $options array.
+     * @return {string} text after processing.
      */
     public function filter($text, array $options = array()) {
         // Basic test to avoid work.
