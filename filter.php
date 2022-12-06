@@ -36,27 +36,12 @@ require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
  */
 class filter_ace_inline extends moodle_text_filter {
 
-    /**
-     * Add the javascript to load the Ace editor.
-     *
-     * @param type $page The current page.
-     * @param type $context The current context.
-     */
     public function setup($page, $context) {
         qtype_coderunner_util::load_ace();
     }
 
-    /**
-     * This function does the appropriate replacement of the <pre> elements
-     * with the Ace editor and (for ace-interactive) Try it! button.
-     * Only text within Moodle questions (usually but not necessarily description
-     * questions) is subject to replacement.
-     * @param {string} $text to be processed.
-     * @param {array} $options array.
-     * @return {string} text after processing.
-     */
-    public function filter($text, array $options = array()) {
-        // Basic test to avoid work.
+    public function filter($text, $options = array()) {
+        // Basic test to avoid work; docstring omitted because of coding style.
         if (!is_string($text)) {
             // Non-string content can not be filtered anyway.
             return $text;

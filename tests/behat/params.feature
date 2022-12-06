@@ -15,7 +15,6 @@ Feature: Checks for the data-params feature
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
     And I have enabled ace inline filter
-    And the cpu time is limited
     And the webserver sandbox is enabled
     And I am on the "Course 1" "core_question > course question import" page logged in as teacher
     And I upload "filter/ace_inline/tests/fixtures/paramsdemo.xml" file to "Import" filemanager
@@ -28,8 +27,10 @@ Feature: Checks for the data-params feature
     And I press "matplotlib"
     Then I should see "successfulmatplotlib"
 
+  @trythis
   Scenario: Checks if the data params CPU excess throws appropriate error
     When I am on the "paramsdemo" "core_question > preview" page logged in as teacher
+    And the cpu time is limited
     And I press "excessive"
     Then I should not see "excessivecpuoops"
     And I should see "time specified exceeds set"
