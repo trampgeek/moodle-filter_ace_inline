@@ -37,28 +37,18 @@ require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
 class filter_ace_inline extends moodle_text_filter {
 
     /**
-     * Add the javascript to load the Ace editor.
-     *
-     * @see moodle_text_filter::setup()
-     * @param moodle_page $page The page we are going to add filter to.
-     * @param context $context The context which contents are going to be filtered.
+     * @var moodle_page page object.
      */
+    protected $page;
+
     public function setup($page, $context) {
+        $this->page = $page;
+        $this->context = $context;
         qtype_coderunner_util::load_ace();
     }
 
-    /**
-     * This function does the appropriate replacement of the <pre> elements
-     * with the Ace editor and (for ace-interactive) Try it! button.
-     * Only text within Moodle questions (usually but not necessarily description
-     * questions) is subject to replacement.
-     *
-     * @see filter_manager::apply_filter_chain()
-     * @param {string} $text to be processed.
-     * @param {array} $options array.
-     * @return {string} text after processing.
-     */
-    public function filter($text, array $options = array()) {
+    public function filter($text, array $options = []) {
+        $this->options = $options;
         // Basic test to avoid work.
         if (!is_string($text)) {
             // Non-string content can not be filtered anyway.
@@ -86,9 +76,8 @@ class filter_ace_inline extends moodle_text_filter {
      * @return {string} The processed text.
      */
     public function do_ace_highlight($text, $config) {
-        global $PAGE;
         if (strpos($text, 'ace-highlight-code') !== false) {
-            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
+            $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
                     'initAceHighlighting', array($config));
         }
 
@@ -107,9 +96,8 @@ class filter_ace_inline extends moodle_text_filter {
      * @return {string} The processed text
      */
     public function do_ace_interactive($text, $config) {
-        global $PAGE;
         if (strpos($text, 'ace-interactive-code') !== false) {
-            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
+            $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
                     'initAceInteractive', array($config));
         }
         return $text;
