@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Basic Try it! checks with formatting for TinyMCE compatibility
   In order to make questions in Code Snippets in TinyMCE
   As a teacher
@@ -14,35 +14,36 @@ Feature: Basic Try it! checks with formatting for TinyMCE compatibility
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And the webserver sandbox is enabled
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/tryittinydemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name          |
+      | Test questions   | description | tryittinydemo |
+    And "tryittinydemo.txt" exists in question "tryittinydemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks that Tiny-formatted Java can run (done twice to check consistency)
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I should not see "This ran Java"
-    Then I press "Java"
-    Then I should see "This ran Java"
-    Then I press "Java"
+    And I press "Java"
+    And I should see "This ran Java"
+    And I press "Java"
     Then I should see "This ran Java"
 
   Scenario: Checks that Tiny-formatted C can run (done twice to check consistency)
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I should not see "This ran C"
-    Then I press "C"
-    Then I should see "This ran C"
-    Then I press "C"
+    And I press "C"
+    And I should see "This ran C"
+    And I press "C"
     Then I should see "This ran C"
 
   Scenario: Checks that Tiny-formatted Python can run (done twice to check consistency)
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I should not see "This ran Python"
     And I press "Python"
-    Then I should see "This ran Python"
+    And I should see "This ran Python"
     And I press "Python"
     Then I should see "This ran Python"
 
@@ -64,7 +65,7 @@ Feature: Basic Try it! checks with formatting for TinyMCE compatibility
   Scenario: Checks that (class='ace-interactive-code language-c') Tiny-formatted C can run (done twice to check consistency)
     When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
     And I should not see "This ran C"
-    Then I press "legacy"
-    Then I should see "This ran C"
-    Then I press "legacy"
+    And I press "legacy"
+    And I should see "This ran C"
+    And I press "legacy"
     Then I should see "This ran C"

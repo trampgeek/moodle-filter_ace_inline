@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Basic Try it! button checks to make sure the code runs
   In order to have questions which can execute code and display output
   As a teacher
@@ -14,38 +14,39 @@ Feature: Basic Try it! button checks to make sure the code runs
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And the webserver sandbox is enabled
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/tryitbasicdemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name           |
+      | Test questions   | description | tryitbasicdemo |
+    And "tryitbasicdemo.txt" exists in question "tryitbasicdemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks that Java can run (done twice to check consistency)
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
-    And the programming language is "java"
+    And the programming language is "java" in filter ace inline
     And I should not see "This ran Java"
-    Then I press "Java"
-    Then I should see "This ran Java"
-    Then I press "Java"
+    And I press "Java"
+    And I should see "This ran Java"
+    And I press "Java"
     Then I should see "This ran Java"
 
   Scenario: Checks that C can run (done twice to check consistency)
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
-    And the programming language is "c"
+    And the programming language is "c" in filter ace inline
     And I should not see "This ran C"
-    Then I press "C"
-    Then I should see "This ran C"
-    Then I press "C"
+    And I press "C"
+    And I should see "This ran C"
+    And I press "C"
     Then I should see "This ran C"
 
   Scenario: Checks that Python can run
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
-    And the programming language is "python"
+    And the programming language is "python" in filter ace inline
     And I should not see "This ran Python"
     And I press "Python"
-    Then I should see "This ran Python"
+    And I should see "This ran Python"
     And I press "Python"
     Then I should see "This ran Python"
 

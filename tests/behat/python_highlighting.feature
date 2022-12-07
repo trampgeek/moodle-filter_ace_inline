@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Visual checks for Python syntax highlighting
   In order to display syntax text highlighting
   As a teacher
@@ -14,30 +14,32 @@ Feature: Visual checks for Python syntax highlighting
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/pythondemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name       |
+      | Test questions   | description | pythondemo |
+    And "pythondemo.txt" exists in question "pythondemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks Python is highlighted correctly
     When I am on the "pythondemo" "core_question > preview" page logged in as teacher
-    And the programming language is "python"
-    And I should see "keyword" highlighting on "print"
-    And I should see "constant" highlighting on "True"
-    And I should see "keyword" highlighting on "class"
-    And I should see "function" highlighting on "range"
-    And I should see "string" highlighting on "Class"
-    And I should see "keyword" highlighting on "None"
-    And I should see "keyword" highlighting on "def"
+    And the programming language is "python" in filter ace inline
+    And I should see "keyword" highlighting on "print" with filter ace inline
+    And I should see "constant" highlighting on "True" with filter ace inline
+    And I should see "keyword" highlighting on "class" with filter ace inline
+    And I should see "function" highlighting on "range" with filter ace inline
+    And I should see "string" highlighting on "Class" with filter ace inline
+    And I should see "keyword" highlighting on "None" with filter ace inline
+    And I should see "keyword" highlighting on "def" with filter ace inline
 
   Scenario: Checks text is not highlighted in other languages
     When I am on the "pythondemo" "core_question > preview" page logged in as teacher
-    And the programming language is "python"
-    And I should see "identifier" highlighting on "public"
-    And I should see "identifier" highlighting on "System"
-    And I should see "identifier" highlighting on "putchar"
-    And I should see "identifier" highlighting on "true"
-    And I should see "identifier" highlighting on "void"
-    And I should see "identifier" highlighting on "null"
+    And the programming language is "python" in filter ace inline
+    And I should see "identifier" highlighting on "public" with filter ace inline
+    And I should see "identifier" highlighting on "System" with filter ace inline
+    And I should see "identifier" highlighting on "putchar" with filter ace inline
+    And I should see "identifier" highlighting on "true" with filter ace inline
+    And I should see "identifier" highlighting on "void" with filter ace inline
+    And I should see "identifier" highlighting on "null" with filter ace inline

@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Visual checks for any UI specified customisation
   In order to display custom code-display boxes
   As a teacher
@@ -14,21 +14,22 @@ Feature: Visual checks for any UI specified customisation
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And the webserver sandbox is enabled
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/customisedemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name          |
+      | Test questions   | description | customisedemo |
+    And "customisedemo.txt" exists in question "customisedemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks the text is starting at the right position (set to start at 5)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
-    Then I should see lines starting at "5"
+    Then I should see lines starting at "5" with filter ace inline
 
   Scenario: Checks the font size has changed appropriately when set (set to 16pt size)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
-    Then I should see font sized "16pt"
+    Then I should see font sized "16pt" with filter ace inline
 
   Scenario: Checks maximum number of lines displayed is exact
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
@@ -45,8 +46,8 @@ Feature: Visual checks for any UI specified customisation
 
   Scenario: Checks if setting the ACE highlighting language still runs independently from CodeRunner
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
-    And I should see "identifier" highlighting on "print"
-    And I should see "string" highlighting on "Python"
+    And I should see "identifier" highlighting on "print" with filter ace inline
+    And I should see "string" highlighting on "Python" with filter ace inline
     And I should not see "This ran Python"
     Then I press "notJS"
     Then I should see "This ran Python"
@@ -59,20 +60,16 @@ Feature: Visual checks for any UI specified customisation
   Scenario: Checks if HTML output shows (twice to double-check handling)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I press "HTML time"
-    Then I should see the HTML div containing "heading"
+    And I should see the filter-ace-inline-html div containing "heading"
     And I press "HTML time"
-    Then I should see the HTML div containing "heading"
-
-  Scenario: Checks for dark mode in ACE
-    When I am on the "customisedemo" "core_question > preview" page logged in as teacher
-    Then I should see a div with class "ace-tomorrow-night"
+    Then I should see the filter-ace-inline-html div containing "heading"
 
   Scenario: Checks if HTML output shows within editors with language-markup (twice to double-check handling)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
     And I press "HTML tiny"
-    Then I should see the HTML div containing "heading"
+    And I should see the filter-ace-inline-html div containing "heading"
     And I press "HTML tiny"
-    Then I should see the HTML div containing "heading"
+    Then I should see the filter-ace-inline-html div containing "heading"
 
   Scenario: Checks if the legacy "class='ace-highlight-code" still functions (twice to double-check handling)
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
@@ -83,4 +80,4 @@ Feature: Visual checks for any UI specified customisation
 
   Scenario: Checks if the legacy "class='ace-interactive-code'" still functions
     When I am on the "customisedemo" "core_question > preview" page logged in as teacher
-    And I should see "constant" highlighting on "True"
+    And I should see "constant" highlighting on "True" with filter ace inline

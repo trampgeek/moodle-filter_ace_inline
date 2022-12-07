@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Checks that HTML elements can be identified, else made and mapped appropriately
   In order to have questions which allow input into HTML/TextAreas
   As a teacher
@@ -14,13 +14,14 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And the webserver sandbox is enabled
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/taidsdemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name      |
+      | Test questions   | description | taidsdemo |
+    And "taidsdemo.txt" exists in question "taidsdemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks that correct taid can run and give correct output
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
@@ -30,8 +31,8 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
   Scenario: Checks that editing the taid gives the correct output
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "taids"
-    Then I should see "Hello World!"
-    Then I set the field "textarea" to:
+    And I should see "Hello World!"
+    And I set the field "textarea" to:
         """
         Goo
         dbye
@@ -45,8 +46,8 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
   Scenario: Checks that if there is no text in the input box, there is no user error.
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "emptyin"
-    Then I should not see "Id not found for element"
-    And I should see "I'm empty"
+    And I should not see "Id not found for element"
+    Then I should see "I'm empty"
 
   Scenario: Checks that one can see an error when an incorrect id is inputted
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
@@ -56,35 +57,35 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
   Scenario: Checks that the file-taids match correctly (done twice to check handling)
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "file-taids"
-    Then I should see "Hello is it me you see?"
+    And I should see "Hello is it me you see?"
     And I press "file-taids"
     Then I should see "Hello is it me you see?"
 
   Scenario: Checks that a JSON parse error for file-taid mappings gives you a good response (done twice to check handling)
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "invalid-JSON"
-    Then I should not see "Hello is it"
+    And I should not see "Hello is it"
     And I should see "JSON record"
     And I press "invalid-JSON"
-    Then I should not see "Hello is it"
-    And I should see "JSON record"
+    And I should not see "Hello is it"
+    Then I should see "JSON record"
 
   Scenario: Checks that when a valid JSON file-taid input maps with an element not listed, that it errors (done twice to check handling)
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "wrongFile"
-    Then I should see "Id not found for element"
+    And I should see "Id not found for element"
     And I press "wrongFile"
     Then I should see "Id not found for element"
 
   Scenario: Checks that when uploading a file, the file uploads correctly and is executed correctly (done twice to check uploading persistence handling)
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "upload"
-    Then I should see "No '.txt' files found"
+    And I should see "No '.txt' files found"
     And I press "upload"
     Then I should see "No '.txt' files found"
 
   Scenario: Checks that if there is no text in the file, the appropriate text is displayed
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "hollow"
-    Then I should not see "Id not found for element"
-    And I should see "NO INPUT SUPPLIED!"
+    And I should not see "Id not found for element"
+    Then I should see "NO INPUT SUPPLIED!"

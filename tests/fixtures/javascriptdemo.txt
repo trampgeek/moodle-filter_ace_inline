@@ -1,0 +1,38 @@
+<pre data-ace-highlight-code data-lang="javascript">
+
+/** Info
+*/
+function trial()
+{
+    let or = 'one';
+    for (const a of "js") {
+        var hi = 0;
+    }
+    return;
+}
+
+public abstract class Demo {
+
+    public static void main(String[] args) {
+    System.out.println("running");
+    
+    boolean True = true;
+    Boolean False = false;
+    
+    Integer.toString(42);
+    
+    for (int i; i < 30; i++) {
+        null;
+    }
+}
+
+def other():
+    """something"""
+    return None;
+    
+#include <stdio.h>
+int main(void) {
+    putchar('x');
+    bool true; 
+}
+<p dir="ltr" style="text-align: left;"><br></p></pre>

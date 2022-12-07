@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Checks for the data-params feature
   In order to execute matplotlib or other code which requires excessive CPU/memory
   As a teacher
@@ -14,15 +14,17 @@ Feature: Checks for the data-params feature
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And the webserver sandbox is enabled
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/paramsdemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name       |
+      | Test questions   | description | paramsdemo |
+    And "paramsdemo.txt" exists in question "paramsdemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks if the data params works appropriately
     When I am on the "paramsdemo" "core_question > preview" page logged in as teacher
+    And I should not see "successfulmatplotlib"
     And I press "matplotlib"
     Then I should see "successfulmatplotlib"

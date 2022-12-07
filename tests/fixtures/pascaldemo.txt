@@ -1,0 +1,45 @@
+<pre data-ace-highlight-code data-lang="pascal">
+
+program Demo;
+uses crt;
+const
+    Size = 10;
+type
+    CharArrType = array[1..Size] of Char;
+var
+    alpha, beta, arr: CharArrType;
+
+begin
+   writeln('Demo2');
+   readkey;
+end. 
+
+/** Info
+*/
+public abstract class Demo {
+
+    public static void main(String[] args) {
+    System.out.println("wrong");
+    
+    Integer.toString(42);
+}
+
+def other():
+    """something"""
+    return None;
+    
+function trial()
+
+    let or = 'one';
+    for (const a of "js") {
+        var hi = 0;
+    }
+    return;
+
+
+#include <stdio.h>
+int main(void) {
+    putchar('x');
+    bool true; 
+}
+<p dir="ltr" style="text-align: left;"><br></p></pre> 

@@ -1,0 +1,13 @@
+<script>
+    function foo(s) {
+        if (s === 'will this run') {
+            return `def ran():
+    some_list = ['Yes', ', ', 'this ', 'ran ', 'Python']
+    print("".join(some_list))
+ran()`
+        } else {
+            return 'print("No, it didn\'t")';
+        }
+    }
+</script>
+<pre data-ace-interactive-code data-code-mapper="foo">will this run</pre>
