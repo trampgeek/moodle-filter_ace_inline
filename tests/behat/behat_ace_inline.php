@@ -229,6 +229,6 @@ class behat_ace_inline extends behat_base {
         // Get the contents of the file in fixtures.
         $contents = file_get_contents(__DIR__.'/../fixtures/'.$filename);
         // Set the specified field to contents in the database if id is correct.
-        $DB->set_field('question', $field, $contents, ['name' => $name]);        
+        $DB->set_field('question', $field, $contents, ['name' => $name]);
     }
 }
