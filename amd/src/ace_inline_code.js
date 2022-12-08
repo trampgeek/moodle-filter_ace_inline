@@ -19,7 +19,7 @@
  * JavaScript for implementing both the ace_highlight_code and ace_interactive_code
  * functionality of the ace_line filter (q.v.)
  *
- * @module filter_ace_inline/highlight_code
+ * @module     filter_ace_inline/highlight_code
  * @copyright  Richard Lobb, 2021, The University of Canterbury
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -377,8 +377,8 @@ define([], function() {
         outputDisplayArea.children.item(0).innerHTML = '';
         const potentialHtml = outputDisplayArea.nextElementSibling;
         if (potentialHtml !== null) {
-            if (potentialHtml.class === 'filter-ace-inline-html') {
-                 outputDisplayArea.nextElementSibling.remove();
+            if (potentialHtml.className === 'filter-ace-inline-html') {
+                 outputDisplayArea.parentNode.removeChild(outputDisplayArea.nextSibling);
             }
         }
         outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-display');
@@ -429,9 +429,9 @@ define([], function() {
      * Creates elements en masse by taking an elementName and adding classes
      * and attributes to it.
      *
-     * @param {type} elementName
-     * @param {type} classList
-     * @param {type} attributeArray
+     * @param {string} elementName The name of the HTML element to be made.
+     * @param {type} classList A list of all the classes to be added.
+     * @param {type} attributeArray A map of attributes and values to be added.
      * @returns {Element}
      */
     function createComponent(elementName, classList, attributeArray) {
