@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.0.1, 5 December 2022.
+Version 1.0.2, 8 December 2022.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -283,6 +283,12 @@ Example:
 
 
 ## Change History
+
+ * Version 1.0.2, 8 December 2022. 
+    * Removed all jQuery from code to prepare for ES6 transition.
+    * Renamed Behat tests for better definition.
+    * Changed Behat tests to insert .txt files from fixtures straight into db instead, to reduce UI dependency.
+    * Implemented CI.
 
  * Version 1.0.1, 5 December 2022. 
     * Updated ReadMe fully.

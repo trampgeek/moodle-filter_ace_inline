@@ -221,7 +221,7 @@ class behat_ace_inline extends behat_base {
      *
      * @Given :filename exists in question :name :field for filter ace inline
      * @param string $filename The name of the file in fixtures.
-     * @param string $name The id number of the question.
+     * @param string $name The name of the question.
      * @param string $field The field to be adjusted.
      */
     public function file_contents_exists_in_question_contents($filename, $name, $field) {

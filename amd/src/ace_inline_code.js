@@ -26,7 +26,7 @@
 
 /*jshint esversion: 8 */
 
-define(['jquery'], function($) {
+define([], function() {
     const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
     const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
     const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -191,9 +191,9 @@ define(['jquery'], function($) {
         const taid = uiParameters['stdin-taid'];
         const stdin = uiParameters.stdin;
         if (taid) {
-            const output = $('#' + taid).val();
+            const box = document.querySelector('#' + taid);
             // Handles invalid textarea names.
-            return output in window ? null : output;
+            return box === null ? null : box.value;
         } else if (stdin) {
             return stdin;
         } else {
@@ -214,7 +214,7 @@ define(['jquery'], function($) {
         let taids = uiParameters['file-taids'];
         let map = {};
 
-        if (!$.isEmptyObject(taids)) {
+        if (Object.keys(taids).length !== 0) {
             // Catches JSON parse errors for file names.
             try {
                 taids = JSON.parse(taids);
@@ -224,11 +224,11 @@ define(['jquery'], function($) {
             for (const filename in taids) {
                 if (taids.hasOwnProperty(filename)) {
                     const id = taids[filename];
-                    const value = $('#' + id).val();
-                    if (value in window) {
+                    const file = document.querySelector('#' + id);
+                    if (file === null) {
                         return Promise.resolve('bad_id');
                     } else {
-                        map[filename] = value;
+                        map[filename] = file.value;
                     }
                 }
             }
@@ -253,7 +253,7 @@ define(['jquery'], function($) {
      */
     async function handleButtonClick(outputDisplayArea, code, uiParameters) {
         cleanOutput(outputDisplayArea);
-        outputDisplayArea.show();
+        outputDisplayArea.style.display = '';
 
         const mapFunc = uiParameters['code-mapper'];
         if (mapFunc) {
@@ -265,7 +265,7 @@ define(['jquery'], function($) {
         const files = await getFiles(uiParameters);
         // If html/markup is the chosen language; change uiParameters and wrap in Python.
         if ((uiParameters['lang'] === 'markup') || (uiParameters['lang'] === 'html')) {
-            outputDisplayArea.attr('class', 'filter-ace-inline-output-html');
+            outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-html');
             // Save for returning to old language.
             uiParameters['prev-lang'] = uiParameters['lang'];
             uiParameters['html-output'] = true;
@@ -280,10 +280,10 @@ define(['jquery'], function($) {
             return code;
         } else {
             // Make it display an error.
-            outputDisplayArea.attr('class', 'filter-ace-inline-output-user');
+            outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-user');
             let text = await getLangString('error_user_params');
             text = '*** ' + text + ' ***\n' + await getLangString('error_element_unknown');
-            outputDisplayArea.find('.filter-ace-inline-output-text').html(escapeHtml(text));
+            outputDisplayArea.children.item(0).innerHTML = escapeHtml(text);
             return null;
         }
     }
@@ -322,18 +322,18 @@ define(['jquery'], function($) {
                         text += combinedOutput(response, maxLen);
                         // If there is an execution error, change the output class.
                         if (response.result !== RESULT_SUCCESS) {
-                            outputDisplayArea.attr('class', 'filter-ace-inline-output-error');
+                            outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-error');
                         }
                     } else { // Valid HTML output - just plug in the raw html to the DOM.
-                        outputDisplayArea.attr('class', 'filter-ace-inline-output-html');
-                        const html = $("<div class='filter-ace-inline-html'>" +
-                                response.output + "</div>");
+                        outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-html');
+                        const html = createComponent('div', ['filter-ace-inline-html'], {});
+                        html.innerHTML = response.output;
                         outputDisplayArea.after(html);
                     }
                 } else {
                     // If an error occurs, display the language string in the
                     // outputDisplayArea plus additional info, for non-sandbox errors.
-                    outputDisplayArea.attr('class', 'filter-ace-inline-output-error');
+                    outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-error');
                     let extra = response.error == 0 ? combinedOutput(response, maxLen) : '';
                     if (error === 'error_unknown_runtime') {
                         extra += response.error ? '(Sandbox error code ' + response.error + ')' :
@@ -347,7 +347,7 @@ define(['jquery'], function($) {
             fail: function(error) {
                 cleanOutput(outputDisplayArea);
                 // Change the outputDisplayArea to something more ominious...
-                outputDisplayArea.attr('class', 'filter-ace-inline-output-user');
+                outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-user');
                 langString += 'error_user_params';
                 text += error.message;
                 displayTextOutput(text, langString, outputDisplayArea);
@@ -365,7 +365,7 @@ define(['jquery'], function($) {
         if (langString !== '') {
             text = "*** " + await getLangString(langString) + " ***\n" + text;
         }
-        outputDisplayArea.find('.filter-ace-inline-output-text').html(escapeHtml(text));
+        outputDisplayArea.children.item(0).innerHTML = escapeHtml(text);
     }
 
     /**
@@ -374,9 +374,14 @@ define(['jquery'], function($) {
      * @param {type} outputDisplayArea Resets the output box.
      */
     function cleanOutput(outputDisplayArea) {
-        outputDisplayArea.find('.filter-ace-inline-output-text').html('');
-        outputDisplayArea.next('div.filter-ace-inline-html').remove();
-        outputDisplayArea.attr('class', 'filter-ace-inline-output-display');
+        outputDisplayArea.children.item(0).innerHTML = '';
+        const potentialHtml = outputDisplayArea.nextElementSibling;
+        if (potentialHtml !== null) {
+            if (potentialHtml.class === 'filter-ace-inline-html') {
+                 outputDisplayArea.nextElementSibling.remove();
+            }
+        }
+        outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-display');
     }
 
     /**
@@ -392,21 +397,22 @@ define(['jquery'], function($) {
      */
     async function addUi(insertionPoint, getCode, uiParameters) {
         // Create the button-node for execution.
-        const button = $("<button type='button' class='btn btn-secondary btn-ace-inline-execution' /button>" +
-                uiParameters['button-name'] + "</button>");
+        const button = createComponent('button', ['btn', 'btn-secondary', 'btn-ace-inline-execution'], {'type' :
+                'button'});
+        button.innerHTML = uiParameters['button-name'];
         // Create the div-node to contain pre-node.
-        const buttonDiv = $("<div></div>");
-        const outputDisplayArea = $("<div class='filter-ace-inline-output-display'/div>");
+        const buttonDiv = document.createElement("div");
+        const outputDisplayArea = createComponent('div', ['filter-ace-inline-output-display'], {});
         // Create a pre-node to contain text.
-        const outputTextArea = $("<pre class='filter-ace-inline-output-text'></pre>");
+        const outputTextArea = createComponent('pre', ['filter-ace-inline-output-text'], {});
         buttonDiv.append(button);
-        $(insertionPoint).after(buttonDiv);
+        insertionPoint.after(buttonDiv);
         buttonDiv.after(outputDisplayArea);
         outputDisplayArea.append(outputTextArea);
-        outputDisplayArea.hide();
+        outputDisplayArea.style.display = 'none';
         M.util.js_pending('core/ajax');
         require(['core/ajax'], function(ajax) {
-            button.on('click', async function() {
+            button.addEventListener('click', async function() {
                 const code = await handleButtonClick(outputDisplayArea, getCode(), uiParameters);
                 // UI parameters get checked first; and if no error, then returns code.
                 if (code !== null) { // If there was an error.
@@ -417,6 +423,24 @@ define(['jquery'], function($) {
             });
         });
         M.util.js_complete('core/ajax');
+    }
+
+    /**
+     * Creates elements en masse by taking an elementName and adding classes
+     * and attributes to it.
+     *
+     * @param {type} elementName
+     * @param {type} classList
+     * @param {type} attributeArray
+     * @returns {Element}
+     */
+    function createComponent(elementName, classList, attributeArray) {
+        const element = document.createElement(elementName);
+        classList.forEach(htmlClass => element.classList.add(htmlClass));
+        for (const attribute in attributeArray) {
+            element.setAttribute(attribute, attributeArray[attribute]);
+        }
+        return element;
     }
 
 
@@ -532,11 +556,11 @@ define(['jquery'], function($) {
             });
         }
 
-        const element = $('#' + uploadElementId);
-        element.prop('multiple', '1');  // Workaround for the fact Moodle strips this.
-        element.change(async () => {
+        const element = document.querySelector('#' + uploadElementId);
+        element.setAttribute('multiple', '1');  // Workaround for the fact Moodle strips this.
+        element.addEventListener('change', async () => {
             uploadFiles = {};
-            const files = element.prop('files');
+            const files = element.files;
             for (const file of files) {
                 uploadFiles[file.name] = await readOneFile(file);
             }
@@ -583,21 +607,17 @@ define(['jquery'], function($) {
             aceLang = aceModeMap[aceLang];
         }
         const mode = 'ace/mode/' + aceLang;
-        const jqpre = $(pre);
-        const text = jqpre.text();
+        const text = pre.textContent;
         const lines = text.split("\n");
         const numLines = lines.length;
         const longestLine = longest(lines);
 
-        const editNode = $("<div></div>"); // Ace editor manages this
+        const editNode = document.createElement('div'); // Ace editor manages this
         const width = pre.scrollWidth;  // Our first guess at a minimum width.
-        const css = {
-            "margin": "6px 0px 6px 0px", // Top, right, bottom, left
-            "line-height": "1.3",
-            "min-width": width + "px"
-        };
-        editNode.css(css);
-        jqpre.after(editNode);    // Insert the edit node
+        editNode.style.margin = "6px 0px 6px 0px";
+        editNode.style.lineHeight = "1.3";
+        editNode.style.minWidth = width + "px";
+        pre.after(editNode);    // Insert the edit node
 
         let aceConfig = {
             newLineMode: "unix",
@@ -613,11 +633,11 @@ define(['jquery'], function($) {
             highlightActiveLine: showLineNumbers
         };
 
-        const editor = window.ace.edit(editNode.get(0), aceConfig);
+        const editor = window.ace.edit(editNode, aceConfig);
         const session = editor.getSession();
         const aceWidestLine = lineLength(editor.renderer, longestLine);
         if (aceWidestLine > width) {
-            editNode.css({'min-width': Math.ceil(aceWidestLine) + "px"});
+            editNode.style.minWidth = Math.ceil(aceWidestLine) + "px";
         }
         session.setValue(text);
         editor.setTheme(theme);
@@ -642,7 +662,6 @@ define(['jquery'], function($) {
      * @param {type} uiParameters the User Interface parameters for the element.
      */
     async function applyToPre(pre, isInteractive, uiParameters) {
-        const jqpre = $(pre);
         if (uiParameters['file-upload-id']) {
             setupFileHandler(uiParameters['file-upload-id']);
         }
@@ -650,11 +669,11 @@ define(['jquery'], function($) {
         if (!uiParameters.hidden) {
             setUpAce(pre, uiParameters, isInteractive);
         } else if (isInteractive) { // Code is hidden but there's still a button to run it.
-            const getCode = () => jqpre.text();
+            const getCode = () => pre.text();
             addUi(pre, getCode, uiParameters);
         }
 
-        jqpre.hide();  // NB this sets display = 'none', checked above.
+        pre.style.display = 'none';  // NB this sets display = 'none', checked above.
     }
 
     /**
