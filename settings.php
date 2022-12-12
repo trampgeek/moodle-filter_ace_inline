@@ -17,13 +17,13 @@
 /**
  * filter ace_inline admin settings and defaults
  *
- * @package    filter
+ * @package    filter_ace_inline
  * @subpackage ace_inline
- * @copyright  2017 Richard Jones (@link https://richardnz.net/)
+ * @copyright  2017 Richard Jones
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
     // Hopefully means that the default will be off.

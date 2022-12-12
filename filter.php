@@ -17,8 +17,7 @@
 /**
  * Ace inline filter for displaying and possibly editing and running code.
  *
- * @package    filter
- * @subpackage ace_inline
+ * @package    filter_ace_inline
  * @copyright  2021 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,32 +27,28 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/question/type/coderunner/classes/util.php');
 
 /**
+ * Class which implements the ace-inline filter.
+ *
  * This filter looks for <pre> elements of class 'ace-highlight-code' or
  * 'ace-interactive-code' in Moodle question text and
  * replaces them an Ace editor panel to allow display and (for ace-interactive-code)
  * editing and execution, of program code.
  */
 class filter_ace_inline extends moodle_text_filter {
-    /*
-     * Add the javascript to load the Ace editor.
-     *
-     * @param moodle_page $page The current page.
-     * @param context $context The current context.
+
+    /**
+     * @var moodle_page page object.
      */
+    protected $page;
+
     public function setup($page, $context) {
+        $this->page = $page;
+        $this->context = $context;
         qtype_coderunner_util::load_ace();
     }
 
-    /**
-     * This function does the appropriate replacement of the <pre> elements
-     * with the Ace editor and (for ace-interactive) Try it! button.
-     * Only text within Moodle questions (usually but not necessarily description
-     * questions) is subject to replacement.
-     * @param {string} $text to be processed
-     * @param {array} $options filter options
-     * @return {string} text after processing
-     */
-    public function filter($text, array $options = array()) {
+    public function filter($text, array $options = []) {
+        $this->options = $options;
         // Basic test to avoid work.
         if (!is_string($text)) {
             // Non-string content can not be filtered anyway.
@@ -81,9 +76,8 @@ class filter_ace_inline extends moodle_text_filter {
      * @return {string} The processed text.
      */
     public function do_ace_highlight($text, $config) {
-        global $PAGE;
         if (strpos($text, 'ace-highlight-code') !== false) {
-            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
+            $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
                     'initAceHighlighting', array($config));
         }
 
@@ -98,13 +92,12 @@ class filter_ace_inline extends moodle_text_filter {
      * through all filters, on all content pages, even editing pages. We
      * don't wish to use our filter on pages being edited.
      * @param {string} $text The text to be processed.
-     * @param {assoc array} $config The plugin configuration info.
+     * @param {array} $config The plugin configuration info.
      * @return {string} The processed text
      */
     public function do_ace_interactive($text, $config) {
-        global $PAGE, $COURSE;
         if (strpos($text, 'ace-interactive-code') !== false) {
-            $PAGE->requires->js_call_amd('filter_ace_inline/ace_inline_code',
+            $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
                     'initAceInteractive', array($config));
         }
         return $text;

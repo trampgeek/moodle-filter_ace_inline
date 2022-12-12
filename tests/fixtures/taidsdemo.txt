@@ -1,0 +1,114 @@
+<textarea id="textarea" rows="5" cols="40">Hel
+lo
+ World
+!</textarea>
+<pre data-ace-interactive-code data-stdin-taid="textarea" data-button-name="taids">def read_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    print(output)
+read_me()
+</pre>
+
+<textarea id="randombox" rows="5" cols="40">Yo
+u should
+ not use this
+!</textarea>
+<pre data-ace-interactive-code data-stdin-taid="wrongid" data-button-name="wrongname">def read_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    print(output)
+read_me()
+</pre>
+
+<textarea id="emptybox" rows="5" cols="40"></textarea>
+<pre data-ace-interactive-code data-stdin-taid="emptybox" data-button-name="emptyin">def size_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    if len(output) == 0:
+        print("I'm " + "empty")
+size_me()
+</pre>
+
+<p><textarea id="file1" cols="40" rows="5">He
+llo
+ is it</textarea> <textarea id="file2" cols="40" rows="5"> me
+ you see
+?</textarea></p>
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;file1&quot;, &quot;file2.txt&quot;: &quot;file2&quot;}" data-button-name="file-taids">def join_me(files):
+    output = ""
+    for file in files:
+        with open(file) as file:
+            text = file.read().splitlines()
+            for line in text:
+                output += line
+    print(output)
+join_me(["file1.txt", "file2.txt"])
+</pre>
+
+<p><textarea id="file0" cols="40" rows="5">He
+llo
+ is it</textarea> 
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;file1&qu\quot;}" data-button-name="invalid-JSON">def join_me(files):
+    output = ""
+    for file in files:
+        with open(file) as file:
+            text = file.read().splitlines()
+            for line in text:
+                output += line
+    print(output)
+join_me(["file0.txt"])
+</pre>
+
+<p><textarea id="file3" cols="40" rows="5">poorid
+</textarea> 
+<pre data-ace-interactive-code data-file-taids="{&quot;file1.txt&quot;: &quot;notafile&quot;}" data-button-name="wrongFile">def join_me(files):
+    output = ""
+    for file in files:
+        with open(file) as file:
+            text = file.read().splitlines()
+            for line in text:
+                output += line
+    print(output)
+join_me(["file3.txt"])
+</pre>
+
+<p><input id="file-uploader" multiple="multiple" type="file"></p>
+<pre data-ace-interactive-code data-button-name="upload" data-file-upload-id="file-uploader">import os
+from html import escape
+text_files = [filename for filename in os.listdir() if filename.endswith('.txt')]
+if len(text_files) == 0:
+    print("No '.txt' files found!")
+elif len(text_files) != 1:
+    print("Please upload only a single .txt file")
+else:
+    with open(text_files[0]) as infile:
+        raw = infile.read()
+        if len(raw.strip()) == 0:
+            print("EMPTY FILE!")
+        else:
+            print(escape(raw))
+</pre>
+       
+<textarea id="raw-text" rows="10" cols="80"></textarea>
+<pre data-ace-interactive-code="" data-button-name="hollow" data-file-taids="{&quot;raw.txt&quot;: &quot;raw-text&quot;}">from html import escape
+with open('raw.txt') as infile:
+    raw = infile.read()
+    if len(raw.strip()) == 0:
+        print("NO" + " INPUT" + " SUPPLIED!")
+    else:
+        print(escape(raw))
+</pre>
+
+<p dir="ltr" style="text-align: left;"><br></p></pre>

@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Visual checks for Pascal syntax highlighting
   In order to display syntax text highlighting
   As a teacher
@@ -14,30 +14,31 @@ Feature: Visual checks for Pascal syntax highlighting
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/pascaldemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name       |
+      | Test questions   | description | pascaldemo |
+    And "pascaldemo.txt" exists in question "pascaldemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks Pascal is highlighted correctly
     When I am on the "pascaldemo" "core_question > preview" page logged in as teacher
-    And the programming language is "pascal"
-    And I should see "keyword" highlighting on "program"
-    And I should see "keyword" highlighting on "uses"
-    And I should see "keyword" highlighting on "const"
-    And I should see "keyword" highlighting on "var"
-    And I should see "string" highlighting on "Demo2"
-    And I should see "keyword" highlighting on "end"
-    And I should see "keyword" highlighting on "begin"
-  
+    And the programming language is "pascal" in filter ace inline
+    And I should see "keyword" highlighting on "program" with filter ace inline
+    And I should see "keyword" highlighting on "uses" with filter ace inline
+    And I should see "keyword" highlighting on "const" with filter ace inline
+    And I should see "keyword" highlighting on "var" with filter ace inline
+    And I should see "string" highlighting on "Demo2" with filter ace inline
+    And I should see "keyword" highlighting on "end" with filter ace inline
+    And I should see "keyword" highlighting on "begin" with filter ace inline
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "pascaldemo" "core_question > preview" page logged in as teacher
-    And the programming language is "pascal"
-    And I should see "identifier" highlighting on "return"
-    And I should see "identifier" highlighting on "include"
-    And I should see "identifier" highlighting on "stdio"
-    And I should see "identifier" highlighting on "int"
-    And I should see "identifier" highlighting on "let"
-    
+    And the programming language is "pascal" in filter ace inline
+    And I should see "identifier" highlighting on "return" with filter ace inline
+    And I should see "identifier" highlighting on "include" with filter ace inline
+    And I should see "identifier" highlighting on "stdio" with filter ace inline
+    And I should see "identifier" highlighting on "int" with filter ace inline
+    And I should see "identifier" highlighting on "let" with filter ace inline

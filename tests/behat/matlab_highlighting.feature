@@ -1,4 +1,4 @@
-@filter @filter_ace_inline @javascript @_file_upload
+@filter @filter_ace_inline @javascript
 Feature: Visual checks for Matlab syntax highlighting
   In order to display syntax text highlighting
   As a teacher
@@ -14,30 +14,31 @@ Feature: Visual checks for Matlab syntax highlighting
     And the following "course enrolments" exist:
       | user     | course    | role           |
       | teacher  | C1        | editingteacher |
-    And I have enabled ace inline filter
-    And I am on the "Course 1" "core_question > course question import" page logged in as teacher
-    And I upload "filter/ace_inline/tests/fixtures/matlabdemo.xml" file to "Import" filemanager
-    And I set the field "id_format_xml" to "1"
-    And I press "id_submitbutton"
-    Then I press "Continue"
+    And the following "question categories" exist:
+      | contextlevel | reference | name           |
+      | Course       | C1        | Test questions |
+    And the following "questions" exist:
+      | questioncategory | qtype       | name       |
+      | Test questions   | description | matlabdemo |
+    And "matlabdemo.txt" exists in question "matlabdemo" "questiontext" for filter ace inline
+    And I have enabled the sandbox and ace inline filter
 
   Scenario: Checks Pascal is highlighted correctly
     When I am on the "matlabdemo" "core_question > preview" page logged in as teacher
-    And the programming language is "matlab"
-    And I should see "function" highlighting on "disp"
-    And I should see "function" highlighting on "clc"
-    And I should see "function" highlighting on "whos"
-    And I should see "keyword" highlighting on "for"
-    And I should see "keyword" highlighting on "end"
-    And I should see "string" highlighting on "trial"
-  
+    And the programming language is "matlab" in filter ace inline
+    And I should see "function" highlighting on "disp" with filter ace inline
+    And I should see "function" highlighting on "clc" with filter ace inline
+    And I should see "function" highlighting on "whos" with filter ace inline
+    And I should see "keyword" highlighting on "for" with filter ace inline
+    And I should see "keyword" highlighting on "end" with filter ace inline
+    And I should see "string" highlighting on "trial" with filter ace inline
+
   Scenario: Checks text is not highlighted in other languages
     When I am on the "matlabdemo" "core_question > preview" page logged in as teacher
-    And the programming language is "matlab"
-    And I should see "identifier" highlighting on "None"
-    And I should see "identifier" highlighting on "Integer"
-    And I should see "identifier" highlighting on "public"
-    And I should see "identifier" highlighting on "static"
-    And I should see "identifier" highlighting on "int"
-    And I should see "identifier" highlighting on "def"
-    
+    And the programming language is "matlab" in filter ace inline
+    And I should see "identifier" highlighting on "None" with filter ace inline
+    And I should see "identifier" highlighting on "Integer" with filter ace inline
+    And I should see "identifier" highlighting on "public" with filter ace inline
+    And I should see "identifier" highlighting on "static" with filter ace inline
+    And I should see "identifier" highlighting on "int" with filter ace inline
+    And I should see "identifier" highlighting on "def" with filter ace inline

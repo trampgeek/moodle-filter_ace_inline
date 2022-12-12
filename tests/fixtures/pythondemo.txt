@@ -1,0 +1,41 @@
+<pre data-ace-highlight-code >
+import math as m
+
+MATH_CONSTANT = 42
+
+class Dummy:
+	"""Class"""
+  
+  def nothing(self, 0, alpha):
+  	while True:
+    	pass
+      
+    if False:
+    	None
+    elif True:
+    	print(f"{gamma} is wrong")
+    else:
+    	break
+    
+    for i in range(30):
+    	i += 1
+    
+    try:
+    	alpha = 90
+    except ValueError:
+    	alpha = "beta"
+  return
+  
+public class demo {
+	public static void main(String[] args) {
+  	System.out.println("No good");
+        null;
+  }
+}
+
+#include <stdio.h>
+int main(void) {
+    putchar('x');
+    true;
+}
+<p dir="ltr" style="text-align: left;"><br></p></pre>

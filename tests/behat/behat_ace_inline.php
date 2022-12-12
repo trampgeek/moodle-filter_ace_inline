@@ -25,24 +25,22 @@
 use Behat\Mink\Exception\ExpectationException as ExpectationException;
 use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
 
-
+/**
+ * Class designed for behat tests for ace_inline specifically.
+ *
+ * Contains all the definitions required for ace_inline
+ * Behat testing.
+ */
 class behat_ace_inline extends behat_base {
 
     /**
-     * Enables the ace inline functionality globally for testing purposes.
+     * Enables the ace inline functionality globally and
+     * the webserver sandbox to enabled for testing purposes.
      *
-     * @Given /^I have enabled ace inline filter/
+     * @Given I have enabled the sandbox and ace inline filter
      */
-    public function i_enable_ace_inline() {
+    public function the_ace_inline_sandbox_enabled() {
         filter_set_global_state('ace_inline', TEXTFILTER_ON, 0);
-    }
-
-    /**
-     * Sets the webserver sandbox to enabled for testing purposes.
-     *
-     * @Given /^the webserver sandbox is enabled/
-     */
-    public function the_sandbox_is_enabled() {
         set_config('wsenabled', 1, 'qtype_coderunner');
     }
 
@@ -50,7 +48,7 @@ class behat_ace_inline extends behat_base {
      * Checks if the programming language is correct, else throws an
      * expectation error with message.
      *
-     * @Given the programming language is :langstring
+     * @Given the programming language is :langstring in filter ace inline
      * @throws ExpectationException The error message.
      * @param string $langstring The expected language string.
      */
@@ -73,7 +71,7 @@ class behat_ace_inline extends behat_base {
      * type expected and the text expected and searches for the text
      * within a <span> container of the appropriate type.
      *
-     * @Then I should see :typeString highlighting on :textString
+     * @Then I should see :typeString highlighting on :textString with filter ace inline
      * @throws ExpectationException The error message.
      * @param string $typestring The type of highlighting expected
      * @param string $textstring The expected keyword as a string.
@@ -100,7 +98,7 @@ class behat_ace_inline extends behat_base {
      * the text for the correct active line and gets the number. Assumes ace starts
      * from specified line and line++ per line.
      *
-     * @Then I should see lines starting at :number
+     * @Then I should see lines starting at :number with filter ace inline
      * @param string $number The number expected to be found at the start.
      * @throws ExpectationException The error message.
      */
@@ -121,7 +119,7 @@ class behat_ace_inline extends behat_base {
      * Checks if the font-size is as specified. Takes in a font-size in
      * format "11pt" etc. and checks if the style contains specified font-size.
      *
-     * @Then I should see font sized :fontsize
+     * @Then I should see font sized :fontsize with filter ace inline
      * @param string $fontsize The size on the font in format "11pt" etc.
      * @throws ExpectationException The error message.
      */
@@ -204,9 +202,9 @@ class behat_ace_inline extends behat_base {
     }
 
     /**
-     * Checks if there is an HTML <div> containing the text.
+     * Checks if there is a filter-ace-inline HTML <div> containing the text.
      *
-     * @Then I should see the HTML div containing :text
+     * @Then I should see the filter-ace-inline-html div containing :text
      * @param string $text The text you should see in the <div>
      */
     public function i_see_html_div_containing($text) {
@@ -219,18 +217,18 @@ class behat_ace_inline extends behat_base {
     }
 
     /**
-     * Checks if there is an HTML <div> containing the class.
+     * Adds the contents of a text file into a specified field in a question.
      *
-     * @Then I should see a div with class :class
-     * @param string $class The string of the class to check in the <div>.
+     * @Given :filename exists in question :name :field for filter ace inline
+     * @param string $filename The name of the file in fixtures.
+     * @param string $name The name of the question.
+     * @param string $field The field to be adjusted.
      */
-    public function i_see_div_class($class) {
-        $xpath = "//div[contains(@class, $class)]";
-        $driver = $this->getSession()->getDriver();
-        $error = "{$class} was not a class found in the HTML div";
-        if (!$driver->find($xpath)) {
-            throw new ExpectationException($error, $this->getSession());
-        }
+    public function file_contents_exists_in_question_contents($filename, $name, $field) {
+        global $DB;
+        // Get the contents of the file in fixtures.
+        $contents = file_get_contents(__DIR__.'/../fixtures/'.$filename);
+        // Set the specified field to contents in the database if id is correct.
+        $DB->set_field('question', $field, $contents, ['name' => $name]);
     }
-
 }

@@ -17,8 +17,7 @@
 /**
  * Version details
  *
- * @package    filter
- * @subpackage ace_inline
+ * @package    filter_ace_inline
  * @copyright  2021 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -26,11 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022120500;
+$plugin->version   = 2022121201;
 $plugin->requires  = 2017051500;
 $plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.0.1';
+$plugin->release = 'v1.0.2';
 $plugin->dependencies = array(
     'qtype_coderunner' => 2022012000
 );

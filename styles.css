@@ -1,7 +1,7 @@
 /**
  * CSS style-sheet for Ace-inline-filter
  */
- 
+
 /* Standard output display box*/
 div[class='filter-ace-inline-output-display'] {
     background-color: #eff;
@@ -15,14 +15,14 @@ div[class='filter-ace-inline-output-html'] {
     background-color: #eff;
     padding: 5px 10px 5px;
     vertical-align: middle;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 /* Output display box for HTML rendered*/
 div[class='filter-ace-inline-html'] {
     background-color: #eff;
     padding: 5px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 /* Output display box for sandbox execution errors*/
@@ -49,8 +49,8 @@ pre[class='filter-ace-inline-output-text'] {
     width: 100%;
     overflow: auto;
     max-height: 600px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Execution button*/
@@ -58,5 +58,3 @@ button[class='btn-ace-inline-execution'] {
     margin-bottom: 6px;
     padding: 2px 8px;
 }
-
-
