@@ -28,3 +28,9 @@ Feature: Checks for the data-params feature
     And I should not see "successfulmatplotlib"
     And I press "matplotlib"
     Then I should see "successfulmatplotlib"
+
+  Scenario: Checks if the data params CPU excess throws appropriate error
+    When I am on the "paramsdemo" "core_question > preview" page logged in as teacher
+    And I press "excessive"
+    Then I should not see "excessivecpuoops"
+    And I should see "time specified exceeds set"

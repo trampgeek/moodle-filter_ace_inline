@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022120800;
+$plugin->version   = 2022121201;
 $plugin->requires  = 2017051500;
 $plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_BETA;

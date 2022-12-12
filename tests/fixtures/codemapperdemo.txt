@@ -11,3 +11,5 @@ ran()`
     }
 </script>
 <pre data-ace-interactive-code data-code-mapper="foo">will this run</pre>
+
+<pre data-ace-interactive-code data-code-mapper="nofunction" data-button-name="nothere">nogood</pre>
