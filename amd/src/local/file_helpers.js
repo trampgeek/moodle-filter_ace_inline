@@ -37,6 +37,7 @@ let uploadFiles = {};
  * filename:filecontents mappings.
  */
 export const getFiles = async (uiParameters) => {
+    const uploadId = uiParameters.paramsMap['file-upload-id'];
     let taids = uiParameters.paramsMap['file-taids'];
     let sandboxArgs = [];
     let map = {};
@@ -61,10 +62,10 @@ export const getFiles = async (uiParameters) => {
         }
     }
 
-    // Merge in any explicitly uploaded files.
+    // Merge in any explicitly uploaded files with same id in map.
     for (const name in uploadFiles) {
-        if (uploadFiles.hasOwnProperty(name)) {
-            map[name] = uploadFiles[name]; // Copy contents across.
+        if (uploadFiles.hasOwnProperty(name) && uploadFiles[name].hasOwnProperty(uploadId)) {
+            map[name] = uploadFiles[name][uploadId]; // Copy contents across.
             sandboxArgs.push(name);
         }
     }
@@ -110,12 +111,14 @@ export const setupFileHandler = async (uploadElementId) => {
         const files = element.files;
         // Parses and modifies name to make sure name is accepted by Jobe.
         for (const file of files) {
+            let fileValues = {};
             const parsedName = parseFileName(file.name);
             if (parsedName !== file.name) {
                 errorNode.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&gt;&gt;&nbsp;'
                         + parsedName + '</strong></li>' + errorNode.innerHTML;
             }
-            uploadFiles[parsedName] = await readOneFile(file);
+            fileValues[uploadElementId] = await readOneFile(file);
+            uploadFiles[parsedName] = fileValues;
         }
         // Deals with error display.
         if (errorNode.innerHTML !== '') {
@@ -123,7 +126,7 @@ export const setupFileHandler = async (uploadElementId) => {
                     + '</strong><ul>' + errorNode.innerHTML + '</ul>';
             errorNode.removeAttribute('hidden');
         } else {
-            errorNode.setAttribute('hidden');
+            errorNode.setAttribute('hidden', '1');
         }
     });
 };
