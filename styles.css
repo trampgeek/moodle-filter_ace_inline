@@ -58,3 +58,13 @@ button[class='btn-ace-inline-execution'] {
     margin-bottom: 6px;
     padding: 2px 8px;
 }
+
+/* Changes box for files */
+div[class='filter-ace-inline-files'] {
+    margin-bottom: 0;
+    margin-top: 8px;
+    background-color: #ffd;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+}

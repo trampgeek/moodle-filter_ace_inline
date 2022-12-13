@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.1.0, 12 December 2022.
+Version 1.1.1, 13 December 2022.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -283,6 +283,12 @@ Example:
 
 
 ## Change History
+
+ * Version 1.1.1, 13 December 2022.
+    * Changed modules to local, as per Moodle Documentation.
+    * Added file-parsing to JOBE running requirements, including user warnings.
+    * Can now use argv's to find filenames and run them.
+    * ReadMe and examples to be added tomorrow.
 
  * Version 1.1.0, 12 December 2022.
     * Entire program is now in Vanilla ES.

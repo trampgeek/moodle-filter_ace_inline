@@ -18,7 +18,7 @@
 /**
  * JavaScript for the uiParameters class.
  *
- * @module     filter_ace_inline/ui_parameters
+ * @module     filter_ace_inline/local/ui_parameters
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -80,6 +80,7 @@ export class UiParameters {
         this.stdin = '';
         this.files = null;
         this.htmlOutput = null;
+        this.sandboxParams = [];
     }
 
     /**
@@ -204,4 +205,21 @@ export class UiParameters {
         this.htmlOutput = hasHtml;
     }
 
+    /**
+     * Sets the uiParams' params Array to all files.
+     *
+     * @param {Array} paramsArray An array of all the filenames used.
+     */
+    setSandboxParams(paramsArray) {
+        this.sandboxParams = paramsArray;
+    }
+
+    /**
+     * Sets run-params in the paramsMap to be executed on run.
+     *
+     * @param {String} paramsString A JSON-compliant params string.
+     */
+    setRunParams(paramsString) {
+        this.paramsMap['run-params'] = paramsString;
+    }
 }

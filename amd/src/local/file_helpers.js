@@ -18,10 +18,12 @@
 /**
  * JavaScript for helping parse files and pseudofiles.
  *
- * @module     filter_ace_inline/file_helpers
+ * @module     filter_ace_inline/local/file_helpers
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+import {createComponent, getLangString} from "filter_ace_inline/local/utils";
 
 let uploadFiles = {};
 
@@ -36,6 +38,7 @@ let uploadFiles = {};
  */
 export const getFiles = async (uiParameters) => {
     let taids = uiParameters.paramsMap['file-taids'];
+    let sandboxArgs = [];
     let map = {};
 
     if (Object.keys(taids).length !== 0) {
@@ -62,8 +65,12 @@ export const getFiles = async (uiParameters) => {
     for (const name in uploadFiles) {
         if (uploadFiles.hasOwnProperty(name)) {
             map[name] = uploadFiles[name]; // Copy contents across.
+            sandboxArgs.push(name);
         }
     }
+
+    // Add all the sandbox file names into uiSandboxparams for Args access.
+    uiParameters.setSandboxParams(sandboxArgs);
     return Promise.resolve(JSON.stringify(map));
 };
 
@@ -75,6 +82,8 @@ export const getFiles = async (uiParameters) => {
  * @param {HTMLelement} uploadElementId The input element of type file.
  */
 export const setupFileHandler = async (uploadElementId) => {
+    // Create a pre element to contain error messages.
+    const errorNode = createComponent("div", ['filter-ace-inline-files'], {'hidden' : ''});
 
     /**
      * Read a single file.
@@ -93,12 +102,42 @@ export const setupFileHandler = async (uploadElementId) => {
     }
 
     const element = document.querySelector('#' + uploadElementId);
+    element.parentNode.insertBefore(errorNode, element.nextSibling);
     element.setAttribute('multiple', '1');  // Workaround for the fact Moodle strips this.
     element.addEventListener('change', async () => {
+        errorNode.innerHTML = '';
         uploadFiles = {};
         const files = element.files;
+        // Parses and modifies name to make sure name is accepted by Jobe.
         for (const file of files) {
-            uploadFiles[file.name] = await readOneFile(file);
+            const parsedName = parseFileName(file.name);
+            if (parsedName !== file.name) {
+                errorNode.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&gt;&gt;&nbsp;'
+                        + parsedName + '</strong></li>' + errorNode.innerHTML;
+            }
+            uploadFiles[parsedName] = await readOneFile(file);
+        }
+        // Deals with error display.
+        if (errorNode.innerHTML !== '') {
+            errorNode.innerHTML = '<strong>' + await getLangString('file_changed_name')
+                    + '</strong><ul>' + errorNode.innerHTML + '</ul>';
+            errorNode.removeAttribute('hidden');
+        } else {
+            errorNode.setAttribute('hidden');
         }
     });
+};
+
+/**
+ * Parses text according to what Jobe accepts. Modify this if using other
+ * sandboxes with different acceptance parameters.
+ *
+ * @param {String} filename The name of the file to be parsed.
+ * @returns {String} The string of the parsed filename.
+ */
+const parseFileName = (filename) => {
+    // Matches all the spaces and replaces it with _.
+    const stripped = filename.replace(/\s/g, '_');
+    // Matches anything which isn't alphanumeric, _, - or . and removes it.
+    return stripped.replace(/[^A-Za-z0-9._-]/g, '');
 };

@@ -18,14 +18,14 @@
 /**
  * JavaScript for the ace interactive part.
  *
- * @module     filter_ace_inline/ace_interactive
+ * @module     filter_ace_inline/local/ace_interactive
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {createComponent, combinedOutput, diagnose, escapeHtml, getLangString} from "filter_ace_inline/./modules/utils";
-import {getFiles} from "filter_ace_inline/./modules/file_helpers";
-import {processCode} from "filter_ace_inline/./modules/repository";
+import {createComponent, combinedOutput, diagnose, escapeHtml, getLangString} from "filter_ace_inline/local/utils";
+import {getFiles} from "filter_ace_inline/local/file_helpers";
+import {processCode} from "filter_ace_inline/local/repository";
 
 const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
 
@@ -64,8 +64,23 @@ export const handleButtonClick = async (outputDisplayArea, code, uiParameters) =
         uiParameters.setExecLang('python3');
         code = "print('''" + code + "''')";
     }
+
+    // Check if params is a good JSON string.
+    try {
+        // Adds any uploaded files onto the uiParams and resets uiParams sandbox params.
+        let sandboxParams = JSON.parse(params['params']);
+        if (sandboxParams.hasOwnProperty('runargs')) {
+            sandboxParams['runargs'] = sandboxParams['runargs'].concat(uiParameters.sandboxParams);
+        } else {
+            sandboxParams['runargs'] = uiParameters.sandboxParams;
+        }
+        uiParameters.setRunParams(JSON.stringify(sandboxParams));
+    } catch (SyntaxError) {
+        errorText = await getLangString('error_json_params');
+    }
+
     // If there is a bad id.
-    if (uiParameters.stdin === null || uiParameters.files === 'bad_id' ) {
+    if (uiParameters.stdin === null || uiParameters.files === 'bad_id') {
         errorText = await getLangString('error_element_unknown');
     }
 
