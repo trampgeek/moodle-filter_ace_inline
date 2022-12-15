@@ -40,6 +40,9 @@ int main() {
    print('Oops,' + ' this
 </pre>
 
+<pre data-ace-interactive-code data-button-name="hidden" data-hidden='1'>print("This should be hidden")
+</pre>
+
 <p dir="ltr" style="text-align: left;"><br></p> ]]>
         </text>
         </questiontext>

@@ -18,14 +18,14 @@
 /**
  * JavaScript for applying the ace editor.
  *
- * @module     filter_ace_inline/apply_ace_editor
+ * @module     filter_ace_inline/local/apply_ace_editor
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {UiParameters} from "filter_ace_inline/./modules/ui_parameters";
-import {addUi} from "filter_ace_inline/./modules/display_ui";
-import {setupFileHandler} from "filter_ace_inline/./modules/file_helpers";
+import {UiParameters} from "filter_ace_inline/local/ui_parameters";
+import {addUi} from "filter_ace_inline/local/display_ui";
+import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -92,7 +92,7 @@ const applyToPre = async (pre, isInteractive, uiParameters) => {
     if (!params.hidden) {
         setUpAce(pre, uiParameters, isInteractive);
     } else if (isInteractive) { // Code is hidden but there's still a button to run it.
-        const getCode = () => pre.text();
+        const getCode = () => pre.innerText;
         addUi(pre, getCode, uiParameters);
     }
 

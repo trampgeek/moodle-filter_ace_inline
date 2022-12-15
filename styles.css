@@ -8,6 +8,7 @@ div[class='filter-ace-inline-output-display'] {
     padding: 5px 10px 5px;
     vertical-align: middle;
     margin-bottom: 10px;
+    margin-top: 6px;
 }
 
 /* Output display box for HTML*/
@@ -16,6 +17,7 @@ div[class='filter-ace-inline-output-html'] {
     padding: 5px 10px 5px;
     vertical-align: middle;
     margin-bottom: 0;
+    margin-top: 6px;
 }
 
 /* Output display box for HTML rendered*/
@@ -55,6 +57,26 @@ pre[class='filter-ace-inline-output-text'] {
 
 /* Execution button*/
 button[class='btn-ace-inline-execution'] {
-    margin-bottom: 6px;
+    margin-bottom: 12px;
     padding: 2px 8px;
+}
+
+/* Changes box for files */
+div[class='filter-ace-inline-files'] {
+    margin-bottom: 0;
+    margin-top: 8px;
+    background-color: #ffd;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+}
+
+/* Changes box for files which do not upload */
+div[class='filter-ace-inline-file-error'] {
+    margin-bottom: 0;
+    margin-top: 8px;
+    background-color: #faa;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
 }

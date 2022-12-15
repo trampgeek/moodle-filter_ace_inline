@@ -18,7 +18,7 @@
 /**
  * JavaScript specifically to run the Ajax calls.
  *
- * @module     filter_ace_inline/repository
+ * @module     filter_ace_inline/local/repository
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,6 +39,6 @@ export const processCode = (code, uiParameters) => Ajax.call([{
             language: uiParameters.execLang,
             stdin: uiParameters.stdin,
             files: uiParameters.files,
-            params: uiParameters.paramsMap['params']
+            params: uiParameters.paramsMap['run-params']
         }
 }])[0];

@@ -18,13 +18,13 @@
 /**
  * JavaScript for putting the UI up.
  *
- * @module     filter_ace_inline/display_ui
+ * @module     filter_ace_inline/local/display_ui
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {createComponent} from "filter_ace_inline/./modules/utils";
-import {handleButtonClick, executeCode} from "filter_ace_inline/./modules/ace_interactive";
+import {createComponent} from "filter_ace_inline/local/utils";
+import {handleButtonClick, executeCode} from "filter_ace_inline/local/ace_interactive";
 
 /**
  * Add a UI div containing a Try it! button and a paragraph to display the

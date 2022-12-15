@@ -18,7 +18,7 @@
 /**
  * JavaScript for all the utility functions.
  *
- * @module     filter_ace_inline/utils
+ * @module     filter_ace_inline/local/utils
  * @copyright  Richard Lobb, Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

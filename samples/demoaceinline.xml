@@ -125,12 +125,12 @@ Order shall return.
 
 <ol>
     <li>Named strings, or pseudo-files, can be defined by the <strong>data-file-taids</strong> attribute. This is a JSON object mapping filenames (fixed by the question author) to the IDs of textareas on the same page. The user can enter text into the textareas to define the pseudo-file contents prior to clicking Try it! The question author can hide the textareas if they wish to fix the file contents, e.g. as support files for the run.</li>
-    <li>Actual files can be uploaded by the user via a standard &lt;input type="file"&gt; element by the <strong>data-file-upload-id</strong> attribute, which is the HTML element ID of the &lt;input&gt; element.</li>
+    <li>Actual files can be uploaded by the user via a standard &lt;input type="file"&gt; element by the <strong>data-file-upload-id</strong> attribute, which is the HTML element ID of the &lt;input&gt; element. These files are also accessible on the command line argv, therefore code can be implemented to ensure that any type of file can be accepted.</li>
 </ol>
 <p>If both attributes are defined, files uploaded via the uploader override any identically named pseudo-files.</p>
 <h3>Pseudo file example: an HTML encoder</h3>
 <p>Copy the text that you wish to HTML encode into the text area, then click <em>Try it!</em></p>
-<textarea id="raw-text" rows="10" cols="80"></textarea>
+<textarea id="raw-text" rows="10" cols="60"></textarea>
 <pre data-ace-interactive-code="" data-file-taids="{&quot;raw.txt&quot;: &quot;raw-text&quot;}">from html import escape
 with open('raw.txt') as infile:
     raw = infile.read()
@@ -158,9 +158,25 @@ else:
         else:
             print(escape(raw))
 </pre>
+<br>
+<h2>File upload alternative:</h2>
+<p>As each file uploaded can be accessed from the <em>argv</em>, an easier way to access files of any kind would be to parse the argv to use as a filename.</p>
+<input type="file" id="file-alternative" multiple="1">
+<pre data-ace-interactive-code="" data-file-upload-id="file-alternative">import sys
 
-<h2>The complete set of ace-interactive-code options</h2>
-<p>The complete set of ace-interactive-code elements is as follows.&nbsp;All functionality is supported in direct HTML editing.</p>
+files = sys.argv[1:]
+if len(files) == 0:
+    print("Please upload a file")
+elif len(files) != 1:
+    print("Please upload only one file")
+else:
+    with open(files[0]) as infile:
+        contents = infile.read()
+        print(contents)
+</pre>
+
+<h2>The complete set of options</h2>
+<p>The complete set of customisable elements is as follows.&nbsp;All functionality is supported in direct HTML editing.</p>
 <table class="table table-bordered" style="width:auto">
     <tbody>
         <tr>
@@ -400,7 +416,66 @@ axes.set_xlabel('x (degrees)')
 axes.set_ylabel('y')
 axes.grid()
 plt.show()
-</pre>]]></text>
+</pre>
+<div>
+    <h2>Using Ace-interactive-filter for applets</h2>
+    <p>The latest version of the ace-interactive-filter plugin allows you to upload files and to read the contents of various textareas or other HTML elements (anything with a jquery <em>val</em> method) as if they were files. You can also hide the actual code. Consequently it's possible to use the Ace inline filter to embed executable code rather like traditional applets, using any language of your choice. [Which of course, should be Python.]</p>
+    <p>This approach to applets is, in most cases, much weaker than using JavaScript directly. For example you can't do any event handling or manipulate the DOM directly. But it has the big advantages of:</p>
+    <p></p>
+    <ul>
+        <li>Language familiarity (for those who are more familiar with Python than JavaScript)</li>
+        <li>The power of Python for more advanced tasks, such as processing CSV files, plotting graphs, numerical analysis, etc.</li>
+    </ul>
+    <p></p>
+    <p>For example:</p>
+    <h4>Plot grade histogram</h4>
+    <p>Upload a .csv file using the file selector below.&nbsp; The csv file must have a single header row and there must be a grade column containing only grades (E, D, C-, C+, ...). Enter the required column name into the input field beside the file selector and click the <em>Plot histogram</em> button.&nbsp;</p>
+    <p>Select CSV file: <input type="file" id="histo-csv-file"><br>
+        Column name: <input type="text" id="histo-column-name"><br>
+    </p>
+    <pre class="ace-interactive-code" data-file-upload-id="histo-csv-file" html-output="" code-mapper="matplotlibwrapper" data-file-taids="{&quot;column_name&quot;: &quot;histo-column-name&quot;}" data-params="{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-button-name="Plot histogram" hidden="">import matplotlib.pyplot as plt
+import sys
+import csv
+
+GRADES = ['E', 'D', 'C-', 'C', 'C+', 'B-', 'B', 'B+', 'A-', 'A', 'A+']
+
+def main():
+    csv_files = [name for name in sys.argv if name.endswith('.csv')]
+    if len(csv_files) != 1:
+        print(f"I expected to be given exactly one .csv file. Instead I got {len(csv_files)}")
+        return
+        
+    filename = csv_files[0]
+    with open("column_name") as infile:
+        column_name = infile.read().strip()
+    if column_name == '':
+        print("You haven't specified the name of the grades column")
+        return
+    print(f"Processing {filename}")
+    counts = {grade: 0 for grade in GRADES}
+    with open(filename, encoding='utf-8-sig') as infile:
+        rdr = csv.DictReader(infile)
+        for row in rdr:
+            try:
+                grade = row[column_name].strip()
+            except KeyError:
+                print(f"File {filename} doesn't have a column {column_name}")
+                print("Columns: ", list(row.keys()))
+                return
+            if grade in GRADES:
+                counts[grade] += 1
+        
+    axes = plt.axes()
+    axes.bar(counts.keys(), counts.values())
+    axes.set_title(f"Grade distribution, column {column_name} from file {filename}")
+    num_grades = sum(counts.values())
+    print(f"{num_grades} grades processed")
+    print(f"Pass rate = { 100 * (num_grades - counts['D'] - counts['E']) / num_grades : .1f}%")
+    
+main()
+</pre>
+</div>
+]]></text>
     </questiontext>
     <generalfeedback format="html">
       <text></text>

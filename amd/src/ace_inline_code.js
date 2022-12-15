@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {applyAceAndBuildUi} from "filter_ace_inline/./modules/apply_ace_editor";
+import {applyAceAndBuildUi} from "filter_ace_inline/local/apply_ace_editor";
 
 /**
  * Applies ace interactive code precisely once per page.
