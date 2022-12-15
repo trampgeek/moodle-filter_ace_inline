@@ -170,13 +170,13 @@ if len(files) == 0:
 elif len(files) != 1:
     print("Please upload only one file")
 else:
-    with open(sys.argv[0]) as infile:
+    with open(files[0]) as infile:
         contents = infile.read()
         print(contents)
 </pre>
 
-<h2>The complete set of ace-interactive-code options</h2>
-<p>The complete set of ace-interactive-code elements is as follows.&nbsp;All functionality is supported in direct HTML editing.</p>
+<h2>The complete set of options</h2>
+<p>The complete set of customisable elements is as follows.&nbsp;All functionality is supported in direct HTML editing.</p>
 <table class="table table-bordered" style="width:auto">
     <tbody>
         <tr>
@@ -416,7 +416,66 @@ axes.set_xlabel('x (degrees)')
 axes.set_ylabel('y')
 axes.grid()
 plt.show()
-</pre>]]></text>
+</pre>
+<div>
+    <h2>Using Ace-interactive-filter for applets</h2>
+    <p>The latest version of the ace-interactive-filter plugin allows you to upload files and to read the contents of various textareas or other HTML elements (anything with a jquery <em>val</em> method) as if they were files. You can also hide the actual code. Consequently it's possible to use the Ace inline filter to embed executable code rather like traditional applets, using any language of your choice. [Which of course, should be Python.]</p>
+    <p>This approach to applets is, in most cases, much weaker than using JavaScript directly. For example you can't do any event handling or manipulate the DOM directly. But it has the big advantages of:</p>
+    <p></p>
+    <ul>
+        <li>Language familiarity (for those who are more familiar with Python than JavaScript)</li>
+        <li>The power of Python for more advanced tasks, such as processing CSV files, plotting graphs, numerical analysis, etc.</li>
+    </ul>
+    <p></p>
+    <p>For example:</p>
+    <h4>Plot grade histogram</h4>
+    <p>Upload a .csv file using the file selector below.&nbsp; The csv file must have a single header row and there must be a grade column containing only grades (E, D, C-, C+, ...). Enter the required column name into the input field beside the file selector and click the <em>Plot histogram</em> button.&nbsp;</p>
+    <p>Select CSV file: <input type="file" id="histo-csv-file"><br>
+        Column name: <input type="text" id="histo-column-name"><br>
+    </p>
+    <pre class="ace-interactive-code" data-file-upload-id="histo-csv-file" html-output="" code-mapper="matplotlibwrapper" data-file-taids="{&quot;column_name&quot;: &quot;histo-column-name&quot;}" data-params="{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-button-name="Plot histogram" hidden="">import matplotlib.pyplot as plt
+import sys
+import csv
+
+GRADES = ['E', 'D', 'C-', 'C', 'C+', 'B-', 'B', 'B+', 'A-', 'A', 'A+']
+
+def main():
+    csv_files = [name for name in sys.argv if name.endswith('.csv')]
+    if len(csv_files) != 1:
+        print(f"I expected to be given exactly one .csv file. Instead I got {len(csv_files)}")
+        return
+        
+    filename = csv_files[0]
+    with open("column_name") as infile:
+        column_name = infile.read().strip()
+    if column_name == '':
+        print("You haven't specified the name of the grades column")
+        return
+    print(f"Processing {filename}")
+    counts = {grade: 0 for grade in GRADES}
+    with open(filename, encoding='utf-8-sig') as infile:
+        rdr = csv.DictReader(infile)
+        for row in rdr:
+            try:
+                grade = row[column_name].strip()
+            except KeyError:
+                print(f"File {filename} doesn't have a column {column_name}")
+                print("Columns: ", list(row.keys()))
+                return
+            if grade in GRADES:
+                counts[grade] += 1
+        
+    axes = plt.axes()
+    axes.bar(counts.keys(), counts.values())
+    axes.set_title(f"Grade distribution, column {column_name} from file {filename}")
+    num_grades = sum(counts.values())
+    print(f"{num_grades} grades processed")
+    print(f"Pass rate = { 100 * (num_grades - counts['D'] - counts['E']) / num_grades : .1f}%")
+    
+main()
+</pre>
+</div>
+]]></text>
     </questiontext>
     <generalfeedback format="html">
       <text></text>

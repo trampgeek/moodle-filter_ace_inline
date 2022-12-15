@@ -31,7 +31,7 @@ use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
  * Contains all the definitions required for ace_inline
  * Behat testing.
  */
-class behat_ace_inline extends behat_base {
+class behat_filter_ace_inline extends behat_base {
 
     /**
      * Enables the ace inline functionality globally and

@@ -109,7 +109,7 @@ export const setupFileHandler = async (uploadElementId) => {
                 .then(result => {
                     // A map for ids.
                     if (parsedName !== file.name) {
-                        errorHtml.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&gt;&gt;&nbsp;'
+                        errorHtml.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&rArr;&nbsp;'
                             + parsedName + '</strong></li>' + errorHtml.innerHTML;
                         }
                     fileValues[uploadElementId] = result;

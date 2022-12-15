@@ -84,6 +84,13 @@ Feature: Checks that HTML elements can be identified, else made and mapped appro
     And I press "upload"
     Then I should see "No '.txt' files found"
 
+  @testthis @_file_upload
+  Scenario: Checks that when uploading a file, the file uploads correctly and is executed correctly (done twice to check uploading persistence handling)
+    When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
+    And I upload "/fixtures/filecontents.txt" file to "file-uploader" filepicker
+    And I press "upload"
+    Then I should see "No '.txt' files found"
+
   Scenario: Checks that if there is no text in the file, the appropriate text is displayed
     When I am on the "taidsdemo" "core_question > preview" page logged in as teacher
     And I press "hollow"

@@ -92,7 +92,7 @@ const applyToPre = async (pre, isInteractive, uiParameters) => {
     if (!params.hidden) {
         setUpAce(pre, uiParameters, isInteractive);
     } else if (isInteractive) { // Code is hidden but there's still a button to run it.
-        const getCode = () => pre.text();
+        const getCode = () => pre.innerText;
         addUi(pre, getCode, uiParameters);
     }
 

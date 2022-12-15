@@ -50,6 +50,14 @@ Feature: Basic Try it! button checks to make sure the code runs
     And I press "Python"
     Then I should see "This ran Python"
 
+  Scenario: Checks that "hidden" can run
+    When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
+    And I should not see "This should be hidden"
+    And I press "hidden"
+    And I should see "This should be hidden"
+    And I press "hidden"
+    Then I should see "This should be hidden"
+
   Scenario: Checks that an incorrect language throws an appropriate error
     When I am on the "tryitbasicdemo" "core_question > preview" page logged in as teacher
     And I press "nolanguage"
