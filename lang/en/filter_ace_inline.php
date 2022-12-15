@@ -42,6 +42,7 @@ $string['settings_heading'] = 'Ace inline filter settings';
 $string['error_access_denied'] = 'Sandbox server access denied';
 $string['error_element_unknown'] = 'Id not found for element';
 $string['error_excessive_output'] = 'Excessive output';
+$string['error_file_read'] = 'File not uploaded';
 $string['error_json_params'] = 'Params set are not in correct JSON format';
 $string['error_jobe_unknown'] = 'Unknown error from Jobe server';
 $string['error_memory_limit'] = 'Memory limit exceeded';
@@ -55,4 +56,5 @@ $string['error_user_params'] = 'User Config Error';
 
 // File handling strings.
 $string['file_changed_name'] = 'The following filenames have been changed for sandbox execution:';
+$string['file_not_uploaded'] = 'The following files have not been uploaded (max 2MB size):';
 

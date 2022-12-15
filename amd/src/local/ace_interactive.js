@@ -103,15 +103,16 @@ export const handleButtonClick = async (outputDisplayArea, code, uiParameters) =
  * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
  */
 export const executeCode = async (outputDisplayArea, code, uiParameters) => {
-    await processCode(code, uiParameters).then(responseJson => {
-        displaySuccess(responseJson, outputDisplayArea, uiParameters);
-    })
+    await processCode(code, uiParameters)
+        .then(responseJson => {
+            displaySuccess(responseJson, outputDisplayArea, uiParameters);
+        })
         .catch(error => {
             cleanOutput(outputDisplayArea);
             // Change the outputDisplayArea to something more ominious...
             outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-user');
             displayTextOutput(error.message, 'error_user_params', outputDisplayArea);
-    });
+        });
 };
 
 /**

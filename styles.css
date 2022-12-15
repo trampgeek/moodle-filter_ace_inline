@@ -68,3 +68,13 @@ div[class='filter-ace-inline-files'] {
     white-space: pre-wrap;
     width: 100%;
 }
+
+/* Changes box for files which do not upload */
+div[class='filter-ace-inline-file-error'] {
+    margin-bottom: 0;
+    margin-top: 8px;
+    background-color: #faa;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+}

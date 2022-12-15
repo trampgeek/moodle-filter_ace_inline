@@ -69,7 +69,7 @@ const ACE_INTERACTIVE = {
  * Class for the UiParameters; stores the UiParameters and variables
  * required for UiParameters parsing. Makes it according to the type
  * required (highlight/interactive).
- * @type Object containing UiParameters.
+ * @class Object containing UiParameters.
  */
 export class UiParameters {
     constructor(pre) {

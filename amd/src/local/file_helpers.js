@@ -26,6 +26,7 @@
 import {createComponent, getLangString} from "filter_ace_inline/local/utils";
 
 let uploadFiles = {};
+const MAX_FILE_SIZE_BYTES = 2097152;
 
 /**
  * Gets the uiParameter 'file-taids' and parses it if it is JSON. Promises an
@@ -83,53 +84,107 @@ export const getFiles = async (uiParameters) => {
  * @param {HTMLelement} uploadElementId The input element of type file.
  */
 export const setupFileHandler = async (uploadElementId) => {
-    // Create a pre element to contain error messages.
-    const errorNode = createComponent("div", ['filter-ace-inline-files'], {'hidden' : ''});
-
-    /**
-     * Read a single file.
-     * @param {file} file A file from an 'input type=file' element filelist.
-     * @returns {Promise} A promise wrapping the given file's contents.
-     */
-    function readOneFile(file){
-        return new Promise((resolve, reject) => {
-          let rdr = new FileReader();
-          rdr.onload = () => {
-            resolve(rdr.result);
-          };
-          rdr.onerror = reject;
-          rdr.readAsText(file);
-        });
-    }
+    // Creates a div element to contain error messages and divs for error messages.
+    const errorNode = document.createElement("div", [] , {'hidden' : '1'});
+    const errorHtml = createComponent("div", ['filter-ace-inline-files'], {'hidden' : '1'});
+    const fatalHtml = createComponent("div", ['filter-ace-inline-file-error'], {'hidden' : '1'});
+    errorNode.appendChild(fatalHtml);
+    errorNode.appendChild(errorHtml);
 
     const element = document.querySelector('#' + uploadElementId);
     element.parentNode.insertBefore(errorNode, element.nextSibling);
     element.setAttribute('multiple', '1');  // Workaround for the fact Moodle strips this.
     element.addEventListener('change', async () => {
-        errorNode.innerHTML = '';
+        // Cleans the contents of the errors between uploads.
+        errorHtml.innerHTML = '';
+        fatalHtml.innerHTML = '';
         uploadFiles = {};
         const files = element.files;
-        // Parses and modifies name to make sure name is accepted by Jobe.
         for (const file of files) {
             let fileValues = {};
             const parsedName = parseFileName(file.name);
-            if (parsedName !== file.name) {
-                errorNode.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&gt;&gt;&nbsp;'
-                        + parsedName + '</strong></li>' + errorNode.innerHTML;
+            // Parses and modifies name to make sure name is accepted by Jobe.
+            // Also checks file size and refuses to upload at maximum file size (2MB).
+            await readOneFile(file)
+                .then(result => {
+                    // A map for ids.
+                    if (parsedName !== file.name) {
+                        errorHtml.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&gt;&gt;&nbsp;'
+                            + parsedName + '</strong></li>' + errorHtml.innerHTML;
+                        }
+                    fileValues[uploadElementId] = result;
+                })
+                .catch(() => {
+                    fatalHtml.innerHTML = '<li><strong><em>' + file.name + '</em>&nbsp;'
+                        + '</strong></li>' + fatalHtml.innerHTML;
+                });
+            if (fileValues.size !== 0) {
+                // Maps the name with the filevalue map of id to value.
+                uploadFiles[parsedName] = fileValues;
             }
-            fileValues[uploadElementId] = await readOneFile(file);
-            uploadFiles[parsedName] = fileValues;
         }
-        // Deals with error display.
-        if (errorNode.innerHTML !== '') {
-            errorNode.innerHTML = '<strong>' + await getLangString('file_changed_name')
-                    + '</strong><ul>' + errorNode.innerHTML + '</ul>';
-            errorNode.removeAttribute('hidden');
-        } else {
-            errorNode.setAttribute('hidden', '1');
-        }
+        displayAllFileErrors(errorNode, errorHtml, fatalHtml);
     });
 };
+
+/**
+* Read a single file and return an appropriate promise of contents or rejects.
+* Checks file size prior to reading to prevent wasting time processing file.
+*
+* @param {file} file A file from an 'input type=file' element filelist.
+* @returns {Promise} A promise wrapping the given file's contents.
+*/
+const readOneFile = async (file) => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+        return Promise.reject("excessive size");
+    }
+    return new Promise((resolve, reject) => {
+        let rdr = new FileReader();
+        rdr.onload = () => {
+          resolve(rdr.result);
+        };
+        rdr.onerror = reject;
+        rdr.readAsText(file);
+    });
+};
+
+/**
+ * Displays all file errors for each error.
+ *
+ * @param {type} error The error langString to be used.
+ * @param {type} errorHtml The errorNode for the error message to be displayed.
+ */
+const displayFileError = async (error, errorHtml) => {
+    errorHtml.innerHTML = '<strong>' + await getLangString(error)
+        + '</strong><ul>' + errorHtml.innerHTML + '</ul>';
+    errorHtml.removeAttribute('hidden');
+};
+
+/**
+ * Adds the errors to the error and displays it all.
+ *
+ * @param {Element} errorNode The element to be displayed.
+ * @param {Element} errorHtml The HTML to be displayed for errors.
+ * @param {Element} fatalHtml The HTML to be displayed for errors that do not upload
+ * files.
+ */
+const displayAllFileErrors = (errorNode, errorHtml, fatalHtml) => {
+    // Hides all errors at first.
+    errorHtml.setAttribute('hidden', '1');
+    fatalHtml.setAttribute('hidden', '1');
+    if (errorHtml.innerHTML !== '' || fatalHtml.innerHTML !== '') {
+        if (errorHtml.innerHTML !== '') {
+            displayFileError('file_changed_name', errorHtml);
+        }
+        if (fatalHtml.innerHTML !== '') {
+            displayFileError('file_not_uploaded', fatalHtml);
+        }
+        errorNode.removeAttribute('hidden');
+    } else {
+        errorNode.setAttribute('hidden', '1');
+    }
+};
+
 
 /**
  * Parses text according to what Jobe accepts. Modify this if using other

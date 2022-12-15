@@ -125,12 +125,12 @@ Order shall return.
 
 <ol>
     <li>Named strings, or pseudo-files, can be defined by the <strong>data-file-taids</strong> attribute. This is a JSON object mapping filenames (fixed by the question author) to the IDs of textareas on the same page. The user can enter text into the textareas to define the pseudo-file contents prior to clicking Try it! The question author can hide the textareas if they wish to fix the file contents, e.g. as support files for the run.</li>
-    <li>Actual files can be uploaded by the user via a standard &lt;input type="file"&gt; element by the <strong>data-file-upload-id</strong> attribute, which is the HTML element ID of the &lt;input&gt; element.</li>
+    <li>Actual files can be uploaded by the user via a standard &lt;input type="file"&gt; element by the <strong>data-file-upload-id</strong> attribute, which is the HTML element ID of the &lt;input&gt; element. These files are also accessible on the command line argv, therefore code can be implemented to ensure that any type of file can be accepted.</li>
 </ol>
 <p>If both attributes are defined, files uploaded via the uploader override any identically named pseudo-files.</p>
 <h3>Pseudo file example: an HTML encoder</h3>
 <p>Copy the text that you wish to HTML encode into the text area, then click <em>Try it!</em></p>
-<textarea id="raw-text" rows="10" cols="80"></textarea>
+<textarea id="raw-text" rows="10" cols="60"></textarea>
 <pre data-ace-interactive-code="" data-file-taids="{&quot;raw.txt&quot;: &quot;raw-text&quot;}">from html import escape
 with open('raw.txt') as infile:
     raw = infile.read()
@@ -157,6 +157,22 @@ else:
             print("EMPTY FILE!")
         else:
             print(escape(raw))
+</pre>
+<br>
+<h2>File upload alternative:</h2>
+<p>As each file uploaded can be accessed from the <em>argv</em>, an easier way to access files of any kind would be to parse the argv to use as a filename.</p>
+<input type="file" id="file-alternative" multiple="1">
+<pre data-ace-interactive-code="" data-file-upload-id="file-alternative">import sys
+
+files = sys.argv[1:]
+if len(files) == 0:
+    print("Please upload a file")
+elif len(files) != 1:
+    print("Please upload only one file")
+else:
+    with open(sys.argv[0]) as infile:
+        contents = infile.read()
+        print(contents)
 </pre>
 
 <h2>The complete set of ace-interactive-code options</h2>

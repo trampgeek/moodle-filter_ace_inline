@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.1.1, 13 December 2022.
+Version 1.2.0, 15 December 2022.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -150,7 +150,7 @@ Every attribute is supported in HTML.
 | **data-stdin-taid** | This string value specifies the ID of a textarea, or other HTML element with a JQuery val() method, from which the standard input will be taken when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown |
 | **data-stdin** | DEPRECATED. This string value defines the standard input "file" to be used for the run. HTML5 allows multiline attribute values, so newlines can be inserted into the string. | Interactive |
 | **data-file-taids** | This attribute provides a pseudo-file interface where the user is able to treat one or more supplementary textarea elements like files, entering the pseudo-file contents into the textarea(s) before clicking `Try it!`. The attribute is a JSON specification that maps from filename(s) to the ID(s) of textareas, or other HTML elements with a val() method, that will be used to provide the job with one or more files in the working directory. For each attribute, a file of the specified filename is created and the contents of that file are the contents of the associated textarea at the time `Try it!` is clicked. | Interactive, TinyMCE |
-| **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files using this element and the files are uploaded into the program's working space when it is run. | Interactive, TinyMCE, Markdown |
+| **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown |
 | **data-params** | This is a JSON object that defines any Jobe sandbox parameters that are to have non-standard values, such as `cputime` and `memorylimit`. This shouldn't generally be needed. Default: '{"cputime": 2}'. Note that the maximum cputime is set via the administrative interface and any attempt to exceed that will display an error. | Interactive, TinyMCE |
 | **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown |
 | **data-prefix** |  This string value is code to be inserted in front of the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
@@ -283,6 +283,10 @@ Example:
 
 
 ## Change History
+
+ * Version 1.2.0, 15 December 2022.
+    * Added full error handling and file upload size restrictions (2MB).
+    * Mapped files with boxes appropriately.
 
  * Version 1.1.1, 13 December 2022.
     * Changed modules to local, as per Moodle Documentation.
