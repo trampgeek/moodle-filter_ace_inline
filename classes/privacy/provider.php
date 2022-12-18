@@ -24,8 +24,6 @@
 
 namespace filter_ace_inline\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy for filter_ace_inline
  *

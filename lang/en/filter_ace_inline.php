@@ -58,3 +58,5 @@ $string['error_user_params'] = 'User Config Error';
 $string['file_changed_name'] = 'The following filenames have been changed for sandbox execution:';
 $string['file_not_uploaded'] = 'The following files have not been uploaded (max 2MB size):';
 
+// Privacy metadata.
+$string['privacy:metadata'] = 'The Ace-inline-filter is applied onto HTML and does not store any data.';
