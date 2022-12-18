@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.2.0, 15 December 2022.
+Version 1.2.1, 16 December 2022.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -283,6 +283,9 @@ Example:
 
 
 ## Change History
+
+ * Version 1.2.1, 19 December 2022.
+    * Added a privacy folder with provider.php.
 
  * Version 1.2.0, 15 December 2022.
     * Added full error handling and file upload size restrictions (2MB).

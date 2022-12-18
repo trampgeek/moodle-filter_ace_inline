@@ -15,21 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Privacy for filter_ace_inline
  *
  * @package    filter_ace_inline
- * @copyright  2021 Richard Lobb
+ * @copyright  Michelle Hsieh 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
+
+namespace filter_ace_inline\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022121900;
-$plugin->requires  = 2017051500;
-$plugin->component = 'filter_ace_inline';
-$plugin->maturity = MATURITY_BETA;
-$plugin->release = 'v1.2.1';
-$plugin->dependencies = array(
-    'qtype_coderunner' => 2022012000
-);
+/**
+ * Privacy for filter_ace_inline
+ *
+ * @copyright  Michelle Hsieh 2022
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}
