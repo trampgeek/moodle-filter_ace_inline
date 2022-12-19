@@ -85,7 +85,7 @@ This method is recommended for those who want a familiar, consistent way of impl
     ~~~
 
 **Caveats:**
-* Make sure you follow valid Markdown Extra syntax. This means that any extra specified attributes have to be in the **same line** as the initial backticks (\`\`\`) and contain a **=** between each attribute and it's value, and **no spaces** within either the attribute or the value (spaces are the delimiter for Markdown Extra).
+* Make sure you follow valid Markdown Extra syntax. This means that any extra specified attributes have to be in the **same line** as the initial backticks (\`\`\`) and contain a **=** between each attribute and its value, and **no spaces** within either the attribute or the value (spaces are the delimiter for Markdown Extra).
 
 ## HTML editor
 
@@ -106,7 +106,7 @@ This method is recommended for those who want full functionality and customisati
         </pre>
         
 **Caveats**
-* See section below on **HTML-escaping of code within the \<pre> element**.
+* See the section below on **HTML-escaping of code within the \<pre> element**.
 * When writing your first line of code, keep it **inline** with the \<pre> tag to prevent unusual spacing in your first line of code.
 
 ## HTML-escaping of code within the \<PRE> element
