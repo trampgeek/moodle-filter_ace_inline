@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.2.1, 16 December 2022.
+Version 1.2.1, 19 December 2022.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -12,21 +12,21 @@ A Moodle filter for displaying and optionally interacting with program code by u
 Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than PHP and operates on the rendered HTML rather than the original text. This filter is applied over all HTML elements, therefore can be displayed throughout courses where the user can edit/create HTML elements.
 
 As of Moodle 4.1, the following code adding and editing options are available:
-  1. **Utilising the new TinyMCE editor's 'Code sample' option.**
+  1. **Utilising the new TinyMCE editor's 'Code sample' option (Moodle 4.1+)**
 	  * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
-  2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions.**
-	  * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This filter utilises current Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
-  3. **Editing the HTML directly in an HTML editor.** 
+  2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
+	  * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
+  3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)** 
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML. 
 
 The plugin provides two separate filter operations:
  1. Syntax highlighting (**highlight**): HTML \<pre> elements with an attribute of **data-ace-highlight-code**  are displayed using the JavaScript Ace code editor in read-only mode. This provides syntax colouring of the code.
 
- 2. Code execution (**interactive**): HTML \<pre> elements with an attribute of **data-ace-interactive-code** are also displayed using the Ace code editor, but with editing enabled. In addition, a button labelled by default `Try it!` allows the student to execute the current state of the code and observe the outcome. With sufficient ingenuity on the part of the author, graphical output and images can be displayed, too (this option should be done by editing raw HTML). By adding additional html elements and linking the \<pre> element to them, the author can allow users to enter standard input to the run and even upload files.
+ 2. Code execution (**interactive**): HTML \<pre> elements with an attribute of **data-ace-interactive-code** are also displayed using the Ace code editor, but with editing enabled. In addition, a button labelled by default `Try it!` allows the student to execute the current state of the code and observe the outcome. With sufficient ingenuity on the part of the author, graphical output and images can be displayed, too (this option requires the author to edit the raw HTML). By adding additional html elements and linking the \<pre> element to them, the author can allow users to enter standard input to the run and even upload files.
 
 It should be noted that the 'interactive' elements are interactive only in the sense that the user can edit and run them; the user cannot interact with the code whilst it is running. However, the code can be modified between executions. As this implementation is a filter, data is not stored persistently, and any changes to the code whilst the filter is activated will not be stored.
 
-The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. CodeRunner version 4.2.1 or later is required. In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service (still regarded as experimental) which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
+The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. CodeRunner version 4.2.1 or later is required. In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
 
 There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=529).
 
@@ -35,33 +35,34 @@ To change text editors in Moodle, click on your user icon, and select "Editor pr
 
 ##  TinyMCE (Code sample)
 
-This method is recommended for those who want a user-friendly way of implementing code in Moodle 4.1+. This editor-dependent method would suffice for basic use and implementation of code in most circumstances.
+This method is recommended for those who want a user-friendly way of implementing code in Moodle 4.1+. This editor-dependent method would suffice for basic use in most circumstances.
 
 **How to use:**
-*  Click "Insert" > "Code sample"
-*  Select the programming language you wish to use
-*  Either write your code normally in the "Code view" area, or copy and paste code into the area
-* Click "Save"
-* Click "View" > "Source code"
-* Locate the code in HTML and add **data-ace-highlight-code/data-ace-interactive-code** into the \<pre> element. Example:
-* 
-      <pre class="language-python" data-ace-interactive-code >
-      <code>
-	  def hello():
-	      print("Hello world!")
-	  hello()
-      </code>
-      </pre>
- * Add any other desired attributes in the \<pre> tag.
- * Save the question.
- * To edit the code again, double-click on the code block in the editor.
- * Ace-inline will be viewable outside of the editor; and in-built Prism formatting is visible within.
+* Click "Insert" > "Code sample".
+* Select the programming language you wish to use.
+* Either write your code normally in the "Code view" area, or copy and paste code into the area.
+* Click "Save".
+* Click "View" > "Source code".
+* Locate the code in HTML and add either **data-ace-highlight-code** or **data-ace-interactive-code** into the \<pre> element. Example:
+    ~~~
+    <pre class="language-python" data-ace-interactive-code >
+    <code>
+        def hello():
+            print("Hello world!")
+        hello()
+    </code>
+    </pre>
+    ~~~
+* Add any other desired attributes in the \<pre> tag.
+* Save the question.
+* To edit the code, double-click on the code block in the editor.
+  * Alternatively, view Source code to edit both code and parameters.
+* Ace-inline formatting will be viewable outside of the editor; and in-built Prism formatting is visible within.
 
 **Caveats:**
-* Currently, the use of \<script> tags are not supported by TinyMCE. This includes using the Source Code option of TinyMCE. Therefore, avoid the use of any \<script> tags, and avoid editing code containing any tags in this editor as the HTML is **automatically stripped of \<script> tags upon editing and saving any material**.
+* Currently, the use of \<script> tags are not supported by TinyMCE, even when using the Source Code option. Therefore, avoid the use of any \<script> tags, and avoid editing code containing any tags in this editor as the HTML is **automatically stripped of \<script> tags upon editing and saving any material**.
 * Use the **'data-'** prefix for every starting parameter. TinyMCE will **strip away any non-'data' tags upon editing and saving the question**.
-* If you want to use another language which is not yet available on Code samples, the author should change the language to "HTML/XML" and add the parameter **data-lang=*'language'*** to the \<pre> tag. Although, the data-lang tag would 
-* Alternatively, you can switch to Source Code view to edit your code and parameters.
+* If you want to use another language which is not available on Code samples, the author should change the language to "HTML/XML" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
 ## Markdown Extra editor
@@ -75,7 +76,6 @@ This method is recommended for those who want a familiar, consistent way of impl
 * Add the attribute of the desired language as **data-lang=*language***.
 * Add other desired attributes inline (within the {} next to the \`\`\`).
 * Example:
-* 
     ~~~
     ``` {data-ace-highlight-code= data-lang=python3}
     def main():
@@ -95,37 +95,39 @@ This method is recommended for those who want full functionality and customisati
 * Write the code that you wish to implement between \<pre> tags (in a \<pre> element).
 * Ensure that certain elements are appropriately HTML escaped (see section **HTML-escaping of code within the \<pre> element** section below).
 * Add **data-ace-interactive-code**/**data-ace-highlight-code** within the initial \<pre> tag.
- * Add any other desired attributes in the \<pre> tag.
- * Example:
- *      <pre data-ace-highlight-code data-lang="java">
-        public class hello {
-            public static void main(String[] args) {
-                System.out.println("Hello world!");
-            }
+* Add any other desired attributes in the \<pre> tag.
+* Example:
+~~~
+    <pre data-ace-highlight-code data-lang="java">
+    public class hello {
+        public static void main(String[] args) {
+            System.out.println("Hello world!");
         }
-        </pre>
+    }
+    </pre>
+~~~
         
 **Caveats**
 * See the section below on **HTML-escaping of code within the \<pre> element**.
-* When writing your first line of code, keep it **inline** with the \<pre> tag to prevent unusual spacing in your first line of code.
 
 ## HTML-escaping of code within the \<PRE> element
 
 When using ace-highlight-code or ace-interactive-code elements, problems arise when program code contains characters that have special meaning to the browser, i.e. are part of the HTML syntax. For example, in C:
-
-        #include &lt;stdio.h&gt;
+~~~
+    #include <stdio.h>
+~~~
 
 To ensure characters like '\<', '\&' etc are not interpreted by the browser, such special characters should be uri-encoded, e.g. as \&lt;, \&amp; etc.
 
-For example, an interactive hello world program in C would be defined in HTML as
-
-        <pre class="ace-interactive-code" data-lang="c">
-        #include &lt;stdio.h&gt;
-        int main() {
-            puts("Hello world!\n");
-        }
-        </pre>
-
+For example, an interactive hello world program in C would be defined in HTML as:
+~~~
+    <pre class="ace-interactive-code" data-lang="c">
+    #include &lt;stdio.h&gt;
+    int main() {
+        puts("Hello world!\n");
+    }
+    </pre>
+~~~
 Within the Ace editor the student just sees the URI-encoded characters as '\<', '\&' etc
 
 ## Additional Display and Behaviour Attributes
@@ -137,8 +139,8 @@ Every attribute is supported in HTML.
 
 | Prefix Attribute: | Description: | Supported/Available in: 
 |-------------------|--------------|-----------------------|
-| **data-lang**     | This attribute sets the language to be used by the Ace editor for syntax colouring and in the case of interactive, the language for running the code on the Jobe server. Default: python3.| Highlight, Interactive, TinyMCE, Markdown |
-| **data-ace-lang** | If set and non-empty, sets the language used by the Ace editor for syntax colouring, independently of **data-lang** in interactive. This allows the author to have syntax colouring different to the execution language in Jobe. | Highlight, Interactive, TinyMCE, Markdown |
+| **data-lang**     | This attribute sets the language to be used by the Ace editor for syntax colouring and in the case of interactive, the language for running the code on the Jobe server. A language must be supported in the Jobe server for the interactive code to run. Default: python3.| Highlight, Interactive, TinyMCE, Markdown |
+| **data-ace-lang** | If set and non-empty, sets the language used by the Ace editor for syntax colouring, independently of **data-lang** in interactive. This allows the author to have syntax colouring different to the execution language in Jobe. Information on all Ace highlightable languages can be found [here](https://ace.c9.io/#nav=about) . | Highlight, Interactive, TinyMCE, Markdown |
 | **data-start-line-number** | Sets the line number used for the first displayed line of code, if line numbers are to be shown. Set to **none** for no line numbers. Default is **none** for highlight elements and **1** for interactive elements. | Highlight, Interactive, TinyMCE, Markdown |
 | **data-font-size** | Sets the display font size used by Ace. Default 14px. | Highlight, Interactive, TinyMCE, Markdown |
 | **data-min-lines** | The minimum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown|
@@ -147,9 +149,8 @@ Every attribute is supported in HTML.
 | **data-button-name** | This sets the text within the Try it! button. Default 'Try it!'. | Interactive, TinyMCE, Markdown |
 | **data-readonly** | This disables editing of the code, so students can only run the supplied code without modification. The `Try it!` button is still displayed and operational.| Interactive, TinyMCE, Markdown |
 | **data-hidden** | This hides the code, leaving only `Try it!` visible. | Interactive, TinyMCE, Markdown |
-| **data-stdin-taid** | This string value specifies the ID of a textarea, or other HTML element with a JQuery val() method, from which the standard input will be taken when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown |
-| **data-stdin** | DEPRECATED. This string value defines the standard input "file" to be used for the run. HTML5 allows multiline attribute values, so newlines can be inserted into the string. | Interactive |
-| **data-file-taids** | This attribute provides a pseudo-file interface where the user is able to treat one or more supplementary textarea elements like files, entering the pseudo-file contents into the textarea(s) before clicking `Try it!`. The attribute is a JSON specification that maps from filename(s) to the ID(s) of textareas, or other HTML elements with a val() method, that will be used to provide the job with one or more files in the working directory. For each attribute, a file of the specified filename is created and the contents of that file are the contents of the associated textarea at the time `Try it!` is clicked. | Interactive, TinyMCE |
+| **data-stdin-taid** | This string value specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown |
+| **data-file-taids** | This attribute provides a pseudo-file interface where the user is able to treat one or more supplementary textarea elements like files, entering the pseudo-file contents into the textarea(s) before clicking `Try it!`. The attribute is a JSON specification that maps from filename(s) to the ID(s) of textarea element(s) and supplies the HTMLelement.innerText attribute that will be used to provide the job with one or more files in the working directory. For each attribute, a file of the specified filename is created and the contents of that file are the contents of the associated textarea at the time `Try it!` is clicked. | Interactive, TinyMCE |
 | **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown |
 | **data-params** | This is a JSON object that defines any Jobe sandbox parameters that are to have non-standard values, such as `cputime` and `memorylimit`. This shouldn't generally be needed. Default: '{"cputime": 2}'. Note that the maximum cputime is set via the administrative interface and any attempt to exceed that will display an error. | Interactive, TinyMCE |
 | **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown |
@@ -259,7 +260,9 @@ Once installed, visit Site administration > Plugins > Plugins overview > Additio
 
 This allows the individual teacher/administrator to set local settings for each course; if desired. To access individual course settings, click "More" > "Filters" and set Ace inline to "On".
 
-To use the **interactive** filter, you will also need to enable the sandbox web service option within the CodeRunner plugin settings. You should read carefully the other related CodeRunner web service settings and consider the various implications. Setting up a separate Jobe server for the web service is recommended if heavy usage of interactive code is likely, in order to mitigate against overload of the main Jobe server. Also consider what value to use for the maximum submission rate by any given Moodle user, as this limits the potential for abuse by any student.
+To use the **interactive** filter, you will also need to enable the **sandbox web service** option within the **CodeRunner plugin** settings. You should read carefully the other related CodeRunner web service settings and consider the various implications. Setting up a separate Jobe server for the web service is recommended if heavy usage of interactive code is likely, in order to mitigate against overload of the main Jobe server.
+
+Note: CodeRunner settings for the web service has a default value for the maximum submission rate (submissions per hour) by any given Moodle user, as this limits the potential for abuse by any student. Use of any interactive execution (running */Try it!/*) will contribute towards this limit.
 
 There are two plugin administrator setting provided directly by this plugin:
 
@@ -272,20 +275,22 @@ Currently, in Moodle 4.1, the forum discussion (but not the general description)
 
 Alternatively, prefix the desired language with **language-** and insert this into the \<pre> class, alongside with **ace-highlight/interactive-code** option to implement basic functionality in the selected language.
 Example:
-
-        <pre class="language-python ace-interactive-code">
-        <code>
-	        def hello():
-	             print("Hello world!")
-	        hello()
-        </code>
-        </pre>
+~~~
+    <pre class="language-python ace-interactive-code">
+    <code>
+            def hello():
+                 print("Hello world!")
+            hello()
+    </code>
+    </pre>
+~~~
 
 
 ## Change History
 
  * Version 1.2.1, 19 December 2022.
     * Added a privacy folder with provider.php.
+    * Cleaned up ReadMe.
 
  * Version 1.2.0, 15 December 2022.
     * Added full error handling and file upload size restrictions (2MB).

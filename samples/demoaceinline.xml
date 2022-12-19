@@ -48,18 +48,9 @@ for i in range(10):
 }</pre>
 <p>Note: It is highly recommended to ensure the <strong>data-</strong> prefix is preserved for strict HTML5 compliance, as well as, to prevent unwanted <strong>editor-based</strong>&nbsp;<strong>stripping </strong>of attribute tags. Using this prefix is why the language attribute is called 'data-lang' rather than just 'lang'. However, if you don't care about such compliance and want to edit entirely in HTML, you can drop the prefix; the code will still work (in most instances; see ReadMe for more specific information) but will not pass HTML5 validator checks. All code in this test/demo question use the full 'data-' form for attributes.
 </p>
-<h2>Options for highlighting</h2>
-<p>Line numbers are not shown by default, but an attribute <span><strong>data-start-line-number</strong></span> can be added to set the line number to use on the first line. Its default value is <span><strong>none</strong></span>, resulting in no line numbers being displayed. If non-none, the usual value is <strong>'<span>1</span>'</strong>, but other values can be used in special cases, for example, if code is broken into two separate highlighted segments.</p>
-<p>There is also an optional attribute <span><strong>data-font-size</strong></span> to set the font size within the Ace editor.</p>
-<p>The following example shows the Java hello world program with line numbers starting at 5 and a font-size of 16 pts.</p>
-<pre class="ace-highlight-code" data-lang="java" data-font-size="16pt" start-line-number="5">public class hello {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
-}</pre>
 <h2>Making code interactive</h2>
 <p>If an attribute of the HTML &lt;pre&gt; element containing the code is instead set to<span><strong> data-ace-interactive-code</strong>,&nbsp;</span>a <em>Try it!</em> button is added below the Ace editor panel. When clicked, the code is sent to the CodeRunner sandbox (usually a Jobe server) for execution and the result is displayed below the button. The code can be edited and re-run an arbitrary number of times.</p>
-<p>Here are firstly the same two examples from above, but with the attribute&nbsp;<strong>data-ace-interactive-code</strong>, and then C and C++ hello world programs. An extra blank line is being displayed in these cases by moving the terminating '&lt;/pre&gt;' onto a new line rather than putting it hard up against the last non-whitespace character in the code. This makes it clear that all the editable code is being displayed, but you might prefer not to do this - your call.
+<p>Here are firstly the same two examples from above, but with the attribute&nbsp;<strong>data-ace-interactive-code</strong>, and then C and C++ hello world programs.
 </p>
 <h3>A python example</h3>
 <pre data-ace-interactive-code="">print("Hello squares")
@@ -293,17 +284,9 @@ else:
         </tr>
         <tr>
             <td>
-                <pre>data-stdin (deprecated)</pre>
-            </td>
-            <td>Defines a string to be used as standard input when the program is run. Deprecated in favour of <em>data-stdin-taid</em>
-            </td>
-            <td>Interactive</td>
-        </tr>
-        <tr>
-            <td>
                 <pre>data-stdin-taid</pre>
             </td>
-            <td>Specifies the ID of a textarea element (or other HTML element with a jQuery <em>val()</em> method that supplies standard input to the program.
+            <td>Specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program.
             </td>
             <td>Interactive, TinyMCE, Markdown</td>
         </tr>
