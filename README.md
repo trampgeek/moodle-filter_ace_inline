@@ -62,7 +62,7 @@ This method is recommended for those who want a user-friendly way of implementin
 **Caveats:**
 * Currently, the use of \<script> tags are not supported by TinyMCE, even when using the Source Code option. Therefore, avoid the use of any \<script> tags, and avoid editing code containing any tags in this editor as the HTML is **automatically stripped of \<script> tags upon editing and saving any material**.
 * Use the **'data-'** prefix for every starting parameter. TinyMCE will **strip away any non-'data' tags upon editing and saving the question**.
-* If you want to use another language which is not available on Code samples, the author should change the language to "HTML/XML" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
+* If the author wants to use another language which is not available through TinyMCE's "Code sample" drop-down list, then the author should change the language to "HTML/XML" within "Code sample" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
 ## Markdown Extra editor
@@ -94,7 +94,7 @@ This method is recommended for those who want full functionality and customisati
 **How to use:**
 * Write the code that you wish to implement between \<pre> tags (in a \<pre> element).
 * Ensure that certain elements are appropriately HTML escaped (see section **HTML-escaping of code within the \<pre> element** section below).
-* Add **data-ace-interactive-code**/**data-ace-highlight-code** within the initial \<pre> tag.
+* Add either **data-ace-interactive-code** or **data-ace-highlight-code** within the initial \<pre> tag.
 * Add any other desired attributes in the \<pre> tag.
 * Example:
 ~~~
