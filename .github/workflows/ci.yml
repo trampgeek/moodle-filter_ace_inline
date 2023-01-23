@@ -1,4 +1,3 @@
-
 name: Moodle plugin CI
 on: [push, pull_request]
 
@@ -9,16 +8,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: '7.4'
-            moodle-branch: 'MOODLE_400_STABLE'
+          - php: '8.0'
+            moodle-branch: 'MOODLE_401_STABLE'
             database: 'pgsql'
           - php: '7.4'
-            moodle-branch: 'MOODLE_401_STABLE'
+            moodle-branch: 'MOODLE_400_STABLE'
             database: 'mariadb'
 
     services:
       postgres:
-        image: postgres:10
+        image: postgres:13
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -52,11 +51,13 @@ jobs:
         with:
           node-version: '14.15.0'
 
-      - name: Setup PHP
+      - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, pgsql, mysqli
+          ini-values: max_input_vars=5000
+          coverage: none
 
       - name: Deploy moodle-plugin-ci
         run: |
@@ -67,13 +68,14 @@ jobs:
           # PHPUnit depends on en_AU.UTF-8 locale
           sudo locale-gen en_AU.UTF-8
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
+
       - name: Start JobeInABox
         run: sudo docker run -d -p 4000:80 --name jobe trampgeek/jobeinabox:latest
 
       - name: Test JobeInABox
         run: |
           # Let Jobe initialise
-          sleep 2
+          sleep 5s
           curl http://localhost:4000/jobe/index.php/restapi/languages
           curl http://localhost:4000/jobe/index.php/restapi/runs -H 'Content-Type: application/json; charset=utf-8' --data-binary '{"run_spec":{"language_id":"python3","sourcecode":"print(\"Hello sandbox!\")","sourcefilename":"__tester__.python3","input":"","file_list":[]}}'
       

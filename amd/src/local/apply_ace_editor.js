@@ -155,8 +155,13 @@ const setUpAce = async (pre, uiParameters, isInteractive) => {
     const editor = window.ace.edit(editNode, aceConfig);
     const session = editor.getSession();
     const aceWidestLine = lineLength(editor.renderer, longestLine);
-    if (aceWidestLine > width) {
-        editNode.style.minWidth = Math.ceil(aceWidestLine) + "px";
+    // FireFox has horrid disappearing scrollbars. This adjusts for visibility.
+    if (navigator.userAgent.match(/firefox|fxios/i)) {
+        if (aceWidestLine > width) {
+            editNode.style.minWidth = Math.ceil(aceWidestLine) + "px";
+        }
+    } else {
+        editNode.style.minWidth = "50px";
     }
     session.setValue(text);
     editor.setTheme(theme);

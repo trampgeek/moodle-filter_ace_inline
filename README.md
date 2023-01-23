@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.2.1, 19 December 2022.
+Version 1.2.2, 19 January 2023.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -15,7 +15,8 @@ As of Moodle 4.1, the following code adding and editing options are available:
   1. **Utilising the new TinyMCE editor's 'Code sample' option (Moodle 4.1+)**
 	  * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
   2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
-	  * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
+	  * **WARNING:** As of the latest Moodle 4.0.6 and 4.1.1 update, Markdown Extra parsing has changed. A MoodleTracker alert has been created under [MDL-77000](https://tracker.moodle.org/browse/MDL-77000) pending resolution before this functionality is working again.
+          * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
   3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)** 
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML. 
 
@@ -26,9 +27,13 @@ The plugin provides two separate filter operations:
 
 It should be noted that the 'interactive' elements are interactive only in the sense that the user can edit and run them; the user cannot interact with the code whilst it is running. However, the code can be modified between executions. As this implementation is a filter, data is not stored persistently, and any changes to the code whilst the filter is activated will not be stored.
 
-The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. CodeRunner version 4.2.1 or later is required. In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
+The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. **CodeRunner version 4.2.3 and Moodle 3.11 or later is required for basic functionality**, although some errors may not display properly.
 
-There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=529).
+It is /*recommended/* to use CodeRunner version 5.1+ in conjunction with Moodle 4.1 for full functionality.
+
+In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
+
+There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=545).
 
 ## Editor options
 To change text editors in Moodle, click on your user icon, and select "Editor preferences". A drop-down menu can allow a user to switch between editors. Markdown is implemented in "Plain Text Area" and can be selected from a drop-down menu below the implementation of the text editor. TinyMCE referenced is labelled "TinyMCE editor" (**not** the legacy version) and is available from Moodle version 4.1+.
@@ -285,8 +290,18 @@ Example:
     </pre>
 ~~~
 
+Firefox browsers have dynamic scrollbars that hide when the cursor is not hovering over it. To avoid confusion from what may appear as missing code (when in fact, the component is scrollable), the component will expand in width in Firefox browsers to display all code in a line.
+This may cause some visual discrepancies between other browsers and Firefox, however functionality remains identical.
+
+It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+
+ * Version 1.2.2, 19 January 2023.
+    * Updated CI for PHP8 with Moodle 4.1.
+    * Kept Firefox handling code boxes with expansion; changed rest to scrolling.
+    * Checked with Moodle_3x_stable for compatibility.
+    * Updated ReadMe with CodeRunner requirements and Firefox scrollbar issue.
 
  * Version 1.2.1, 19 December 2022.
     * Added a privacy folder with provider.php.
