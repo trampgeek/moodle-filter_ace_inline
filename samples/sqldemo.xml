@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 153   -->
+    <question type="description">
+        <name>
+            <text>sqldemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is an SQL syntax-highlighting test, therefore contains nonsensical SQL statements and random code snippets.</p>
+<br> <pre data-ace-highlight-code  data-lang="sql">
+
+CREATE TABLE trial (
+    begin int,
+    second varchar(32),
+    third char(12)
+);
+
+DROP TABLE;
+
+UPDATE OR CREATE trigger {
+    ON DELETE CASCADE;
+}
+
+SELECT *, count(second)
+FROM trial
+WHERE begin LIKE "alpha"
+GROUP BY second;
+
+int main(void) {
+    cout << "Hello world" << endl;
+    putchar('x');
+    bool this = true;
+}
+
+import java.util.ArrayList;
+
+public abstract class Demo {
+
+    public static void main(String[] args) {
+    System.out.println("running");
+    while (true) {
+        boolean True = true;
+    }
+}
+
+let
+
+def other():
+    """something"""
+    return None;
+    
+
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+

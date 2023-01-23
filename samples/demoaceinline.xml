@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 29151  -->
+  <question type="description">
+    <name>
+      <text>TestAceInline</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h1><span style="font-size: 2.34375rem;">A Test/Demo of the Ace-inline Filter</span><br></h1>
+<p>This 'description question' isn't really a question at all, just an HTML page that documents an demonstrates various uses of the Ace-inline filter. To see how the different effects are produced you can view the source of the page in your browser.</p>
+<h2>Utilising Ace-inline filter</h2>
+<p>As of Moodle 4.1, the following code adding and editing options are available:
+    <br>
+</p>
+<ul>
+    <li>
+        Utilising the new TinyMCE editor's 'Code sample' option.<ul>
+            <li>This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited.</li>
+        </ul>
+    </li>
+    <li><span style="font-size: 0.9375rem;">Utilising Markdown Extra, either in the Moodle editor or externally for importing questions.</span>
+        <ul>
+            <li><span style="font-size: 0.9375rem;">This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour.</span></li>
+        </ul>
+    </li>
+    <li><span style="font-size: 0.9375rem;">Editing the HTML directly in an HTML editor.</span>
+        <ul>
+            <li><span style="font-size: 0.9375rem;">This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.</span></li>
+        </ul>
+    </li>
+</ul>
+<p>Further information on how to use these options are detailed in the ReadMe on&nbsp;<a href="https://github.com/trampgeek/moodle-filter_ace_inline">trampgeek/moodle-filter_ace_inline</a></p>
+<h2>Highlighting code</h2>
+<p>The simplest use of the filter is to let the Ace editor do syntax colouring of code. Using one of the above methods, the code will need to be wrapped in an HTML &lt;pre&gt; element.
+    The attribute <span><strong style="">data-ace-highlight-code</strong></span> should be set in the &lt;pre&gt; tag. (Note: this will change to&nbsp;<strong>data-ace-highlight-code=""</strong>&nbsp;upon saving, which is equivalent.)</p>
+<p>If using the TinyMCE option, you will not need to add any other attributes if the language chosen in the editor is the desired language to be displayed.</p>
+<p>Otherwise, the default language is Python(3); if you want another language you should add to the &lt;pre&gt; element an attribute like <span><strong>data-lang="java"</strong>.&nbsp;</span>Here are two examples, the first in Python, the second in Java.</p>
+<h3>A Python example</h3>
+<pre data-ace-highlight-code="">print("Some squares")
+for i in range(10):
+    print(i, i ** 2)</pre>
+
+<h3>A Java example</h3>
+<pre data-ace-highlight-code="" data-lang="java">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+}</pre>
+<p>Note: It is highly recommended to ensure the <strong>data-</strong> prefix is preserved for strict HTML5 compliance, as well as, to prevent unwanted <strong>editor-based</strong>&nbsp;<strong>stripping </strong>of attribute tags. Using this prefix is why the language attribute is called 'data-lang' rather than just 'lang'. However, if you don't care about such compliance and want to edit entirely in HTML, you can drop the prefix; the code will still work (in most instances; see ReadMe for more specific information) but will not pass HTML5 validator checks. All code in this test/demo question use the full 'data-' form for attributes.
+</p>
+<h2>Making code interactive</h2>
+<p>If an attribute of the HTML &lt;pre&gt; element containing the code is instead set to<span><strong> data-ace-interactive-code</strong>,&nbsp;</span>a <em>Try it!</em> button is added below the Ace editor panel. When clicked, the code is sent to the CodeRunner sandbox (usually a Jobe server) for execution and the result is displayed below the button. The code can be edited and re-run an arbitrary number of times.</p>
+<p>Here are firstly the same two examples from above, but with the attribute&nbsp;<strong>data-ace-interactive-code</strong>, and then C and C++ hello world programs.
+</p>
+<h3>A python example</h3>
+<pre data-ace-interactive-code="">print("Hello squares")
+for i in range(10):
+    print(i, i ** 2)
+</pre>
+
+<h3>A Java example</h3>
+<pre data-ace-interactive-code="" data-lang="java">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+     }
+ }
+</pre>
+<h2>Hello world in C</h2>
+<pre data-ace-interactive-code="" data-lang="c">#include &lt;stdio.h&gt;
+int main() {
+    puts("Hello world!");
+}
+</pre>
+<h2>Hello world in C++</h2>
+<pre data-ace-interactive-code="" data-lang="cpp">#include &lt;iostream&gt;
+using namespace std;
+int main() {
+    cout &lt;&lt; "Hello world" &lt;&lt; endl;
+}
+</pre>
+<h2></h2>
+<h2>Providing standard input (the new approved way)</h2>
+<p>Using stdin in conjunction with <strong>interactive</strong> samples is problematic if users are expecting an interactive prompt-read-prompt-read style of standard input. This really isn't possible with this filter because clicking Try it! simply sends a job to the Jobe server for execution and then displays the results. However, the author can provide the user with a text area into which they can enter any standard input (in general, multiple lines) which are then read on demand by the program. The <strong><span>data-stdin-taid</span>&nbsp;</strong>attribute of the &lt;pre&gt; element specifies the text area (or other HTML element with a val() method) to be used in this way. For example:</p>
+<p>Standard input:</p>
+<textarea id="demo-stdin" rows="4" cols="50">Here are three lines of standard input.
+You can edit them yourself before
+clicking the 'Try it!' button.
+</textarea>
+<pre data-ace-interactive-code="" data-stdin-taid="demo-stdin">while 1:
+    try:
+        print(input())
+    except EOFError:
+        break
+</pre>
+<p>If the author wishes to provide fixed uneditable standard input they can simply hide the textarea.</p>
+<h2>Providing standard input (the old deprecated way)</h2>
+<p>If there is no <strong>data-stdin-taid</strong> attribute, the question author can provide a standard input string using the attribute <strong>data-stdin</strong>. Since HTML5 allows multiline literal strings, the stdin stream can be multiline too.
+</p>
+<p>The following example shows a Python program that reads standard input until EOF. The stdin attribute here is
+</p>
+<pre>Chaos reigns within.
+Reflect, repent, and reboot.
+Order shall return.</pre>
+
+<pre data-ace-interactive-code="" data-stdin="Chaos reigns within.
+Reflect, repent, and reboot.
+Order shall return.
+">while 1:
+    try:
+        print(input())
+    except EOFError:
+        break
+</pre>
+<h2>Providing files</h2>
+<p>Files can uploaded into the working directory of the program in two different ways. Both require the author to add additional HTML elements to the page.</p>
+
+<ol>
+    <li>Named strings, or pseudo-files, can be defined by the <strong>data-file-taids</strong> attribute. This is a JSON object mapping filenames (fixed by the question author) to the IDs of textareas on the same page. The user can enter text into the textareas to define the pseudo-file contents prior to clicking Try it! The question author can hide the textareas if they wish to fix the file contents, e.g. as support files for the run.</li>
+    <li>Actual files can be uploaded by the user via a standard &lt;input type="file"&gt; element by the <strong>data-file-upload-id</strong> attribute, which is the HTML element ID of the &lt;input&gt; element. These files are also accessible on the command line argv, therefore code can be implemented to ensure that any type of file can be accepted.</li>
+</ol>
+<p>If both attributes are defined, files uploaded via the uploader override any identically named pseudo-files.</p>
+<h3>Pseudo file example: an HTML encoder</h3>
+<p>Copy the text that you wish to HTML encode into the text area, then click <em>Try it!</em></p>
+<textarea id="raw-text" rows="10" cols="60"></textarea>
+<pre data-ace-interactive-code="" data-file-taids="{&quot;raw.txt&quot;: &quot;raw-text&quot;}">from html import escape
+with open('raw.txt') as infile:
+    raw = infile.read()
+    if len(raw.strip()) == 0:
+        print("NO INPUT SUPPLIED!")
+    else:
+        print(escape(raw))
+</pre>
+<h3><br></h3>
+<h3>File upload example: an HTML encoder</h3>
+<p>Select a single file of type <em>.txt</em>, then click <em>Try it!</em></p>
+<input type="file" id="file-uploader" multiple="1">
+<pre data-ace-interactive-code="" data-file-upload-id="file-uploader">import os
+from html import escape
+text_files = [filename for filename in os.listdir() if filename.endswith('.txt')]
+if len(text_files) == 0:
+    print("No '.txt' files found!")
+elif len(text_files) != 1:
+    print("Please upload only a single .txt file")
+else:
+    with open(text_files[0]) as infile:
+        raw = infile.read()
+        if len(raw.strip()) == 0:
+            print("EMPTY FILE!")
+        else:
+            print(escape(raw))
+</pre>
+<br>
+<h2>File upload alternative:</h2>
+<p>As each file uploaded can be accessed from the <em>argv</em>, an easier way to access files of any kind would be to parse the argv to use as a filename.</p>
+<input type="file" id="file-alternative" multiple="1">
+<pre data-ace-interactive-code="" data-file-upload-id="file-alternative">import sys
+
+files = sys.argv[1:]
+if len(files) == 0:
+    print("Please upload a file")
+elif len(files) != 1:
+    print("Please upload only one file")
+else:
+    with open(files[0]) as infile:
+        contents = infile.read()
+        print(contents)
+</pre>
+
+<h2>The complete set of options</h2>
+<p>The complete set of customisable elements is as follows.&nbsp;All functionality is supported in direct HTML editing.</p>
+<table class="table table-bordered" style="width:auto">
+    <tbody>
+        <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+            <th>Supported/Available in:&nbsp;&nbsp;</th>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-ace-lang</pre>
+            </td>
+            <td>The language to use for the Ace editor syntax highlighting, if different from the language of the job as run on Jobe. For example, the <code>data-code-mapper</code> option might be used to wrap a program in C within a Python script that is executed on Jobe.</td>
+            <td>Highlight, Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-button-name</pre>
+            </td>
+            <td>Sets the label to use for the button instead of 'Try it!'</td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-start-line-number</pre>
+            </td>
+            <td>Can be set to 'none' to suppress line numbers or to an integer to start numbering with the given value</td>
+            <td>Highlight, Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-readonly</pre>
+            </td>
+            <td>If set (to any value) the supplied code cannot be edited by the user</td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-code-mapper</pre>
+            </td>
+            <td>The name of a global JavaScript function (i.e. an attribute of the window object) that takes as a parameter the code from the Ace editor and returns a modified version. This can be used to perform arbitrary transformations of the code the student is writing into some other program. If prefix or suffix code is supplied (see below) it is added after the code-mapper has been used. Note: due to TinyMCE editor stripping out any &lt;script&gt; tags, do<strong> not </strong>edit code with &lt;script&gt; tags in TinyMCE.</td>
+            <td>Interactive,&nbsp; Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-dark-theme-mode</pre>
+            </td>
+            <td>Selects when to use a dark mode for the Ace editor. Has values 0, 1 or 2 for <em>no</em>, <em>maybe</em> and <em>yes</em>. If 1<em>&nbsp;</em>(<em>maybe</em>) is chosen, the dark theme will be used if the browser's <em>prefers-color-scheme:dark</em> media query returns a match, so this may change with browser, operating system or time of day. The default value is set by the administrator setting for the plugin.
+            </td>
+            <td>Highlight, Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-file-upload-id</pre>
+            </td>
+            <td>The ID of an HTML input element of type file, which can be used to select multiple files for uploading into the working directory when Try it! is clicked.</td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-file-taids<br></pre>
+            </td>
+            <td>A JSON string defining a mapping from pseudo-filenames to textarea element IDs containing the pseudo-file contents. When Try it! is clicked, a file is created for each listed textarea and uploaded to the working directory.&nbsp;</td>
+            <td>Interactive, TinyMCE</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-font-size</pre>
+            </td>
+            <td>The font size to use in the Ace editor, e.g. '11pt'.
+            </td>
+            <td>Highlight, Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-html-output</pre>
+            </td>
+            <td>If set (to any value) the output from the program is interpreted as raw html to insert into the DOM, rather than being escaped and displayed in a &lt;p&gt; element. </td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-min-lines</pre>
+            </td>
+            <td>The minimum number of lines to display in the Ace editor. Default 4.<br></td>
+            <td>Highlight, Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-max-lines</pre>
+            </td>
+            <td>The maximum number of lines to display in the Ace editor without a scrollbar. Default 50.<br></td>
+            <td>Highlight, Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-max-output-length</pre>
+            </td>
+            <td>The limit to the displayed length of stdout and stderr strings. Strings longer than this are truncated prior to display. Default: 30,000.<br></td>
+            <td>Interactive, TinyMCE, Markdown<br></td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-params</pre>
+            </td>
+            <td>A JSON string of run-time parameters, passed to <a href="https://github.com/trampgeek/jobe"></a>the Jobe engine (q.v.). For example, <code>{"cputime": 5},&nbsp;</code>which is the default value of the attribute and sets a time limit of 5 seconds for the run. Rarely needed.</td>
+            <td>Interactive, TinyMCE<br></td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-prefix</pre>
+            </td>
+            <td>Defines code that will be inserted before the code from the Ace editor (so the student doesn't see it). An extra newline is not inserted between the prefix and the visible code - you must insert it explicitly if you want one.</td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-stdin-taid</pre>
+            </td>
+            <td>Specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program.
+            </td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-suffix</pre>
+            </td>
+            <td>Defines code that will be inserted after the code from the Ace editor (so the student doesn't see it). An extra newline is not inserted between the visible code and the suffix - you must insert it explicitly if you want one.<br></td>
+            <td>Interactive, TinyMCE, Markdown</td>
+        </tr>
+        <tr>
+            <td>
+                <pre>data-hidden</pre>
+            </td>
+            <td>Hides the Ace editor and all the code within it, leaving only the Try it! button. This can be used to hide complex code from students; whilst still allowing them to execute the code.</td>
+            <td>Interactive, TinyMCE, Markdown<br></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>A simple data-html-output example</h2>
+<p>The following example shows how the <span><strong>data-html-output</strong></span> option works. It's only rarely useful in isolation but in conjunction with <span><strong>data-code-mapper</strong></span> and/or <span><strong>data-prefix </strong></span>and <span><strong>data-suffix</strong></span> it can be used by question authors to provide arbitrary output. The following example also changes the button name.<br></p>
+
+<pre data-ace-interactive-code="" data-html-output="" data-button-name="Let's do it!">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
+print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
+</pre>
+
+<h2>A simple use of code-mapper</h2>
+<p>In this case we define (using a &lt;script&gt; element) a function called <em>doubler</em> that returns its parameter concatenated onto itself. The &lt;pre&gt; element that wraps the following code has the attribute data-code-mapper set to 'doubler'. Note: If this code is edited using TinyMCE editor, the &lt;script&gt; element and all its components will disappear upon saving. It is advisable to avoid TinyMCE editor if using this functionality.</p>
+<script>
+    function doubler(s) {
+        return s + s;
+    }
+</script>
+<pre data-ace-interactive-code="" data-code-mapper="doubler">print("Hello world!")
+</pre>
+<h2>A simple use of data-prefix</h2>
+<p>In the above example showing the use of stdin, the <span><em>input()</em></span> function was called and the result printed. But if students are using <em>input()</em> interactively, they expect to see what they enter from the keyboard echoed to the screen. To achieve such an effect in Python, prefix code could be added that simulates this echoing.</p>
+<p>For example, here's a program that asks the student for their name and age and prints a message telling them their age next year.The<strong> <span>data-stdin-taid</span></strong> attribute of the &lt;pre&gt; element has been set to 'age-text'; the id of the textarea containing "Jeremy" and "11".
+</p>
+<textarea id="age-text" rows="3" cols="10">Jeremy
+11</textarea>
+<pre data-ace-interactive-code="" data-stdin-taid="age-text" data-prefix="_saved_input = input
+def input(prompt=''):
+    print(prompt, end='')
+    line = _saved_input()
+    print(line)
+    return line
+">name = input("What's your name? ")
+age = int(input("How old are you? "))
+print(f"Hi {name}, next year you'll be {age + 1}")
+</pre>
+
+<h2>Displaying matplotlib images</h2>
+<p>By using the<strong> data-code-mapper </strong>option (and/or <strong>data-prefix </strong>and <strong>data-suffix</strong>) in conjunction with data-html-output it is possible, with some difficulty, to define an <strong>interactive</strong> block that will let students run matplotlib code and display both the textual output from the question and any output images. Here is an example, which also shows the use of the dark-theme mode and the use of the <strong>data-max-lines </strong>attribute (set to 15). Inspect the HTML at your peril! (Note: this exact method would<strong> not </strong>work if editing was to occur in TinyMCE. An example of code which utilises only <strong>data-prefix</strong> and <strong>data-suffix</strong> is specified in the Github repository and is compatible with TinyMCE)</p>
+
+<script>
+    function matplotlibwrapper(code) {
+        var escapedCode = code.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+        var progToRun = `import subprocess, base64, html, os
+
+def make_data_uri(filename):
+    with open(filename, "br") as fin:
+        contents = fin.read()
+    contents_b64 = base64.b64encode(contents).decode("utf8")
+    return "data:image/png;base64,{}".format(contents_b64)
+
+prog_to_exec = """import os, tempfile
+os.environ["MPLCONFIGDIR"] = tempfile.mkdtemp()
+import matplotlib as _mpl
+_mpl.use("Agg")
+` + escapedCode + `
+figs = _mpl.pyplot.get_fignums()
+for i, fig in enumerate(figs):
+    _mpl.pyplot.figure(fig)
+    filename = f'image{i}.png'
+    _mpl.pyplot.savefig(filename, bbox_inches='tight')
+"""
+with open('prog.py', 'w') as outfile:
+    outfile.write(prog_to_exec)
+
+result = subprocess.run(['python3', 'prog.py'], capture_output=True, text=True)
+print('<div>')
+output = result.stdout + result.stderr
+if output:
+    output = html.escape(output).replace(' ', '&nbsp;').replace('\\n', '<br>')
+    print(f'<p style="font-family:monospace;font-size:11pt;padding:5px;">{output}</p>')
+
+for fname in os.listdir():
+    if fname.endswith('png'):
+        print(f'<img src="{make_data_uri(fname)}">')
+`;
+        return progToRun;
+    }
+</script>
+<pre data-ace-interactive-code="" data-html-output="" data-code-mapper="matplotlibwrapper" data-params="{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-dark-theme-mode="2" data-max-lines="15">import matplotlib.pyplot as plt
+import numpy as np
+
+# Generate some text output
+print("I am a line of output")
+print("And so am I")
+
+# Now the graph plotting
+axes = plt.axes()
+xs = np.linspace(0, 720, 200)
+ys = np.sin(2 * np.pi * xs / 360)
+axes.plot(xs, ys)
+axes.set_title("y = sin(x)")
+axes.set_xlabel('x (degrees)')
+axes.set_ylabel('y')
+axes.grid()
+plt.show()
+</pre>
+<div>
+    <h2>Using Ace-interactive-filter for applets</h2>
+    <p>The latest version of the ace-interactive-filter plugin allows you to upload files and to read the contents of various textareas or other HTML elements (anything with a jquery <em>val</em> method) as if they were files. You can also hide the actual code. Consequently it's possible to use the Ace inline filter to embed executable code rather like traditional applets, using any language of your choice. [Which of course, should be Python.]</p>
+    <p>This approach to applets is, in most cases, much weaker than using JavaScript directly. For example you can't do any event handling or manipulate the DOM directly. But it has the big advantages of:</p>
+    <p></p>
+    <ul>
+        <li>Language familiarity (for those who are more familiar with Python than JavaScript)</li>
+        <li>The power of Python for more advanced tasks, such as processing CSV files, plotting graphs, numerical analysis, etc.</li>
+    </ul>
+    <p></p>
+    <p>For example:</p>
+    <h4>Plot grade histogram</h4>
+    <p>Upload a .csv file using the file selector below.&nbsp; The csv file must have a single header row and there must be a grade column containing only grades (E, D, C-, C+, ...). Enter the required column name into the input field beside the file selector and click the <em>Plot histogram</em> button.&nbsp;</p>
+    <p>Select CSV file: <input type="file" id="histo-csv-file"><br>
+        Column name: <input type="text" id="histo-column-name"><br>
+    </p>
+    <pre class="ace-interactive-code" data-file-upload-id="histo-csv-file" html-output="" code-mapper="matplotlibwrapper" data-file-taids="{&quot;column_name&quot;: &quot;histo-column-name&quot;}" data-params="{&quot;cputime&quot;: 5, &quot;memorylimit&quot;: 1000}" data-button-name="Plot histogram" hidden="">import matplotlib.pyplot as plt
+import sys
+import csv
+
+GRADES = ['E', 'D', 'C-', 'C', 'C+', 'B-', 'B', 'B+', 'A-', 'A', 'A+']
+
+def main():
+    csv_files = [name for name in sys.argv if name.endswith('.csv')]
+    if len(csv_files) != 1:
+        print(f"I expected to be given exactly one .csv file. Instead I got {len(csv_files)}")
+        return
+        
+    filename = csv_files[0]
+    with open("column_name") as infile:
+        column_name = infile.read().strip()
+    if column_name == '':
+        print("You haven't specified the name of the grades column")
+        return
+    print(f"Processing {filename}")
+    counts = {grade: 0 for grade in GRADES}
+    with open(filename, encoding='utf-8-sig') as infile:
+        rdr = csv.DictReader(infile)
+        for row in rdr:
+            try:
+                grade = row[column_name].strip()
+            except KeyError:
+                print(f"File {filename} doesn't have a column {column_name}")
+                print("Columns: ", list(row.keys()))
+                return
+            if grade in GRADES:
+                counts[grade] += 1
+        
+    axes = plt.axes()
+    axes.bar(counts.keys(), counts.values())
+    axes.set_title(f"Grade distribution, column {column_name} from file {filename}")
+    num_grades = sum(counts.values())
+    print(f"{num_grades} grades processed")
+    print(f"Pass rate = { 100 * (num_grades - counts['D'] - counts['E']) / num_grades : .1f}%")
+    
+main()
+</pre>
+</div>
+]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+
+</quiz>

@@ -1,0 +1,55 @@
+<pre data-ace-interactive-code data-lang="java" data-font-size="16pt" data-start-line-number="5" data-max-lines="6">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+    
+    String shown = "I should see this line";
+    String hidden = "I should not see this line";
+}
+</pre>
+<pre data-ace-highlight-code data-lang="java" data-min-lines="2">public class hello {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+    
+    String cutoff = "This should not be cut off";
+}</pre>
+
+<pre data-ace-interactive-code data-lang="python" data-button-name="Run me" >def some_function():
+    return
+    
+}</pre>
+
+<pre data-ace-interactive-code data-ace-lang="javascript" data-button-name="notJS">def other_function():
+    alpha_list = ("This", "ran", "Python")
+    print(" ".join(alpha_list))
+other_function()
+</pre>
+
+<pre data-ace-interactive-code data-max-output-length="10" data-lang="c" data-button-name="uptoten">#include &lt;stdio.h&gt;
+int main() {
+	size_t i = 0;
+	for (; i &lt; 40000; i++) {
+		printf("%lu", i);
+ }
+ }
+</pre>
+
+<pre data-ace-interactive-code data-dark-theme-mode="2" data-html-output="true" data-button-name="HTML time">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
+print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
+</pre>
+
+
+<pre class="language-markup" data-ace-interactive-code data-button-name="HTML tiny">print("&lt;h2&gt;I'm a heading&lt;/h2&gt;")
+print("&lt;ol&gt;&lt;li&gt;Bullet 1&lt;/li&gt;&lt;li&gt;Bullet 2&lt;/li&gt;&lt;/ol&gt;")
+</pre>
+
+<pre class="ace-interactive-code" data-button-name="Legacy" >def some_function():
+    some_list = ("This", "ran", "Python")
+    print(" ".join(some_list))
+some_function()
+</pre>
+
+<pre class="ace-highlight-code" >def its_been_awhile():
+    return True
+</pre>

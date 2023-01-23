@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 120   -->
+    <question type="description">
+        <name>
+            <text>matlabdemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo Matlab syntax-highlighting test, therefore contains nonsensical (but syntactically valid) Matlab designed to test ace and nonsensical other languages</p>
+<br> <pre data-ace-highlight-code data-lang="matlab">
+
+disp("trial")
+clc
+lots = zeros(10,10)
+whos lots
+for i = 1 : length(lots)
+    again = 0;
+end
+
+/** Info
+*/
+public abstract class Demo {
+
+    public static void main(String[] args) {
+    System.out.println("wrong");
+    
+    Integer.toString(42);
+}
+
+def other():
+    """something"""
+    return None;
+    
+function trial()
+
+    let or = 'one';
+    for (const a of "js") {
+        var hi = 0;
+    }
+    return;
+
+
+#include <stdio.h>
+int main(void) {
+    putchar('x');
+    bool true; 
+}
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+

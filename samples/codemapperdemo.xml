@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 124   -->
+    <question type="description">
+        <name>
+            <text>codemapperdemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">This is a demo of the code mapper abilities.</p>
+<br> <script>
+    function foo(s) {
+        if (s === 'will this run') {
+            return `def ran():
+    some_list = ['Yes', ', ', 'this ', 'ran ', 'Python']
+    print("".join(some_list))
+ran()`
+        } else {
+            return 'print("No, it didn\'t")';
+        }
+    }
+</script>
+<pre data-ace-interactive-code data-code-mapper="foo">will this run</pre>
+<p dir="ltr" style="text-align: left;"><br></p></pre> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+
+

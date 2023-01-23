@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+    <!--  question: 171   -->
+    <question type="description">
+        <name>
+            <text>tryittinydemo</text>
+        </name>
+        <questiontext format="html">
+        <text> <![CDATA[ <p dir="ltr" style="text-align: left;">Below are three implementations of basic Try it! functions with the set-up identical to how TinyMCE Code-Snippet editor 
++ additions make in Java, Python and C. Also has an undefined language.&nbsp;</p>
+<pre class="language-java" data-ace-interactive-code data-button-name="Java"><code>public class hello {
+    public static void main(String[] args) {
+    	String output = "";
+        String[] list = new String[] {"T", "h", "i", "s", " ", "r", "a", "n", " ", "J", "a", "v", "a"};
+        for (int i = 0; i &lt; 13; i++) {
+        	output += list[i];
+        }
+        System.out.println(output);
+    }
+}</code></pre>
+
+<pre class="language-python" data-ace-interactive-code data-button-name="Python"><code>def some_function():
+    alpha_list = ("This", "ran", "Python")
+    print(" ".join(alpha_list))
+some_function()
+</code></pre>
+
+<pre class="language-c" data-ace-interactive-code data-button-name="C"><code>#include &lt;stdio.h&gt;
+int main() {
+	char beta[11] = {'T', 'h', 'i', 's', ' ', 'r', 'a', 'n', ' ', 'C', '\0'};
+	printf("%s", beta);
+  }
+</code></pre>
+
+<pre class="language-c" data-ace-highlight-code data-button-name="AlternativeB"><code>#include &lt;stdio.h&gt;
+int main() {
+	char beta[11] = {'T', 'h', 'i', 's', ' ', 'r', 'a', 'n', ' ', 'C', '\0'};
+	printf("%s", beta);
+  }
+</code></pre>
+
+
+<pre class="language-notalanguage" data-ace-interactive-code data-button-name="nolanguage"><code>def this_shouldnt_run():
+   print('no'+'no'+'no'+'no')
+</code></pre>
+
+<pre class="language-python" data-ace-interactive-code data-button-name="badcode"><code>def this_shouldnt_run():
+   print('Oops,' + ' this
+</code></pre>
+
+<pre class="language-c ace-interactive-code" data-button-name="legacy"><code>#include &lt;stdio.h&gt;
+int main() {
+	char beta[11] = {'T', 'h', 'i', 's', ' ', 'r', 'a', 'n', ' ', 'C', '\0'};
+	printf("%s", beta);
+  }
+</code></pre>
+
+<p dir="ltr" style="text-align: left;"><br></p> ]]>
+        </text>
+        </questiontext>
+        <generalfeedback format="html">
+        <text/>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber/>
+    </question>
+</quiz>
+

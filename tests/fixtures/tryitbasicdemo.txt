@@ -1,0 +1,37 @@
+<pre data-ace-interactive-code data-lang="java" data-button-name="Java">public class hello {
+    public static void main(String[] args) {
+    	String output = "";
+        String[] list = new String[] {"T", "h", "i", "s", " ", "r", "a", "n", " ", "J", "a", "v", "a"};
+        for (int i = 0; i &lt; 13; i++) {
+        	output += list[i];
+        }
+        System.out.println(output);
+    }
+}</pre>
+
+<pre data-ace-interactive-code data-readonly="true" data-button-name="Python">def some_function():
+    alpha_list = ("This", "ran", "Python")
+    print(" ".join(alpha_list))
+some_function()
+</pre>
+
+<pre class="ace-interactive-code" data-lang="c" data-button-name="C">#include &lt;stdio.h&gt;
+int main() {
+	char beta[11] = {'T', 'h', 'i', 's', ' ', 'r', 'a', 'n', ' ', 'C', '\0'};
+	printf("%s", beta);
+  }
+</pre>
+
+
+<pre data-ace-interactive-code data-lang="notalanguage" data-button-name="nolanguage">def this_shouldnt_run():
+   print('no'+'no'+'no'+'no')
+</pre>
+
+<pre data-ace-interactive-code data-button-name="badcode">def this_shouldnt_run():
+   print('Oops,' + ' this
+</pre>
+
+<p dir="ltr" style="text-align: left;"><br></p>
+
+<pre data-ace-interactive-code data-button-name="hidden" data-hidden='1'>print("This should be hidden")
+</pre>

@@ -1,0 +1,30 @@
+
+<pre data-ace-highlight-code data-lang="c">
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int main(void) {
+    cout << "Hello world" << endl;
+    putchar('x');
+    bool this = true;
+}
+
+import java.util.ArrayList;
+
+public abstract class Demo {
+
+    public static void main(String[] args) {
+    System.out.println("running");
+    
+    boolean True = true;
+    Boolean False = false;
+    
+}
+
+let
+
+def other():
+    """something"""
+    return None;
+    
