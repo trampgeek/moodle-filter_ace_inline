@@ -15,7 +15,8 @@ As of Moodle 4.1, the following code adding and editing options are available:
   1. **Utilising the new TinyMCE editor's 'Code sample' option (Moodle 4.1+)**
 	  * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
   2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
-	  * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
+	  * **WARNING:** As of the latest Moodle 4.0.6 and 4.1.1 update, Markdown Extra parsing has changed. A MoodleTracker alert has been created under [MDL-77000](https://tracker.moodle.org/browse/MDL-77000) pending resolution before this functionality is working again.
+          * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
   3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)** 
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML. 
 
@@ -32,7 +33,7 @@ It is /*recommended/* to use CodeRunner version 5.1+ in conjunction with Moodle 
 
 In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
 
-There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=529).
+There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=545).
 
 ## Editor options
 To change text editors in Moodle, click on your user icon, and select "Editor preferences". A drop-down menu can allow a user to switch between editors. Markdown is implemented in "Plain Text Area" and can be selected from a drop-down menu below the implementation of the text editor. TinyMCE referenced is labelled "TinyMCE editor" (**not** the legacy version) and is available from Moodle version 4.1+.
