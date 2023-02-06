@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.2.2, 19 January 2023.
+Version 1.3, 7 February 2023.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -296,6 +296,9 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+
+ * Version 1.3, 7 February 2023.
+    * Changed global dynamic hooks to differentiate between the two.
 
  * Version 1.2.2, 19 January 2023.
     * Updated CI for PHP8 with Moodle 4.1.

@@ -37,7 +37,7 @@ export const initAceInteractive = async (config) => {
         }
         applyAceAndBuildUi(document, true, config);
         // Add a hook for use by dynamically generated content.
-        window.applyAceAndBuildUi = function () {
+        window.applyAceInteractive = function () {
             applyAceAndBuildUi(document, true, config);
         };
     }
@@ -55,7 +55,7 @@ export const initAceHighlighting = async (config) => {
         }
         applyAceAndBuildUi(document, false, config);
         // Add a hook for use by dynamically generated content.
-        window.applyAceAndBuildUi = function () {
+        window.applyAceHighlighting = function () {
             applyAceAndBuildUi(document, false, config);
         };
     }
