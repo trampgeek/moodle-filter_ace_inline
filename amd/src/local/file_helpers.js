@@ -37,7 +37,7 @@ const MAX_FILE_SIZE_BYTES = 2097152;
  * @returns {string} An JSON-encoding of an object that defines one or more
  * filename:filecontents mappings.
  */
-export const getFiles = async (uiParameters) => {
+export const getFiles = async(uiParameters) => {
     const uploadId = uiParameters.paramsMap['file-upload-id'];
     let taids = uiParameters.paramsMap['file-taids'];
     let sandboxArgs = [];
@@ -83,18 +83,18 @@ export const getFiles = async (uiParameters) => {
  * a data-file-contents object is defined to map name to contents.
  * @param {HTMLelement} uploadElementId The input element of type file.
  */
-export const setupFileHandler = async (uploadElementId) => {
+export const setupFileHandler = async(uploadElementId) => {
     // Creates a div element to contain error messages and divs for error messages.
-    const errorNode = document.createElement("div", [] , {'hidden' : '1'});
-    const errorHtml = createComponent("div", ['filter-ace-inline-files'], {'hidden' : '1'});
-    const fatalHtml = createComponent("div", ['filter-ace-inline-file-error'], {'hidden' : '1'});
+    const errorNode = document.createElement("div", [], {'hidden': '1'});
+    const errorHtml = createComponent("div", ['filter-ace-inline-files'], {'hidden': '1'});
+    const fatalHtml = createComponent("div", ['filter-ace-inline-file-error'], {'hidden': '1'});
     errorNode.appendChild(fatalHtml);
     errorNode.appendChild(errorHtml);
 
     const element = document.querySelector('#' + uploadElementId);
     element.parentNode.insertBefore(errorNode, element.nextSibling);
-    element.setAttribute('multiple', '1');  // Workaround for the fact Moodle strips this.
-    element.addEventListener('change', async () => {
+    element.setAttribute('multiple', '1'); // Workaround for the fact Moodle strips this.
+    element.addEventListener('change', async() => {
         // Cleans the contents of the errors between uploads.
         errorHtml.innerHTML = '';
         fatalHtml.innerHTML = '';
@@ -113,6 +113,7 @@ export const setupFileHandler = async (uploadElementId) => {
                             + parsedName + '</strong></li>' + errorHtml.innerHTML;
                         }
                     fileValues[uploadElementId] = result;
+                    return null;
                 })
                 .catch(() => {
                     fatalHtml.innerHTML = '<li><strong><em>' + file.name + '</em>&nbsp;'
@@ -128,13 +129,12 @@ export const setupFileHandler = async (uploadElementId) => {
 };
 
 /**
-* Read a single file and return an appropriate promise of contents or rejects.
-* Checks file size prior to reading to prevent wasting time processing file.
-*
-* @param {file} file A file from an 'input type=file' element filelist.
-* @returns {Promise} A promise wrapping the given file's contents.
-*/
-const readOneFile = async (file) => {
+ * Read a single file and return an appropriate promise of contents or rejects.
+ * Checks file size prior to reading to prevent wasting time processing file.
+ * @param {file} file A file from an 'input type=file' element filelist.
+ * @returns {Promise} A promise wrapping the given file's contents.
+ */
+const readOneFile = async(file) => {
     if (file.size > MAX_FILE_SIZE_BYTES) {
         return Promise.reject("excessive size");
     }
@@ -150,11 +150,10 @@ const readOneFile = async (file) => {
 
 /**
  * Displays all file errors for each error.
- *
  * @param {type} error The error langString to be used.
  * @param {type} errorHtml The errorNode for the error message to be displayed.
  */
-const displayFileError = async (error, errorHtml) => {
+const displayFileError = async(error, errorHtml) => {
     errorHtml.innerHTML = '<strong>' + await getLangString(error)
         + '</strong><ul>' + errorHtml.innerHTML + '</ul>';
     errorHtml.removeAttribute('hidden');

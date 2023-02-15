@@ -25,7 +25,7 @@
 
 import {get_string as getString} from 'core/str';
 
-const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
+const RESULT_SUCCESS = 15; // Code for a correct Jobe run.
 
 /**
  * Get the specified language string and return a promise with the respective
@@ -34,7 +34,7 @@ const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
  * should be plugged.
  * @returns {string} Promise with the language string output.
  */
-export const getLangString = async (langStringName) =>
+export const getLangString = async(langStringName) =>
     getString(langStringName, 'filter_ace_inline')
             .catch();
 
@@ -49,7 +49,7 @@ export const getLangString = async (langStringName) =>
  * happened anyway. More obscure errors are lumped together as 'Unknown
  * runtime error'.
  * @param {object} response The response from the web-service sandbox request.
- * @returns string The language string to use for an error message or '' if
+ * @returns {String} The language string to use for an error message or '' if
  * no error message.
  */
 export const diagnose = (response) => {
@@ -69,7 +69,7 @@ export const diagnose = (response) => {
         [0, RESULT_SUCCESS, ''], // RESULT_SUCCESS
         [0, 17, 'error_memory_limit'], // RESULT_MEMORY_LIMIT
         [0, 21, 'error_sandbox_server_overload'], // RESULT_SERVER_OVERLOAD
-        [0, 30, 'error_excessive_output']  // RESULT OUTPUT_LIMIT
+        [0, 30, 'error_excessive_output'] // RESULT OUTPUT_LIMIT
     ];
     for (const row of ERROR_RESPONSES) {
         if (row[0] == response.error && (response.error != 0 || response.result == row[1])) {
@@ -94,7 +94,9 @@ export const escapeHtml = (text) => {
     "'": '&#039;'
   };
 
-  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+  return text.replace(/[&<>"']/g, function(m) {
+      return map[m];
+  });
 };
 
 /**
@@ -103,6 +105,7 @@ export const escapeHtml = (text) => {
  * if necessary (in which case '... (truncated)' is appended.
  * @param {object} response Sandbox response object
  * @param {int} maxLen The maximum length of the trimmed stringlen.
+ * @returns {String} The concatenated, truncated output.
  */
 export const combinedOutput = (response, maxLen) => {
     const limit = s => s.length <= maxLen ? s : s.substr(0, maxLen) + '... (truncated)';

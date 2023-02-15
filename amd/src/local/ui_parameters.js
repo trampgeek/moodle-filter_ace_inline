@@ -65,12 +65,6 @@ const ACE_INTERACTIVE = {
     'dark-theme-mode': null
 };
 
-/**
- * Class for the UiParameters; stores the UiParameters and variables
- * required for UiParameters parsing. Makes it according to the type
- * required (highlight/interactive).
- * @class Object containing UiParameters.
- */
 export class UiParameters {
     constructor(pre) {
         this.pre = pre;
@@ -97,11 +91,12 @@ export class UiParameters {
 
         for (const attrName in defaultParams) {
             if (defaultParams.hasOwnProperty(attrName)) {
-                let value = '', dataName = '';
+                let value = '';
+                let dataName = '';
                 let attr = this.pre.attributes.getNamedItem(attrName);
                 if (attr) {
                     dataName = attrName;
-                } else {  // Try data- as a prefix if 'raw' access fails.
+                } else { // Try data- as a prefix if 'raw' access fails.
                     dataName = 'data-' + attrName;
                     attr = this.pre.attributes.getNamedItem(dataName);
                 }
@@ -133,7 +128,7 @@ export class UiParameters {
 
         // Sets dark theme according to config if not previously set.
         if (this.paramsMap['dark-theme-mode'] === null) {
-            this.paramsMap['dark-theme-mode'] = config.dark_theme_mode;  // 0, 1, 2 for never, sometimes, always
+            this.paramsMap['dark-theme-mode'] = config.dark_theme_mode; // 0, 1, 2 for never, sometimes, always
         }
         // Extracts the Tiny Parameters out.
         this.extractTinyParams();
@@ -144,16 +139,16 @@ export class UiParameters {
      */
     extractTinyParams() {
         // Takes the data-lang from the class if edited using Prism TinyMCE editor filter.
-        const splitClass = this.paramsMap['class'].split(" ");
+        const splitClass = this.paramsMap.class.split(" ");
         // Left open so can deal with more attributes if desired.
         splitClass.forEach((attribute) => {
             if (attribute.startsWith('language') && this.modifiedLang === false) {
-                this.paramsMap['lang'] = attribute.replace('language-', '');
+                this.paramsMap.lang = attribute.replace('language-', '');
             }
         });
         // Handle the one case of python3 in JOBE.
-        if (this.paramsMap['lang'] === 'python') {
-            this.paramsMap['lang'] = 'python3';
+        if (this.paramsMap.lang === 'python') {
+            this.paramsMap.lang = 'python3';
         }
     }
 

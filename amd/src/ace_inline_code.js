@@ -29,15 +29,15 @@ import {applyAceAndBuildUi} from "filter_ace_inline/local/apply_ace_editor";
  * Applies ace interactive code precisely once per page.
  * @param {array} config Config settings for dark-mode and buttons.
  */
-export const initAceInteractive = async (config) => {
-    if (!window.ace_inline_code_interactive_done) { // Do it once only.
-        window.ace_inline_code_interactive_done = true;
+export const initAceInteractive = async(config) => {
+    if (!window.aceInlineCodeInteractiveDone) { // Do it once only.
+        window.aceInlineCodeInteractiveDone = true;
         while (!window.ace) {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
         applyAceAndBuildUi(document, true, config);
         // Add a hook for use by dynamically generated content.
-        window.applyAceInteractive = function () {
+        window.applyAceInteractive = function() {
             applyAceAndBuildUi(document, true, config);
         };
     }
@@ -47,15 +47,15 @@ export const initAceInteractive = async (config) => {
  * Applies ace highlight code precisely once per page.
  * @param {array} config Config settings for dark-mode.
  */
-export const initAceHighlighting = async (config) => {
-    if (!window.ace_inline_code_highlighting_done) { // Do it once only.
-        window.ace_inline_code_highlighting_done = true;
+export const initAceHighlighting = async(config) => {
+    if (!window.aceInlineCodeHighlightingDone) { // Do it once only.
+        window.aceInlineCodeHighlightingDone = true;
         while (!window.ace) {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
         applyAceAndBuildUi(document, false, config);
         // Add a hook for use by dynamically generated content.
-        window.applyAceHighlighting = function () {
+        window.applyAceHighlighting = function() {
             applyAceAndBuildUi(document, false, config);
         };
     }

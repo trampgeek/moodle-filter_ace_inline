@@ -27,7 +27,7 @@ import {createComponent, combinedOutput, diagnose, escapeHtml, getLangString} fr
 import {getFiles} from "filter_ace_inline/local/file_helpers";
 import {processCode} from "filter_ace_inline/local/repository";
 
-const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
+const RESULT_SUCCESS = 15; // Code for a correct Jobe run.
 
 /**
  * Handle a click on the Try it! button; pre-checks the taids for valid ids.
@@ -37,13 +37,13 @@ const RESULT_SUCCESS = 15;  // Code for a correct Jobe run.
  * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
  * @returns {string} code of the code to run, else null but executes errors if needed.
  */
-export const handleButtonClick = async (outputDisplayArea, code, uiParameters) => {
+export const handleButtonClick = async(outputDisplayArea, code, uiParameters) => {
     cleanOutput(outputDisplayArea);
     let errorText = '';
     const params = uiParameters.paramsMap;
     outputDisplayArea.style.display = '';
     // Handle languages at this state.
-    uiParameters.setExecLang(params['lang']);
+    uiParameters.setExecLang(params.lang);
     uiParameters.setHtmlOutput(params['html-output']);
 
     const mapFunc = params['code-mapper'];
@@ -58,7 +58,7 @@ export const handleButtonClick = async (outputDisplayArea, code, uiParameters) =
     uiParameters.setStdin();
     uiParameters.setFiles(await getFiles(uiParameters));
     // If html/markup is the chosen language; change uiParameters and wrap in Python.
-    if ((params['lang'] === 'markup') || (params['lang'] === 'html')) {
+    if ((params.lang === 'markup') || (params.lang === 'html')) {
         outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-html');
         uiParameters.setHtmlOutput(true);
         uiParameters.setExecLang('python3');
@@ -68,11 +68,11 @@ export const handleButtonClick = async (outputDisplayArea, code, uiParameters) =
     // Check if params is a good JSON string.
     try {
         // Adds any uploaded files onto the uiParams and resets uiParams sandbox params.
-        let sandboxParams = JSON.parse(params['params']);
+        let sandboxParams = JSON.parse(params.params);
         if (sandboxParams.hasOwnProperty('runargs')) {
-            sandboxParams['runargs'] = sandboxParams['runargs'].concat(uiParameters.sandboxParams);
+            sandboxParams.runargs = sandboxParams.runargs.concat(uiParameters.sandboxParams);
         } else {
-            sandboxParams['runargs'] = uiParameters.sandboxParams;
+            sandboxParams.runargs = uiParameters.sandboxParams;
         }
         uiParameters.setRunParams(JSON.stringify(sandboxParams));
     } catch (SyntaxError) {
@@ -86,7 +86,7 @@ export const handleButtonClick = async (outputDisplayArea, code, uiParameters) =
 
     // Make it display a User error if there is an error and return no code.
     if (errorText !== '') {
-        let text = '*** ' +  await getLangString('error_user_params') + ' ***\n' + errorText;
+        let text = '*** ' + await getLangString('error_user_params') + ' ***\n' + errorText;
         outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-user');
         outputDisplayArea.children.item(0).innerHTML = escapeHtml(text);
         return null;
@@ -102,10 +102,11 @@ export const handleButtonClick = async (outputDisplayArea, code, uiParameters) =
  * @param {int} uiParameters The various parameters (mostly attributes of the pre element).
  * Keys are button-name, lang, stdin, files, params, prefix, suffix, codemapper, html-output.
  */
-export const executeCode = async (outputDisplayArea, code, uiParameters) => {
+export const executeCode = async(outputDisplayArea, code, uiParameters) => {
     await processCode(code, uiParameters)
         .then(responseJson => {
             displaySuccess(responseJson, outputDisplayArea, uiParameters);
+            return null;
         })
         .catch(error => {
             cleanOutput(outputDisplayArea);
@@ -168,7 +169,7 @@ const displaySuccess = (responseJson, outputDisplayArea, uiParameters) => {
  * @param {string} langString LangString for error-handling.
  * @param {html_element} outputDisplayArea The HTML <p> element in which to display output.
  */
-const displayTextOutput = async (text, langString, outputDisplayArea) => {
+const displayTextOutput = async(text, langString, outputDisplayArea) => {
     if (langString !== '') {
         text = "*** " + await getLangString(langString) + " ***\n" + text;
     }
