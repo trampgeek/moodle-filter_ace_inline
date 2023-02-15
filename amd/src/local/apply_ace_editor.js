@@ -29,7 +29,7 @@ import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
-const ACE_MODE_MAP = {  // Ace modes for various languages (default: use language name).
+const ACE_MODE_MAP = { // Ace modes for various languages (default: use language name).
     'c': 'c_cpp',
     'cpp': 'c_cpp',
     'js': 'javascript',
@@ -50,7 +50,7 @@ const ACE_MODE_MAP = {  // Ace modes for various languages (default: use languag
  * @param {bool} isInteractive True for ace-interactive otherwise false.
  * @param {object} config The plugin configuration settings.
  */
-export const applyAceAndBuildUi = async (root, isInteractive, config) => {
+export const applyAceAndBuildUi = async(root, isInteractive, config) => {
     const className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
     const alternativeName = isInteractive ? 'data-ace-interactive-code' : 'data-ace-highlight-code';
 
@@ -83,7 +83,7 @@ export const applyAceAndBuildUi = async (root, isInteractive, config) => {
  * @param {bool} isInteractive True for ace-interactive otherwise false.
  * @param {Object} uiParameters the User Interface parameters for the element.
  */
-const applyToPre = async (pre, isInteractive, uiParameters) => {
+const applyToPre = async(pre, isInteractive, uiParameters) => {
     const params = uiParameters.paramsMap;
     if (params['file-upload-id']) {
         setupFileHandler(params['file-upload-id']);
@@ -96,17 +96,16 @@ const applyToPre = async (pre, isInteractive, uiParameters) => {
         addUi(pre, getCode, uiParameters);
     }
 
-    pre.style.display = 'none';  // NB this sets display = 'none', checked above.
+    pre.style.display = 'none'; // NB this sets display = 'none', checked above.
 };
 
 /**
  * Sets up Ace with all its parameters and adds a button if interactive.
- *
- * @param {html element} pre The pre element that the Ace editor is replacing.
- * @param {object} uiParameters The UI parameters from the Pre element + defaults.
+ * @param {HTMLelement} pre The pre element that the Ace editor is replacing.
+ * @param {Object} uiParameters The UI parameters from the Pre element + defaults.
  * @param {bool} isInteractive True if the code is interactive.
  */
-const setUpAce = async (pre, uiParameters, isInteractive) => {
+const setUpAce = async(pre, uiParameters, isInteractive) => {
     const params = uiParameters.paramsMap;
     const darkMode = params['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
     let theme = null;
@@ -132,11 +131,11 @@ const setUpAce = async (pre, uiParameters, isInteractive) => {
     const longestLine = longest(lines);
 
     const editNode = document.createElement('div'); // Ace editor manages this
-    const width = pre.scrollWidth;  // Our first guess at a minimum width.
+    const width = pre.scrollWidth; // Our first guess at a minimum width.
     editNode.style.margin = "6px 0px 6px 0px";
     editNode.style.lineHeight = "1.3";
     editNode.style.minWidth = width + "px";
-    pre.after(editNode);    // Insert the edit node
+    pre.after(editNode); // Insert the edit node
 
     let aceConfig = {
         newLineMode: "unix",
@@ -186,10 +185,10 @@ const setUpAce = async (pre, uiParameters, isInteractive) => {
  */
 const lineLength = (renderer, line) => {
   const chars = renderer.session.$getStringScreenWidth(line)[0];
-  const width = Math.max(chars, 2) * renderer.characterWidth + // text size
-    2 * renderer.$padding + // padding
-    2  + // little extra for the cursor
-    0; // add border width if needed
+  const width = Math.max(chars, 2) * renderer.characterWidth + // Text size
+    2 * renderer.$padding + // Padding
+    2 + // Little extra for the cursor
+    0; // Add border width if needed
 
   return width;
 };
