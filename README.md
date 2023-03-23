@@ -8,7 +8,7 @@ Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
 ## Introduction
 
-A Moodle filter for displaying and optionally interacting with program code by utilising the Moodle CodeRunner question type plugin. 
+A Moodle filter for displaying and optionally interacting with program code by utilising the Moodle CodeRunner question type plugin.
 Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than PHP and operates on the rendered HTML rather than the original text. This filter is applied over all HTML elements, therefore can be displayed throughout courses where the user can edit/create HTML elements.
 
 As of Moodle 4.1, the following code adding and editing options are available:
@@ -17,8 +17,8 @@ As of Moodle 4.1, the following code adding and editing options are available:
   2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
 	  * **WARNING:** As of the latest Moodle 4.0.6 and 4.1.1 update, Markdown Extra parsing has changed. A MoodleTracker alert has been created under [MDL-77000](https://tracker.moodle.org/browse/MDL-77000) pending resolution before this functionality is working again.
           * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
-  3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)** 
-	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML. 
+  3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)**
+	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.
 
 The plugin provides two separate filter operations:
  1. Syntax highlighting (**highlight**): HTML \<pre> elements with an attribute of **data-ace-highlight-code**  are displayed using the JavaScript Ace code editor in read-only mode. This provides syntax colouring of the code.
@@ -111,7 +111,7 @@ This method is recommended for those who want full functionality and customisati
     }
     </pre>
 ~~~
-        
+
 **Caveats**
 * See the section below on **HTML-escaping of code within the \<pre> element**.
 
@@ -142,7 +142,7 @@ Additional control of the display and behaviour is via attributes of the
 
 Every attribute is supported in HTML.
 
-| Prefix Attribute: | Description: | Supported/Available in: 
+| Prefix Attribute: | Description: | Supported/Available in:
 |-------------------|--------------|-----------------------|
 | **data-lang**     | This attribute sets the language to be used by the Ace editor for syntax colouring and in the case of interactive, the language for running the code on the Jobe server. A language must be supported in the Jobe server for the interactive code to run. Default: python3.| Highlight, Interactive, TinyMCE, Markdown |
 | **data-ace-lang** | If set and non-empty, sets the language used by the Ace editor for syntax colouring, independently of **data-lang** in interactive. This allows the author to have syntax colouring different to the execution language in Jobe. Information on all Ace highlightable languages can be found [here](https://ace.c9.io/#nav=about) . | Highlight, Interactive, TinyMCE, Markdown |
@@ -157,7 +157,7 @@ Every attribute is supported in HTML.
 | **data-stdin-taid** | This string value specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown |
 | **data-file-taids** | This attribute provides a pseudo-file interface where the user is able to treat one or more supplementary textarea elements like files, entering the pseudo-file contents into the textarea(s) before clicking `Try it!`. The attribute is a JSON specification that maps from filename(s) to the ID(s) of textarea element(s) and supplies the HTMLelement.innerText attribute that will be used to provide the job with one or more files in the working directory. For each attribute, a file of the specified filename is created and the contents of that file are the contents of the associated textarea at the time `Try it!` is clicked. | Interactive, TinyMCE |
 | **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown |
-| **data-params** | This is a JSON object that defines any Jobe sandbox parameters that are to have non-standard values, such as `cputime` and `memorylimit`. This shouldn't generally be needed. Default: '{"cputime": 2}'. Note that the maximum cputime is set via the administrative interface and any attempt to exceed that will display an error. | Interactive, TinyMCE |
+| **data-params** | This is a JSON object that defines any Jobe sandbox parameters that are to have non-standard values, such as `cputime` and `memorylimit`. This shouldn't generally be needed. Default: '{"cputime": 5}'. Note that the maximum cputime is set via the administrative interface for the CodeRunner web service and any attempt to exceed that will display an error. | Interactive, TinyMCE |
 | **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown |
 | **data-prefix** |  This string value is code to be inserted in front of the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
 | **data-suffix** |  This string value is code to be inserted after the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
@@ -170,7 +170,7 @@ Every attribute is supported in HTML.
 Further code examples can be found in the repo `samples` folder.
 
 The following code examples all output "Hello world!".
-## 
+##
 **TinyMCE C program formatting with Code sample.**
 Open editor and create a new Code sample in C. Copy and paste the corresponding program into the Code view.
 ```
@@ -326,20 +326,20 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
         * ace_inline_code.js is the entry class.
         * Remaining supporting classes are in modules.
 
- * Version 1.0.2, 8 December 2022. 
+ * Version 1.0.2, 8 December 2022.
     * Removed all jQuery from code to prepare for ES6 transition.
     * Renamed Behat tests for better definition.
     * Changed Behat tests to insert .txt files from fixtures straight into db instead, to reduce UI dependency.
     * Implemented CI.
 
- * Version 1.0.1, 5 December 2022. 
+ * Version 1.0.1, 5 December 2022.
     * Updated ReadMe fully.
     * Added demo for Matplotlib in TinyMCE.
     * Updated demoaceinline.xml.
     * Patched issue with empty text areas being treated as empty ids. Updated tests accordingly.
     * Cleaned code to comply with Moodle Code Checker.
 
- * Version 1.0.0, 1 December 2022. 
+ * Version 1.0.0, 1 December 2022.
     * MarkdownExtra compatibility implemented.
     * Moodle 4.1's Tiny MCE editor in-built Code sample compatibility implemented.
     * Errors now show up consistently in the output area; and output boxes show different error colours and error messages.
@@ -348,7 +348,7 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
     * Changed implementation to data-ace-highlight/interactive-code attribute on \<pre>.
     * ReadMe is in process of being rewritten; up to TinyMCE.
     * Unexpected behaviour in certain areas of Moodle added.
-   
+
  * Version 0.8.3, 28 September 2022. Introduce a data-hidden attribute that hides
    the code to be executed, allowing authors to set up applet-like elements
    that read data from UI elements or files and display output inline when the
