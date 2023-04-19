@@ -299,7 +299,7 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
 
  * Version 1.3.2, TBA.
     * Fixed issue with replacing the wrong node in MarkdownExtra formatting.
-    * WAITING: on further specifications of an odd display bug before next version release.
+    * Cautiously using "globalThis" instead of "window". TBA.
 
  * Version 1.3.1, 15 February 2023.
     * Fixed code to adhere to Eslint.

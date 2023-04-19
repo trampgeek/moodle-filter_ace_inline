@@ -112,8 +112,8 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
 
     // Use light or dark theme according to user's prefers-color-scheme.
     // Default to light.
-    if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (darkMode == 2 || (darkMode == 1 && globalThis.matchMedia &&
+            globalThis.matchMedia("(prefers-color-scheme: dark)").matches)) {
         theme = ACE_DARK_THEME;
     } else {
         theme = ACE_LIGHT_THEME;
@@ -151,7 +151,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
         highlightActiveLine: showLineNumbers
     };
 
-    const editor = window.ace.edit(editNode, aceConfig);
+    const editor = globalThis.ace.edit(editNode, aceConfig);
     const session = editor.getSession();
     const aceWidestLine = lineLength(editor.renderer, longestLine);
     // FireFox has horrid disappearing scrollbars. This adjusts for visibility.
