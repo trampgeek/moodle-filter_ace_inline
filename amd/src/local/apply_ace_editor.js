@@ -67,7 +67,7 @@ export const applyAceAndBuildUi = async(root, isInteractive, config) => {
     // For Markdown compatibility.
     const codeElements = root.getElementsByTagName('code');
     for (const code of codeElements) {
-        if (code.parentNode !== null && code.style.display !== 'none' &&
+        if (code.parentNode !== null && code.parentNode.style.display !== 'none' &&
                 (code.hasAttribute(alternativeName) || code.classList.contains(className))) {
             const uiParams = new UiParameters(code);
             uiParams.extractUiParameters(isInteractive, config);
