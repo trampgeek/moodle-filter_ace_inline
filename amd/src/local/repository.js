@@ -30,6 +30,7 @@ import Ajax from 'core/ajax';
  * inputted parameters.
  * @param {type} code
  * @param {type} uiParameters
+ * @returns {Promise} A Promise respomnse from the sandbox
  */
 export const processCode = (code, uiParameters) => Ajax.call([{
         methodname: 'qtype_coderunner_run_in_sandbox',

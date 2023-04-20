@@ -37,9 +37,9 @@ import {handleButtonClick, executeCode} from "filter_ace_inline/local/ace_intera
  * @param {Object} uiParameters The various parameters (mostly attributes of the pre element).
  * Keys are button-name, lang, stdin, files, params, prefix, suffix, html-output.
  */
-export const addUi = async (insertionPoint, getCode, uiParameters) => {
+export const addUi = async(insertionPoint, getCode, uiParameters) => {
     // Create the button-node for execution.
-    const button = createComponent('button', ['btn', 'btn-secondary', 'btn-ace-inline-execution'], {'type' :
+    const button = createComponent('button', ['btn', 'btn-secondary', 'btn-ace-inline-execution'], {'type':
             'button'});
     button.innerHTML = uiParameters.paramsMap['button-name'];
     // Create the div-node to contain pre-node.
