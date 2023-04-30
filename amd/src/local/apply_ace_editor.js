@@ -67,7 +67,7 @@ export const applyAceAndBuildUi = async(root, isInteractive, config) => {
     // For Markdown compatibility.
     const codeElements = root.getElementsByTagName('code');
     for (const code of codeElements) {
-        if (code.parentNode !== null && code.style.display !== 'none' &&
+        if (code.parentNode !== null && code.parentNode.style.display !== 'none' &&
                 (code.hasAttribute(alternativeName) || code.classList.contains(className))) {
             const uiParams = new UiParameters(code);
             uiParams.extractUiParameters(isInteractive, config);
@@ -109,11 +109,10 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     const params = uiParameters.paramsMap;
     const darkMode = params['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
     let theme = null;
-
     // Use light or dark theme according to user's prefers-color-scheme.
     // Default to light.
-    if (darkMode == 2 || (darkMode == 1 && window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (darkMode == 2 || (darkMode == 1 && globalThis.matchMedia &&
+            globalThis.matchMedia("(prefers-color-scheme: dark)").matches)) {
         theme = ACE_DARK_THEME;
     } else {
         theme = ACE_LIGHT_THEME;
@@ -151,7 +150,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
         highlightActiveLine: showLineNumbers
     };
 
-    const editor = window.ace.edit(editNode, aceConfig);
+    const editor = globalThis.ace.edit(editNode, aceConfig);
     const session = editor.getSession();
     const aceWidestLine = lineLength(editor.renderer, longestLine);
     // FireFox has horrid disappearing scrollbars. This adjusts for visibility.
@@ -161,6 +160,14 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
         }
     } else {
         editNode.style.minWidth = "50px";
+    }
+    // Overwrites any styles which are pre-specified for display in the ace editor.
+    if (params.style !== "") {
+        const nodeComponents = params.style.split(';');
+        for (const component in nodeComponents) {
+            const styleComponents = nodeComponents[component].split(':');
+            editNode.style[styleComponents[0].trim()] = styleComponents[1].trim();
+        }
     }
     session.setValue(text);
     editor.setTheme(theme);

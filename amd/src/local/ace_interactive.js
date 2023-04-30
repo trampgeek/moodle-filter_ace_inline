@@ -47,8 +47,8 @@ export const handleButtonClick = async(outputDisplayArea, code, uiParameters) =>
     uiParameters.setHtmlOutput(params['html-output']);
 
     const mapFunc = params['code-mapper'];
-    if (mapFunc in window) {
-        code = window[mapFunc](code);
+    if (mapFunc in globalThis) {
+        code = globalThis[mapFunc](code);
     } else if (mapFunc !== null) {
         errorText = await getLangString('error_script_unknown');
     }
