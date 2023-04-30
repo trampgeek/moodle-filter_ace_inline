@@ -297,9 +297,10 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
 
 ## Change History
 
- * Version 1.3.2, TBA.
+ * Version 1.3.2, 30 April 2023.
     * Fixed issue with replacing the wrong node in MarkdownExtra formatting.
-    * Cautiously using "globalThis" instead of "window". TBA.
+    * Fixed administrator's default "Try it!" setting to actually work.
+    * Added support to allow "style" components to be adapted in. Will be overwritten by Ace Display settings, however, allows other styles such as "min-width" or "margin" to be set with expected results.
 
  * Version 1.3.1, 15 February 2023.
     * Fixed code to adhere to Eslint.

@@ -109,7 +109,6 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     const params = uiParameters.paramsMap;
     const darkMode = params['dark-theme-mode']; // 0, 1, 2 for never, sometimes, always
     let theme = null;
-
     // Use light or dark theme according to user's prefers-color-scheme.
     // Default to light.
     if (darkMode == 2 || (darkMode == 1 && globalThis.matchMedia &&
@@ -161,6 +160,14 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
         }
     } else {
         editNode.style.minWidth = "50px";
+    }
+    // Overwrites any styles which are pre-specified for display in the ace editor.
+    if (params.style !== "") {
+        const nodeComponents = params.style.split(';');
+        for (const component in nodeComponents) {
+            const styleComponents = nodeComponents[component].split(':');
+            editNode.style[styleComponents[0].trim()] = styleComponents[1].trim();
+        }
     }
     session.setValue(text);
     editor.setTheme(theme);
