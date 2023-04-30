@@ -37,7 +37,8 @@ const ACE_HIGHLIGHT = {
     'min-lines': MIN_WINDOW_LINES,
     'max-lines': MAX_WINDOW_LINES,
     'readonly': true,
-    'dark-theme-mode': null
+    'dark-theme-mode': null,
+    'style': ''
 };
 
 // Ace interactive parameters.
@@ -62,7 +63,8 @@ const ACE_INTERACTIVE = {
     'min-lines': MIN_WINDOW_LINES,
     'max-lines': MAX_WINDOW_LINES,
     'max-output-length': MAX_OUTPUT_LENGTH,
-    'dark-theme-mode': null
+    'dark-theme-mode': null,
+    'style': ''
 };
 
 export class UiParameters {
@@ -84,11 +86,10 @@ export class UiParameters {
      */
     extractUiParameters(isInteractive, config) {
         // Adds defaults.
-        if (isInteractive) {
-            this.paramsMap['button-name'] = config.button_label;
-        }
         const defaultParams = isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT;
-
+        if (isInteractive) {
+            defaultParams['button-name'] = config.button_label;
+        }
         for (const attrName in defaultParams) {
             if (defaultParams.hasOwnProperty(attrName)) {
                 let value = '';
