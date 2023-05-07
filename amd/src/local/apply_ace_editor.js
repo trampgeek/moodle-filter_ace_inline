@@ -153,22 +153,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     const editor = globalThis.ace.edit(editNode, aceConfig);
     const session = editor.getSession();
     const aceWidestLine = lineLength(editor.renderer, longestLine);
-    // FireFox has horrid disappearing scrollbars. This adjusts for visibility.
-    if (navigator.userAgent.match(/firefox|fxios/i)) {
-        if (aceWidestLine > width) {
-            editNode.style.minWidth = Math.ceil(aceWidestLine) + "px";
-        }
-    } else {
-        editNode.style.minWidth = Math.ceil(Math.max(width, aceWidestLine)) + "px";
-    }
-    // Overwrites any styles which are pre-specified for display in the ace editor.
-    if (params.style !== "") {
-        const nodeComponents = params.style.split(';');
-        for (const component in nodeComponents) {
-            const styleComponents = nodeComponents[component].split(':');
-            editNode.style[styleComponents[0].trim()] = styleComponents[1].trim();
-        }
-    }
+    editNode.style.minWidth = Math.ceil(Math.max(width, aceWidestLine)) + "px";
     session.setValue(text);
     editor.setTheme(theme);
     if (params.readonly !== null) {
