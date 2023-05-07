@@ -300,6 +300,7 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
  * Version 1.3.2, 30 April 2023.
     * Fixed issue with replacing the wrong node in MarkdownExtra formatting.
     * Fixed administrator's default "Try it!" setting to actually work.
+    * Fixed setting minwidth in multichoice so that text will not be truncated.
     * Added support to allow "style" components to be adapted in. Will be overwritten by Ace Display settings, however, allows other styles such as "min-width" or "margin" to be set with expected results.
 
  * Version 1.3.1, 15 February 2023.
