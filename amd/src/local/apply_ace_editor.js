@@ -159,7 +159,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
             editNode.style.minWidth = Math.ceil(aceWidestLine) + "px";
         }
     } else {
-        editNode.style.minWidth = "50px";
+        editNode.style.minWidth = Math.ceil(Math.max(width, aceWidestLine)) + "px";
     }
     // Overwrites any styles which are pre-specified for display in the ace editor.
     if (params.style !== "") {
