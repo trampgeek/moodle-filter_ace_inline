@@ -29,6 +29,7 @@ import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
+const LINE_NUMBER_COL_WIDTH = 42;  // Width of line number column in Ace render.
 const ACE_MODE_MAP = { // Ace modes for various languages (default: use language name).
     'c': 'c_cpp',
     'cpp': 'c_cpp',
@@ -130,10 +131,10 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     const longestLine = longest(lines);
 
     const editNode = document.createElement('div'); // Ace editor manages this
-    const width = pre.scrollWidth; // Our first guess at a minimum width.
     editNode.style.margin = "6px 0px 6px 0px";
     editNode.style.lineHeight = "1.3";
-    editNode.style.minWidth = width + "px";
+    editNode.style.width = pre.style.width ? pre.style.width : "100%";
+    editNode.style.resize = "none";
     pre.after(editNode); // Insert the edit node
 
     let aceConfig = {
@@ -152,8 +153,11 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
 
     const editor = globalThis.ace.edit(editNode, aceConfig);
     const session = editor.getSession();
-    const aceWidestLine = lineLength(editor.renderer, longestLine);
-    editNode.style.minWidth = Math.ceil(Math.max(width, aceWidestLine)) + "px";
+    if (!pre.style.hasOwnProperty('width') || pre.style.width == 0) {
+        const aceWidestLine = Math.ceil(lineLength(editor.renderer, longestLine));
+        const minWidth = isInteractive ? aceWidestLine + LINE_NUMBER_COL_WIDTH : aceWidestLine;
+        editNode.style.minWidth = minWidth + "px";
+    }
     session.setValue(text);
     editor.setTheme(theme);
     if (params.readonly !== null) {

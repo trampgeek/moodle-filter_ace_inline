@@ -37,8 +37,7 @@ const ACE_HIGHLIGHT = {
     'min-lines': MIN_WINDOW_LINES,
     'max-lines': MAX_WINDOW_LINES,
     'readonly': true,
-    'dark-theme-mode': null,
-    'style': ''
+    'dark-theme-mode': null
 };
 
 // Ace interactive parameters.
@@ -63,8 +62,7 @@ const ACE_INTERACTIVE = {
     'min-lines': MIN_WINDOW_LINES,
     'max-lines': MAX_WINDOW_LINES,
     'max-output-length': MAX_OUTPUT_LENGTH,
-    'dark-theme-mode': null,
-    'style': ''
+    'dark-theme-mode': null
 };
 
 export class UiParameters {

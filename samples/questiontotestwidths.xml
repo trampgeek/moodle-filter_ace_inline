@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 28862  -->
+  <question type="description">
+    <name>
+      <text>Testing ace-highlight-code element width</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3>Recap on list slicing</h3>
+<p>Here are the key concepts from the list slicing section. Please make sure you know them before proceeding.</p>
+<table>
+    <tbody>
+        <tr>
+            <th>Concept</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">You can get a subsequence of elements from&nbsp;a list by following the list name with two colon-separated indices in square brackets. This is called "slicing".</td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">names = ["Tau", "Maria", "Ng"]
+names[1:3] # A slice of the names list</pre>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">A slice of a list is itself a list, starting from the first subscript up to <em>but not including</em> the second subscript.</td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">names[1:3] # is the list ["Maria", "Ng"]</pre>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">As before, negative subscripts count backwards from the end.</td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">names[0:-1] # is the list["Tau", "Maria"]</pre>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">If you omit the first subscript, it defaults to 0</td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">names[:2]</pre>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">If you omit the second subscript, it defaults to <code>len(list)</code></td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">names[1:] # is the list ["Maria", "Ng"]</pre>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">You can use a third subscript as a step size or "stride".</td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">names[0:3:2] # is the list ["Tau", "Ng"]</pre>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-right:0px">Slicing can be used to avoid "aliasing".</td>
+            <td style="padding-right:0px">
+                <pre style="margin-bottom" class="ace-highlight-code">copy = names[:]
+copy[0] = "Angus" # names is unchanged</pre>
+            </td>
+        </tr>
+    </tbody>
+</table>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+
+</quiz>
