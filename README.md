@@ -297,6 +297,12 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
 
 ## Change History
 
+ * Version 1.3.4, 1 August 2023.
+    * Adding space after each Try it box
+
+ * Version 1.3.3, 10 May 2023.
+    * Fix issues with Ace window being far too narrow in many multi-column contexts.
+
  * Version 1.3.2, 30 April 2023.
     * Fixed issue with replacing the wrong node in MarkdownExtra formatting.
     * Fixed administrator's default "Try it!" setting to actually work.
