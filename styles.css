@@ -2,6 +2,11 @@
  * CSS style-sheet for Ace-inline-filter
  */
 
+/* Div containing button and run output */
+div[class='filter-ace-inline-ui-area'] {
+    padding-bottom: 12px;
+}
+
 /* Standard output display box*/
 div[class='filter-ace-inline-output-display'] {
     background-color: #eff;

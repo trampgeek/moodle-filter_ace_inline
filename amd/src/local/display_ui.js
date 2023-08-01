@@ -43,15 +43,17 @@ export const addUi = async(insertionPoint, getCode, uiParameters) => {
             'button'});
     button.innerHTML = uiParameters.paramsMap['button-name'];
     // Create the div-node to contain pre-node.
+    const buttonAndOutputDiv = createComponent("div", ['filter-ace-inline-ui-area'], {});
     const buttonDiv = document.createElement("div");
     const outputDisplayArea = createComponent('div', ['filter-ace-inline-output-display'], {});
     // Create a pre-node to contain text.
     const outputTextArea = createComponent('pre', ['filter-ace-inline-output-text'], {});
     buttonDiv.append(button);
-    insertionPoint.after(buttonDiv);
-    buttonDiv.after(outputDisplayArea);
+    buttonAndOutputDiv.append(buttonDiv);
     outputDisplayArea.append(outputTextArea);
+    buttonAndOutputDiv.append(outputDisplayArea);
     outputDisplayArea.style.display = 'none';
+    insertionPoint.after(buttonAndOutputDiv);
     button.addEventListener('click', async function() {
         const code = await handleButtonClick(outputDisplayArea, getCode(), uiParameters);
         // UI parameters get checked first; and if no error, then returns code.
