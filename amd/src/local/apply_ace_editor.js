@@ -29,7 +29,7 @@ import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
-const LINE_NUMBER_COL_WIDTH = 42;  // Width of line number column in Ace render.
+const LINE_NUMBER_COL_WIDTH = 42; // Width of line number column in Ace render.
 const ACE_MODE_MAP = { // Ace modes for various languages (default: use language name).
     'c': 'c_cpp',
     'cpp': 'c_cpp',
