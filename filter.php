@@ -40,6 +40,8 @@ class filter_ace_inline extends moodle_text_filter {
      * @var moodle_page page object.
      */
     protected $page;
+    protected $context;
+    protected $options;
 
     public function setup($page, $context) {
         $this->page = $page;
