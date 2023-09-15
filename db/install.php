@@ -15,21 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Filter post install hook. Set the default state to Off but available.
  *
  * @package    filter_ace_inline
- * @copyright  2021, 2023 Richard Lobb; 2022 Michelle Hsieh;
+ * @copyright  2023 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 
-defined('MOODLE_INTERNAL') || die();
+function xmldb_filter_ace_inline_install() {
+    global $CFG;
+    require_once("$CFG->libdir/filterlib.php");
 
-$plugin->version = 2023091600;
-$plugin->requires = 2017051500;
-$plugin->component = 'filter_ace_inline';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.3.5';
-$plugin->dependencies = array(
-    'qtype_coderunner' => 2022012000
-);
+    filter_set_global_state('ace_inline', TEXTFILTER_OFF);
+}
