@@ -297,6 +297,10 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
 
 ## Change History
 
+ * Version 1.3.5
+    * Bug fix: State of filter reverted to 'Off but available' whenever the admin
+      filter manager was opened.
+
  * Version 1.3.4, 1 August 2023.
     * Adding space after each Try it box
 

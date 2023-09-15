@@ -26,9 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-    // Hopefully means that the default will be off.
-    filter_set_global_state('ace_inline', TEXTFILTER_OFF);
-
     // Default values for filter.php.
     $buttonlabel = get_string('default_button_label', 'filter_ace_inline');
 
@@ -49,7 +46,6 @@ if ($ADMIN->fulltree) {
         get_string('settings_dark_theme', 'filter_ace_inline'),
         get_string('settings_dark_theme_desc', 'filter_ace_inline'),
         0, $darkoptions));
-
 
     $settings->add(new admin_setting_configtext('filter_ace_inline/button_label',
             get_string('settings_button_label', 'filter_ace_inline'),
