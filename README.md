@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.3.1, 15 February 2023.
+Version 1.3.5, 17 September 2023.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -15,8 +15,9 @@ As of Moodle 4.1, the following code adding and editing options are available:
   1. **Utilising the new TinyMCE editor's 'Code sample' option (Moodle 4.1+)**
 	  * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
   2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
-	  * **WARNING:** As of the latest Moodle 4.0.6 and 4.1.1 update, Markdown Extra parsing has changed. A MoodleTracker alert has been created under [MDL-77000](https://tracker.moodle.org/browse/MDL-77000) pending resolution before this functionality is working again.
-          * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
+	  * **WARNING:** As of the Moodle 4.0.6 and 4.1.1, Markdown Extra parsing has changed.
+          A MoodleTracker alert has been created under [MDL-77000](https://tracker.moodle.org/browse/MDL-77000)
+          but unless/until full Markdown Extra parsing is reimplemented, this option is unavailable.
   3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)**
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.
 
@@ -70,7 +71,7 @@ This method is recommended for those who want a user-friendly way of implementin
 * If the author wants to use another language which is not available through TinyMCE's "Code sample" drop-down list, then the author should change the language to "HTML/XML" within "Code sample" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
-## Markdown Extra editor
+## Markdown Extra editor (**Currently unavailable - see above**)
 
 This method is recommended for those who want a familiar, consistent way of implementing code in Moodle's editors or in imported XML files. This method is editor-independent and would suffice for basic use and implementation of code in most circumstances.
 
