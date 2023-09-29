@@ -71,7 +71,7 @@ This method is recommended for those who want a user-friendly way of implementin
 * If the author wants to use another language which is not available through TinyMCE's "Code sample" drop-down list, then the author should change the language to "HTML/XML" within "Code sample" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
-## Markdown Extra editor (**Currently unavailable - see above**)
+## Markdown Extra editor (**Available only since Moodle 4.2**)
 
 This method is recommended for those who want a familiar, consistent way of implementing code in Moodle's editors or in imported XML files. This method is editor-independent and would suffice for basic use and implementation of code in most circumstances.
 
