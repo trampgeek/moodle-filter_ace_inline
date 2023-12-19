@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.3.6, 29 September 2023.
+Version 1.3.7, 19 December 2023.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -71,7 +71,7 @@ This method is recommended for those who want a user-friendly way of implementin
 * If the author wants to use another language which is not available through TinyMCE's "Code sample" drop-down list, then the author should change the language to "HTML/XML" within "Code sample" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
-## Markdown Extra editor (**Available only since Moodle 4.2**)
+## Markdown Extra editor (**Currently unavailable - see above**)
 
 This method is recommended for those who want a familiar, consistent way of implementing code in Moodle's editors or in imported XML files. This method is editor-independent and would suffice for basic use and implementation of code in most circumstances.
 
@@ -297,6 +297,9 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.3.7
+    Bug fix for issue #30: latest update won't install (due to bad zip uploaded to Moodle plugin repository.)
+
  * Version 1.3.6
     Update documentation relating to the use of Markdown extra editing.
 
