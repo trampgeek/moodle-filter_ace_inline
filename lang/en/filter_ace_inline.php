@@ -24,6 +24,7 @@
 $string['filtername'] = 'Ace inline';
 
 // Settings strings.
+$string['pluginname'] = 'Filter ace inline';
 $string['default_button_label'] = 'Try it!';
 $string['settings_button_label'] = 'Button label';
 $string['settings_button_label_desc'] = 'The label for the "Try it!" button that
