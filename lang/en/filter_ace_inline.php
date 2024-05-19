@@ -53,7 +53,7 @@ $string['error_submission_limit_reached'] = 'Jobe sandbox submission limit reach
 $string['error_timeout'] = 'Time limit exceeded';
 $string['error_unknown_language'] = 'Unknown language requested';
 $string['error_unknown_runtime'] = 'Unknown runtime error';
-$string['error_user_params'] = 'User Config Error';
+$string['error_user_params'] = 'Run Error';
 
 // File handling strings.
 $string['file_changed_name'] = 'The following filenames have been changed for sandbox execution:';

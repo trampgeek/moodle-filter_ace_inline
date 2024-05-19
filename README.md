@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.3.7, 19 December 2023.
+Version 1.3.8, 19 May 2024.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -297,6 +297,10 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.3.8
+    Trivial change: confusing error message 'User config error' changed to just 'Run error', as could
+    include submission limit reached, for example.
+
  * Version 1.3.7
     Bug fix for issue #30: latest update won't install (due to bad zip uploaded to Moodle plugin repository.)
 
