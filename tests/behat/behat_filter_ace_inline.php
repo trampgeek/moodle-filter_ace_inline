@@ -36,12 +36,17 @@ class behat_filter_ace_inline extends behat_base {
     /**
      * Enables the ace inline functionality globally and
      * the webserver sandbox to enabled for testing purposes.
+     * Reads the configurations from test-sandbox-config.php which
+     * is defined by .github/ci.yml when testing on github.
+     * Make sure it enables Jobe (jobesandbox_enabled),
+     * sets up the jobe host (jobe_host) and enables the
+     * webservice (wsenable).
      *
      * @Given I have enabled the sandbox and ace inline filter
      */
     public function the_ace_inline_sandbox_enabled() {
         filter_set_global_state('ace_inline', TEXTFILTER_ON, 0);
-        set_config('wsenabled', 1, 'qtype_coderunner');
+        require($CFG->dirroot .'/filter/ace_inline/tests/fixtures/test-sandbox-config.php');
     }
 
     /**
