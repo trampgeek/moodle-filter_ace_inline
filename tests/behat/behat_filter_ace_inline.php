@@ -45,6 +45,7 @@ class behat_filter_ace_inline extends behat_base {
      * @Given I have enabled the sandbox and ace inline filter
      */
     public function the_ace_inline_sandbox_enabled() {
+        global $CFG;
         filter_set_global_state('ace_inline', TEXTFILTER_ON, 0);
         require($CFG->dirroot .'/filter/ace_inline/tests/fixtures/test-sandbox-config.php');
     }
