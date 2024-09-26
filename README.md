@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh
 
-Version 1.3.1, 15 February 2023.
+Version 1.3.8+, 26 Sept 2024.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -15,8 +15,9 @@ As of Moodle 4.1, the following code adding and editing options are available:
   1. **Utilising the new TinyMCE editor's 'Code sample' option (Moodle 4.1+)**
 	  * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
   2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
-	  * **WARNING:** As of the latest Moodle 4.0.6 and 4.1.1 update, Markdown Extra parsing has changed. A MoodleTracker alert has been created under [MDL-77000](https://tracker.moodle.org/browse/MDL-77000) pending resolution before this functionality is working again.
-          * This option is recommended for code authors who may want to create questions outside of the editor in a readable format and import them into Moodle with expected behaviour. Note: This option requires Markdown Extra parsing, which is currently supported by Moodle, therefore only valid Markdown Extra is compatible with this filter.
+	  * **WARNING:** Due a bug in Moodle, editing of Ace-inline code using Markdown Extra was unavailable
+       from around Moodle 4.06 until the bug was fixed in August 2023. You probably
+       need a recently updated Moodle 4.2 or later for this feature to be usable.
   3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)**
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.
 
@@ -33,7 +34,7 @@ It is /*recommended/* to use CodeRunner version 5.1+ in conjunction with Moodle 
 
 In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
 
-There is a page demonstrating the use of this filter on the CodeRunner site [here](https://coderunner.org.nz/mod/page/view.php?id=545).
+There is a page demonstrating the use of this filter on the CodeRunner site [here](5).
 
 ## Editor options
 To change text editors in Moodle, click on your user icon, and select "Editor preferences". A drop-down menu can allow a user to switch between editors. Markdown is implemented in "Plain Text Area" and can be selected from a drop-down menu below the implementation of the text editor. TinyMCE referenced is labelled "TinyMCE editor" (**not** the legacy version) and is available from Moodle version 4.1+.
@@ -70,7 +71,7 @@ This method is recommended for those who want a user-friendly way of implementin
 * If the author wants to use another language which is not available through TinyMCE's "Code sample" drop-down list, then the author should change the language to "HTML/XML" within "Code sample" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
-## Markdown Extra editor
+## Markdown Extra editor (**Currently unavailable - see above**)
 
 This method is recommended for those who want a familiar, consistent way of implementing code in Moodle's editors or in imported XML files. This method is editor-independent and would suffice for basic use and implementation of code in most circumstances.
 
@@ -296,6 +297,23 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.3.8+
+   Change background colour of read-only ace-inline divs to light grey
+   to distinguish them for editable ones.
+   
+ * Version 1.3.8
+    Trivial change: confusing error message 'User config error' changed to just 'Run error', as could
+    include submission limit reached, for example.
+
+ * Version 1.3.7
+    Bug fix for issue #30: latest update won't install (due to bad zip uploaded to Moodle plugin repository.)
+
+ * Version 1.3.6
+    Update documentation relating to the use of Markdown extra editing.
+
+ * Version 1.3.5
+    * Bug fix: State of filter reverted to 'Off but available' whenever the admin
+      filter manager was opened.
 
  * Version 1.3.5
     * Bug fix: State of filter reverted to 'Off but available' whenever the admin

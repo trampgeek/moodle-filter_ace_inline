@@ -162,6 +162,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     editor.setTheme(theme);
     if (params.readonly !== null) {
         editor.setReadOnly(true);
+        editNode.classList.add('readonly'); // For CSS use.
     }
 
     // Add a button and text area for output if ace-interactive-code.
