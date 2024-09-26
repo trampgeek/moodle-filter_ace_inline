@@ -1,4 +1,4 @@
-@filter @filter_ace_inline_local_only @javascript
+@filter @filter_ace_inline @javascript
 Feature: Checks for the data-params feature
   In order to execute matplotlib or other code which requires excessive CPU/memory
   As a teacher

@@ -37,7 +37,6 @@ const RESULT_SUCCESS = 15; // Code for a correct Jobe run.
 export const getLangString = async(langStringName) =>
     getString(langStringName, 'filter_ace_inline')
     .catch((error) => {
-        console.error('Error getting language string:', error);
         return undefined;
     });
 
