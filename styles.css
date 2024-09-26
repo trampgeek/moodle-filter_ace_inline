@@ -85,3 +85,9 @@ div[class='filter-ace-inline-file-error'] {
     white-space: pre-wrap;
     width: 100%;
 }
+
+/* Use a grey background colour for read-only
+   Ace-inline divs */
+div.ace_editor.readonly {
+    background-color: #f4f4f4 !important;
+}
