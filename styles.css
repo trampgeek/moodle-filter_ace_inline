@@ -87,7 +87,10 @@ div[class='filter-ace-inline-file-error'] {
 }
 
 /* Use a grey background colour for read-only
-   Ace-inline divs */
-div.ace_editor.readonly {
-    background-color: #f4f4f4 !important;
+   Ace-inline divs. Overrides Ace's default,
+   and grunt objects to the use of !important,
+   hence the clumsy selector.
+*/
+div[class*="ace_editor"][class*="readonly"] {
+    background-color: #f4f4f4;
 }
