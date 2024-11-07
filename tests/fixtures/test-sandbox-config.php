@@ -1,4 +1,6 @@
+// @codingStandardsIgnoreFile
 <?php
+
 // This file is part of CodeRunner - http://coderunner.org.nz/
 //
 // CodeRunner is free software: you can redistribute it and/or modify
@@ -41,7 +43,7 @@ set_config('jobesandbox_enabled', 1, 'qtype_coderunner');
 // development server, we'd use 'localhost' as the jobe server.
 // For testing in moodle-plugin-ci on the development server,
 // we can just either use '172.17.0.1' to access the native
-// jobe on local host (which includes matplotlib) or 
+// jobe on local host (which includes matplotlib) or
 // just 'jobe' to access the Docker Jobe that the CI environment
 // has set up.
 //set_config('jobe_host', 'jobe', 'qtype_coderunner');

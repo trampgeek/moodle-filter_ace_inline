@@ -1,4 +1,7 @@
 <?php
+// phpcs:disable moodle.Files.BoilerplateComment.NoBoilerplateComment
+// phpcs:disable moodle.Commenting.MissingDocblock.File
+
 // This file is part of CodeRunner - http://coderunner.org.nz/
 //
 // CodeRunner is free software: you can redistribute it and/or modify
@@ -28,7 +31,7 @@
  * These files are used by the setUp method in
  * qtype_coderunner_testcase.
  *
- * @package    qtype_coderunner
+ * @package    filter_ace_inline
  * @copyright  2013 Richard Lobb, University of Canterbury
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -48,5 +51,5 @@ set_config('jobe_apikey', '2AAA7A5415B4A9B394B54BF1D2E9D', 'qtype_coderunner');
 set_config('jobe_apikey_enabled', 0, 'qtype_coderunner');
 set_config('jobe_limits_enforced', 0, 'qtype_coderunner');
 
-// Turn on the webservice for use by ace-inline-filter
+// Turn on the webservice for use by ace-inline-filter.
 set_config('wsenabled', 1, 'qtype_coderunner');

@@ -157,7 +157,7 @@ class behat_filter_ace_inline extends behat_base {
             "include" => "ace_constant ace_other",
             "constant" => "ace_constant ace_language",
             "function" => "ace_support ace_function",
-            "sqltype" => "ace_storage ace_type"
+            "sqltype" => "ace_storage ace_type",
         ];
 
         if (isset($array[$input])) {

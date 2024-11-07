@@ -8,12 +8,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - php: '8.3'
+            moodle-branch: 'MOODLE_405_STABLE'
+            database: 'pgsql'
+          - php: '8.2'
+            moodle-branch: 'MOODLE_404_STABLE'
+            database: 'mariadb'
+          - php: '8.1'
+            moodle-branch: 'MOODLE_403_STABLE'
+            database: 'pgsql'
+          - php: '8.1'
+            moodle-branch: 'MOODLE_402_STABLE'
+            database: 'mariadb'
           - php: '8.0'
             moodle-branch: 'MOODLE_401_STABLE'
             database: 'pgsql'
-          - php: '7.4'
-            moodle-branch: 'MOODLE_400_STABLE'
-            database: 'mariadb'
 
     services:
       postgres:
@@ -29,7 +38,7 @@ jobs:
           --health-timeout 5s
           --health-retries 3
       mariadb:
-        image: mariadb:10.5
+        image: mariadb:10.6
         env:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
@@ -42,14 +51,9 @@ jobs:
           --health-retries 3
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: plugin
-          
-      - name: Install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.15.0'
 
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
@@ -61,7 +65,7 @@ jobs:
 
       - name: Deploy moodle-plugin-ci
         run: |
-          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
+          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^4
           # Add dirs to $PATH
           echo $(cd ci/bin; pwd) >> $GITHUB_PATH
           echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
@@ -97,18 +101,12 @@ jobs:
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+          CODECHECKER_IGNORE_PATHS: 'tests/fixtures'
+          CODECHECKER_IGNORE_NAMES: 'test-sandbox-config.php,test-sandbox-config-dist.php'
 
       - name: PHP Lint
         if: ${{ always() }}
         run: moodle-plugin-ci phplint
-
-      - name: PHP Copy/Paste Detector
-        if: ${{ always() }}
-        run: moodle-plugin-ci phpcpd
-
-      - name: PHP Mess Detector
-        if: ${{ always() }}
-        run: moodle-plugin-ci phpmd
 
       - name: Moodle Code Checker
         continue-on-error: true # This step will show errors but will not fail
