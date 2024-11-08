@@ -20,8 +20,10 @@
  * @package    filter_ace_inline
  * @copyright  2023 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
+ * @return void
+ * @throws coding_exception
  */
-
 function xmldb_filter_ace_inline_install() {
     global $CFG;
     require_once("$CFG->libdir/filterlib.php");
