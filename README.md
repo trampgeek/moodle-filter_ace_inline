@@ -297,6 +297,9 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.3.10
+   Upgrade to Moodle 4.5 compatibility plus various code and test polishing. All thanks to Luca Bösch.
+   
  * Version 1.3.9
    Change background colour of read-only ace-inline divs to light grey
    to distinguish them for editable ones. Various tweaks to behat tests and style file to
