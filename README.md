@@ -297,6 +297,10 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.3.11
+   Added code to defer hiding of the original &lt;pre&gt; element until the rendering of the content by Ace is complete. If this doesn't happen within 2 seconds,
+   the pre element is enclosed in a red border with a warning message and the ace content plus any associated UI is removed.
+   
  * Version 1.3.10
    Upgrade to Moodle 4.5 compatibility plus various code and test polishing. All thanks to Luca Bösch.
    

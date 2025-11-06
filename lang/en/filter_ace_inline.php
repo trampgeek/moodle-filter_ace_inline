@@ -58,6 +58,7 @@ $string['error_timeout'] = 'Time limit exceeded';
 $string['error_unknown_language'] = 'Unknown language requested';
 $string['error_unknown_runtime'] = 'Unknown runtime error';
 $string['error_user_params'] = 'Run Error';
+$string['error_ace_render_failed'] = 'Warning: Ace editor failed to render properly. Displaying plain text instead.';
 
 // File handling strings.
 $string['file_changed_name'] = 'The following filenames have been changed for sandbox execution:';

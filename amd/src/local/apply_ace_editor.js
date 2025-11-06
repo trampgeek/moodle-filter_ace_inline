@@ -26,6 +26,7 @@
 import {UiParameters} from "filter_ace_inline/local/ui_parameters";
 import {addUi} from "filter_ace_inline/local/display_ui";
 import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
+import {getString} from 'core/str';
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -78,6 +79,37 @@ export const applyAceAndBuildUi = async(root, isInteractive, config) => {
 };
 
 /**
+ * Wait for Ace editor to render its content layers.
+ * @param {HTMLelement} editNode The div element managed by Ace editor.
+ * @param {number} expectedLines The expected number of text lines to be rendered.
+ * @param {number} timeout Timeout in milliseconds (default 2000).
+ * @return {Promise} Resolves when ace_text-layer is rendered, rejects on timeout.
+ */
+const waitForAceRender = (editNode, expectedLines, timeout = 2000) => {
+    return new Promise((resolve, reject) => {
+        const startTime = Date.now();
+
+        const checkRendering = () => {
+            // Count the number of div.ace_line elements which represent the actual rendered lines
+            const aceLines = editNode.querySelectorAll('div.ace_line');
+
+            if (aceLines.length >= expectedLines) {
+                // Successfully found the expected number of rendered lines
+                resolve();
+            } else if (Date.now() - startTime >= timeout) {
+                // Timeout exceeded
+                reject(new Error('Ace editor rendering timeout: ace_text-layer not populated'));
+            } else {
+                // Not ready yet, check again soon
+                setTimeout(checkRendering, 50);
+            }
+        };
+
+        checkRendering();
+    });
+};
+
+/**
  * Replace the given PRE element with an element managed by the Ace editor,
  * unless 'hidden' is true, in which case we just hide the PRE.
  * @param {HTMLelement} pre The PRE element to be be replaced by an Ace editor.
@@ -90,14 +122,58 @@ const applyToPre = async(pre, isInteractive, uiParameters) => {
         setupFileHandler(params['file-upload-id']);
     }
 
+    let editNode = null;
+    let expectedLines = 0;
     if (!params.hidden) {
-        setUpAce(pre, uiParameters, isInteractive);
+        // Count the number of lines in the original pre element
+        const text = pre.textContent;
+        expectedLines = text.split("\n").length;
+        editNode = await setUpAce(pre, uiParameters, isInteractive);
     } else if (isInteractive) { // Code is hidden but there's still a button to run it.
         const getCode = () => pre.innerText;
         addUi(pre, getCode, uiParameters);
     }
 
-    pre.style.display = 'none'; // NB this sets display = 'none', checked above.
+    // Wait for Ace to fully render before hiding the original pre element
+    if (editNode) {
+        try {
+            await waitForAceRender(editNode, expectedLines);
+            pre.style.display = 'none'; // NB this sets display = 'none', checked above.
+        } catch (error) {
+            // Remove the failed Ace editNode
+            if (editNode.parentNode) {
+                editNode.parentNode.removeChild(editNode);
+            }
+
+            // Remove any UI area that was added (for interactive elements)
+            const uiArea = pre.parentNode.querySelector('div.filter-ace-inline-ui-area');
+            if (uiArea && uiArea.parentNode) {
+                uiArea.parentNode.removeChild(uiArea);
+            }
+
+            // Create and insert warning message before pre
+            const warningDiv = document.createElement('div');
+            warningDiv.style.color = '#f44336';
+            warningDiv.style.marginBottom = '2px';
+
+            try {
+                const str = await getString('error_ace_render_failed', 'filter_ace_inline');
+                warningDiv.textContent = str;
+            } catch {
+                // Fallback if string loading fails
+                warningDiv.textContent = 'Warning: Ace editor failed to render properly. Displaying plain text instead.';
+            }
+
+            pre.parentNode.insertBefore(warningDiv, pre);
+
+            // Style the pre element to make it stand out
+            pre.style.border = '2px solid #f44336';
+            pre.style.padding = '10px';
+            pre.style.display = 'block'; // Ensure it's visible
+        }
+    } else {
+        pre.style.display = 'none';
+    }
 };
 
 /**
@@ -105,6 +181,7 @@ const applyToPre = async(pre, isInteractive, uiParameters) => {
  * @param {HTMLelement} pre The pre element that the Ace editor is replacing.
  * @param {Object} uiParameters The UI parameters from the Pre element + defaults.
  * @param {bool} isInteractive True if the code is interactive.
+ * @return {HTMLelement} The editNode div element managed by Ace editor.
  */
 const setUpAce = async(pre, uiParameters, isInteractive) => {
     const params = uiParameters.paramsMap;
@@ -172,6 +249,8 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     } else {
         editor.renderer.$cursorLayer.element.style.display = "none"; // Hide cursor.
     }
+
+    return editNode;
 };
 
 /**
