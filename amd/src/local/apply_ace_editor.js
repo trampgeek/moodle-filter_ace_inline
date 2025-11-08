@@ -86,6 +86,10 @@ export const applyAceAndBuildUi = async(root, isInteractive, config) => {
  * @return {Promise} Resolves when ace_text-layer is rendered, rejects on timeout.
  */
 const waitForAceRender = (editNode, expectedLines, timeout = 2000) => {
+    // To reduce the risk of false positives, let's be happy with at most 3 rendered
+    // lines since AFAIK any failures actually have zero rendered lines.
+    expectedLines = Math.min(3, expectedLines);
+
     return new Promise((resolve, reject) => {
         const startTime = Date.now();
 
@@ -127,7 +131,11 @@ const applyToPre = async(pre, isInteractive, uiParameters) => {
     if (!params.hidden) {
         // Count the number of lines in the original pre element
         const text = pre.textContent;
-        expectedLines = text.split("\n").length;
+        const numLines = text.split("\n").length;
+        const minLines = params['min-lines'];
+        const maxLines = params['max-lines'];
+        // Calculate expected lines: max(min-lines, min(numLines, max-lines))
+        expectedLines = Math.max(minLines, Math.min(numLines, maxLines));
         editNode = await setUpAce(pre, uiParameters, isInteractive);
     } else if (isInteractive) { // Code is hidden but there's still a button to run it.
         const getCode = () => pre.innerText;
