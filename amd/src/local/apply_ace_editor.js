@@ -153,12 +153,6 @@ const applyToPre = async(pre, isInteractive, uiParameters) => {
                 editNode.parentNode.removeChild(editNode);
             }
 
-            // Remove any UI area that was added (for interactive elements)
-            const uiArea = pre.parentNode.querySelector('div.filter-ace-inline-ui-area');
-            if (uiArea && uiArea.parentNode) {
-                uiArea.parentNode.removeChild(uiArea);
-            }
-
             // Create and insert warning message before pre
             const warningDiv = document.createElement('div');
             warningDiv.style.color = '#f44336';
@@ -219,6 +213,8 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     editNode.style.margin = "6px 0px 6px 0px";
     editNode.style.lineHeight = "1.3";
     editNode.style.width = pre.style.width ? pre.style.width : "100%";
+    editNode.style.minHeight = "30px";  // If Ace render fails, at least there's something there to click on!
+    session.setValue(text);
     editNode.style.resize = "none";
     pre.after(editNode); // Insert the edit node
 
@@ -243,7 +239,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
         const minWidth = isInteractive ? aceWidestLine + LINE_NUMBER_COL_WIDTH : aceWidestLine;
         editNode.style.minWidth = minWidth + "px";
     }
-    session.setValue(text);
+
     editor.setTheme(theme);
     if (params.readonly !== null) {
         editor.setReadOnly(true);
