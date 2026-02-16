@@ -214,7 +214,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     editNode.style.lineHeight = "1.3";
     editNode.style.width = pre.style.width ? pre.style.width : "100%";
     editNode.style.minHeight = "30px";  // If Ace render fails, at least there's something there to click on!
-    session.setValue(text);
+
     editNode.style.resize = "none";
     pre.after(editNode); // Insert the edit node
 
@@ -239,6 +239,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
         const minWidth = isInteractive ? aceWidestLine + LINE_NUMBER_COL_WIDTH : aceWidestLine;
         editNode.style.minWidth = minWidth + "px";
     }
+    session.setValue(text);
 
     editor.setTheme(theme);
     if (params.readonly !== null) {
