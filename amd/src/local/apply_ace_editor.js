@@ -213,7 +213,7 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     editNode.style.margin = "6px 0px 6px 0px";
     editNode.style.lineHeight = "1.3";
     editNode.style.width = pre.style.width ? pre.style.width : "100%";
-    editNode.style.minHeight = "30px";  // If Ace render fails, at least there's something there to click on!
+    editNode.style.minHeight = "30px"; // If Ace render fails, at least there's something there to click on!
 
     editNode.style.resize = "none";
     pre.after(editNode); // Insert the edit node
