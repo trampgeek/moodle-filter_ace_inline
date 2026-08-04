@@ -1,8 +1,8 @@
 # The Moodle ace_inline filter
 
-Richard Lobb, Michelle Hsieh
+Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.3.11, 7 November 2025.
+Version 1.4.0, 5 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -20,6 +20,8 @@ As of Moodle 4.1, the following code adding and editing options are available:
        need a recently updated Moodle 4.2 or later for this feature to be usable.
   3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)**
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.
+  4. **Extended Markdown Support, from Version 1.4.0**
+      * Prior to this version Markdown code needed to be decorated within braces \{\} for all the supported attributes to be processed.  From this version the *language string* following the triple-ticks (\`\`\`) can be parsed instead, details below.
 
 The plugin provides two separate filter operations:
  1. Syntax highlighting (**highlight**): HTML \<pre> elements with an attribute of **data-ace-highlight-code**  are displayed using the JavaScript Ace code editor in read-only mode. This provides syntax colouring of the code.
@@ -71,11 +73,13 @@ This method is recommended for those who want a user-friendly way of implementin
 * If the author wants to use another language which is not available through TinyMCE's "Code sample" drop-down list, then the author should change the language to "HTML/XML" within "Code sample" and add the parameter **data-lang=*"language"*** to the \<pre> tag, where *"language"* represents the desired language in quotes; i.e. "java". Any implemented **data-lang** will override Code sample selected languages.
 * Implementing Matplotlib can be done in TinyMCE without the Code mapper, but requires extensive use of HTML-escaped Python. The recommended way of implementing this is under the **Demos and samples** section.
 
-## Markdown Extra editor (**Currently unavailable - see above**)
+## Markdown Extra editor
 
 This method is recommended for those who want a familiar, consistent way of implementing code in Moodle's editors or in imported XML files. This method is editor-independent and would suffice for basic use and implementation of code in most circumstances.
 
-**How to use:**
+**Note caveat for bug in (Moodle 3.11+) above.**
+
+**How to use (Standard Use):**
 * This filter can recognise both Markdown Extra notation from either imported questions, or from the in-built editor.
 * Implement the code with standard Markdown Extra. Click [here](https://michelf.ca/projects/php-markdown/extra/) for a reference to Markdown Extra syntax.
 * Add an attribute of either **data-ace-interactive-code=** or **data-ace-highlight-code=**. (Note: the **=** is necessary as Markdown validates tags by identifying "=")
@@ -92,6 +96,28 @@ This method is recommended for those who want a familiar, consistent way of impl
 
 **Caveats:**
 * Make sure you follow valid Markdown Extra syntax. This means that any extra specified attributes have to be in the **same line** as the initial backticks (\`\`\`) and contain a **=** between each attribute and its value, and **no spaces** within either the attribute or the value (spaces are the delimiter for Markdown Extra).
+
+**How to use (Extended Use):**
+* This filter can recognise a *language* string after the initial triple backticks (\`\`\`), as in conventional markdown norms.  If the *Administrative Option* for markdown rendering (see below) is set to *Extended* then this string is captured and parsed.
+* Example below will Ace highlight a Python code block:
+    ~~~
+    ```python
+    def main():
+        print("Hello world!")
+    main()
+    ```
+    ~~~
+* The *language* string can be encoded, with elements separated by a colon (:).  No spaces are allowed in the string.  The first element of the string must be the language specifier. Other options should come in pairs as described in the table in section *Additional Display and Behaviour Attributes*.
+
+* Example below will use Interactive Ace editor for python, with line numbering starting at 3.
+    ~~~
+    ```python:interactive:line-numbers:3
+    def main():
+        print("Hello world!")
+    main()
+    ```
+    ~~~
+
 
 ## HTML editor
 
@@ -164,6 +190,10 @@ Every attribute is supported in HTML.
 | **data-suffix** |  This string value is code to be inserted after the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
 | **data-html-output** | If this attribute is present (with any value) the output from the run is interpreted as raw HTML. The output from the program is simply wrapped in a \<div> element and inserted directly after `Try it!`. An example of a ace-interactive-code panel that that uses data-prefix, data-suffix and data-html-output to provide Matplotlib graphical output in Python is included in the repo `samples` folder (the file `demoaceinline.xml`). | Interactive, TinyMCE, Markdown |
 | **data-max-output-length** | The maximum length of an output string (more or less). Output greater than this is truncated. Default 30,000 characters. | Interactive, TinyMCE, Markdown |
+| **line-numbers** | Sets the line number used for the first displayed line of code. Default is **1**.  If Option is not specified then line-number is off in highlighted elements. |  Markdown Extended |
+
+
+For Markdown Extended mode the *data-* prefix is not required.
 
 
 ### Code examples:
@@ -270,10 +300,11 @@ To use the **interactive** filter, you will also need to enable the **sandbox we
 
 Note: CodeRunner settings for the web service has a default value for the maximum submission rate (submissions per hour) by any given Moodle user, as this limits the potential for abuse by any student. Use of any interactive execution (running */Try it!/*) will contribute towards this limit.
 
-There are two plugin administrator setting provided directly by this plugin:
+There are three plugin administrator setting provided directly by this plugin:
 
   1.  The default button name for **interactive** elements can be changed from its default name: *Try it!* (or whatever was set by the language settings for non-English users) to anything else.
   2.  The administrator can set whether to use the Ace editor's light theme or dark theme by default (although individual filter instances can override this with the data-dark-theme-mode option). There is also an option to use the dark theme 'sometimes', meaning whenever the browser's 'prefers-color-scheme:dark' media query returns a match. This may change with browser, operating system or time of day.
+  3.  The administrator can set three different modes about how `<code>` blocks should be interpreted.  Markdown will always put example code in such blocks: (1) Off: do not attempt to apply the filter, if you desire Ace features then these must appear in the `<pre>` block.  (2) On: this allows `<code>` blocks decorated to be rendered, Markdown Extra will take the contents within the braces {} following the opening triple tick to decorate the code blocl.  (3) Extended: (new in v1.4.0) the string attached to the opening triple tick (\`\`\`) is given as the classname for the `<code>` block - this is normal Markdown behaviour. This string is parsed to control the filters behaviour.
 
 ## Unexpected behaviour in certain areas of Moodle
 
@@ -297,6 +328,9 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.4.0
+   Added feature for allowing standard language string to be added to a markdown code block (triple tick).  This language string can also be encoded with addition Ace filter parameters - the elements separated by colons (:).  Added administrative setting to allow control of Markdown code block rendered, including this new feature (which is called Extended).
+
  * Version 1.3.11
    Added code to defer hiding of the original &lt;pre&gt; element until the rendering of the content by Ace is complete. If this doesn't happen within 2 seconds,
    the pre element is enclosed in a red border with a warning message and the ace content plus any associated UI is removed.

@@ -18,16 +18,16 @@
  * Version details
  *
  * @package    filter_ace_inline
- * @copyright  2021, 2023 Richard Lobb; 2022 Michelle Hsieh;
+ * @copyright  2021, 2023 Richard Lobb; 2022 Michelle Hsieh; 2026 Andrew Bainbridge-Smith
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026021701;
+$plugin->version = 2026080501;
 $plugin->requires = 2017051500;
 $plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.3.11';
+$plugin->release = 'v1.4.0';
 $plugin->dependencies = ['qtype_coderunner' => 2022012000];
