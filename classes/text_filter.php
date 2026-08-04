@@ -81,9 +81,9 @@ class text_filter extends \filter_ace_inline_base_text_filter {
         $config = [
             'button_label' => get_config('filter_ace_inline', 'button_label'),
             'dark_theme_mode' => get_config('filter_ace_inline', 'dark_theme_mode'),
+            'enable_markdown' => get_config('filter_ace_inline', 'enable_markdown'),
         ];
-        $this->do_ace_highlight($text, $config);
-        $this->do_ace_interactive($text, $config);
+        $this->do_ace_editor($text, $config);
         return $text;
     }
 
@@ -99,31 +99,13 @@ class text_filter extends \filter_ace_inline_base_text_filter {
      * @param {array} $config The plugin configuration info.
      * @return {string} The processed text.
      */
-    public function do_ace_highlight($text, $config) {
-        if (strpos($text, 'ace-highlight-code') !== false) {
+    public function do_ace_editor($text, $config) {
+        if ((strpos($text, 'ace-interactive-code') !== false) || (strpos($text, 'ace-highlight-code') !== false) || (strpos($text, '<code') !== false)) {
             $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
-                'initAceHighlighting', [$config]);
+                'initAceInlineEditor', [$config]);
         }
 
         return $text;
     }
 
-    /**
-     * Process the given text by replacing any <pre> elements of class
-     * ace-interactive-code with an ace editor plus a Try it! button.
-     * The call to strpos is required regardless becuase
-     * apparently Mathjax generates a small content fragment, which is passed
-     * through all filters, on all content pages, even editing pages. We
-     * don't wish to use our filter on pages being edited.
-     * @param {string} $text The text to be processed.
-     * @param {array} $config The plugin configuration info.
-     * @return {string} The processed text
-     */
-    public function do_ace_interactive($text, $config) {
-        if (strpos($text, 'ace-interactive-code') !== false) {
-            $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
-                'initAceInteractive', [$config]);
-        }
-        return $text;
-    }
 }

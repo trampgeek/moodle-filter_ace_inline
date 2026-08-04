@@ -28,6 +28,8 @@ import {addUi} from "filter_ace_inline/local/display_ui";
 import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 import {getString} from 'core/str';
 
+const MARKDOWN_OFF = "0";
+const MARKDOWN_EXTENDED = "2";
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
 const LINE_NUMBER_COL_WIDTH = 42; // Width of line number column in Ace render.
@@ -49,31 +51,46 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
  * the given className or ace-inline attribute, with an Ace editor windows that display the
  * code in whatever language has been set.
  * @param {object} root The root of the HTML document to modify.
- * @param {bool} isInteractive True for ace-interactive otherwise false.
  * @param {object} config The plugin configuration settings.
  */
-export const applyAceAndBuildUi = async(root, isInteractive, config) => {
-    const className = isInteractive ? 'ace-interactive-code' : 'ace-highlight-code';
-    const alternativeName = isInteractive ? 'data-ace-interactive-code' : 'data-ace-highlight-code';
-
+export const applyAceAndBuildUi = async(root, config) => {
     const preElements = root.getElementsByTagName('pre');
     for (const pre of preElements) {
-        if (pre.style.display !== 'none') {
+        const isInteractive = pre.classList.contains('ace-interactive-code') ||
+            pre.hasAttribute('data-ace-interactive-code') || false;
+        const isHighlight = pre.classList.contains('ace-highlight-code') ||
+            pre.hasAttribute('data-ace-highlight-code') || false;
+        if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
             const uiParams = new UiParameters(pre);
             uiParams.extractUiParameters(isInteractive, config);
-            if (pre.classList.contains(className) || pre.hasAttribute(alternativeName)) {
-                applyToPre(pre, isInteractive, uiParams);
-            }
+            applyToPre(pre, isInteractive, uiParams);
         }
     }
     // For Markdown compatibility.
     const codeElements = root.getElementsByTagName('code');
-    for (const code of codeElements) {
-        if (code.parentNode !== null && code.parentNode.style.display !== 'none' &&
-                (code.hasAttribute(alternativeName) || code.classList.contains(className))) {
-            const uiParams = new UiParameters(code);
-            uiParams.extractUiParameters(isInteractive, config);
-            applyToPre(code.parentNode, isInteractive, uiParams);
+    if (config.enable_markdown !== MARKDOWN_OFF) {
+        for (const code of codeElements) {
+            if (code.parentNode !== null && code.parentNode.nodeName ===  'PRE' && code.parentNode.style.display !== 'none') {
+                let isInteractive = code.classList.contains('ace-interactive-code') ||
+                    code.hasAttribute('data-ace-interactive-code') || false;
+                let isHighlight = code.classList.contains('ace-highlight-code') ||
+                    code.hasAttribute('data-ace-highlight-code') || false;
+
+                const uiParams = new UiParameters(code);
+
+                if (config.enable_markdown === MARKDOWN_EXTENDED &&
+                        !isInteractive && !isHighlight && code.classList.length === 1) {
+                    const options = code.classList[0].split(":");
+                    isInteractive = uiParams.extractExtendedMarkdownParameters(options);
+                    isHighlight = !isInteractive;
+                } else {
+                    uiParams.extractUiParameters(isInteractive, config);
+                }
+
+                if (isInteractive || isHighlight) {
+                    applyToPre(code.parentNode, isInteractive, uiParams);
+                }
+            }
         }
     }
 };
@@ -94,6 +111,14 @@ const waitForAceRender = (editNode, expectedLines, timeout = 2000) => {
         const startTime = Date.now();
 
         const checkRendering = () => {
+            // On a cold page load Ace's font-metrics measurement can still be pending when the
+            // editor is first created, leaving the text layer unpainted even though resize() was
+            // already called once. Re-poking resize() on each poll is a cheap way to self-heal
+            // once those metrics become available, without weakening the render-detection check.
+            if (editNode.env && editNode.env.editor) {
+                editNode.env.editor.resize(true);
+            }
+
             // Count the number of div.ace_line elements which represent the actual rendered lines
             const aceLines = editNode.querySelectorAll('div.ace_line');
 
@@ -234,6 +259,9 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
 
     const editor = globalThis.ace.edit(editNode, aceConfig);
     const session = editor.getSession();
+    // Ace defers painting the text layer until it has measured font metrics; without
+    // forcing a resize here it can be left blank when created on a freshly-inserted node.
+    editor.resize(true);
     if (!pre.style.hasOwnProperty('width') || pre.style.width == 0) {
         const aceWidestLine = Math.ceil(lineLength(editor.renderer, longestLine));
         const minWidth = isInteractive ? aceWidestLine + LINE_NUMBER_COL_WIDTH : aceWidestLine;

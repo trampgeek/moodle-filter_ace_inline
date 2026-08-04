@@ -41,6 +41,11 @@ $string['settings_dark_theme_desc'] = 'Select when to use a dark theme for Ace
 instead of the default light theme. Can be overridden by an individual instance.
 \'sometimes\' behaves according to the browser\'s response to the \'prefers-color-scheme:dark\' media query.';
 $string['settings_desc'] = 'Change the settings for this filter.';
+$string['settings_markdown_off'] = 'Off';
+$string['settings_markdown_on'] = 'On';
+$string['settings_markdown_extended'] = 'Extended';
+$string['settings_markdown_label'] = 'Markdown Rendering';
+$string['settings_markdown_desc'] = 'Select how markdown code blocks should be rendered';
 $string['settings_heading'] = 'Ace inline filter settings';
 
 // Error strings.

@@ -65,6 +65,26 @@ const ACE_INTERACTIVE = {
     'dark-theme-mode': null
 };
 
+const popItem = (alist, element) => {
+  const index = alist.indexOf(element);
+  if (index !== -1) {
+      alist.splice(index, 1);
+      return element;
+  }
+  return -1;
+};
+
+const popItemPair = (alist, element) => {
+  const index = alist.indexOf(element);
+  if (index !== -1) {
+      const pair = alist[index+1] || null;
+      alist.splice(index, 2);
+      return [element, pair];
+  }
+  return -1;
+};
+
+
 export class UiParameters {
     constructor(pre) {
         this.pre = pre;
@@ -131,6 +151,32 @@ export class UiParameters {
         }
         // Extracts the Tiny Parameters out.
         this.extractTinyParams();
+    }
+
+    /**
+     * Extract from the the class specifier (options) various attributes.
+     * @param {array} options comes form the class specifier string.
+     */
+    extractExtendedMarkdownParameters(options) {
+        const language = options.shift();
+        const isInteractive = (popItem(options, 'interactive') !== -1);
+        const lineNumbering = popItemPair(options, 'line-numbers');
+        const defaultParams = isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT;
+
+        defaultParams['lang'] = language;
+        this.pre.setAttribute('lang', language);
+        this.modifiedLang = true;
+        if (lineNumbering !== -1) {
+            defaultParams['start-line-number'] = parseInt(lineNumbering[1]) || 1;
+        }
+
+        for (const attrName in defaultParams) {
+            const valuePair = popItemPair(options, attrName);
+            const value = (valuePair !== -1) ? valuePair[1] : defaultParams[attrName];
+            this.paramsMap[attrName] = value;
+        }
+
+        return isInteractive;
     }
 
     /**

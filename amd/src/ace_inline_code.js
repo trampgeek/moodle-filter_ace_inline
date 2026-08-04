@@ -29,34 +29,16 @@ import {applyAceAndBuildUi} from "filter_ace_inline/local/apply_ace_editor";
  * Applies ace interactive code precisely once per page.
  * @param {array} config Config settings for dark-mode and buttons.
  */
-export const initAceInteractive = async(config) => {
-    if (!globalThis.aceInlineCodeInteractiveDone) { // Do it once only.
-        globalThis.aceInlineCodeInteractiveDone = true;
+export const initAceInlineEditor = async(config) => {
+    if (!globalThis.aceInlineEditorDone) { // Do it once only.
+        globalThis.aceInlineEditorDone = true;
         while (!globalThis.ace) {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        applyAceAndBuildUi(document, true, config);
+        applyAceAndBuildUi(document, config);
         // Add a hook for use by dynamically generated content.
         globalThis.applyAceInteractive = function() {
-            applyAceAndBuildUi(document, true, config);
-        };
-    }
-};
-
-/**
- * Applies ace highlight code precisely once per page.
- * @param {array} config Config settings for dark-mode.
- */
-export const initAceHighlighting = async(config) => {
-    if (!globalThis.aceInlineCodeHighlightingDone) { // Do it once only.
-        globalThis.aceInlineCodeHighlightingDone = true;
-        while (!globalThis.ace) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-        applyAceAndBuildUi(document, false, config);
-        // Add a hook for use by dynamically generated content.
-        globalThis.applyAceHighlighting = function() {
-            applyAceAndBuildUi(document, false, config);
+            applyAceAndBuildUi(document, config);
         };
     }
 };

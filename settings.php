@@ -47,8 +47,20 @@ if ($ADMIN->fulltree) {
         get_string('settings_dark_theme_desc', 'filter_ace_inline'),
         0, $darkoptions));
 
-    $settings->add(new admin_setting_configtext('filter_ace_inline/button_label',
+    $settings->add(new admin_setting_configtext(
+        'filter_ace_inline/button_label',
             get_string('settings_button_label', 'filter_ace_inline'),
             get_string('settings_button_label_desc', 'filter_ace_inline'),
             $buttonlabel, PARAM_TEXT));
+
+    $markdownoptions = [
+        0 => get_string('settings_markdown_off', 'filter_ace_inline'),
+        1 => get_string('settings_markdown_on', 'filter_ace_inline'),
+        2 => get_string('settings_markdown_extended', 'filter_ace_inline')];
+
+    $settings->add(new admin_setting_configselect(
+        "filter_ace_inline/enable_markdown",
+        get_string('settings_markdown_label', 'filter_ace_inline'),
+        get_string('settings_markdown_desc', 'filter_ace_inline'),
+        0, $markdownoptions));
 }
