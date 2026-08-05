@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.4.0, 5 August 2026.
+Version 1.4.2, 6 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -306,6 +306,8 @@ There are three plugin administrator setting provided directly by this plugin:
   2.  The administrator can set whether to use the Ace editor's light theme or dark theme by default (although individual filter instances can override this with the data-dark-theme-mode option). There is also an option to use the dark theme 'sometimes', meaning whenever the browser's 'prefers-color-scheme:dark' media query returns a match. This may change with browser, operating system or time of day.
   3.  The administrator can set three different modes about how `<code>` blocks should be interpreted.  Markdown will always put example code in such blocks: (1) Off: do not attempt to apply the filter, if you desire Ace features then these must appear in the `<pre>` block.  (2) On: this allows `<code>` blocks decorated to be rendered, Markdown Extra will take the contents within the braces {} following the opening triple tick to decorate the code blocl.  (3) Extended: (new in v1.4.0) the string attached to the opening triple tick (\`\`\`) is given as the classname for the `<code>` block - this is normal Markdown behaviour. This string is parsed to control the filters behaviour.
 
+Each of these three settings can also be overridden for an individual course (or other context) (new in v1.4.1). From the course, click "More" > "Filters" and, once "Ace inline" is set to "On", click the "Settings" link next to it to override any of the three settings for that course only. Leave a field as "Use site default" to keep inheriting the site administrator's setting.
+
 ## Unexpected behaviour in certain areas of Moodle
 
 Currently, in Moodle 4.1, the forum discussion (but not the general description) strips all tags aside from the "class" tag from any HTML elements. This is editor independent. By using the pre-existing [deprecated] method of setting the \<pre> **class='ace-interactive-code'** or **class='ace-highlight-code'** basic Python 3 functionality can be implemented.
@@ -328,6 +330,24 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.4.2
+   Added Behat tests covering both the site administrator settings page and the
+   new per-course (context-level) settings overrides for the button label, dark
+   theme mode and markdown rendering settings. Fixed a bug found while writing
+   these tests: a course-level override was only being applied to content
+   filtered directly in that exact course context, not to content inside
+   activities within the course (which are filtered in their own, separate,
+   module context nested below it); the filter now also checks ancestor
+   contexts for an override, so a course-level override applies throughout
+   that course as expected.
+
+ * Version 1.4.1
+   Added support for overriding the three administrator settings (button label, dark theme
+   mode, markdown rendering) at a per-context (e.g. per-course) level. From a course's
+   "More > Filters" page, click "Settings" next to "Ace inline" to override any of these
+   for that course; leave a field as "Use site default" to keep inheriting the
+   administrator's setting.
+
  * Version 1.4.0
    Added feature for allowing standard language string to be added to a markdown code block (triple tick).  This language string can also be encoded with addition Ace filter parameters - the elements separated by colons (:).  Added administrative setting to allow control of Markdown code block rendered, including this new feature (which is called Extended).
 

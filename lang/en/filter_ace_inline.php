@@ -47,6 +47,7 @@ $string['settings_markdown_extended'] = 'Extended';
 $string['settings_markdown_label'] = 'Markdown Rendering';
 $string['settings_markdown_desc'] = 'Select how markdown code blocks should be rendered';
 $string['settings_heading'] = 'Ace inline filter settings';
+$string['settings_use_default'] = 'Use site default';
 
 // Error strings.
 $string['error_access_denied'] = 'Sandbox server access denied';

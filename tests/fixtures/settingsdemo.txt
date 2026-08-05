@@ -1,0 +1,4 @@
+<pre data-ace-interactive-code data-lang="python3">print("Hello from settings test")
+</pre>
+
+<pre><code data-ace-highlight-code data-lang="python3">print("MARKDOWNCODEMARKER")</code></pre>

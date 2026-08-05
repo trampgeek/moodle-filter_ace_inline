@@ -78,13 +78,45 @@ class text_filter extends \filter_ace_inline_base_text_filter {
             // Non-string content can not be filtered anyway.
             return $text;
         }
-        $config = [
-            'button_label' => get_config('filter_ace_inline', 'button_label'),
-            'dark_theme_mode' => get_config('filter_ace_inline', 'dark_theme_mode'),
-            'enable_markdown' => get_config('filter_ace_inline', 'enable_markdown'),
-        ];
-        $this->do_ace_editor($text, $config);
+        $this->do_ace_editor($text, $this->get_effective_config());
         return $text;
+    }
+
+    /**
+     * Works out the effective settings for the current context, by looking for a
+     * local override (settable via the filter's "Settings" link on a context's
+     * Filters management page, e.g. a course) at the current context or the nearest
+     * ancestor context that has one, falling back to the site administrator's
+     * setting for anything not overridden anywhere in the context chain.
+     *
+     * Local filter config (unlike the filter's on/off state) is not inherited by
+     * Moodle core, so without this a course-level override would only apply to
+     * content filtered directly in that exact course context, and not to content
+     * inside activities within the course (which are filtered in their own,
+     * separate, module context nested below it).
+     *
+     * @return array The effective 'button_label', 'dark_theme_mode' and 'enable_markdown' settings.
+     */
+    protected function get_effective_config() {
+        $names = ['button_label', 'dark_theme_mode', 'enable_markdown'];
+        $config = [];
+        for ($context = $this->context; $context; $context = $context->get_parent_context()) {
+            $local = filter_get_local_config('ace_inline', $context->id);
+            foreach ($names as $name) {
+                if (!array_key_exists($name, $config) && array_key_exists($name, $local)) {
+                    $config[$name] = $local[$name];
+                }
+            }
+            if (count($config) === count($names)) {
+                break;
+            }
+        }
+        foreach ($names as $name) {
+            if (!array_key_exists($name, $config)) {
+                $config[$name] = get_config('filter_ace_inline', $name);
+            }
+        }
+        return $config;
     }
 
     /**
