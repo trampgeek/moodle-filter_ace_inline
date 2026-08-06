@@ -3,13 +3,13 @@ int alpha;
 int beta;
 ```
 
-```python:interactive:font-size:19pt
+```python3:interactive:font-size:19pt
 def main():
     print("FontSizeCheck")
 main()
 ```
 
-```python:interactive:max-lines:3
+```python3:interactive:max-lines:3
 print("MaxLineVisible")
 a = 1
 b = 2
@@ -22,7 +22,7 @@ print("MaxLineHidden")
 int darkforcec;
 ```
 
-```python:interactive:dark-theme-mode:0
+```python3:interactive:dark-theme-mode:0
 lightforcepy = 1
 ```
 
@@ -30,7 +30,7 @@ lightforcepy = 1
 int buttonnamec;
 ```
 
-```python:interactive:readonly:1
+```python3:interactive:readonly:1
 readonlypy = 1
 ```
 
@@ -41,7 +41,7 @@ int hiddenc;
 <textarea id="stdinboxA">Stdin
 Hello</textarea>
 
-```python:interactive:stdin-taid:stdinboxA:button-name:ReadStdin
+```python3:interactive:stdin-taid:stdinboxA:button-name:ReadStdin
 def read_me():
     output = ""
     while True:
@@ -55,7 +55,7 @@ read_me()
 
 <input id="uploadboxA" type="file">
 
-```python:interactive:file-upload-id:uploadboxA:button-name:UploadPy
+```python3:interactive:file-upload-id:uploadboxA:button-name:UploadPy
 import os
 files = [f for f in os.listdir() if f.endswith('.txt')]
 if len(files) == 0:
@@ -64,7 +64,7 @@ if len(files) == 0:
 
 <script>
 function mapC(s) {
-    if (s === 'run this c') {
+    if (s.trim() === 'run this c') {
         return '#include <stdio.h>\nint main(void) { printf("MappedC"); return 0; }';
     }
     return 'int main(void){return 1;}';
@@ -85,6 +85,6 @@ int main(void) {
 }
 ```
 
-```python:interactive:html-output:1:button-name:HtmlPy
+```python3:interactive:html-output:1:button-name:HtmlPy
 print("<h2>ExtHeading</h2>")
 ```

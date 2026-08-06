@@ -14,13 +14,13 @@ int main(void) {
 }
 ```
 
-```python
+```python3
 def main():
     print("HelloPyHighlight")
 main()
 ```
 
-```python:interactive
+```python3:interactive
 def main():
     print("HelloPyInteractive")
 main()
