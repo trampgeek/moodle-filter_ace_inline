@@ -1,0 +1,27 @@
+```c
+#include <stdio.h>
+int main(void) {
+    printf("HelloCHighlight");
+    return 0;
+}
+```
+
+```c:interactive
+#include <stdio.h>
+int main(void) {
+    printf("HelloCInteractive");
+    return 0;
+}
+```
+
+```python
+def main():
+    print("HelloPyHighlight")
+main()
+```
+
+```python:interactive
+def main():
+    print("HelloPyInteractive")
+main()
+```

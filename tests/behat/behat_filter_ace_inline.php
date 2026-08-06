@@ -198,4 +198,24 @@ class behat_filter_ace_inline extends behat_base {
         // Set the specified field to contents in the database if id is correct.
         $DB->set_field('question', $field, $contents, ['name' => $name]);
     }
+
+    /**
+     * Adds the contents of a text file, as real Markdown source, into a specified
+     * field in a question, and sets that field's format to Markdown so it is
+     * actually parsed as Markdown (e.g. converting fenced code blocks to
+     * <pre><code>) before the ace_inline filter processes the rendered HTML.
+     *
+     * @Given :filename exists in question :name :field as markdown for filter ace inline
+     * @param string $filename The name of the file in fixtures.
+     * @param string $name The name of the question.
+     * @param string $field The field to be adjusted.
+     */
+    public function file_contents_exists_in_question_contents_as_markdown($filename, $name, $field) {
+        global $DB;
+        // Get the contents of the file in fixtures.
+        $contents = file_get_contents(__DIR__.'/../fixtures/'.$filename);
+        // Set the specified field to contents, and its format to Markdown, in the database.
+        $DB->set_field('question', $field, $contents, ['name' => $name]);
+        $DB->set_field('question', $field . 'format', FORMAT_MARKDOWN, ['name' => $name]);
+    }
 }

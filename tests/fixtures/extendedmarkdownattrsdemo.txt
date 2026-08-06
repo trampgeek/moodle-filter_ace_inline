@@ -1,0 +1,90 @@
+```c:line-numbers:5
+int alpha;
+int beta;
+```
+
+```python:interactive:font-size:19pt
+def main():
+    print("FontSizeCheck")
+main()
+```
+
+```python:interactive:max-lines:3
+print("MaxLineVisible")
+a = 1
+b = 2
+c = 3
+d = 4
+print("MaxLineHidden")
+```
+
+```c:dark-theme-mode:2
+int darkforcec;
+```
+
+```python:interactive:dark-theme-mode:0
+lightforcepy = 1
+```
+
+```c:interactive:button-name:RunC
+int buttonnamec;
+```
+
+```python:interactive:readonly:1
+readonlypy = 1
+```
+
+```c:interactive:hidden:1
+int hiddenc;
+```
+
+<textarea id="stdinboxA">Stdin
+Hello</textarea>
+
+```python:interactive:stdin-taid:stdinboxA:button-name:ReadStdin
+def read_me():
+    output = ""
+    while True:
+        try:
+            output += input()
+        except EOFError:
+            break
+    print(output)
+read_me()
+```
+
+<input id="uploadboxA" type="file">
+
+```python:interactive:file-upload-id:uploadboxA:button-name:UploadPy
+import os
+files = [f for f in os.listdir() if f.endswith('.txt')]
+if len(files) == 0:
+    print("NoUploadFilesFound")
+```
+
+<script>
+function mapC(s) {
+    if (s === 'run this c') {
+        return '#include <stdio.h>\nint main(void) { printf("MappedC"); return 0; }';
+    }
+    return 'int main(void){return 1;}';
+}
+</script>
+
+```c:interactive:code-mapper:mapC:button-name:MapC
+run this c
+```
+
+```c:interactive:max-output-length:10:button-name:TruncC
+#include <stdio.h>
+int main(void) {
+    for (int i = 0; i < 40000; i++) {
+        printf("%d", i);
+    }
+    return 0;
+}
+```
+
+```python:interactive:html-output:1:button-name:HtmlPy
+print("<h2>ExtHeading</h2>")
+```

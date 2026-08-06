@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.4.2, 6 August 2026.
+Version 1.4.3, 6 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -174,21 +174,21 @@ Every attribute is supported in HTML.
 | **data-lang**     | This attribute sets the language to be used by the Ace editor for syntax colouring and in the case of interactive, the language for running the code on the Jobe server. A language must be supported in the Jobe server for the interactive code to run. Default: python3.| Highlight, Interactive, TinyMCE, Markdown |
 | **data-ace-lang** | If set and non-empty, sets the language used by the Ace editor for syntax colouring, independently of **data-lang** in interactive. This allows the author to have syntax colouring different to the execution language in Jobe. Information on all Ace highlightable languages can be found [here](https://ace.c9.io/#nav=about) . | Highlight, Interactive, TinyMCE, Markdown |
 | **data-start-line-number** | Sets the line number used for the first displayed line of code, if line numbers are to be shown. Set to **none** for no line numbers. Default is **none** for highlight elements and **1** for interactive elements. | Highlight, Interactive, TinyMCE, Markdown |
-| **data-font-size** | Sets the display font size used by Ace. Default 14px. | Highlight, Interactive, TinyMCE, Markdown |
-| **data-min-lines** | The minimum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown|
-| **data-max-lines** | The maximum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown |
+| **data-font-size** | Sets the display font size used by Ace. Default 14px. | Highlight, Interactive, TinyMCE, Markdown,  Markdown Extended |
+| **data-min-lines** | The minimum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown, Markdown Extended|
+| **data-max-lines** | The maximum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown, Markdown Extended |
 | **data-dark-theme-mode** | Selects when to use a dark mode for the Ace editor. Has values 0, 1 or 2 for no, maybe and yes. If 1 (maybe) is chosen, the dark theme will be used if the browser's prefers-color-scheme:dark media query returns a match, so this may change with browser, operating system or time of day. The default value is set by the administrator setting for the plugin. | Highlight, Interactive, TinyMCE, Markdown |
-| **data-button-name** | This sets the text within the Try it! button. Default 'Try it!'. | Interactive, TinyMCE, Markdown |
-| **data-readonly** | This disables editing of the code, so students can only run the supplied code without modification. The `Try it!` button is still displayed and operational.| Interactive, TinyMCE, Markdown |
-| **data-hidden** | This hides the code, leaving only `Try it!` visible. | Interactive, TinyMCE, Markdown |
-| **data-stdin-taid** | This string value specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown |
+| **data-button-name** | This sets the text within the Try it! button. Default 'Try it!'. | Interactive, TinyMCE, Markdown, Markdown Extended |
+| **data-readonly** | This disables editing of the code, so students can only run the supplied code without modification. The `Try it!` button is still displayed and operational.| Interactive, TinyMCE, Markdown, Markdown Extended |
+| **data-hidden** | This hides the code, leaving only `Try it!` visible. | Interactive, TinyMCE, Markdown, Markdown Extended |
+| **data-stdin-taid** | This string value specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown, Markdown Extended |
 | **data-file-taids** | This attribute provides a pseudo-file interface where the user is able to treat one or more supplementary textarea elements like files, entering the pseudo-file contents into the textarea(s) before clicking `Try it!`. The attribute is a JSON specification that maps from filename(s) to the ID(s) of textarea element(s) and supplies the HTMLelement.innerText attribute that will be used to provide the job with one or more files in the working directory. For each attribute, a file of the specified filename is created and the contents of that file are the contents of the associated textarea at the time `Try it!` is clicked. | Interactive, TinyMCE |
-| **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown |
+| **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown, Markdown Extended |
 | **data-params** | This is a JSON object that defines any Jobe sandbox parameters that are to have non-standard values, such as `cputime` and `memorylimit`. This shouldn't generally be needed. Default: '{"cputime": 5}'. Note that the maximum cputime is set via the administrative interface for the CodeRunner web service and any attempt to exceed that will display an error. | Interactive, TinyMCE |
-| **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown |
+| **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown, Markdown Extended |
 | **data-prefix** |  This string value is code to be inserted in front of the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
 | **data-suffix** |  This string value is code to be inserted after the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
-| **data-html-output** | If this attribute is present (with any value) the output from the run is interpreted as raw HTML. The output from the program is simply wrapped in a \<div> element and inserted directly after `Try it!`. An example of a ace-interactive-code panel that that uses data-prefix, data-suffix and data-html-output to provide Matplotlib graphical output in Python is included in the repo `samples` folder (the file `demoaceinline.xml`). | Interactive, TinyMCE, Markdown |
+| **data-html-output** | If this attribute is present (with any value) the output from the run is interpreted as raw HTML. The output from the program is simply wrapped in a \<div> element and inserted directly after `Try it!`. An example of a ace-interactive-code panel that that uses data-prefix, data-suffix and data-html-output to provide Matplotlib graphical output in Python is included in the repo `samples` folder (the file `demoaceinline.xml`). | Interactive, TinyMCE, Markdown, Markdown Extended |
 | **data-max-output-length** | The maximum length of an output string (more or less). Output greater than this is truncated. Default 30,000 characters. | Interactive, TinyMCE, Markdown |
 | **line-numbers** | Sets the line number used for the first displayed line of code. Default is **1**.  If Option is not specified then line-number is off in highlighted elements. |  Markdown Extended |
 
@@ -330,6 +330,11 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.4.3
+   Added Behat tests for the Extended Markdown rendering mode, covering both
+   highlighted (read-only) and interactive rendering, for both C and Python
+   fenced code blocks (`tests/behat/extended_markdown.feature`). (Claude written)
+
  * Version 1.4.2
    Added Behat tests covering both the site administrator settings page and the
    new per-course (context-level) settings overrides for the button label, dark
@@ -339,14 +344,10 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
    activities within the course (which are filtered in their own, separate,
    module context nested below it); the filter now also checks ancestor
    contexts for an override, so a course-level override applies throughout
-   that course as expected.
+   that course as expected. (Claude written)
 
  * Version 1.4.1
-   Added support for overriding the three administrator settings (button label, dark theme
-   mode, markdown rendering) at a per-context (e.g. per-course) level. From a course's
-   "More > Filters" page, click "Settings" next to "Ace inline" to override any of these
-   for that course; leave a field as "Use site default" to keep inheriting the
-   administrator's setting.
+   Added support for overriding the three administrator settings (button label, dark theme mode, markdown rendering) at a per-context (e.g. per-course) level. From a course's "More > Filters" page, click "Settings" next to "Ace inline" to override any of these for that course; leave a field as "Use site default" to keep inheriting the administrator's setting. Credit to Paul McKeown for the this idea.
 
  * Version 1.4.0
    Added feature for allowing standard language string to be added to a markdown code block (triple tick).  This language string can also be encoded with addition Ace filter parameters - the elements separated by colons (:).  Added administrative setting to allow control of Markdown code block rendered, including this new feature (which is called Extended).
