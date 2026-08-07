@@ -3,7 +3,7 @@ Feature: Course-level configuration overrides for the Ace inline filter
   In order to customise the Ace inline filter's behaviour for just my own course
   As a teacher
   I need to be able to override the site's button label, dark theme mode and
-  markdown rendering settings for my course only, leaving other courses on
+  simplified mode settings for my course only, leaving other courses on
   the site default
 
   Background:
@@ -23,11 +23,15 @@ Feature: Course-level configuration overrides for the Ace inline filter
       | Course       | C1        | Test questions C1 |
       | Course       | C2        | Test questions C2 |
     And the following "questions" exist:
-      | questioncategory   | qtype       | name           |
-      | Test questions C1  | description | settingsdemoc1 |
-      | Test questions C2  | description | settingsdemoc2 |
+      | questioncategory   | qtype       | name                    |
+      | Test questions C1  | description | settingsdemoc1          |
+      | Test questions C2  | description | settingsdemoc2          |
+      | Test questions C1  | description | simplifiedmodedemoc1    |
+      | Test questions C2  | description | simplifiedmodedemoc2    |
     And "settingsdemo.txt" exists in question "settingsdemoc1" "questiontext" for filter ace inline
     And "settingsdemo.txt" exists in question "settingsdemoc2" "questiontext" for filter ace inline
+    And "simplifiedmodedemo.txt" exists in question "simplifiedmodedemoc1" "questiontext" as markdown for filter ace inline
+    And "simplifiedmodedemo.txt" exists in question "simplifiedmodedemoc2" "questiontext" as markdown for filter ace inline
     And I have enabled the sandbox and ace inline filter
 
   Scenario: Teacher overrides the button label for their course only
@@ -53,16 +57,16 @@ Feature: Course-level configuration overrides for the Ace inline filter
     When I am on the "settingsdemoc2" "core_question > preview" page logged in as teacher
     Then "//div[contains(concat(' ', normalize-space(@class), ' '), ' ace-tomorrow-night ')]" "xpath_element" should not exist
 
-  Scenario: Teacher overrides markdown code-block rendering for their course only
+  Scenario: Teacher overrides simplified mode for their course only
     Given I am on the "C1" "Course" page logged in as teacher
     And I navigate to "Filters" in current page administration
     And I click on "Settings" "link" in the "Ace inline" "table_row"
-    And I set the field "Markdown Rendering" to "On"
+    And I set the field "Simplified Setting Mode" to "Enabled"
     And I press "Save changes"
-    When I am on the "settingsdemoc1" "core_question > preview" page logged in as teacher
-    Then "//pre[contains(., 'MARKDOWNCODEMARKER')]/following-sibling::div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    When I am on the "settingsdemoc2" "core_question > preview" page logged in as teacher
-    Then "//pre[contains(., 'MARKDOWNCODEMARKER')]/following-sibling::div[contains(@class, 'ace_editor')]" "xpath_element" should not exist
+    When I am on the "simplifiedmodedemoc1" "core_question > preview" page logged in as teacher
+    Then "//pre[contains(., 'SIMPLIFIEDHIGHLIGHTMARKER')]/following-sibling::div[contains(@class, 'ace_editor')]" "xpath_element" should exist
+    When I am on the "simplifiedmodedemoc2" "core_question > preview" page logged in as teacher
+    Then "//pre[contains(., 'SIMPLIFIEDHIGHLIGHTMARKER')]/following-sibling::div[contains(@class, 'ace_editor')]" "xpath_element" should not exist
 
   Scenario: A field left as "Use site default" keeps inheriting the administrator's setting
     Given I log in as "admin"

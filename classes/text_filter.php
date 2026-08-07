@@ -95,10 +95,10 @@ class text_filter extends \filter_ace_inline_base_text_filter {
      * inside activities within the course (which are filtered in their own,
      * separate, module context nested below it).
      *
-     * @return array The effective 'button_label', 'dark_theme_mode' and 'enable_markdown' settings.
+     * @return array The effective 'button_label', 'dark_theme_mode' and 'simplified_mode' settings.
      */
     protected function get_effective_config() {
-        $names = ['button_label', 'dark_theme_mode', 'enable_markdown'];
+        $names = ['button_label', 'dark_theme_mode', 'simplified_mode'];
         $config = [];
         for ($context = $this->context; $context; $context = $context->get_parent_context()) {
             $local = filter_get_local_config('ace_inline', $context->id);

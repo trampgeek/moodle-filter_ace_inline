@@ -24,7 +24,7 @@ Feature: Extended Markdown rendering modes for the Ace inline filter
     And "extendedmarkdowndemo.txt" exists in question "extendedmarkdowndemo" "questiontext" as markdown for filter ace inline
     And I have enabled the sandbox and ace inline filter
     And the following config values are set as admin:
-      | enable_markdown | 2 | filter_ace_inline |
+      | simplified_mode | 1 | filter_ace_inline |
 
   Scenario: A bare language string renders C as highlighted and read-only
     When I am on the "extendedmarkdowndemo" "core_question > preview" page logged in as teacher

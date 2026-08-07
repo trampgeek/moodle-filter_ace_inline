@@ -28,8 +28,8 @@ import {addUi} from "filter_ace_inline/local/display_ui";
 import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 import {getString} from 'core/str';
 
-const MARKDOWN_OFF = "0";
-const MARKDOWN_EXTENDED = "2";
+const SIMPLIFIED_MODE_ENABLED = "1";
+
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
 const LINE_NUMBER_COL_WIDTH = 42; // Width of line number column in Ace render.
@@ -54,42 +54,56 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
  * @param {object} config The plugin configuration settings.
  */
 export const applyAceAndBuildUi = async(root, config) => {
+    // Look for ace editor controls in the <pre> fench first.
     const preElements = root.getElementsByTagName('pre');
     for (const pre of preElements) {
         const isInteractive = pre.classList.contains('ace-interactive-code') ||
-            pre.hasAttribute('data-ace-interactive-code') || false;
+            pre.hasAttribute('data-ace-interactive-code') ||
+            (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
+                (pre.classList.length === 1) &&
+                    pre.classList[0].includes(":") &&
+                    pre.classList[0].includes('interactive')) ||
+            false;
         const isHighlight = pre.classList.contains('ace-highlight-code') ||
-            pre.hasAttribute('data-ace-highlight-code') || false;
+            pre.hasAttribute('data-ace-highlight-code') ||
+            (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
+                (pre.classList.length === 1)) ||
+            false;
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
             const uiParams = new UiParameters(pre);
             uiParams.extractUiParameters(isInteractive, config);
             applyToPre(pre, isInteractive, uiParams);
         }
     }
-    // For Markdown compatibility.
+
+    // Look for ace editor controls in the <code> fence, this should take priority over ace editor controls in the <pre> fence.
     const codeElements = root.getElementsByTagName('code');
-    if (config.enable_markdown !== MARKDOWN_OFF) {
-        for (const code of codeElements) {
-            if (code.parentNode !== null && code.parentNode.nodeName ===  'PRE' && code.parentNode.style.display !== 'none') {
-                let isInteractive = code.classList.contains('ace-interactive-code') ||
-                    code.hasAttribute('data-ace-interactive-code') || false;
-                let isHighlight = code.classList.contains('ace-highlight-code') ||
-                    code.hasAttribute('data-ace-highlight-code') || false;
+    for (const code of codeElements) {
+        if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
+            const isInteractive = code.classList.contains('ace-interactive-code') ||
+                code.hasAttribute('data-ace-interactive-code') ||
+                (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
+                    (code.classList.length === 1) &&
+                        code.classList[0].includes(":") &&
+                        code.classList[0].includes('interactive')) ||
+                false;
+            const isHighlight = code.classList.contains('ace-highlight-code') ||
+                code.hasAttribute('data-ace-highlight-code') ||
+                (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
+                    (code.classList.length === 1)) ||
+                false;
 
-                const uiParams = new UiParameters(code);
+            const uiParams = new UiParameters(code);
 
-                if (config.enable_markdown === MARKDOWN_EXTENDED &&
-                        !isInteractive && !isHighlight && code.classList.length === 1) {
-                    const options = code.classList[0].split(":");
-                    isInteractive = uiParams.extractExtendedMarkdownParameters(options);
-                    isHighlight = !isInteractive;
-                } else {
-                    uiParams.extractUiParameters(isInteractive, config);
-                }
+            if (config.simplified_mode === SIMPLIFIED_MODE_ENABLED && code.classList.length === 1 &&
+                    code.classList[0].includes(":")) {
+                uiParams.extractExtendedMarkdownParameters(isInteractive, code.classList[0].split(":"));
+            } else {
+                uiParams.extractUiParameters(isInteractive, config);
+            }
 
-                if (isInteractive || isHighlight) {
-                    applyToPre(code.parentNode, isInteractive, uiParams);
-                }
+            if (isInteractive || isHighlight) {
+                applyToPre(code.parentNode, isInteractive, uiParams);
             }
         }
     }

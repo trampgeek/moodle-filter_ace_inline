@@ -19,15 +19,13 @@
  *
  * @package    filter_ace_inline
  * @subpackage ace_inline
- * @copyright  2017 Richard Jones
+ * @copyright  2017 Richard Jones, 2022 Michelle Hsieh, 2026 Andrew Bainbridge-Smith
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-    // Default values for filter.php.
-    $buttonlabel = get_string('default_button_label', 'filter_ace_inline');
 
     // Language strings.
     $heading = get_string('settings_heading', 'filter_ace_inline');
@@ -36,6 +34,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('ace_inlinesettings',
             $heading, $description));
 
+    // Dark theme options.
     $darkoptions = [
         0 => get_string('settings_dark_never', 'filter_ace_inline'),
         1 => get_string('settings_dark_preference', 'filter_ace_inline'),
@@ -47,20 +46,24 @@ if ($ADMIN->fulltree) {
         get_string('settings_dark_theme_desc', 'filter_ace_inline'),
         0, $darkoptions));
 
+    // Try it button label.
+    $buttonlabel = get_string('default_button_label', 'filter_ace_inline');
+    
     $settings->add(new admin_setting_configtext(
         'filter_ace_inline/button_label',
             get_string('settings_button_label', 'filter_ace_inline'),
             get_string('settings_button_label_desc', 'filter_ace_inline'),
             $buttonlabel, PARAM_TEXT));
 
-    $markdownoptions = [
-        0 => get_string('settings_markdown_off', 'filter_ace_inline'),
-        1 => get_string('settings_markdown_on', 'filter_ace_inline'),
-        2 => get_string('settings_markdown_extended', 'filter_ace_inline')];
+    // Enable mode options.
+    $enablemodeoptions = [
+        0 => get_string('settings_simplified_mode_off', 'filter_ace_inline'),
+        1 => get_string('settings_simplified_mode_enabled', 'filter_ace_inline')];
 
     $settings->add(new admin_setting_configselect(
-        "filter_ace_inline/enable_markdown",
-        get_string('settings_markdown_label', 'filter_ace_inline'),
-        get_string('settings_markdown_desc', 'filter_ace_inline'),
-        0, $markdownoptions));
+        "filter_ace_inline/simplified_mode",
+        get_string('settings_simplified_mode_label', 'filter_ace_inline'),
+        get_string('settings_simplified_mode_desc', 'filter_ace_inline'),
+        0, $enablemodeoptions));
+
 }

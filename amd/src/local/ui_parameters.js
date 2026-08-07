@@ -65,15 +65,6 @@ const ACE_INTERACTIVE = {
     'dark-theme-mode': null
 };
 
-const popItem = (alist, element) => {
-  const index = alist.indexOf(element);
-  if (index !== -1) {
-      alist.splice(index, 1);
-      return element;
-  }
-  return -1;
-};
-
 const popItemPair = (alist, element) => {
   const index = alist.indexOf(element);
   if (index !== -1) {
@@ -155,11 +146,11 @@ export class UiParameters {
 
     /**
      * Extract from the the class specifier (options) various attributes.
+     * @param {boolean} isInteractive True if is interactive, else false.
      * @param {array} options comes form the class specifier string.
      */
-    extractExtendedMarkdownParameters(options) {
+    extractExtendedMarkdownParameters(isInteractive, options) {
         const language = options.shift();
-        const isInteractive = (popItem(options, 'interactive') !== -1);
         const lineNumbering = popItemPair(options, 'line-numbers');
         const defaultParams = isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT;
 
@@ -175,8 +166,6 @@ export class UiParameters {
             const value = (valuePair !== -1) ? valuePair[1] : defaultParams[attrName];
             this.paramsMap[attrName] = value;
         }
-
-        return isInteractive;
     }
 
     /**

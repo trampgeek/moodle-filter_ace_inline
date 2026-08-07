@@ -38,10 +38,6 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
     protected function definition_inner($mform) {
         $usedefault = get_string('settings_use_default', 'filter_ace_inline');
 
-        $mform->addElement('text', 'button_label',
-                get_string('settings_button_label', 'filter_ace_inline'));
-        $mform->setType('button_label', PARAM_TEXT);
-
         $darkoptions = [
             '' => $usedefault,
             0 => get_string('settings_dark_never', 'filter_ace_inline'),
@@ -51,14 +47,17 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
         $mform->addElement('select', 'dark_theme_mode',
                 get_string('settings_dark_theme', 'filter_ace_inline'), $darkoptions);
 
-        $markdownoptions = [
+        $mform->addElement('text', 'button_label',
+                get_string('settings_button_label', 'filter_ace_inline'));
+        $mform->setType('button_label', PARAM_TEXT);
+
+        $enablemodeoptions = [
             '' => $usedefault,
-            0 => get_string('settings_markdown_off', 'filter_ace_inline'),
-            1 => get_string('settings_markdown_on', 'filter_ace_inline'),
-            2 => get_string('settings_markdown_extended', 'filter_ace_inline'),
+            0 => get_string('settings_simplified_mode_off', 'filter_ace_inline'),
+            1 => get_string('settings_simplified_mode_enabled', 'filter_ace_inline'),
         ];
-        $mform->addElement('select', 'enable_markdown',
-                get_string('settings_markdown_label', 'filter_ace_inline'), $markdownoptions);
+        $mform->addElement('select', 'simplified_mode',
+                get_string('settings_simplified_mode_label', 'filter_ace_inline'), $enablemodeoptions);
     }
 
     #[\Override]
@@ -67,7 +66,7 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
         // (including the 'submitbutton' element added by add_action_buttons()) as
         // local config, to only persist this form's three known settings.
         $data = (array) $data;
-        foreach (['button_label', 'dark_theme_mode', 'enable_markdown'] as $name) {
+        foreach (['dark_theme_mode', 'button_label', 'simplified_mode'] as $name) {
             $value = $data[$name] ?? '';
             if ($value !== '') {
                 filter_set_local_config($this->filter, $this->context->id, $name, $value);

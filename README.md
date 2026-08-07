@@ -20,8 +20,8 @@ As of Moodle 4.1, the following code adding and editing options are available:
        need a recently updated Moodle 4.2 or later for this feature to be usable.
   3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)**
 	  * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.
-  4. **Extended Markdown Support, from Version 1.4.0**
-      * Prior to this version Markdown code needed to be decorated within braces \{\} for all the supported attributes to be processed.  From this version the *language string* following the triple-ticks (\`\`\`) can be parsed instead, details below.
+  4. **Simplified rendering control modes, from Version 1.4.0**
+      * Prior to this version all fenced \<pre><code> blocks needed to be decorated with appropriate ace-inline filter attributes to enable the ace-inline editor.  With this mode enabled just specifiy the *language string* in the class is suffient.  This is particularly useful if writing Markdown as the *language string* following the triple-ticks (\`\`\`) can now be parsed with this mode enabled, details below.
 
 The plugin provides two separate filter operations:
  1. Syntax highlighting (**highlight**): HTML \<pre> elements with an attribute of **data-ace-highlight-code**  are displayed using the JavaScript Ace code editor in read-only mode. This provides syntax colouring of the code.
@@ -67,6 +67,9 @@ This method is recommended for those who want a user-friendly way of implementin
   * Alternatively, view Source code to edit both code and parameters.
 * Ace-inline formatting will be viewable outside of the editor; and in-built Prism formatting is visible within.
 
+**Alternative Simplified mode *Enabled***
+If you're only interested in the syntax highlighting then *enable* the simplified mode in the filter options, then there is no need to add the **data-ace-highlight-code** in the `<pre> fence.
+
 **Caveats:**
 * Currently, the use of \<script> tags are not supported by TinyMCE, even when using the Source Code option. Therefore, avoid the use of any \<script> tags, and avoid editing code containing any tags in this editor as the HTML is **automatically stripped of \<script> tags upon editing and saving any material**.
 * Use the **'data-'** prefix for every starting parameter. TinyMCE will **strip away any non-'data' tags upon editing and saving the question**.
@@ -97,8 +100,9 @@ This method is recommended for those who want a familiar, consistent way of impl
 **Caveats:**
 * Make sure you follow valid Markdown Extra syntax. This means that any extra specified attributes have to be in the **same line** as the initial backticks (\`\`\`) and contain a **=** between each attribute and its value, and **no spaces** within either the attribute or the value (spaces are the delimiter for Markdown Extra).
 
-**How to use (Extended Use):**
-* This filter can recognise a *language* string after the initial triple backticks (\`\`\`), as in conventional markdown norms.  If the *Administrative Option* for markdown rendering (see below) is set to *Extended* then this string is captured and parsed.
+**How to use (Simplified Use):**
+* You must *enable* the simplified mode in the filter options.
+* This filter can recognise a *language* string after the initial triple backticks (\`\`\`), as in conventional markdown norms.  This string is captured and parsed.
 * Example below will Ace highlight a Python code block:
     ~~~
     ```python
@@ -174,26 +178,26 @@ Every attribute is supported in HTML.
 | **data-lang**     | This attribute sets the language to be used by the Ace editor for syntax colouring and in the case of interactive, the language for running the code on the Jobe server. A language must be supported in the Jobe server for the interactive code to run. Default: python3.| Highlight, Interactive, TinyMCE, Markdown |
 | **data-ace-lang** | If set and non-empty, sets the language used by the Ace editor for syntax colouring, independently of **data-lang** in interactive. This allows the author to have syntax colouring different to the execution language in Jobe. Information on all Ace highlightable languages can be found [here](https://ace.c9.io/#nav=about) . | Highlight, Interactive, TinyMCE, Markdown |
 | **data-start-line-number** | Sets the line number used for the first displayed line of code, if line numbers are to be shown. Set to **none** for no line numbers. Default is **none** for highlight elements and **1** for interactive elements. | Highlight, Interactive, TinyMCE, Markdown |
-| **data-font-size** | Sets the display font size used by Ace. Default 14px. | Highlight, Interactive, TinyMCE, Markdown,  Markdown Extended |
-| **data-min-lines** | The minimum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown, Markdown Extended|
-| **data-max-lines** | The maximum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown, Markdown Extended |
-| **data-dark-theme-mode** | Selects when to use a dark mode for the Ace editor. Has values 0, 1 or 2 for no, maybe and yes. If 1 (maybe) is chosen, the dark theme will be used if the browser's prefers-color-scheme:dark media query returns a match, so this may change with browser, operating system or time of day. The default value is set by the administrator setting for the plugin. | Highlight, Interactive, TinyMCE, Markdown |
-| **data-button-name** | This sets the text within the Try it! button. Default 'Try it!'. | Interactive, TinyMCE, Markdown, Markdown Extended |
-| **data-readonly** | This disables editing of the code, so students can only run the supplied code without modification. The `Try it!` button is still displayed and operational.| Interactive, TinyMCE, Markdown, Markdown Extended |
-| **data-hidden** | This hides the code, leaving only `Try it!` visible. | Interactive, TinyMCE, Markdown, Markdown Extended |
-| **data-stdin-taid** | This string value specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown, Markdown Extended |
+| **data-font-size** | Sets the display font size used by Ace. Default 14px. | Highlight, Interactive, TinyMCE, Markdown,  Simplified Mode |
+| **data-min-lines** | The minimum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown, Simplified Mode |
+| **data-max-lines** | The maximum number of lines to display in the Ace editor. | Highlight, Interactive, TinyMCE, Markdown, Simplified Mode |
+| **data-dark-theme-mode** | Selects when to use a dark mode for the Ace editor. Has values 0, 1 or 2 for no, maybe and yes. If 1 (maybe) is chosen, the dark theme will be used if the browser's prefers-color-scheme:dark media query returns a match, so this may change with browser, operating system or time of day. The default value is set by the administrator setting for the plugin. | Highlight, Interactive, TinyMCE, Markdown, Simplified Mode |
+| **data-button-name** | This sets the text within the Try it! button. Default 'Try it!'. | Interactive, TinyMCE, Markdown, Simplified Mode (provided it is a single word) |
+| **data-readonly** | This disables editing of the code, so students can only run the supplied code without modification. The `Try it!` button is still displayed and operational.| Interactive, TinyMCE, Markdown, Simplified Mode |
+| **data-hidden** | This hides the code, leaving only `Try it!` visible. | Interactive, TinyMCE, Markdown, Simplified Mode |
+| **data-stdin-taid** | This string value specifies the ID of a textarea element and supplies the HTMLelement.innerText attribute as standard input to the program when the `Try it!` button is clicked. Overrides data-stdin if both are given (and data-stdin is deprecated). | Interactive, TinyMCE, Markdown, Simplified Mode |
 | **data-file-taids** | This attribute provides a pseudo-file interface where the user is able to treat one or more supplementary textarea elements like files, entering the pseudo-file contents into the textarea(s) before clicking `Try it!`. The attribute is a JSON specification that maps from filename(s) to the ID(s) of textarea element(s) and supplies the HTMLelement.innerText attribute that will be used to provide the job with one or more files in the working directory. For each attribute, a file of the specified filename is created and the contents of that file are the contents of the associated textarea at the time `Try it!` is clicked. | Interactive, TinyMCE |
-| **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown, Markdown Extended |
+| **data-file-upload-id** | This attribute is the ID of an \<input type="file> element. The user can select one or more files (at 2MB max each) using this element and the files are uploaded into the program's working space when it is run. Additionally, filenames will be stripped of symbols that throw errors in executing Jobe. These filenames are also implemented on the command line as argv, and can be accessible by parsing the args. | Interactive, TinyMCE, Markdown, Simplified Mode |
 | **data-params** | This is a JSON object that defines any Jobe sandbox parameters that are to have non-standard values, such as `cputime` and `memorylimit`. This shouldn't generally be needed. Default: '{"cputime": 5}'. Note that the maximum cputime is set via the administrative interface for the CodeRunner web service and any attempt to exceed that will display an error. | Interactive, TinyMCE |
-| **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown, Markdown Extended |
+| **data-code-mapper** | This string value must be the name of a global JavaScript function (usually defined in a \<script> element preceding the \<pre> element) that takes the Ace editor code as a parameter and returns a modified version, e.g. with extra code inserted. If used in conjunction with data-prefix and data-suffix (below), the code-mapper function is applied first and then the prefix and/or suffix code is added. | Interactive, Markdown, Simplified Mode |
 | **data-prefix** |  This string value is code to be inserted in front of the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
 | **data-suffix** |  This string value is code to be inserted after the contents of the ace editor before sending the program to the Jobe server for execution. An extra newline is *not* inserted between the two strings, so if you want one you must include it explicitly. | Interactive, TinyMCE, Markdown |
-| **data-html-output** | If this attribute is present (with any value) the output from the run is interpreted as raw HTML. The output from the program is simply wrapped in a \<div> element and inserted directly after `Try it!`. An example of a ace-interactive-code panel that that uses data-prefix, data-suffix and data-html-output to provide Matplotlib graphical output in Python is included in the repo `samples` folder (the file `demoaceinline.xml`). | Interactive, TinyMCE, Markdown, Markdown Extended |
+| **data-html-output** | If this attribute is present (with any value) the output from the run is interpreted as raw HTML. The output from the program is simply wrapped in a \<div> element and inserted directly after `Try it!`. An example of a ace-interactive-code panel that that uses data-prefix, data-suffix and data-html-output to provide Matplotlib graphical output in Python is included in the repo `samples` folder (the file `demoaceinline.xml`). | Interactive, TinyMCE, Markdown, Simplified Mode |
 | **data-max-output-length** | The maximum length of an output string (more or less). Output greater than this is truncated. Default 30,000 characters. | Interactive, TinyMCE, Markdown |
-| **line-numbers** | Sets the line number used for the first displayed line of code. Default is **1**.  If Option is not specified then line-number is off in highlighted elements. |  Markdown Extended |
+| **line-numbers** | Sets the line number used for the first displayed line of code. Default is **1**.  If Option is not specified then line-number is off in highlighted elements. | Simplified Mode |
 
 
-For Markdown Extended mode the *data-* prefix is not required.
+**For simplified mode the *data-* prefix is not required.**
 
 
 ### Code examples:
@@ -304,7 +308,7 @@ There are three plugin administrator setting provided directly by this plugin:
 
   1.  The default button name for **interactive** elements can be changed from its default name: *Try it!* (or whatever was set by the language settings for non-English users) to anything else.
   2.  The administrator can set whether to use the Ace editor's light theme or dark theme by default (although individual filter instances can override this with the data-dark-theme-mode option). There is also an option to use the dark theme 'sometimes', meaning whenever the browser's 'prefers-color-scheme:dark' media query returns a match. This may change with browser, operating system or time of day.
-  3.  The administrator can set three different modes about how `<code>` blocks should be interpreted.  Markdown will always put example code in such blocks: (1) Off: do not attempt to apply the filter, if you desire Ace features then these must appear in the `<pre>` block.  (2) On: this allows `<code>` blocks decorated to be rendered, Markdown Extra will take the contents within the braces {} following the opening triple tick to decorate the code blocl.  (3) Extended: (new in v1.4.0) the string attached to the opening triple tick (\`\`\`) is given as the classname for the `<code>` block - this is normal Markdown behaviour. This string is parsed to control the filters behaviour.
+  3.  The administrator can set two different modes about how \<pre><code> blocks should be interpreted.  This is called the *Simplified Mode* which can be either *Off* or *Enabled*.  Markdown and TinyMCE will always put example class decorators in such blocks: (1) Off: \<pre><code> fences must be explicitly decorated to turn on the ace inline filter.  (2) Enabled: a simple class setting with just one attribute in the \<pre> fence will be taken as a language setting and will be ace highlighted (typical from TinyMCE), or a single class setting in a \<code> fence will be parsed to enable many ace inline features (typical of Markdown).
 
 Each of these three settings can also be overridden for an individual course (or other context) (new in v1.4.1). From the course, click "More" > "Filters" and, once "Ace inline" is set to "On", click the "Settings" link next to it to override any of the three settings for that course only. Leave a field as "Use site default" to keep inheriting the site administrator's setting.
 
@@ -330,6 +334,10 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.4.4
+   Reworked the name for the new feature from Markdown Extended to Simplified Mode.
+   The feature now allows minimist TinyMCE usage to also result in syntax highlighting.
+
  * Version 1.4.3
    Added Behat tests for the Extended Markdown rendering mode, covering both
    highlighted (read-only) and interactive rendering, for both C and Python

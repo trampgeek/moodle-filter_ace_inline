@@ -1,0 +1,7 @@
+```python3
+print("SIMPLIFIEDHIGHLIGHTMARKER")
+```
+
+```python3:interactive
+print("SIMPLIFIEDINTERACTIVEMARKER")
+```
