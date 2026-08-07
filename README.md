@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.4.3, 6 August 2026.
+Version 1.4.5, 7 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -334,6 +334,14 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.4.5
+   Added C(++) datatype highlighting: identifiers ending in "_t" (e.g. size_t,
+   uint32_t) or written in PascalCase (e.g. MyStruct) are now highlighted as
+   datatypes, distinct from ordinary identifiers and keywords. Implemented as
+   a custom Ace mode built at runtime on top of CodeRunner's vendored C/C++
+   mode, rather than editing that vendored file directly, so it survives
+   CodeRunner/Ace upgrades. (Claude written)
+
  * Version 1.4.4
    Reworked the name for the new feature from Markdown Extended to Simplified Mode.
    The feature now allows minimist TinyMCE usage to also result in syntax highlighting.
@@ -355,13 +363,13 @@ It is also recommended to adjust the settings of the scrollbar style in the Fire
    that course as expected. (Claude written)
 
  * Version 1.4.1
-   Added support for overriding the three administrator settings (button label, dark theme mode, markdown rendering) at a per-context (e.g. per-course) level. From a course's "More > Filters" page, click "Settings" next to "Ace inline" to override any of these for that course; leave a field as "Use site default" to keep inheriting the administrator's setting. Credit to Paul McKeown for the this idea.
+   Added support for overriding the three administrator settings (button label, dark theme mode, markdown rendering) at a per-context (e.g. per-course) level. From a course's "More > Filters" page, click "Settings" next to "Ace inline" to override any of these for that course; leave a field as "Use site default" to keep inheriting the administrator's setting. Credit to Paul McKeown for this idea.
 
  * Version 1.4.0
    Added feature for allowing standard language string to be added to a markdown code block (triple tick).  This language string can also be encoded with addition Ace filter parameters - the elements separated by colons (:).  Added administrative setting to allow control of Markdown code block rendered, including this new feature (which is called Extended).
 
  * Version 1.3.11
-   Added code to defer hiding of the original &lt;pre&gt; element until the rendering of the content by Ace is complete. If this doesn't happen within 2 seconds,
+   Added code to defer hiding of the original \<pre> element until the rendering of the content by Ace is complete. If this doesn't happen within 2 seconds,
    the pre element is enclosed in a red border with a warning message and the ace content plus any associated UI is removed.
    
  * Version 1.3.10

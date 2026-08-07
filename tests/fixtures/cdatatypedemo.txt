@@ -1,0 +1,12 @@
+<pre data-ace-highlight-code data-lang="c">
+typedef struct {
+    int fieldx;
+    int fieldy;
+} MyStructDatatype;
+
+size_t countvar;
+uint32_t valuevar;
+MyStructDatatype pointvar;
+int plainvar;
+int ALL_CAPS_MACRO;
+</pre>

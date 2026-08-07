@@ -26,6 +26,7 @@
 import {UiParameters} from "filter_ace_inline/local/ui_parameters";
 import {addUi} from "filter_ace_inline/local/display_ui";
 import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
+import {getCDatatypeMode} from "filter_ace_inline/local/c_datatype_mode";
 import {getString} from 'core/str';
 
 const SIMPLIFIED_MODE_ENABLED = "1";
@@ -242,7 +243,9 @@ const setUpAce = async(pre, uiParameters, isInteractive) => {
     if (aceLang in ACE_MODE_MAP) {
         aceLang = ACE_MODE_MAP[aceLang];
     }
-    const mode = 'ace/mode/' + aceLang;
+    // The c_cpp mode gets a custom variant that additionally highlights
+    // "_t"-suffixed and PascalCase identifiers as datatypes.
+    const mode = aceLang === 'c_cpp' ? await getCDatatypeMode() : 'ace/mode/' + aceLang;
     const text = pre.textContent;
     const lines = text.split("\n");
     const numLines = lines.length;
