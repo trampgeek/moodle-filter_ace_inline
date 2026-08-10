@@ -36,7 +36,6 @@ if (class_exists('\core_filters\text_filter')) {
  *
  */
 class text_filter extends \filter_ace_inline_base_text_filter {
-
     /**
      * @var moodle_page page object.
      */
@@ -155,11 +154,13 @@ class text_filter extends \filter_ace_inline_base_text_filter {
         // all rendered content contains a <code> element somewhere.
         $hassimplifiedcode = $config['simplified_mode'] == 1 && strpos($text, '<code') !== false;
         if ($hasexplicitmarker || $hassimplifiedcode) {
-            $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
-                'initAceInlineEditor', [$config]);
+            $this->page->requires->js_call_amd(
+                'filter_ace_inline/ace_inline_code',
+                'initAceInlineEditor',
+                [$config]
+            );
         }
 
         return $text;
     }
-
 }

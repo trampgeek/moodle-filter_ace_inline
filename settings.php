@@ -26,13 +26,15 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-
     // Language strings.
     $heading = get_string('settings_heading', 'filter_ace_inline');
     $description = get_string('settings_desc', 'filter_ace_inline');
 
-    $settings->add(new admin_setting_heading('ace_inlinesettings',
-            $heading, $description));
+    $settings->add(new admin_setting_heading(
+        'ace_inlinesettings',
+        $heading,
+        $description
+    ));
 
     // Dark theme options.
     $darkoptions = [
@@ -44,16 +46,20 @@ if ($ADMIN->fulltree) {
         "filter_ace_inline/dark_theme_mode",
         get_string('settings_dark_theme', 'filter_ace_inline'),
         get_string('settings_dark_theme_desc', 'filter_ace_inline'),
-        0, $darkoptions));
+        0,
+        $darkoptions
+    ));
 
     // Try it button label.
     $buttonlabel = get_string('default_button_label', 'filter_ace_inline');
-    
+
     $settings->add(new admin_setting_configtext(
         'filter_ace_inline/button_label',
-            get_string('settings_button_label', 'filter_ace_inline'),
-            get_string('settings_button_label_desc', 'filter_ace_inline'),
-            $buttonlabel, PARAM_TEXT));
+        get_string('settings_button_label', 'filter_ace_inline'),
+        get_string('settings_button_label_desc', 'filter_ace_inline'),
+        $buttonlabel,
+        PARAM_TEXT
+    ));
 
     // Enable mode options.
     $enablemodeoptions = [
@@ -64,6 +70,7 @@ if ($ADMIN->fulltree) {
         "filter_ace_inline/simplified_mode",
         get_string('settings_simplified_mode_label', 'filter_ace_inline'),
         get_string('settings_simplified_mode_desc', 'filter_ace_inline'),
-        0, $enablemodeoptions));
-
+        0,
+        $enablemodeoptions
+    ));
 }

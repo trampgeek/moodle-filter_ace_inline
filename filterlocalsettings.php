@@ -27,13 +27,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Local settings form for the ace_inline filter.
  */
 class ace_inline_filter_local_settings_form extends \filter_local_settings_form {
-
     #[\Override]
     protected function definition_inner($mform) {
         $usedefault = get_string('settings_use_default', 'filter_ace_inline');
@@ -44,11 +41,18 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
             1 => get_string('settings_dark_preference', 'filter_ace_inline'),
             2 => get_string('settings_dark_always', 'filter_ace_inline'),
         ];
-        $mform->addElement('select', 'dark_theme_mode',
-                get_string('settings_dark_theme', 'filter_ace_inline'), $darkoptions);
+        $mform->addElement(
+            'select',
+            'dark_theme_mode',
+            get_string('settings_dark_theme', 'filter_ace_inline'),
+            $darkoptions
+        );
 
-        $mform->addElement('text', 'button_label',
-                get_string('settings_button_label', 'filter_ace_inline'));
+        $mform->addElement(
+            'text',
+            'button_label',
+            get_string('settings_button_label', 'filter_ace_inline')
+        );
         $mform->setType('button_label', PARAM_TEXT);
 
         $enablemodeoptions = [
@@ -56,8 +60,12 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
             0 => get_string('settings_simplified_mode_off', 'filter_ace_inline'),
             1 => get_string('settings_simplified_mode_enabled', 'filter_ace_inline'),
         ];
-        $mform->addElement('select', 'simplified_mode',
-                get_string('settings_simplified_mode_label', 'filter_ace_inline'), $enablemodeoptions);
+        $mform->addElement(
+            'select',
+            'simplified_mode',
+            get_string('settings_simplified_mode_label', 'filter_ace_inline'),
+            $enablemodeoptions
+        );
     }
 
     #[\Override]

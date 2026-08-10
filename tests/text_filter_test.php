@@ -25,7 +25,6 @@ namespace filter_ace_inline;
  * @covers \filter_ace_inline\text_filter
  */
 final class text_filter_test extends \advanced_testcase {
-
     /**
      * Builds a text_filter wired up with a real moodle_page for the given context, so
      * do_ace_editor()'s $this->page->requires calls have somewhere real to land.

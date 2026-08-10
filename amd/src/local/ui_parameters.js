@@ -161,7 +161,6 @@ export class UiParameters {
         const defaultParams = {...(isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT)};
 
         defaultParams['lang'] = language;
-        this.pre.setAttribute('lang', language);
         this.modifiedLang = true;
         if (isInteractive) {
             defaultParams['button-name'] = config.button_label;

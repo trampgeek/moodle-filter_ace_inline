@@ -22,8 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use Behat\Mink\Exception\ExpectationException as ExpectationException;
-use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
+use Behat\Mink\Exception\ExpectationException;
+use Facebook\WebDriver\Exception\NoSuchAlertException;
 
 /**
  * Class designed for behat tests for ace_inline specifically.
@@ -32,7 +32,6 @@ use Facebook\WebDriver\Exception\NoSuchAlertException as NoSuchAlertException;
  * Behat testing.
  */
 class behat_filter_ace_inline extends behat_base {
-
     /**
      * Enables the ace inline functionality globally and
      * the webserver sandbox to enabled for testing purposes.
@@ -47,7 +46,7 @@ class behat_filter_ace_inline extends behat_base {
     public function the_ace_inline_sandbox_enabled() {
         global $CFG;
         filter_set_global_state('ace_inline', TEXTFILTER_ON, 0);
-        require($CFG->dirroot .'/filter/ace_inline/tests/fixtures/test-sandbox-config.php');
+        require($CFG->dirroot . '/filter/ace_inline/tests/fixtures/test-sandbox-config.php');
     }
 
     /**
@@ -196,7 +195,7 @@ class behat_filter_ace_inline extends behat_base {
     public function file_contents_exists_in_question_contents($filename, $name, $field) {
         global $DB;
         // Get the contents of the file in fixtures.
-        $contents = file_get_contents(__DIR__.'/../fixtures/'.$filename);
+        $contents = file_get_contents(__DIR__ . '/../fixtures/' . $filename);
         // Set the specified field to contents in the database if id is correct.
         $DB->set_field('question', $field, $contents, ['name' => $name]);
     }
@@ -215,7 +214,7 @@ class behat_filter_ace_inline extends behat_base {
     public function file_contents_exists_in_question_contents_as_markdown($filename, $name, $field) {
         global $DB;
         // Get the contents of the file in fixtures.
-        $contents = file_get_contents(__DIR__.'/../fixtures/'.$filename);
+        $contents = file_get_contents(__DIR__ . '/../fixtures/' . $filename);
         // Set the specified field to contents, and its format to Markdown, in the database.
         $DB->set_field('question', $field, $contents, ['name' => $name]);
         $DB->set_field('question', $field . 'format', FORMAT_MARKDOWN, ['name' => $name]);
