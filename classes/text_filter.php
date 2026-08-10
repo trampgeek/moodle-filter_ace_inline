@@ -49,6 +49,11 @@ class text_filter extends \filter_ace_inline_base_text_filter {
      * @var array Any options for this filter in this context.
      */
     protected $options;
+    /**
+     * @var array|null Cached return value of get_effective_config(), memoised since the
+     * filter's context is fixed for the life of the instance (see setup()).
+     */
+    protected $effectiveconfig = null;
 
     /**
      * This function is called by the filter system to setup the filter.
@@ -95,9 +100,19 @@ class text_filter extends \filter_ace_inline_base_text_filter {
      * inside activities within the course (which are filtered in their own,
      * separate, module context nested below it).
      *
+     * Memoised in $this->effectiveconfig, since filter() can be called many times per page
+     * (once per piece of content - e.g. once per forum post) and both the context chain walk
+     * and each filter_get_local_config() call are real work: the latter is an uncached
+     * get_records_menu, so on a page with many posts and a deep context chain, re-running this
+     * per call adds up to a lot of avoidable queries for a value that cannot change within the
+     * lifetime of this filter instance.
+     *
      * @return array The effective 'button_label', 'dark_theme_mode' and 'simplified_mode' settings.
      */
     protected function get_effective_config() {
+        if ($this->effectiveconfig !== null) {
+            return $this->effectiveconfig;
+        }
         $names = ['button_label', 'dark_theme_mode', 'simplified_mode'];
         $config = [];
         for ($context = $this->context; $context; $context = $context->get_parent_context()) {
@@ -116,7 +131,8 @@ class text_filter extends \filter_ace_inline_base_text_filter {
                 $config[$name] = get_config('filter_ace_inline', $name);
             }
         }
-        return $config;
+        $this->effectiveconfig = $config;
+        return $this->effectiveconfig;
     }
 
     /**
@@ -132,7 +148,13 @@ class text_filter extends \filter_ace_inline_base_text_filter {
      * @return {string} The processed text.
      */
     public function do_ace_editor($text, $config) {
-        if ((strpos($text, 'ace-interactive-code') !== false) || (strpos($text, 'ace-highlight-code') !== false) || (strpos($text, '<code') !== false)) {
+        $hasexplicitmarker = strpos($text, 'ace-interactive-code') !== false
+            || strpos($text, 'ace-highlight-code') !== false;
+        // The bare '<code' check only applies under simplified mode - without it, this would
+        // queue the AMD module on almost every page on most sites, for no reason, since nearly
+        // all rendered content contains a <code> element somewhere.
+        $hassimplifiedcode = $config['simplified_mode'] == 1 && strpos($text, '<code') !== false;
+        if ($hasexplicitmarker || $hassimplifiedcode) {
             $this->page->requires->js_call_amd('filter_ace_inline/ace_inline_code',
                 'initAceInlineEditor', [$config]);
         }
