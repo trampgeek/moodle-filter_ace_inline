@@ -44,6 +44,10 @@ Feature: Extended Markdown display and behaviour attributes
     When I am on the "extendedmarkdownattrsdemo" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'darkforcec')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' ace-tomorrow-night ')]" "xpath_element" should exist
 
+  Scenario: an earlier block's line-numbers does not leak into a later highlighted block with no line-numbers of its own (C, highlighted)
+    When I am on the "extendedmarkdownattrsdemo" "core_question > preview" page logged in as teacher
+    Then "//pre[contains(., 'darkforcec')]/following-sibling::div[contains(@class, 'ace_editor')][1]//div[contains(@class, 'ace_gutter-active-line') and text()='5']" "xpath_element" should not exist
+
   Scenario: dark-theme-mode forces the light theme regardless of the site default (Python, interactive)
     When I am on the "extendedmarkdownattrsdemo" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'lightforcepy')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' ace-tm ')]" "xpath_element" should exist

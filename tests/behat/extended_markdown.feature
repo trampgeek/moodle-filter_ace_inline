@@ -53,3 +53,9 @@ Feature: Extended Markdown rendering modes for the Ace inline filter
     Then "//pre[contains(., 'HelloPyInteractive')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' readonly ')]" "xpath_element" should not exist
     And "//pre[contains(., 'HelloPyInteractive')]/following-sibling::div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'Try it!')]" "xpath_element" should exist
     And I should see "string" highlighting on "HelloPyInteractive" with filter ace inline
+
+  Scenario: A bare language string with no per-block override picks up the admin's dark-theme-mode default
+    Given the following config values are set as admin:
+      | dark_theme_mode | 2 | filter_ace_inline |
+    When I am on the "extendedmarkdowndemo" "core_question > preview" page logged in as teacher
+    Then "//pre[contains(., 'HelloCHighlight')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' ace-tomorrow-night ')]" "xpath_element" should exist

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {createComponent} from "filter_ace_inline/local/utils";
+import {createComponent, OUTPUT_TEXT_CLASS} from "filter_ace_inline/local/utils";
 import {handleButtonClick, executeCode} from "filter_ace_inline/local/ace_interactive";
 
 /**
@@ -47,7 +47,7 @@ export const addUi = async(insertionPoint, getCode, uiParameters) => {
     const buttonDiv = document.createElement("div");
     const outputDisplayArea = createComponent('div', ['filter-ace-inline-output-display'], {});
     // Create a pre-node to contain text.
-    const outputTextArea = createComponent('pre', ['filter-ace-inline-output-text'], {});
+    const outputTextArea = createComponent('pre', [OUTPUT_TEXT_CLASS], {});
     buttonDiv.append(button);
     buttonAndOutputDiv.append(buttonDiv);
     outputDisplayArea.append(outputTextArea);

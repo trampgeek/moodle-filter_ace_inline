@@ -27,9 +27,24 @@ import {UiParameters} from "filter_ace_inline/local/ui_parameters";
 import {addUi} from "filter_ace_inline/local/display_ui";
 import {setupFileHandler} from "filter_ace_inline/local/file_helpers";
 import {getCDatatypeMode} from "filter_ace_inline/local/c_datatype_mode";
+import {OUTPUT_TEXT_CLASS} from "filter_ace_inline/local/utils";
 import {getString} from 'core/str';
 
 const SIMPLIFIED_MODE_ENABLED = "1";
+
+// The legacy explicit opt-in classes. A single class matching one of these is not a language
+// name, so it must never be routed through extractExtendedMarkdownParameters() even when
+// simplified mode is also enabled site-wide alongside older, explicitly-classed content.
+const LEGACY_MARKER_CLASSES = ['ace-highlight-code', 'ace-interactive-code'];
+
+/**
+ * True if, under simplified mode, this classList should be parsed as a bare or colon-separated
+ * "language[:option:value...]" specifier rather than treated as a normal HTML class.
+ * @param {DOMTokenList} classList The classList of the <pre> or <code> element being checked.
+ * @return {bool}
+ */
+const isExtendedMarkdownClass = (classList) =>
+    classList.length === 1 && !LEGACY_MARKER_CLASSES.includes(classList[0]);
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -56,49 +71,57 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
  */
 export const applyAceAndBuildUi = async(root, config) => {
     // Look for ace editor controls in the <pre> fench first.
-    const preElements = root.getElementsByTagName('pre');
+    // Snapshot into a plain array: applyToPre() below can insert a new <pre> (the output box
+    // addUi() builds) as a later sibling of the pre it's attached to, and getElementsByTagName's
+    // collection is live - without this the loop would go on to process its own freshly-inserted
+    // output box as if it were more content to highlight.
+    const preElements = Array.from(root.getElementsByTagName('pre'));
     for (const pre of preElements) {
+        if (pre.classList.contains(OUTPUT_TEXT_CLASS)) {
+            continue;
+        }
         const isInteractive = pre.classList.contains('ace-interactive-code') ||
             pre.hasAttribute('data-ace-interactive-code') ||
             (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                (pre.classList.length === 1) &&
-                    pre.classList[0].includes(":") &&
+                isExtendedMarkdownClass(pre.classList) &&
                     pre.classList[0].includes('interactive')) ||
             false;
         const isHighlight = pre.classList.contains('ace-highlight-code') ||
             pre.hasAttribute('data-ace-highlight-code') ||
             (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                (pre.classList.length === 1)) ||
+                isExtendedMarkdownClass(pre.classList)) ||
             false;
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
             const uiParams = new UiParameters(pre);
-            uiParams.extractUiParameters(isInteractive, config);
+            if (config.simplified_mode === SIMPLIFIED_MODE_ENABLED && isExtendedMarkdownClass(pre.classList)) {
+                uiParams.extractExtendedMarkdownParameters(isInteractive, config, pre.classList[0].split(":"));
+            } else {
+                uiParams.extractUiParameters(isInteractive, config);
+            }
             applyToPre(pre, isInteractive, uiParams);
         }
     }
 
     // Look for ace editor controls in the <code> fence, this should take priority over ace editor controls in the <pre> fence.
-    const codeElements = root.getElementsByTagName('code');
+    const codeElements = Array.from(root.getElementsByTagName('code'));
     for (const code of codeElements) {
         if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
             const isInteractive = code.classList.contains('ace-interactive-code') ||
                 code.hasAttribute('data-ace-interactive-code') ||
                 (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                    (code.classList.length === 1) &&
-                        code.classList[0].includes(":") &&
+                    isExtendedMarkdownClass(code.classList) &&
                         code.classList[0].includes('interactive')) ||
                 false;
             const isHighlight = code.classList.contains('ace-highlight-code') ||
                 code.hasAttribute('data-ace-highlight-code') ||
                 (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                    (code.classList.length === 1)) ||
+                    isExtendedMarkdownClass(code.classList)) ||
                 false;
 
             const uiParams = new UiParameters(code);
 
-            if (config.simplified_mode === SIMPLIFIED_MODE_ENABLED && code.classList.length === 1 &&
-                    code.classList[0].includes(":")) {
-                uiParams.extractExtendedMarkdownParameters(isInteractive, code.classList[0].split(":"));
+            if (config.simplified_mode === SIMPLIFIED_MODE_ENABLED && isExtendedMarkdownClass(code.classList)) {
+                uiParams.extractExtendedMarkdownParameters(isInteractive, config, code.classList[0].split(":"));
             } else {
                 uiParams.extractUiParameters(isInteractive, config);
             }

@@ -27,6 +27,11 @@ import {get_string as getString} from 'core/str';
 
 const RESULT_SUCCESS = 15; // Code for a correct Jobe run.
 
+// Class of the output <pre> that addUi() inserts next to an interactive block. Shared so
+// apply_ace_editor.js can recognise and skip its own output box in simplified mode, where any
+// other singly-classed <pre> is treated as a highlight target.
+export const OUTPUT_TEXT_CLASS = 'filter-ace-inline-output-text';
+
 /**
  * Get the specified language string and return a promise with the respective
  * language string output.

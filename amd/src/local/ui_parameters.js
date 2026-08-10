@@ -94,8 +94,11 @@ export class UiParameters {
      * @param {array} config Config for buttons and darkmode.
      */
     extractUiParameters(isInteractive, config) {
-        // Adds defaults.
-        const defaultParams = isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT;
+        // Adds defaults. Cloned so per-block overrides below (button-name, and the
+        // extractExtendedMarkdownParameters equivalents for lang/start-line-number) never mutate
+        // the shared ACE_HIGHLIGHT/ACE_INTERACTIVE constants and leak into later blocks on the
+        // same page.
+        const defaultParams = {...(isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT)};
         if (isInteractive) {
             defaultParams['button-name'] = config.button_label;
         }
@@ -147,16 +150,22 @@ export class UiParameters {
     /**
      * Extract from the the class specifier (options) various attributes.
      * @param {boolean} isInteractive True if is interactive, else false.
+     * @param {array} config Config for buttons and darkmode.
      * @param {array} options comes form the class specifier string.
      */
-    extractExtendedMarkdownParameters(isInteractive, options) {
+    extractExtendedMarkdownParameters(isInteractive, config, options) {
         const language = options.shift();
         const lineNumbering = popItemPair(options, 'line-numbers');
-        const defaultParams = isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT;
+        // Cloned for the same reason as in extractUiParameters(): these per-block overrides must
+        // never mutate the shared ACE_HIGHLIGHT/ACE_INTERACTIVE constants.
+        const defaultParams = {...(isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT)};
 
         defaultParams['lang'] = language;
         this.pre.setAttribute('lang', language);
         this.modifiedLang = true;
+        if (isInteractive) {
+            defaultParams['button-name'] = config.button_label;
+        }
         if (lineNumbering !== -1) {
             defaultParams['start-line-number'] = parseInt(lineNumbering[1]) || 1;
         }
@@ -165,6 +174,11 @@ export class UiParameters {
             const valuePair = popItemPair(options, attrName);
             const value = (valuePair !== -1) ? valuePair[1] : defaultParams[attrName];
             this.paramsMap[attrName] = value;
+        }
+
+        // Sets dark theme according to config if not previously set (mirrors extractUiParameters()).
+        if (this.paramsMap['dark-theme-mode'] === null) {
+            this.paramsMap['dark-theme-mode'] = config.dark_theme_mode; // 0, 1, 2 for never, sometimes, always.
         }
     }
 
