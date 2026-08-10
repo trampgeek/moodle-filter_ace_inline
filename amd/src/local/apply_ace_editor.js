@@ -33,7 +33,7 @@ import {getString} from 'core/str';
 const SIMPLIFIED_MODE_ENABLED = "1";
 
 // The legacy explicit opt-in classes. A single class matching one of these is not a language
-// name, so it must never be routed through extractExtendedMarkdownParameters() even when
+// name, so it must never be routed through extractSimplifiedClassModeParameters() even when
 // simplified mode is also enabled site-wide alongside older, explicitly-classed content.
 const LEGACY_MARKER_CLASSES = ['ace-highlight-code', 'ace-interactive-code'];
 
@@ -95,7 +95,7 @@ export const applyAceAndBuildUi = async(root, config) => {
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
             const uiParams = new UiParameters(pre);
             if (isSimplifiedClassMode(pre.classList, config)) {
-                uiParams.extractExtendedMarkdownParameters(isInteractive, config, pre.classList[0].split(":"));
+                uiParams.extractSimplifiedClassModeParameters(isInteractive, config, pre.classList[0].split(":"));
             } else {
                 uiParams.extractUiParameters(isInteractive, config);
             }
@@ -120,7 +120,7 @@ export const applyAceAndBuildUi = async(root, config) => {
             const uiParams = new UiParameters(code);
 
             if (isSimplifiedClassMode(code.classList, config)) {
-                uiParams.extractExtendedMarkdownParameters(isInteractive, config, code.classList[0].split(":"));
+                uiParams.extractSimplifiedClassModeParameters(isInteractive, config, code.classList[0].split(":"));
             } else {
                 uiParams.extractUiParameters(isInteractive, config);
             }

@@ -95,9 +95,9 @@ export class UiParameters {
      */
     extractUiParameters(isInteractive, config) {
         // Adds defaults. Cloned so per-block overrides below (button-name, and the
-        // extractExtendedMarkdownParameters equivalents for lang/start-line-number) never mutate
-        // the shared ACE_HIGHLIGHT/ACE_INTERACTIVE constants and leak into later blocks on the
-        // same page.
+        // extractSimplifiedClassModeParameters equivalents for lang/start-line-number) never
+        // mutate the shared ACE_HIGHLIGHT/ACE_INTERACTIVE constants and leak into later blocks on
+        // the same page.
         const defaultParams = {...(isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT)};
         if (isInteractive) {
             defaultParams['button-name'] = config.button_label;
@@ -153,7 +153,7 @@ export class UiParameters {
      * @param {array} config Config for buttons and darkmode.
      * @param {array} options comes form the class specifier string.
      */
-    extractExtendedMarkdownParameters(isInteractive, config, options) {
+    extractSimplifiedClassModeParameters(isInteractive, config, options) {
         const language = options.shift();
         const lineNumbering = popItemPair(options, 'line-numbers');
         // Cloned for the same reason as in extractUiParameters(): these per-block overrides must
