@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {createComponent, getLangString} from "filter_ace_inline/local/utils";
+import {createComponent, escapeHtml, getLangString} from "filter_ace_inline/local/utils";
 
 let uploadFiles = {};
 const MAX_FILE_SIZE_BYTES = 2097152;
@@ -109,14 +109,14 @@ export const setupFileHandler = async(uploadElementId) => {
                 .then(result => {
                     // A map for ids.
                     if (parsedName !== file.name) {
-                        errorHtml.innerHTML = '<li><em>' + file.name + '</em><strong>&nbsp;&rArr;&nbsp;'
-                            + parsedName + '</strong></li>' + errorHtml.innerHTML;
+                        errorHtml.innerHTML = '<li><em>' + escapeHtml(file.name) + '</em><strong>&nbsp;&rArr;&nbsp;'
+                            + escapeHtml(parsedName) + '</strong></li>' + errorHtml.innerHTML;
                         }
                     fileValues[uploadElementId] = result;
                     return null;
                 })
                 .catch(() => {
-                    fatalHtml.innerHTML = '<li><strong><em>' + file.name + '</em>&nbsp;'
+                    fatalHtml.innerHTML = '<li><strong><em>' + escapeHtml(file.name) + '</em>&nbsp;'
                         + '</strong></li>' + fatalHtml.innerHTML;
                 });
             if (fileValues.size !== 0) {
