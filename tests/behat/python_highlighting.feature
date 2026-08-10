@@ -31,7 +31,8 @@ Feature: Visual checks for Python syntax highlighting
     And I should see "keyword" highlighting on "class" with filter ace inline
     And I should see "function" highlighting on "range" with filter ace inline
     And I should see "string" highlighting on "Class" with filter ace inline
-    And I should see "keyword" highlighting on "None" with filter ace inline
+    # None is tokenised the same as True/False - a language-level constant, not a keyword.
+    And I should see "constant" highlighting on "None" with filter ace inline
     And I should see "keyword" highlighting on "def" with filter ace inline
 
   Scenario: Checks text is not highlighted in other languages

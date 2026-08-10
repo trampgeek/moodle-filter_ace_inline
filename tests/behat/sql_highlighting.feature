@@ -39,7 +39,9 @@ Feature: Visual checks for SQL syntax highlighting
     And the programming language is "sql" in filter ace inline
     And I should see "identifier" highlighting on "System" with filter ace inline
     And I should see "identifier" highlighting on "def" with filter ace inline
-    And I should see "identifier" highlighting on "True" with filter ace inline
+    # Not "True": TRUE is a genuine SQL boolean literal, so Ace's SQL mode correctly
+    # highlights it - it isn't cross-language contamination from Python.
+    And I should see "identifier" highlighting on "None" with filter ace inline
     And I should see "identifier" highlighting on "while" with filter ace inline
     And I should see "identifier" highlighting on "boolean" with filter ace inline
     And I should see "identifier" highlighting on "let" with filter ace inline

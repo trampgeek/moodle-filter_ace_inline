@@ -37,7 +37,7 @@ function trial()
     return;
 
 
-#include <stdio.h>
+#include &lt;stdio.h&gt;
 int main(void) {
     putchar('x');
     bool true; 

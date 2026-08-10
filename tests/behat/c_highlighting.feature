@@ -29,7 +29,9 @@ Feature: Visual checks for C(++) syntax highlighting
     And I should see "include" highlighting on "iostream" with filter ace inline
     And I should see "include" highlighting on "stdio" with filter ace inline
     And I should see "keyword" highlighting on "using" with filter ace inline
-    And I should see "keyword" highlighting on "bool" with filter ace inline
+    # "bool" is a storage/type-declaring keyword in Ace's tokenisation (ace_storage ace_type),
+    # the same category "sqltype" maps to - not "keyword".
+    And I should see "sqltype" highlighting on "bool" with filter ace inline
     And I should see "function" highlighting on "putchar" with filter ace inline
     And I should see "string" highlighting on "Hello" with filter ace inline
     And I should see "keyword" highlighting on "include" with filter ace inline
@@ -37,9 +39,13 @@ Feature: Visual checks for C(++) syntax highlighting
   Scenario: Checks text is not highlighted in other languages
     When I am on the "cdemo" "core_question > preview" page logged in as teacher
     And the programming language is "c" in filter ace inline
-    And I should see "identifier" highlighting on "System" with filter ace inline
-    And I should see "identifier" highlighting on "None" with filter ace inline
-    And I should see "identifier" highlighting on "True" with filter ace inline
-    And I should see "identifier" highlighting on "Boolean" with filter ace inline
+    # System/None/True/Boolean are deliberately not used here: they're PascalCase, and the C
+    # datatype-highlighting mode (see c_datatype_highlighting.feature) correctly classifies any
+    # PascalCase identifier as a probable type name regardless of source language - that's a
+    # separate, intentional feature, not cross-language contamination.
+    And I should see "identifier" highlighting on "args" with filter ace inline
+    And I should see "identifier" highlighting on "abstract" with filter ace inline
+    And I should see "identifier" highlighting on "import" with filter ace inline
+    And I should see "identifier" highlighting on "def" with filter ace inline
     And I should see "identifier" highlighting on "boolean" with filter ace inline
     And I should see "identifier" highlighting on "let" with filter ace inline

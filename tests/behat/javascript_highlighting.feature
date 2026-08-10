@@ -23,14 +23,17 @@ Feature: Visual checks for JavaScript syntax highlighting
     And "javascriptdemo.txt" exists in question "javascriptdemo" "questiontext" for filter ace inline
     And I have enabled the sandbox and ace inline filter
 
-  Scenario: Checks Java is highlighted correctly
+  Scenario: Checks JavaScript is highlighted correctly
     When I am on the "javascriptdemo" "core_question > preview" page logged in as teacher
     And the programming language is "javascript" in filter ace inline
     And I should see "keyword" highlighting on "void" with filter ace inline
     And I should see "string" highlighting on "js" with filter ace inline
     And I should see "constant" highlighting on "true" with filter ace inline
     And I should see "constant" highlighting on "null" with filter ace inline
-    And I should see "keyword" highlighting on "function" with filter ace inline
+    # "function" is a storage/type-declaring keyword in Ace's tokenisation (ace_storage
+    # ace_type), the same category as SQL's column type names - hence "sqltype" here, not
+    # "keyword".
+    And I should see "sqltype" highlighting on "function" with filter ace inline
 
   Scenario: Checks text is not highlighted in other languages
     When I am on the "javascriptdemo" "core_question > preview" page logged in as teacher
