@@ -38,13 +38,16 @@ const SIMPLIFIED_MODE_ENABLED = "1";
 const LEGACY_MARKER_CLASSES = ['ace-highlight-code', 'ace-interactive-code'];
 
 /**
- * True if, under simplified mode, this classList should be parsed as a bare or colon-separated
- * "language[:option:value...]" specifier rather than treated as a normal HTML class.
+ * True if simplified mode is enabled and this classList should be parsed as a bare or
+ * colon-separated "language[:option:value...]" specifier rather than treated as a normal HTML
+ * class.
  * @param {DOMTokenList} classList The classList of the <pre> or <code> element being checked.
+ * @param {object} config The plugin configuration settings.
  * @return {bool}
  */
-const isExtendedMarkdownClass = (classList) =>
-    classList.length === 1 && !LEGACY_MARKER_CLASSES.includes(classList[0]);
+const isSimplifiedClassMode = (classList, config) =>
+    config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
+        classList.length === 1 && !LEGACY_MARKER_CLASSES.includes(classList[0]);
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -82,18 +85,16 @@ export const applyAceAndBuildUi = async(root, config) => {
         }
         const isInteractive = pre.classList.contains('ace-interactive-code') ||
             pre.hasAttribute('data-ace-interactive-code') ||
-            (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                isExtendedMarkdownClass(pre.classList) &&
-                    pre.classList[0].includes('interactive')) ||
+            (isSimplifiedClassMode(pre.classList, config) &&
+                pre.classList[0].includes('interactive')) ||
             false;
         const isHighlight = pre.classList.contains('ace-highlight-code') ||
             pre.hasAttribute('data-ace-highlight-code') ||
-            (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                isExtendedMarkdownClass(pre.classList)) ||
+            isSimplifiedClassMode(pre.classList, config) ||
             false;
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
             const uiParams = new UiParameters(pre);
-            if (config.simplified_mode === SIMPLIFIED_MODE_ENABLED && isExtendedMarkdownClass(pre.classList)) {
+            if (isSimplifiedClassMode(pre.classList, config)) {
                 uiParams.extractExtendedMarkdownParameters(isInteractive, config, pre.classList[0].split(":"));
             } else {
                 uiParams.extractUiParameters(isInteractive, config);
@@ -108,19 +109,17 @@ export const applyAceAndBuildUi = async(root, config) => {
         if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
             const isInteractive = code.classList.contains('ace-interactive-code') ||
                 code.hasAttribute('data-ace-interactive-code') ||
-                (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                    isExtendedMarkdownClass(code.classList) &&
-                        code.classList[0].includes('interactive')) ||
+                (isSimplifiedClassMode(code.classList, config) &&
+                    code.classList[0].includes('interactive')) ||
                 false;
             const isHighlight = code.classList.contains('ace-highlight-code') ||
                 code.hasAttribute('data-ace-highlight-code') ||
-                (config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-                    isExtendedMarkdownClass(code.classList)) ||
+                isSimplifiedClassMode(code.classList, config) ||
                 false;
 
             const uiParams = new UiParameters(code);
 
-            if (config.simplified_mode === SIMPLIFIED_MODE_ENABLED && isExtendedMarkdownClass(code.classList)) {
+            if (isSimplifiedClassMode(code.classList, config)) {
                 uiParams.extractExtendedMarkdownParameters(isInteractive, config, code.classList[0].split(":"));
             } else {
                 uiParams.extractUiParameters(isInteractive, config);
