@@ -184,10 +184,8 @@ const displayTextOutput = async(text, langString, outputDisplayArea) => {
 const cleanOutput = (outputDisplayArea) => {
     outputDisplayArea.children.item(0).innerHTML = '';
     const potentialHtml = outputDisplayArea.nextElementSibling;
-    if (potentialHtml !== null) {
-        if (potentialHtml.className === 'filter-ace-inline-html') {
-             outputDisplayArea.parentNode.removeChild(outputDisplayArea.nextSibling);
-        }
+    if (potentialHtml !== null && potentialHtml.classList.contains('filter-ace-inline-html')) {
+        outputDisplayArea.parentNode.removeChild(potentialHtml);
     }
     outputDisplayArea.setAttribute('class', 'filter-ace-inline-output-display');
 };

@@ -85,7 +85,7 @@ export const getFiles = async(uiParameters) => {
  */
 export const setupFileHandler = async(uploadElementId) => {
     // Creates a div element to contain error messages and divs for error messages.
-    const errorNode = document.createElement("div", [], {'hidden': '1'});
+    const errorNode = createComponent("div", [], {'hidden': '1'});
     const errorHtml = createComponent("div", ['filter-ace-inline-files'], {'hidden': '1'});
     const fatalHtml = createComponent("div", ['filter-ace-inline-file-error'], {'hidden': '1'});
     errorNode.appendChild(fatalHtml);
@@ -98,7 +98,17 @@ export const setupFileHandler = async(uploadElementId) => {
         // Cleans the contents of the errors between uploads.
         errorHtml.innerHTML = '';
         fatalHtml.innerHTML = '';
-        uploadFiles = {};
+        // Clears this widget's own previously uploaded files. uploadFiles is shared across
+        // every upload widget on the page (getFiles() needs a single place to look them all
+        // up from), so only this widget's own uploadElementId entries are removed here -
+        // blanket-resetting the whole object would also wipe out files another widget on the
+        // same page has already uploaded.
+        for (const name of Object.keys(uploadFiles)) {
+            delete uploadFiles[name][uploadElementId];
+            if (Object.keys(uploadFiles[name]).length === 0) {
+                delete uploadFiles[name];
+            }
+        }
         const files = element.files;
         for (const file of files) {
             let fileValues = {};
@@ -119,7 +129,7 @@ export const setupFileHandler = async(uploadElementId) => {
                     fatalHtml.innerHTML = '<li><strong><em>' + escapeHtml(file.name) + '</em>&nbsp;'
                         + '</strong></li>' + fatalHtml.innerHTML;
                 });
-            if (fileValues.size !== 0) {
+            if (Object.keys(fileValues).length !== 0) {
                 // Maps the name with the filevalue map of id to value.
                 uploadFiles[parsedName] = fileValues;
             }

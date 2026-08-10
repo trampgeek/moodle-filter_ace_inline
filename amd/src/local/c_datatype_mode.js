@@ -70,6 +70,17 @@ export const getCDatatypeMode = async() => {
         CCppHighlightRules.call(this);
         const startRules = this.$rules.start;
         const keywordRuleIndex = startRules.findIndex((rule) => rule.regex === KEYWORD_RULE_REGEX);
+        if (keywordRuleIndex === -1) {
+            // CodeRunner's vendored c_cpp_highlight_rules no longer has a rule matching
+            // KEYWORD_RULE_REGEX (e.g. after a CodeRunner/Ace upgrade changed it) - splicing
+            // at -1 would silently insert our rule before whatever happens to be last, in
+            // some arbitrary wrong position. Fail visibly instead and fall back to plain,
+            // correct C/C++ highlighting for this mode instance rather than risk corrupting
+            // rule ordering.
+            globalThis.console.warn('filter_ace_inline: could not find the C/C++ keyword rule to splice ' +
+                'datatype highlighting before; skipping datatype highlighting for this session.');
+            return;
+        }
         startRules.splice(keywordRuleIndex, 0, {
             token: "support.type",
             regex: DATATYPE_REGEX
