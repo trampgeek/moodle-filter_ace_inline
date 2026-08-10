@@ -88,7 +88,8 @@ class behat_filter_ace_inline extends behat_base {
 
         // Check if there is a <span> containing the expected text of that class-type.
         // Needs starts-with as C's function tag is particular and boolean flags.
-        $xpath = "//span[starts-with(@class, '$acetype') and contains(text(), $textstring)]";
+        $xpath = "//span[starts-with(@class, '$acetype') and contains(text(), "
+            . behat_context_helper::escape($textstring) . ")]";
         $error = "'{$textstring}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
         if (!$driver->find($xpath)) {
@@ -175,7 +176,8 @@ class behat_filter_ace_inline extends behat_base {
      * @param string $text The text you should see in the <div>
      */
     public function i_see_html_div_containing($text) {
-        $xpath = "//div[contains(@class, 'filter-ace-inline-html') and contains(@text(), $text)]";
+        $xpath = "//div[contains(@class, 'filter-ace-inline-html') and contains(., "
+            . behat_context_helper::escape($text) . ")]";
         $driver = $this->getSession()->getDriver();
         $error = "{$text} was not found in the HTML div";
         if (!$driver->find($xpath)) {
