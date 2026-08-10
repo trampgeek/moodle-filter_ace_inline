@@ -348,6 +348,9 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.4.6
+   Extensive bugs identified by Paul McKeown, fixes made with the aid of Claude.  Still unresolved: appropriate human checks on some of the behat tests.
+   
  * Version 1.4.5
    Added C(++) datatype highlighting: identifiers ending in "_t" (e.g. size_t,
    uint32_t) or written in PascalCase (e.g. MyStruct) are now highlighted as
