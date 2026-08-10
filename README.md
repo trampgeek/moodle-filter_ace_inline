@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.4.5, 7 August 2026.
+Version 1.4.6, 7 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -306,7 +306,7 @@ It is highly recommended to import the question into Moodle as above, and then e
 
 Download the plugin from the repository, and unzip the code into
 
-        <moodlehome>/filter/ace_inline
+        <moodlehome>/public/filter/ace_inline
 
 Then visit Site administration > Notifications. You should receive the usual prompt about updating the database to incorporate the new plugin.
 
