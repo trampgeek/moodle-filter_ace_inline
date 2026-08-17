@@ -30,7 +30,10 @@ import {getCDatatypeMode} from "filter_ace_inline/local/c_datatype_mode";
 import {OUTPUT_TEXT_CLASS} from "filter_ace_inline/local/utils";
 import {getString} from 'core/str';
 
-const SIMPLIFIED_MODE_ENABLED = "1";
+// Compared numerically rather than with ===, because the PHP side's type varies: get_config()
+// and filter_get_local_config() both yield the string "1", while an unset setting yields false.
+// A strict === "1" would silently disable simplified mode if that ever became an int.
+const SIMPLIFIED_MODE_ENABLED = 1;
 
 // The legacy explicit opt-in classes. A single class matching one of these is not a language
 // name, so it must never be routed through extractSimplifiedClassModeParameters() even when
@@ -71,7 +74,7 @@ const hasExplicitMarker = (element) => {
  * @return {bool}
  */
 const isSimplifiedClassMode = (element, config) =>
-    config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
+    Number(config.simplified_mode) === SIMPLIFIED_MODE_ENABLED &&
         element.classList.length === 1 && !hasExplicitMarker(element);
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
