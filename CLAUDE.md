@@ -34,8 +34,16 @@ code in a docblock.
 `php public/admin/tool/phpunit/cli/init.php` (run from the Moodle root).
 
 **Behat**: after adding, renaming, or deleting any `.feature` file, Behat's cached feature-file
-listing goes stale and test runs fail with "No specifications found" until you re-run
-`php public/admin/tool/behat/cli/run.php --enable` (also from the Moodle root).
+listing goes stale and the new scenarios are silently not collected until the config is
+regenerated, from the Moodle root:
+
+```
+php admin/tool/behat/cli/util.php --enable
+```
+
+(`run.php --enable` does *not* do this — `run.php` forwards unrecognised options straight to
+Behat, which prints a usage dump and exits.) Editing scenarios inside an existing `.feature`
+file needs no regeneration; only the set of files matters.
 
 **codechecker / phpdoc**: `.github/workflows/ci.yml` runs these without `continue-on-error`, so
 failures block CI. A standalone `moodle-plugin-ci` (via `composer create-project`) can run the same

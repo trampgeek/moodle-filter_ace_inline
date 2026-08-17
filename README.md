@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.5.0, 17 August 2026.
+Version 1.5.1, 18 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -348,6 +348,30 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.5.1
+   Bug fixes from a code review of the 1.5.0 changes, made with the aid of Claude:
+   * Fixed a regression in Simplified Mode: a code block carrying explicit `data-ace-*`
+     decoration was parsed as though its class were a language specifier, so its `data-*`
+     attributes (button name, stdin, prefix/suffix, ...) were discarded and its class was
+     used verbatim as the language name. Enabling Simplified Mode site-wide therefore broke
+     existing TinyMCE- and HTML-authored content, which is exactly the content the mode is
+     meant to coexist with. Explicit decoration now always takes priority.
+   * Fixed Simplified Mode not applying the `python` &rarr; `python3` language mapping, so
+     a ```` ```python:interactive ```` block highlighted correctly but failed to run, Jobe
+     having `python3` and not `python`. The mapping, and the stripping of the `language-`
+     prefix that TinyMCE and Markdown renderers add, are now shared by both paths.
+   * Fixed two file-upload widgets on the same page clobbering each other when given files
+     of the same name: the second upload discarded the first widget's file.
+   * The C/C++ datatype-highlighting warning is now issued once per page rather than once
+     per code block.
+   * Corrected the stated requirements (Moodle 4.3+, matching `version.php`), reworded the
+     Simplified Mode admin setting, and fixed invalid PHPDoc that failed the CI docs check.
+   * Testing: added coverage for each of the fixes above, and made the Behat
+     syntax-highlighting assertions match tokens exactly. They previously matched on a
+     substring, which let an assertion be satisfied by an unrelated token in a different
+     code block on the same page.
+   * Development: the local Jobe sandbox config is no longer tracked in git, and developer
+     tooling is excluded from release archives.
  * Version 1.5.0
    Merged a large pull request from Andrew Bainbridge-Smith (thanks Andrew!):
    * Consolidated the two Ace initialisation entry points (`initAceHighlighting` and
