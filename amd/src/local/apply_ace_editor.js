@@ -86,7 +86,7 @@ export const applyAceAndBuildUi = async(root, config) => {
         const isInteractive = pre.classList.contains('ace-interactive-code') ||
             pre.hasAttribute('data-ace-interactive-code') ||
             (isSimplifiedClassMode(pre.classList, config) &&
-                pre.classList[0].includes('interactive')) ||
+                pre.classList[0].split(':').includes('interactive')) ||
             false;
         const isHighlight = pre.classList.contains('ace-highlight-code') ||
             pre.hasAttribute('data-ace-highlight-code') ||
@@ -110,7 +110,7 @@ export const applyAceAndBuildUi = async(root, config) => {
             const isInteractive = code.classList.contains('ace-interactive-code') ||
                 code.hasAttribute('data-ace-interactive-code') ||
                 (isSimplifiedClassMode(code.classList, config) &&
-                    code.classList[0].includes('interactive')) ||
+                    code.classList[0].split(':').includes('interactive')) ||
                 false;
             const isHighlight = code.classList.contains('ace-highlight-code') ||
                 code.hasAttribute('data-ace-highlight-code') ||
