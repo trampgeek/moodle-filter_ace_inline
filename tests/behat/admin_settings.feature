@@ -21,7 +21,7 @@ Feature: Site administrator configuration of the Ace inline filter
 
   Scenario: Administrator changes the default button label
     Given I log in as "admin"
-    And I navigate to "Plugins > Filters > Ace inline" in site administration
+    And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Button label" to "Run course code"
     And I press "Save changes"
     When I am on the "settingsdemo" "core_question > preview" page logged in as admin
@@ -30,7 +30,7 @@ Feature: Site administrator configuration of the Ace inline filter
 
   Scenario: Administrator sets the dark theme mode to always
     Given I log in as "admin"
-    And I navigate to "Plugins > Filters > Ace inline" in site administration
+    And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Set when to use dark theme" to "Always"
     And I press "Save changes"
     When I am on the "settingsdemo" "core_question > preview" page logged in as admin
@@ -38,7 +38,7 @@ Feature: Site administrator configuration of the Ace inline filter
 
   Scenario: Administrator sets the dark theme mode to never
     Given I log in as "admin"
-    And I navigate to "Plugins > Filters > Ace inline" in site administration
+    And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Set when to use dark theme" to "Never"
     And I press "Save changes"
     When I am on the "settingsdemo" "core_question > preview" page logged in as admin
@@ -50,7 +50,7 @@ Feature: Site administrator configuration of the Ace inline filter
 
   Scenario: Administrator enables simplified mode so a bare fenced code block becomes highlighted and read-only
     Given I log in as "admin"
-    And I navigate to "Plugins > Filters > Ace inline" in site administration
+    And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Simplified Setting Mode" to "Enabled"
     And I press "Save changes"
     When I am on the "simplifiedmodedemo" "core_question > preview" page logged in as admin
@@ -59,7 +59,7 @@ Feature: Site administrator configuration of the Ace inline filter
 
   Scenario: Administrator enables simplified mode so a ":interactive" fenced code block becomes editable with a Try it! button
     Given I log in as "admin"
-    And I navigate to "Plugins > Filters > Ace inline" in site administration
+    And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Simplified Setting Mode" to "Enabled"
     And I press "Save changes"
     When I am on the "simplifiedmodedemo" "core_question > preview" page logged in as admin

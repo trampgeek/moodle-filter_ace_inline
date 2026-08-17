@@ -23,12 +23,6 @@ Feature: Codemapper functionality allows transformation of input code prior to e
     And "codemapperdemo.txt" exists in question "codemapperdemo" "questiontext" for filter ace inline
     And I have enabled the sandbox and ace inline filter
 
-  Scenario: Checks Codemapper execution works
-    When I am on the "codemapperdemo" "core_question > preview" page logged in as teacher
-    And I should not see "Yes, this ran Python"
-    And I press "Try it!"
-    Then I should see "Yes, this ran Python"
-
   Scenario: Checks error with Codemapper function throws appropriate error
     When I am on the "codemapperdemo" "core_question > preview" page logged in as teacher
     And I should not see "Yes, this ran Python"

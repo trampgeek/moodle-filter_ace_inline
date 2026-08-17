@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <!-- generated from tests/scenarios/highlight/html-simplified/python/perm005.txt -->
+  <question type="description">
+    <name>
+      <text>highlight_html-simplified_python_perm005</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/python/perm005.txt</p></br> <pre class="python3:max-lines:3">import os
+import sys
+
+text_files = [f for f in os.listdir() if f.endswith(".txt")]
+if text_files:
+    with open(text_files[0]) as fh:
+        print("files:" + fh.read())
+else:
+    stdin_data = sys.stdin.read()
+    if stdin_data:
+        print("stdin:" + stdin_data)
+    else:
+        print("hello")</pre>
+]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+</quiz>

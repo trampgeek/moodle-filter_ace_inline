@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <!-- generated from tests/scenarios/interactive/html-classic/c/perm077.txt -->
+  <question type="description">
+    <name>
+      <text>interactive_html-classic_c_perm077</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm077.txt</p></br> <textarea id="filebox1">file contents</textarea>
+<input id="uploadbox1" type="file">
+
+<pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-readonly="true" data-file-upload-id="uploadbox1" data-start-line-number="7" data-min-lines="20" data-html-output="true" data-max-lines="3">#include &lt;stdio.h&gt;
+
+// Prints the contents of in1.txt if present, else stdin if given,
+// else a default greeting.
+int main(void)
+{
+    FILE *file = fopen("in1.txt", "r");
+    if (file != NULL) {
+        int c = 0;
+        printf("files:");
+        while ((c = fgetc(file)) != EOF) {
+            putchar(c);
+        }
+        fclose(file);
+    } else {
+        int first = getchar();
+        if (first != EOF) {
+            int c = 0;
+            printf("stdin:");
+            putchar(first);
+            while ((c = getchar()) != EOF) {
+                putchar(c);
+            }
+        } else {
+            printf("hello");
+        }
+    }
+    return 0;
+}</pre>
+]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+</quiz>

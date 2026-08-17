@@ -70,7 +70,7 @@ Feature: Course-level configuration overrides for the Ace inline filter
 
   Scenario: A field left as "Use site default" keeps inheriting the administrator's setting
     Given I log in as "admin"
-    And I navigate to "Plugins > Filters > Ace inline" in site administration
+    And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Button label" to "Site button"
     And I press "Save changes"
     And I log out

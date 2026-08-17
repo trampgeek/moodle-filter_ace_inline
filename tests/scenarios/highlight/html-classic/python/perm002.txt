@@ -1,0 +1,13 @@
+<pre data-ace-highlight-code data-lang="python3" data-start-line-number="7">import os
+import sys
+
+text_files = [f for f in os.listdir() if f.endswith(".txt")]
+if text_files:
+    with open(text_files[0]) as fh:
+        print("files:" + fh.read())
+else:
+    stdin_data = sys.stdin.read()
+    if stdin_data:
+        print("stdin:" + stdin_data)
+    else:
+        print("hello")</pre>

@@ -1,0 +1,19 @@
+<textarea id="filebox1">file contents</textarea>
+<input id="uploadbox1" type="file">
+<script>
+function mapFn1(s) { return "print(\"mapped\")"; }
+</script>
+
+<pre data-ace-interactive-code data-lang="python3" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-start-line-number="7" data-file-upload-id="uploadbox1" data-code-mapper="mapFn1" data-min-lines="20" data-prefix="pass" data-suffix="pass" data-max-lines="3">import os
+import sys
+
+text_files = [f for f in os.listdir() if f.endswith(".txt")]
+if text_files:
+    with open(text_files[0]) as fh:
+        print("files:" + fh.read())
+else:
+    stdin_data = sys.stdin.read()
+    if stdin_data:
+        print("stdin:" + stdin_data)
+    else:
+        print("hello")</pre>
