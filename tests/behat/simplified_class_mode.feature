@@ -30,7 +30,11 @@ Feature: Simplified class mode rendering for the Ace inline filter
     When I am on the "simplifiedclassmodedemo" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'HelloCHighlight')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' readonly ')]" "xpath_element" should exist
     And "//pre[contains(., 'HelloCHighlight')]/following-sibling::div[contains(@class, 'ace_editor')][1]/following-sibling::div[1][contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see "keyword" highlighting on "int" with filter ace inline
+    # "int" is a storage/type-declaring keyword in Ace's tokenisation (ace_storage ace_type),
+    # not ace_keyword. This asserted "keyword" until the token match was made exact, and passed
+    # only because Python's "print" in a later block on this page is an ace_keyword containing
+    # the substring "int".
+    And I should see "type" highlighting on "int" with filter ace inline
     And I should see "function" highlighting on "printf" with filter ace inline
     And I should see "string" highlighting on "HelloCHighlight" with filter ace inline
 

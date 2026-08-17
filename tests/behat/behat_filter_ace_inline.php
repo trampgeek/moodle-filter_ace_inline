@@ -85,10 +85,21 @@ class behat_filter_ace_inline extends behat_base {
         // Parse the typeString.
         $acetype = $this->parse_type_string($typestring);
 
-        // Check if there is a <span> containing the expected text of that class-type.
+        // Check if there is a <span> holding exactly the expected text, of that class-type.
         // Needs starts-with as C's function tag is particular and boolean flags.
-        $xpath = "//span[starts-with(@class, '$acetype') and contains(text(), "
-            . behat_context_helper::escape($textstring) . ")]";
+        //
+        // The text match is exact rather than a substring. With contains(), an assertion that
+        // "int" is a C keyword was also satisfied by Python's "print" in a different block on
+        // the same page, so a token could be reported as correctly highlighted when it was not
+        // highlighted, or even present, anywhere in the block under test.
+        //
+        // Quotes and angle brackets are stripped before comparing, because Ace includes a
+        // token's delimiters in its span: a string literal is one span reading "text" and an
+        // include is one span reading <stdio.h>. Features name the token itself, so those
+        // characters have to come off before the comparison. Everything else must match exactly.
+        $strippeddelimiters = "translate(text(), concat('\"', \"'\", '<>'), '')";
+        $xpath = "//span[starts-with(@class, '$acetype') and normalize-space($strippeddelimiters) = "
+            . behat_context_helper::escape($textstring) . "]";
         $error = "'{$textstring}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
         if (!$driver->find($xpath)) {
