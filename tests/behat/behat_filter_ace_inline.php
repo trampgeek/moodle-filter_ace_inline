@@ -184,6 +184,34 @@ class behat_filter_ace_inline extends behat_base {
     }
 
     /**
+     * Attaches a file to one of the filter's upload widgets, which is a plain
+     * <input type="file"> rather than a Moodle filemanager, so core's
+     * "I upload ... file to ... filemanager" step does not apply to it.
+     *
+     * The path must be inside $CFG->dirroot. Selenium drives a browser in its own container,
+     * which mounts only the Moodle tree, at the same path the webserver sees it under; a file
+     * anywhere else - including this plugin's own tests/fixtures, which is bind-mounted into
+     * the webserver alone - does not exist as far as the browser is concerned.
+     *
+     * @Given I attach the file :filepath to the ace inline upload box :elementid
+     * @throws ExpectationException If the file or the upload box cannot be found.
+     * @param string $filepath Path to the file to attach, relative to the Moodle root.
+     * @param string $elementid The id of the <input type="file"> element.
+     */
+    public function i_attach_file_to_upload_box($filepath, $elementid) {
+        global $CFG;
+        $fullpath = $CFG->dirroot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $filepath);
+        if (!is_readable($fullpath)) {
+            throw new ExpectationException("The file to be uploaded, {$fullpath}, does not exist.", $this->getSession());
+        }
+        $input = $this->getSession()->getPage()->findById($elementid);
+        if ($input === null) {
+            throw new ExpectationException("There is no upload box with id '{$elementid}'.", $this->getSession());
+        }
+        $input->attachFile($fullpath);
+    }
+
+    /**
      * Checks if there is a filter-ace-inline HTML <div> containing the text.
      *
      * @Then I should see the filter-ace-inline-html div containing :text

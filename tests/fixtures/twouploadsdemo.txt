@@ -1,0 +1,17 @@
+<p>Upload box A</p>
+<input id="uploadboxA" type="file">
+
+<pre data-ace-interactive-code data-lang="python3" data-file-upload-id="uploadboxA" data-button-name="RunA"><code>import os
+# The marker is assembled from fragments so the expected output does not appear literally in
+# the displayed source, which would make a "should not see" check pass before the code is run.
+count = len([f for f in os.listdir() if f.endswith('.txt')])
+print("A" + "SEES" + str(count))
+</code></pre>
+
+<p>Upload box B</p>
+<input id="uploadboxB" type="file">
+
+<pre data-ace-interactive-code data-lang="python3" data-file-upload-id="uploadboxB" data-button-name="RunB"><code>import os
+count = len([f for f in os.listdir() if f.endswith('.txt')])
+print("B" + "SEES" + str(count))
+</code></pre>

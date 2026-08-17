@@ -63,3 +63,15 @@ Feature: Simplified class mode rendering for the Ace inline filter
       | dark_theme_mode | 2 | filter_ace_inline |
     When I am on the "simplifiedclassmodedemo" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'HelloCHighlight')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' ace-tomorrow-night ')]" "xpath_element" should exist
+
+  Scenario: A bare language string with no per-block override picks up the admin's button-label default
+    Given the following config values are set as admin:
+      | button_label | SiteWideRun | filter_ace_inline |
+    When I am on the "simplifiedclassmodedemo" "core_question > preview" page logged in as teacher
+    Then "//pre[contains(., 'HelloPyInteractive')]/following-sibling::div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'SiteWideRun')]" "xpath_element" should exist
+
+  Scenario: A "python" language string is normalised to python3, which is what Jobe actually has
+    When I am on the "simplifiedclassmodedemo" "core_question > preview" page logged in as teacher
+    And I should not see "AliasPyRan"
+    And I press "AliasPy"
+    Then I should see "AliasPyRan"
