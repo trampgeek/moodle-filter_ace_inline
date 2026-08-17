@@ -157,6 +157,10 @@ class behat_filter_ace_inline extends behat_base {
             "include" => "ace_constant ace_other",
             "constant" => "ace_constant ace_language",
             "function" => "ace_support ace_function",
+            "type" => "ace_storage ace_type",
+            // Deprecated alias for "type". Ace tags C's bool and JavaScript's function with the
+            // same token classes as SQL's types, so the name is no longer SQL-specific; kept so
+            // any feature file not yet migrated keeps working.
             "sqltype" => "ace_storage ace_type",
         ];
 

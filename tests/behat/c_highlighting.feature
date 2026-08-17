@@ -30,8 +30,8 @@ Feature: Visual checks for C(++) syntax highlighting
     And I should see "include" highlighting on "stdio" with filter ace inline
     And I should see "keyword" highlighting on "using" with filter ace inline
     # "bool" is a storage/type-declaring keyword in Ace's tokenisation (ace_storage ace_type),
-    # the same category "sqltype" maps to - not "keyword".
-    And I should see "sqltype" highlighting on "bool" with filter ace inline
+    # the same category "type" maps to - not "keyword".
+    And I should see "type" highlighting on "bool" with filter ace inline
     And I should see "function" highlighting on "putchar" with filter ace inline
     And I should see "string" highlighting on "Hello" with filter ace inline
     And I should see "keyword" highlighting on "include" with filter ace inline

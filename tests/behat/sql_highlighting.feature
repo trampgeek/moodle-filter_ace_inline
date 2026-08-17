@@ -31,8 +31,8 @@ Feature: Visual checks for SQL syntax highlighting
     And I should see "keyword" highlighting on "GROUP" with filter ace inline
     And I should see "keyword" highlighting on "TABLE" with filter ace inline
     And I should see "function" highlighting on "count" with filter ace inline
-    And I should see "sqltype" highlighting on "int" with filter ace inline
-    And I should see "sqltype" highlighting on "varchar" with filter ace inline
+    And I should see "type" highlighting on "int" with filter ace inline
+    And I should see "type" highlighting on "varchar" with filter ace inline
 
   Scenario: Checks text is not highlighted in other languages
     When I am on the "sqldemo" "core_question > preview" page logged in as teacher
