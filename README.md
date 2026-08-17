@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.4.6, 7 August 2026.
+Version 1.5.0, 17 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -348,6 +348,28 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.5.0
+   Merged a large pull request from Andrew Bainbridge-Smith (thanks Andrew!):
+   * Consolidated the two Ace initialisation entry points (`initAceHighlighting` and
+     `initAceInteractive`) into a single `initAceInlineEditor`, scanning each `<pre>` once.
+   * Extended Simplified Mode: a fenced code block's class can now also flag it as
+     interactive and carry the display/behaviour attributes (line numbers, font size,
+     button name, etc.) via colon-separated values, e.g. `python3:interactive:button-name:Run`.
+   * Added C/C++ datatype highlighting (identifiers ending in `_t` or written in PascalCase
+     are highlighted as datatypes).
+   * Added a per-course (context-level) override for the Simplified Mode setting, alongside
+     the existing button-label and dark-theme overrides.
+   * Fixed an XSS vulnerability: the Try it! button's label was inserted via `innerHTML`
+     instead of `textContent`.
+   * Fixed a race condition that could leave the Ace editor blank on a cold page load.
+   * Fixed the CI pipeline's Code Checker ignore-file configuration: moodle-plugin-ci's
+     `codechecker` command is only an alias for `phpcs`, so the ignore-file environment
+     variables need the `PHPCS_` prefix, not `CODECHECKER_`.
+
+   Plus a few minor fixes made afterwards: a substring false-positive in Simplified Mode's
+   interactive-block detection, restored MariaDB test coverage in CI, and reworded the
+   Simplified Mode admin setting label/description.
+
  * Version 1.4.6
    Extensive bugs identified by Paul McKeown, fixes made with the aid of Claude.  Still unresolved: appropriate human checks on some of the behat tests.
    
