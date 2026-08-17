@@ -21,6 +21,9 @@ jobs:
             moodle-branch: 'MOODLE_500_STABLE'
             database: 'pgsql'
           - php: '8.2'
+            moodle-branch: 'MOODLE_500_STABLE'
+            database: 'mariadb'
+          - php: '8.2'
             moodle-branch: 'MOODLE_501_STABLE'
             database: 'pgsql'
           - php: '8.3'
@@ -40,6 +43,18 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,7 +65,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, pgsql
+          extensions: mbstring, pgsql, mysqli
           ini-values: max_input_vars=5000
           coverage: none
 
