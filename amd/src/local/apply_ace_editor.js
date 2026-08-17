@@ -117,15 +117,13 @@ export const applyAceAndBuildUi = async(root, config) => {
                 isSimplifiedClassMode(code.classList, config) ||
                 false;
 
-            const uiParams = new UiParameters(code);
-
-            if (isSimplifiedClassMode(code.classList, config)) {
-                uiParams.extractSimplifiedClassModeParameters(isInteractive, config, code.classList[0].split(":"));
-            } else {
-                uiParams.extractUiParameters(isInteractive, config);
-            }
-
             if (isInteractive || isHighlight) {
+                const uiParams = new UiParameters(code);
+                if (isSimplifiedClassMode(code.classList, config)) {
+                    uiParams.extractSimplifiedClassModeParameters(isInteractive, config, code.classList[0].split(":"));
+                } else {
+                    uiParams.extractUiParameters(isInteractive, config);
+                }
                 applyToPre(code.parentNode, isInteractive, uiParams);
             }
         }
