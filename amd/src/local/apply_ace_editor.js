@@ -38,16 +38,41 @@ const SIMPLIFIED_MODE_ENABLED = "1";
 const LEGACY_MARKER_CLASSES = ['ace-highlight-code', 'ace-interactive-code'];
 
 /**
- * True if simplified mode is enabled and this classList should be parsed as a bare or
+ * True if this element carries an explicit ace-inline marker: a data-ace-*-code attribute or
+ * one of the legacy opt-in classes.
+ *
+ * Explicit decoration always wins over simplified mode. On such an element the class is a real
+ * HTML class - typically "language-x" from TinyMCE or a Markdown renderer, which is never a
+ * valid Jobe or Ace language name - rather than a simplified-mode specifier, and any
+ * data-* attributes on it (button-name, stdin-taid, prefix/suffix, ...) must still be honoured.
+ * @param {HTMLElement} element The <pre> or <code> element being checked.
+ * @return {bool}
+ */
+const hasExplicitMarker = (element) => {
+    if (element.hasAttribute('data-ace-interactive-code') ||
+            element.hasAttribute('data-ace-highlight-code') ||
+            LEGACY_MARKER_CLASSES.some((cls) => element.classList.contains(cls))) {
+        return true;
+    }
+    // A <code> inherits its <pre>'s decoration: the attributes are conventionally written on the
+    // <pre> while the language class lands on the <code> (see tests/fixtures/tryittinydemo.txt),
+    // so without this the <code> loop below would take the simplified path and drop them.
+    const parent = element.parentNode;
+    return element.nodeName === 'CODE' && parent !== null && parent.nodeName === 'PRE' &&
+        hasExplicitMarker(parent);
+};
+
+/**
+ * True if simplified mode is enabled and this element's class should be parsed as a bare or
  * colon-separated "language[:option:value...]" specifier rather than treated as a normal HTML
  * class.
- * @param {DOMTokenList} classList The classList of the <pre> or <code> element being checked.
+ * @param {HTMLElement} element The <pre> or <code> element being checked.
  * @param {object} config The plugin configuration settings.
  * @return {bool}
  */
-const isSimplifiedClassMode = (classList, config) =>
+const isSimplifiedClassMode = (element, config) =>
     config.simplified_mode === SIMPLIFIED_MODE_ENABLED &&
-        classList.length === 1 && !LEGACY_MARKER_CLASSES.includes(classList[0]);
+        element.classList.length === 1 && !hasExplicitMarker(element);
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -85,16 +110,16 @@ export const applyAceAndBuildUi = async(root, config) => {
         }
         const isInteractive = pre.classList.contains('ace-interactive-code') ||
             pre.hasAttribute('data-ace-interactive-code') ||
-            (isSimplifiedClassMode(pre.classList, config) &&
+            (isSimplifiedClassMode(pre, config) &&
                 pre.classList[0].split(':').includes('interactive')) ||
             false;
         const isHighlight = pre.classList.contains('ace-highlight-code') ||
             pre.hasAttribute('data-ace-highlight-code') ||
-            isSimplifiedClassMode(pre.classList, config) ||
+            isSimplifiedClassMode(pre, config) ||
             false;
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
             const uiParams = new UiParameters(pre);
-            if (isSimplifiedClassMode(pre.classList, config)) {
+            if (isSimplifiedClassMode(pre, config)) {
                 uiParams.extractSimplifiedClassModeParameters(isInteractive, config, pre.classList[0].split(":"));
             } else {
                 uiParams.extractUiParameters(isInteractive, config);
@@ -109,17 +134,17 @@ export const applyAceAndBuildUi = async(root, config) => {
         if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
             const isInteractive = code.classList.contains('ace-interactive-code') ||
                 code.hasAttribute('data-ace-interactive-code') ||
-                (isSimplifiedClassMode(code.classList, config) &&
+                (isSimplifiedClassMode(code, config) &&
                     code.classList[0].split(':').includes('interactive')) ||
                 false;
             const isHighlight = code.classList.contains('ace-highlight-code') ||
                 code.hasAttribute('data-ace-highlight-code') ||
-                isSimplifiedClassMode(code.classList, config) ||
+                isSimplifiedClassMode(code, config) ||
                 false;
 
             if (isInteractive || isHighlight) {
                 const uiParams = new UiParameters(code);
-                if (isSimplifiedClassMode(code.classList, config)) {
+                if (isSimplifiedClassMode(code, config)) {
                     uiParams.extractSimplifiedClassModeParameters(isInteractive, config, code.classList[0].split(":"));
                 } else {
                     uiParams.extractUiParameters(isInteractive, config);

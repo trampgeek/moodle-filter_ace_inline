@@ -48,7 +48,7 @@ set_config('jobesandbox_enabled', 1, 'qtype_coderunner');
 // has set up.
 //set_config('jobe_host', 'jobe', 'qtype_coderunner');
 //set_config('jobe_host', 'localhost', 'qtype_coderunner');
-set_config('jobe_host', '172.17.0.1', 'qtype_coderunner');
+set_config('jobe_host', '172.17.0.1:4000', 'qtype_coderunner');
 
 // Configuration extras, used only when testing.
 set_config('jobe_apikey_enabled', 0, 'qtype_coderunner');
