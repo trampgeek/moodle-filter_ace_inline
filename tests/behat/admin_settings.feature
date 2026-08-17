@@ -51,7 +51,7 @@ Feature: Site administrator configuration of the Ace inline filter
   Scenario: Administrator enables simplified mode so a bare fenced code block becomes highlighted and read-only
     Given I log in as "admin"
     And I navigate to "Plugins > Filters > Ace inline" in site administration
-    And I set the field "Simplified Setting Mode" to "Enabled"
+    And I set the field "Simplified mode" to "Enabled"
     And I press "Save changes"
     When I am on the "simplifiedmodedemo" "core_question > preview" page logged in as admin
     Then "//pre[contains(., 'SIMPLIFIEDHIGHLIGHTMARKER')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' readonly ')]" "xpath_element" should exist
@@ -60,7 +60,7 @@ Feature: Site administrator configuration of the Ace inline filter
   Scenario: Administrator enables simplified mode so a ":interactive" fenced code block becomes editable with a Try it! button
     Given I log in as "admin"
     And I navigate to "Plugins > Filters > Ace inline" in site administration
-    And I set the field "Simplified Setting Mode" to "Enabled"
+    And I set the field "Simplified mode" to "Enabled"
     And I press "Save changes"
     When I am on the "simplifiedmodedemo" "core_question > preview" page logged in as admin
     Then "//pre[contains(., 'SIMPLIFIEDINTERACTIVEMARKER')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' readonly ')]" "xpath_element" should not exist

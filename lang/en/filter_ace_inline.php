@@ -43,8 +43,8 @@ instead of the default light theme. Can be overridden by an individual instance.
 $string['settings_desc'] = 'Change the settings for this filter.';
 $string['settings_simplified_mode_off'] = 'Off';
 $string['settings_simplified_mode_enabled'] = 'Enabled';
-$string['settings_simplified_mode_label'] = 'Simplified Setting Mode';
-$string['settings_simplified_mode_desc'] = 'Select whether simplified ace modes simplified form is enabled or not.';
+$string['settings_simplified_mode_label'] = 'Simplified mode';
+$string['settings_simplified_mode_desc'] = 'When enabled, code blocks can be configured directly via a colon-separated class attribute (e.g. "python3:interactive:button-name:Run"), instead of requiring separate data attributes.';
 $string['settings_heading'] = 'Ace inline filter settings';
 $string['settings_use_default'] = 'Use site default';
 

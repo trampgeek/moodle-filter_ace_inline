@@ -61,7 +61,7 @@ Feature: Course-level configuration overrides for the Ace inline filter
     Given I am on the "C1" "Course" page logged in as teacher
     And I navigate to "Filters" in current page administration
     And I click on "Settings" "link" in the "Ace inline" "table_row"
-    And I set the field "Simplified Setting Mode" to "Enabled"
+    And I set the field "Simplified mode" to "Enabled"
     And I press "Save changes"
     When I am on the "simplifiedmodedemoc1" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'SIMPLIFIEDHIGHLIGHTMARKER')]/following-sibling::div[contains(@class, 'ace_editor')]" "xpath_element" should exist
