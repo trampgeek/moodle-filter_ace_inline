@@ -2,3 +2,4 @@
 /nbproject/
 /amd/src/grunt
 /tests/fixtures/test-sandbox-config.php
+__pycache__/
