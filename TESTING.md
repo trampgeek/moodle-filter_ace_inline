@@ -61,6 +61,12 @@ But the `` ```{...} `` syntax itself appears **nowhere** in any fixture or
 14 attributes the table marks as "Markdown"-supported, none has ever been
 exercised through this code path by a test.
 
+**2026-08-18: no longer true.** `tests/scripts/generate_scenarios.py`'s
+`markdown-classic` authoring mode generates exactly this `{...}` syntax now,
+for every attribute, across both render modes - see Phase F/Phase G below.
+This finding is kept as-is for the historical record of *why* Phase A was
+undertaken, not as a current coverage claim.
+
 ## Finding 2: the five dual-render-mode attributes never get both modes tested in the same authoring mode
 
 Only five attributes are documented as working in *both* Highlight and
@@ -73,6 +79,11 @@ gets both render modes tested via that authoring path. In Simplified mode,
 `data-dark-theme-mode` is the one attribute with genuine full coverage
 (`c:dark-theme-mode:2` for Highlight, `python3:interactive:dark-theme-mode:0`
 for Interactive).
+
+**2026-08-18: no longer true.** The generated suite (Phase F/G) produces
+separate Highlight and Interactive fixtures for every dual-render-mode
+attribute in every authoring mode - this gap is closed. Kept for the
+historical record of why Phase B/C were undertaken.
 
 ## Finding 3: README inaccuracy (resolved in Phase D)
 
@@ -90,13 +101,18 @@ from Simplified Mode. So this was a real, working, intentional-by-construction
 feature - just a missing table entry, not accidental behaviour. Fixed by
 adding "Simplified Mode" to the table row; no code or test changes needed.
 
-## Coverage matrix (post-implementation)
+## Coverage matrix (historical snapshot, as of Phase E - see "Coverage today" below for current state)
 
 Legend: ✅ tested · ❌ gap (claimed, untested) · — not claimed/not applicable
 · ✅* tested only via one of Phase A's representative scenarios, standing in
 for the rest since they share the same `extractUiParameters()`/
 `extractSimplifiedClassModeParameters()` code path (see Finding 1) - not
 individually re-verified per attribute.
+
+**This table is frozen at how things stood after Phase E, before the
+generated suite (Phase F/G below) closed most of its ❌ cells.** Kept as a
+record of what the hand-written suite alone covered; not an accurate
+picture of current coverage - see "Coverage today".
 
 | Attribute | TinyMCE·Highlight | TinyMCE·Interactive | Markdown{}·Highlight | Markdown{}·Interactive | Simplified·Highlight | Simplified·Interactive |
 |---|---|---|---|---|---|---|
@@ -125,16 +141,50 @@ Remaining gaps after Phases A-D: `data-stdin-taid`, `data-file-upload-id`,
 `data-min-lines` untested via any Simplified-mode path (not investigated -
 would need a colon-encoded min-lines block, e.g. `` ```c:min-lines:5 ``, and
 the same `getOption('minLines')` verification technique used in Phase B).
+**Both gap lists above are also stale for the same reason - see below.**
+
+## Coverage today
+
+As of Phase G, per-attribute coverage is split across two layers instead of
+being all hand-written:
+
+- **Generated suite** (`tests/scripts/generate_scenarios.py` +
+  `generate_behat_suite.py`, Python only - see that script's own docstring
+  for why C/SQL are excluded from the Behat layer): every one of the 18
+  `data-*`/`line-numbers` attributes, individually and in combination, across
+  all 4 authoring modes (`html-classic`, `html-simplified`, `markdown-classic`,
+  `markdown-simplified`) and both render modes. 620 generated fixtures
+  (`tests/scenarios/`), 282 generated Behat scenarios across 8 files
+  (`tests/behat/scenarios_<render>_<authoring>_python.feature` - flat
+  filenames directly under `tests/behat/`, not a subdirectory: see Phase G's
+  first finding for why). This closes essentially every ❌ cell in the
+  matrix above except the two documented, deliberate exceptions below.
+- **Deliberately not covered by the generated suite** (see
+  `generate_behat_suite.py`'s own "Known, deliberate gap" docstring section):
+  `data-params`/`data-prefix`/`data-suffix` get no execution assertion at
+  all, since `data-prefix`/`data-suffix`'s placeholder values concatenate
+  onto the executed code with no separator (`ace_interactive.js`), which is
+  always a syntax error regardless of fixture content - not something a
+  better fixture could fix. `params.feature` and `prefixsuffix.feature`
+  still cover these with real, working execution examples by hand.
+- **Still only covered by hand-written tests**, because the generated
+  suite's one-fixture-per-page architecture structurally cannot reproduce
+  them: see Phase F's per-file breakdown (multi-block state leakage,
+  admin-config fallback, error paths, legacy markers, dark-theme-mode
+  forcing *light* rather than dark).
 
 ## Implementation plan
 
 Ordered by value: Phase A closes the one complete authoring-mode hole (14
 attributes × 0 coverage); Phases B-C are narrower render-mode gaps within
 authoring modes that are otherwise well tested; Phase D is a
-docs-vs-behaviour decision, not new tests. **Phases A-E are done** (A-D on
-2026-08-14, E on 2026-08-15). Phase E started as a holding area for a problem
-found along the way that was out of scope for this plan, then got root-caused
-and fixed too - see below.
+docs-vs-behaviour decision, not new tests. **Phases A-G are done** (A-D on
+2026-08-14, E on 2026-08-15, F and G on 2026-08-18/19). Phase E started as a
+holding area for a problem found along the way that was out of scope for
+this plan, then got root-caused and fixed too - see below. Phases F-G are a
+different kind of work again: F replaces most of A-C's hand-written
+per-attribute coverage with a generated combinatorial suite; G is what
+running that generated suite for the first time actually found.
 
 ### Phase A - Markdown standard mode (`{}` block-spec) coverage - done, later superseded
 Added `tests/behat/markdown_standard_mode.feature` (7 scenarios) +
@@ -142,8 +192,11 @@ Added `tests/behat/markdown_standard_mode.feature` (7 scenarios) +
 **2026-08-18: removed.** All 7 scenarios (highlight rendering, button-name,
 hidden, max-lines, dark-theme-mode, html-output, readonly, all via
 markdown-classic `{}` authoring) are now covered, more thoroughly, by the
-generated `tests/behat/scenarios/{highlight,interactive}/markdown-classic/
-python.feature` suite (see `tests/scripts/generate_behat_suite.py`) - the
+generated `tests/behat/scenarios_{highlight,interactive}_markdown-classic_
+python.feature` suite (see `tests/scripts/generate_behat_suite.py`; these
+are flat filenames directly under `tests/behat/`, not the nested
+`tests/behat/scenarios/<render>/<authoring>/` layout originally used - see
+Phase G's first finding for why that layout had to change) - the
 only scenario content not carried over was a syntax-highlighting span check,
 which was out of this document's own stated scope (data-lang/highlighting
 correctness is covered separately by `*_highlighting.feature`) and a
@@ -293,6 +346,76 @@ deliberately doesn't attempt, or an unrelated concern entirely): `taids.feature`
 `params.feature`, `prefixsuffix.feature`, `tryit_basic.feature`,
 `tryit_tiny.feature`, every `*_highlighting.feature`, `admin_settings.feature`,
 `course_settings.feature`, `xss_prevention.feature`.
+
+## Phase G - three real bugs found by actually running the generated suite - done (2026-08-18/19)
+
+Phase F only *generated* the suite; it had never actually been executed
+against Moodle before this phase. Running it (350 scenarios total: 68
+hand-written + 282 generated) surfaced three genuine problems - two in the
+test-generation code, one a real gap in what the fixture design assumed was
+reachable through the plugin's own detection logic. None were in the
+plugin's core Ace-editor/execution behaviour itself.
+
+**1. Generated feature files were structurally invisible to Moodle's Behat
+runner.** The original `tests/behat/scenarios/<render>/<authoring>/
+python.feature` layout (one subdirectory per combination) was never
+discovered at all - a first full run found only the 68 hand-written
+scenarios, zero of the 282 generated ones. Root cause, confirmed by reading
+Moodle core directly: `behat_config_util.php`'s `get_components_features()`
+finds a component's features via a single non-recursive
+`glob("$path/tests/behat/*.feature")`. Anything nested deeper than
+`tests/behat/` itself is never found - in local Docker, `moodle-plugin-ci`,
+or CI, since all three go through this same core mechanism. Fixed by
+flattening `generate_behat_suite.py`'s output to flat
+`tests/behat/scenarios_<render>_<authoring>_python.feature` filenames
+directly under `tests/behat/`, with stale-file cleanup scoped to that
+`scenarios_*.feature` prefix so it can never touch the hand-written suite
+it now shares a directory with.
+
+**2. Every generated Simplified-mode scenario failed outright.** The
+generated `Background` never enabled the `simplified_mode` admin config
+that every hand-written `simplified_class_mode*.feature` already relied on
+- so Moodle never recognised the colon-encoded class syntax at all; the
+`<pre>`/`<code>` never became an Ace editor. Fixed by conditionally adding
+the same `| simplified_mode | 1 | filter_ace_inline |` config step for
+`html-simplified`/`markdown-simplified` authoring.
+
+**3. `html-output` combined with `max-output-length` asserted the wrong
+(truncated) text.** Confirmed via `ace_interactive.js`'s `displaySuccess()`:
+on a *successful* `html-output` run it does `html.innerHTML =
+response.output` directly - the raw, untouched output - completely
+bypassing `combinedOutput()`/`limit()` (the truncating path), which only
+runs for the non-`html-output` case or an execution error. Fixed by adding
+a separate, never-truncated `expected_html_output_text()` used only for the
+`html-output` assertion branch.
+
+**4. `html-simplified` fixtures (bare `<pre class="lang:...">`) never even
+loaded the JS.** Root cause is in `text_filter.php`'s `do_ace_editor()`: it
+only ever queues the JS module for a page when the text contains an
+explicit `ace-interactive-code`/`ace-highlight-code` marker, or - only when
+`simplified_mode` is on - the literal substring `<code`. A bare `<pre
+class="...">` with no `<code>` tag anywhere satisfies neither, so nothing
+ever ran. First fix (`generate_scenarios.py`'s `render_html_simplified()`):
+put the class on a `<code>` nested in the `<pre>`, matching what Markdown
+Extra itself produces for a fenced block - verified with a standalone probe
+scenario before touching the real generator, and it passed. **Later
+superseded** on explicit direction: the class actually belongs on the
+`<pre>` itself, matching every other authoring mode's convention of keeping
+markers on the block element, not a descendant - `apply_ace_editor.js`'s
+`<pre>`-handling pass already calls `isSimplifiedClassMode(pre.classList,
+config)` directly against the `<pre>`'s own class, independent of whatever
+is nested inside it, so this works without the `<code>` needing to carry
+the class at all. The bare, attribute-less `<code>` wrapper stays - now
+purely to satisfy `do_ace_editor()`'s substring check, not because
+Simplified-mode parsing needs it there. `html-classic` was changed to match
+(`<pre data-x=y ...><code>...</code></pre>`) for consistency, though it
+didn't strictly need the `<code>` wrapper itself (its explicit
+`ace-interactive-code`/`ace-highlight-code` marker already satisfies
+`do_ace_editor()` on its own). Verified with a 52-scenario targeted sample
+(24 interactive executions across 5 representative attribute categories +
+all 28 highlight-mode scenarios for the two changed authoring modes) before
+the full 350-scenario suite confirmed it: 350 passed, 4602 steps, zero
+failures.
 
 ### Out of scope for this plan
 `data-file-taids` and `data-params` are TinyMCE/Interactive-only per the
