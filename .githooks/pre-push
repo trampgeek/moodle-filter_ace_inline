@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Blocks a push if version.php, README.md and CHANGES.md disagree about the
+# current version. See scripts/check-version-consistency.sh for the actual
+# check, and CLAUDE.md for how this hook gets enabled.
+set -euo pipefail
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+exec "$REPO_ROOT/scripts/check-version-consistency.sh"
