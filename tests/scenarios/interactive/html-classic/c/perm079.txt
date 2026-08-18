@@ -1,0 +1,29 @@
+<pre data-ace-interactive-code data-lang="c" data-max-output-length="4" data-params="{&quot;cputime&quot;: 5}" data-font-size="18pt" data-readonly="true" data-button-name="RunIt" data-html-output="true" data-dark-theme-mode="2" data-hidden="true"><code>#include &lt;stdio.h&gt;
+
+// Prints the contents of in1.txt if present, else stdin if given,
+// else a default greeting.
+int main(void)
+{
+    FILE *file = fopen("in1.txt", "r");
+    if (file != NULL) {
+        int c = 0;
+        printf("files:");
+        while ((c = fgetc(file)) != EOF) {
+            putchar(c);
+        }
+        fclose(file);
+    } else {
+        int first = getchar();
+        if (first != EOF) {
+            int c = 0;
+            printf("stdin:");
+            putchar(first);
+            while ((c = getchar()) != EOF) {
+                putchar(c);
+            }
+        } else {
+            printf("hello");
+        }
+    }
+    return 0;
+}</code></pre>

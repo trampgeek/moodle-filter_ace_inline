@@ -132,7 +132,7 @@ class behat_filter_ace_inline extends behat_base {
     public function i_see_font_size($fontsize) {
         // Turn the font size into an appropriate string to search in style.
         $fontstring = "'{$fontsize};'";
-        $xpath = "//div[starts-with(@class, ' ace_editor') and contains(@style, $fontstring)]";
+        $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' ace_editor ') and contains(@style, $fontstring)]";
         $driver = $this->getSession()->getDriver();
         $error = "Font size is not {$fontsize}";
         if (!$driver->find($xpath)) {
@@ -185,6 +185,60 @@ class behat_filter_ace_inline extends behat_base {
     }
 
     /**
+     * Checks the Ace editor's configured minLines option (as set via
+     * data-min-lines) for the editor immediately following the <pre> block
+     * whose text contains the given marker. Checking the live editor's own
+     * option, rather than counting rendered .ace_line elements, is used
+     * because Ace does not necessarily render one DOM node per blank padding
+     * line - it may just reserve vertical space - so a DOM line count is not
+     * a reliable signal of minLines having been applied.
+     *
+     * @Then I should see a min-lines value of :number after :marker with filter ace inline
+     * @param string $number The expected minLines value.
+     * @param string $marker Text uniquely identifying the target <pre> block.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_min_lines_value($number, $marker) {
+        $js = "Array.from(document.querySelectorAll('pre')).find(p => p.textContent.includes(" . json_encode($marker) . "))"
+            . ".nextElementSibling.env.editor.getOption('minLines');";
+        $actual = $this->getSession()->evaluateScript($js);
+        if ((string) $actual !== (string) $number) {
+            throw new ExpectationException(
+                "Expected a minLines option of {$number} after '{$marker}', found {$actual}",
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
+     * Checks a named Ace editor option's value for the sole Ace editor on
+     * the current page. Unlike i_see_min_lines_value() above, this does not
+     * take a marker to disambiguate between multiple blocks on one page -
+     * it is used by the generated tests/behat/scenarios/ suite (see
+     * tests/scripts/generate_behat_suite.py), where every fixture gets its
+     * own dedicated question page, so there is always exactly one Ace
+     * editor to find. The JS side wraps the option value in String() so
+     * booleans (e.g. readOnly) and numbers (e.g. firstLineNumber) both
+     * compare cleanly against the Gherkin string argument.
+     *
+     * @Then I should see an ace option :optionname value :value with filter ace inline
+     * @param string $optionname The Ace editor option name, e.g. "firstLineNumber".
+     * @param string $value The expected value, as its String() representation.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_ace_option_value($optionname, $value) {
+        $js = "String(document.querySelector('.ace_editor').env.editor.getOption("
+            . json_encode($optionname) . "));";
+        $actual = $this->getSession()->evaluateScript($js);
+        if ((string) $actual !== (string) $value) {
+            throw new ExpectationException(
+                "Expected ace option '{$optionname}' to be '{$value}', found '{$actual}'",
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
      * Adds the contents of a text file into a specified field in a question.
      *
      * @Given :filename exists in question :name :field for filter ace inline
@@ -216,6 +270,46 @@ class behat_filter_ace_inline extends behat_base {
         // Get the contents of the file in fixtures.
         $contents = file_get_contents(__DIR__ . '/../fixtures/' . $filename);
         // Set the specified field to contents, and its format to Markdown, in the database.
+        $DB->set_field('question', $field, $contents, ['name' => $name]);
+        $DB->set_field('question', $field . 'format', FORMAT_MARKDOWN, ['name' => $name]);
+    }
+
+    /**
+     * As file_contents_exists_in_question_contents(), but loads from
+     * tests/scenarios/ given a path relative to that directory (e.g.
+     * "highlight/markdown-simplified/c/perm001.txt") rather than a flat
+     * filename in tests/fixtures/. Used by the generated tests/behat/scenarios/
+     * suite (see tests/scripts/generate_behat_suite.py), whose fixtures live
+     * in a nested render/authoring/language tree that can change shape over
+     * time, so a single path-parameterised step is used instead of one step
+     * per fixture.
+     *
+     * @Given :relpath exists in question :name :field from scenarios for filter ace inline
+     * @param string $relpath Path to the file, relative to tests/scenarios/.
+     * @param string $name The name of the question.
+     * @param string $field The field to be adjusted.
+     */
+    public function scenario_fixture_exists_in_question_contents($relpath, $name, $field) {
+        global $DB;
+        $contents = file_get_contents(__DIR__ . '/../scenarios/' . $relpath);
+        $DB->set_field('question', $field, $contents, ['name' => $name]);
+    }
+
+    /**
+     * As file_contents_exists_in_question_contents_as_markdown(), but loads
+     * from tests/scenarios/ given a relative path - see
+     * scenario_fixture_exists_in_question_contents() above for why this is
+     * a separate, path-parameterised step rather than reusing the
+     * tests/fixtures/-only original.
+     *
+     * @Given :relpath exists in question :name :field from scenarios as markdown for filter ace inline
+     * @param string $relpath Path to the file, relative to tests/scenarios/.
+     * @param string $name The name of the question.
+     * @param string $field The field to be adjusted.
+     */
+    public function scenario_fixture_exists_in_question_contents_as_markdown($relpath, $name, $field) {
+        global $DB;
+        $contents = file_get_contents(__DIR__ . '/../scenarios/' . $relpath);
         $DB->set_field('question', $field, $contents, ['name' => $name]);
         $DB->set_field('question', $field . 'format', FORMAT_MARKDOWN, ['name' => $name]);
     }
