@@ -10,7 +10,7 @@
 function mapFn1(s) { return "print(\"mapped\")"; }
 </script>
 
-<pre data-ace-interactive-code data-lang="python3" data-font-size="18pt" data-button-name="RunIt" data-code-mapper="mapFn1" data-dark-theme-mode="2" data-hidden="true" data-prefix="pass" data-suffix="pass">import os
+<pre data-ace-interactive-code data-lang="python3" data-font-size="18pt" data-button-name="RunIt" data-code-mapper="mapFn1" data-dark-theme-mode="2" data-hidden="true" data-prefix="pass" data-suffix="pass"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]
@@ -22,7 +22,7 @@ else:
     if stdin_data:
         print("stdin:" + stdin_data)
     else:
-        print("hello")</pre>
+        print("hello")</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">

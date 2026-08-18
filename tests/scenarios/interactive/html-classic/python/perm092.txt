@@ -4,7 +4,7 @@
 function mapFn1(s) { return "print(\"mapped\")"; }
 </script>
 
-<pre data-ace-interactive-code data-lang="python3" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-readonly="true" data-file-upload-id="uploadbox1" data-code-mapper="mapFn1" data-start-line-number="7" data-min-lines="20" data-html-output="true" data-prefix="pass" data-suffix="pass" data-max-lines="3">import os
+<pre data-ace-interactive-code data-lang="python3" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-readonly="true" data-file-upload-id="uploadbox1" data-code-mapper="mapFn1" data-start-line-number="7" data-min-lines="20" data-html-output="true" data-prefix="pass" data-suffix="pass" data-max-lines="3"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]
@@ -16,4 +16,4 @@ else:
     if stdin_data:
         print("stdin:" + stdin_data)
     else:
-        print("hello")</pre>
+        print("hello")</code></pre>

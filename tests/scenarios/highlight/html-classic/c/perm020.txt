@@ -1,4 +1,4 @@
-<pre data-ace-highlight-code data-lang="c" data-start-line-number="7" data-min-lines="20">#include &lt;stdio.h&gt;
+<pre data-ace-highlight-code data-lang="c" data-start-line-number="7" data-min-lines="20"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -26,4 +26,4 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>

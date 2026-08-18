@@ -6,7 +6,7 @@
       <text>highlight_html-simplified_sql_perm023</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/sql/perm023.txt</p></br> <pre><code class="sql:min-lines:20:line-numbers:3">CREATE TABLE staff (
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/sql/perm023.txt</p></br> <pre class="sql:min-lines:20:line-numbers:3"><code>CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,
     first_name VARCHAR(100)  NOT NULL,

@@ -8,7 +8,7 @@
     <questiontext format="html">
       <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm010.txt</p></br> <textarea id="stdinbox1">hello</textarea>
 
-<pre><code class="c:interactive:stdin-taid:stdinbox1">#include &lt;stdio.h&gt;
+<pre class="c:interactive:stdin-taid:stdinbox1"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

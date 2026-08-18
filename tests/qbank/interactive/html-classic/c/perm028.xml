@@ -6,7 +6,7 @@
       <text>interactive_html-classic_c_perm028</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm028.txt</p></br> <pre data-ace-interactive-code data-lang="c" data-hidden="true" data-font-size="18pt">#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm028.txt</p></br> <pre data-ace-interactive-code data-lang="c" data-hidden="true" data-font-size="18pt"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -34,7 +34,7 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">

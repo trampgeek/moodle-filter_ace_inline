@@ -6,7 +6,7 @@
       <text>interactive_html-simplified_python_perm001</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm001.txt</p></br> <pre><code class="python3:interactive">import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm001.txt</p></br> <pre class="python3:interactive"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

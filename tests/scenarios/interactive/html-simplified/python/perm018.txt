@@ -1,4 +1,4 @@
-<pre><code class="python3:interactive:max-output-length:4">import os
+<pre class="python3:interactive:max-output-length:4"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

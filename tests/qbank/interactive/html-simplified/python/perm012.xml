@@ -8,7 +8,7 @@
     <questiontext format="html">
       <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm012.txt</p></br> <input id="uploadbox1" type="file">
 
-<pre><code class="python3:interactive:file-upload-id:uploadbox1">import os
+<pre class="python3:interactive:file-upload-id:uploadbox1"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

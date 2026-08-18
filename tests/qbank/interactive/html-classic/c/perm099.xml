@@ -12,7 +12,7 @@
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
 </script>
 
-<pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-font-size="18pt" data-readonly="true" data-file-upload-id="uploadbox1" data-code-mapper="mapFn1" data-button-name="RunIt" data-html-output="true" data-dark-theme-mode="2" data-hidden="true" data-prefix="int" data-suffix="int">#include &lt;stdio.h&gt;
+<pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-font-size="18pt" data-readonly="true" data-file-upload-id="uploadbox1" data-code-mapper="mapFn1" data-button-name="RunIt" data-html-output="true" data-dark-theme-mode="2" data-hidden="true" data-prefix="int" data-suffix="int"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -40,7 +40,7 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">

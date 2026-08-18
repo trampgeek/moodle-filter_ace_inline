@@ -8,7 +8,7 @@
     <questiontext format="html">
       <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm010.txt</p></br> <textarea id="stdinbox1">hello</textarea>
 
-<pre><code class="python3:interactive:stdin-taid:stdinbox1">import os
+<pre class="python3:interactive:stdin-taid:stdinbox1"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

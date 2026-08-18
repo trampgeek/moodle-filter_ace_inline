@@ -10,7 +10,7 @@
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
 </script>
 
-<pre><code class="c:interactive:code-mapper:mapFn1">#include &lt;stdio.h&gt;
+<pre class="c:interactive:code-mapper:mapFn1"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

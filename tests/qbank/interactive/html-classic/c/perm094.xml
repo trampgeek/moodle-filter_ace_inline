@@ -9,7 +9,7 @@
       <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm094.txt</p></br> <textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 
-<pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-font-size="18pt" data-readonly="true" data-file-upload-id="uploadbox1" data-button-name="RunIt" data-html-output="true" data-dark-theme-mode="2" data-hidden="true">#include &lt;stdio.h&gt;
+<pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-font-size="18pt" data-readonly="true" data-file-upload-id="uploadbox1" data-button-name="RunIt" data-html-output="true" data-dark-theme-mode="2" data-hidden="true"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -37,7 +37,7 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">

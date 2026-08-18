@@ -6,7 +6,7 @@
       <text>interactive_html-classic_python_perm042</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm042.txt</p></br> <pre data-ace-interactive-code data-lang="python3" data-params="{&quot;cputime&quot;: 5}" data-html-output="true">import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm042.txt</p></br> <pre data-ace-interactive-code data-lang="python3" data-params="{&quot;cputime&quot;: 5}" data-html-output="true"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]
@@ -18,7 +18,7 @@ else:
     if stdin_data:
         print("stdin:" + stdin_data)
     else:
-        print("hello")</pre>
+        print("hello")</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">

@@ -2,7 +2,7 @@
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
 </script>
 
-<pre data-ace-interactive-code data-lang="c" data-font-size="18pt" data-button-name="RunIt" data-start-line-number="7" data-code-mapper="mapFn1" data-min-lines="20" data-dark-theme-mode="2" data-prefix="int" data-suffix="int" data-max-lines="3">#include &lt;stdio.h&gt;
+<pre data-ace-interactive-code data-lang="c" data-font-size="18pt" data-button-name="RunIt" data-start-line-number="7" data-code-mapper="mapFn1" data-min-lines="20" data-dark-theme-mode="2" data-prefix="int" data-suffix="int" data-max-lines="3"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -30,4 +30,4 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>

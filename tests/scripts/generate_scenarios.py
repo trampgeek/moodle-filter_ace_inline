@@ -259,7 +259,13 @@ def companion_html(attrs: list[str], language: str) -> str:
 
 
 def render_html(attrs: list[str], is_interactive: bool, language: str) -> str:
-    """html-classic: raw <pre data-x=y ...> with one data-* attribute per combo entry."""
+    """html-classic: <pre data-x=y ...><code>...</code></pre> - all data-*
+    attributes (name always prefixed data-) live on the <pre>, exactly as a
+    TinyMCE author would hand-write it; the inner <code> is a plain wrapper
+    with no attributes of its own, present only so the markup contains a
+    literal "<code" substring (see render_html_simplified()'s docstring for
+    why that substring matters at the PHP filter level).
+    """
     marker = "ace-interactive-code" if is_interactive else "ace-highlight-code"
     bits = [f"data-{marker}", f'data-lang="{LANG_TAG[language]}"']
     for attr in attrs:
@@ -272,24 +278,36 @@ def render_html(attrs: list[str], is_interactive: bool, language: str) -> str:
         escaped_value = str(value).replace('"', "&quot;")
         bits.append(f'data-{name}="{escaped_value}"')
     pre_open = "<pre " + " ".join(bits) + ">"
-    return f"{pre_open}{html_escape_code(BASE_CODE[language])}</pre>"
+    return f"{pre_open}<code>{html_escape_code(BASE_CODE[language])}</code></pre>"
 
 
 def render_html_simplified(attrs: list[str], is_interactive: bool, language: str) -> str:
-    """html-simplified: raw <pre><code class="lang:attr:value:..."> colon-encoded
-    class, on a <code> element nested in a plain <pre> - NOT the class
-    directly on the <pre> itself. text_filter.php's do_ace_editor() only
-    ever queues the JS module for a page when the text contains a literal
-    "ace-interactive-code"/"ace-highlight-code" marker, or (only when
-    simplified_mode is on) the literal substring "<code" - a bare
-    <pre class="lang:...character"> has neither, so the JS is never even
-    loaded and nothing renders at all. Confirmed empirically: a probe
-    fixture using bare <pre class="..."> failed outright (no ace_editor
-    ever appeared); switching to <pre><code class="..."> - the same DOM
-    shape Markdown Extra itself produces for a fenced block, so this is
-    genuinely reachable by a real author hand-writing raw HTML, not just a
-    generator convenience - made the identical probe pass end-to-end
-    (editor rendered, execution worked).
+    """html-simplified: <pre class="lang:attr:value:..."><code>code</code></pre> -
+    the colon-encoded class lives on the <pre> itself (matching how every
+    other authoring mode keeps its markers/attributes on the <pre>, and how
+    a real author would write "the class goes on the block element"), with
+    a plain, attribute-less <code> also present purely so the raw markup
+    contains a literal "<code" substring.
+
+    That substring matters because text_filter.php's do_ace_editor() only
+    ever queues the JS module for a page when the text contains an explicit
+    "ace-interactive-code"/"ace-highlight-code" marker, or - only when
+    simplified_mode is on - the literal substring "<code". Nothing about
+    the plugin's actual Simplified-mode parsing requires the class to be on
+    <code> rather than <pre>: apply_ace_editor.js's own <pre>-handling pass
+    calls isSimplifiedClassMode(pre.classList, config) and
+    extractSimplifiedClassModeParameters() directly against the <pre>'s own
+    classList, independently of whatever is nested inside it.
+
+    An earlier version of this function put the class on <code> instead
+    (based on an empirical probe showing that shape works), because a bare
+    <pre class="..."> with no <code> substring anywhere fails the PHP gate
+    outright. This version keeps the <code> only as a substring-satisfying
+    placeholder, restoring class-on-<pre> as the fixture's actual authored
+    shape. If this version's fixtures fail where the <code>-class version
+    passed, that is a real gap in apply_ace_editor.js's <pre>-handling pass
+    - not a test bug - and should be investigated there, not worked around
+    here.
     """
     class_parts = [LANG_TAG[language]]
     if is_interactive:
@@ -308,7 +326,7 @@ def render_html_simplified(attrs: list[str], is_interactive: bool, language: str
         class_parts.append(cast(str, meta["skey"]))
         class_parts.append(str(value))
     class_str = ":".join(class_parts)
-    return f'<pre><code class="{class_str}">{html_escape_code(BASE_CODE[language])}</code></pre>'
+    return f'<pre class="{class_str}"><code>{html_escape_code(BASE_CODE[language])}</code></pre>'
 
 
 def render_markdown_classic(attrs: list[str], is_interactive: bool, language: str) -> str:

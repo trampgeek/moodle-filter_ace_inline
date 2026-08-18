@@ -1,4 +1,4 @@
-<pre><code class="sql:dark-theme-mode:2">CREATE TABLE staff (
+<pre class="sql:dark-theme-mode:2"><code>CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,
     first_name VARCHAR(100)  NOT NULL,

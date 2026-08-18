@@ -1,6 +1,6 @@
 <textarea id="stdinbox1">hello</textarea>
 
-<pre data-ace-interactive-code data-lang="c" data-stdin-taid="stdinbox1">#include &lt;stdio.h&gt;
+<pre data-ace-interactive-code data-lang="c" data-stdin-taid="stdinbox1"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -28,4 +28,4 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>

@@ -1,7 +1,7 @@
 <input id="uploadbox1" type="file">
 <textarea id="filebox1">file contents</textarea>
 
-<pre data-ace-interactive-code data-lang="c" data-file-upload-id="uploadbox1" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}">#include &lt;stdio.h&gt;
+<pre data-ace-interactive-code data-lang="c" data-file-upload-id="uploadbox1" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -29,4 +29,4 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>

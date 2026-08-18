@@ -9,7 +9,7 @@
       <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm069.txt</p></br> <input id="uploadbox1" type="file">
 <textarea id="filebox1">file contents</textarea>
 
-<pre data-ace-interactive-code data-lang="python3" data-file-upload-id="uploadbox1" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-hidden="true">import os
+<pre data-ace-interactive-code data-lang="python3" data-file-upload-id="uploadbox1" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-hidden="true"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]
@@ -21,7 +21,7 @@ else:
     if stdin_data:
         print("stdin:" + stdin_data)
     else:
-        print("hello")</pre>
+        print("hello")</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">
