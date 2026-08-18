@@ -3,3 +3,4 @@
 /amd/src/grunt
 /tests/fixtures/test-sandbox-config.php
 __pycache__/
+.DS_Store
