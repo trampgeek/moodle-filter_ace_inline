@@ -1,4 +1,4 @@
-<pre class="c:interactive:button-name:RunIt:dark-theme-mode:2">#include &lt;stdio.h&gt;
+<pre><code class="c:interactive:button-name:RunIt:dark-theme-mode:2">#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -26,4 +26,4 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>

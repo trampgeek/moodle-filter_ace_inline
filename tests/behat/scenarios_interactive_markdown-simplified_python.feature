@@ -20,6 +20,8 @@ Feature: interactive/markdown-simplified/python scenario fixtures
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And I have enabled the sandbox and ace inline filter
+    And the following config values are set as admin:
+      | simplified_mode | 1 | filter_ace_inline |
 
   Scenario: interactive_markdown-simplified_python_perm001
     Given the following "questions" exist:
@@ -455,7 +457,7 @@ Feature: interactive/markdown-simplified/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_markdown-simplified_python_perm047
     Given the following "questions" exist:
@@ -467,7 +469,7 @@ Feature: interactive/markdown-simplified/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "readOnly" value "true" with filter ace inline
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_markdown-simplified_python_perm054
     Given the following "questions" exist:

@@ -276,7 +276,21 @@ def render_html(attrs: list[str], is_interactive: bool, language: str) -> str:
 
 
 def render_html_simplified(attrs: list[str], is_interactive: bool, language: str) -> str:
-    """html-simplified: raw <pre class="lang:attr:value:..."> colon-encoded class."""
+    """html-simplified: raw <pre><code class="lang:attr:value:..."> colon-encoded
+    class, on a <code> element nested in a plain <pre> - NOT the class
+    directly on the <pre> itself. text_filter.php's do_ace_editor() only
+    ever queues the JS module for a page when the text contains a literal
+    "ace-interactive-code"/"ace-highlight-code" marker, or (only when
+    simplified_mode is on) the literal substring "<code" - a bare
+    <pre class="lang:...character"> has neither, so the JS is never even
+    loaded and nothing renders at all. Confirmed empirically: a probe
+    fixture using bare <pre class="..."> failed outright (no ace_editor
+    ever appeared); switching to <pre><code class="..."> - the same DOM
+    shape Markdown Extra itself produces for a fenced block, so this is
+    genuinely reachable by a real author hand-writing raw HTML, not just a
+    generator convenience - made the identical probe pass end-to-end
+    (editor rendered, execution worked).
+    """
     class_parts = [LANG_TAG[language]]
     if is_interactive:
         class_parts.append("interactive")
@@ -294,7 +308,7 @@ def render_html_simplified(attrs: list[str], is_interactive: bool, language: str
         class_parts.append(cast(str, meta["skey"]))
         class_parts.append(str(value))
     class_str = ":".join(class_parts)
-    return f'<pre class="{class_str}">{html_escape_code(BASE_CODE[language])}</pre>'
+    return f'<pre><code class="{class_str}">{html_escape_code(BASE_CODE[language])}</code></pre>'
 
 
 def render_markdown_classic(attrs: list[str], is_interactive: bool, language: str) -> str:

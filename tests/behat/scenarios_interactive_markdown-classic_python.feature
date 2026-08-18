@@ -421,7 +421,7 @@ Feature: interactive/markdown-classic/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_markdown-classic_python_perm047
     Given the following "questions" exist:
@@ -433,7 +433,7 @@ Feature: interactive/markdown-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "readOnly" value "true" with filter ace inline
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_markdown-classic_python_perm050
     Given the following "questions" exist:

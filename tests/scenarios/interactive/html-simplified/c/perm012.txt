@@ -1,6 +1,6 @@
 <input id="uploadbox1" type="file">
 
-<pre class="c:interactive:file-upload-id:uploadbox1">#include &lt;stdio.h&gt;
+<pre><code class="c:interactive:file-upload-id:uploadbox1">#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -28,4 +28,4 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>

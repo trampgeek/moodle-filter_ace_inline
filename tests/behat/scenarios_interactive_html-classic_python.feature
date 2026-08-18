@@ -489,7 +489,7 @@ Feature: interactive/html-classic/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm045
     Given the following "questions" exist:
@@ -525,7 +525,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "readOnly" value "true" with filter ace inline
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm048
     Given the following "questions" exist:
@@ -536,7 +536,7 @@ Feature: interactive/html-classic/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm049
     Given the following "questions" exist:
@@ -548,7 +548,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "readOnly" value "true" with filter ace inline
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm050
     Given the following "questions" exist:
@@ -624,7 +624,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "readOnly" value "true" with filter ace inline
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm057
     Given the following "questions" exist:
@@ -677,7 +677,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "3" with filter ace inline
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm061
     Given the following "questions" exist:
@@ -731,7 +731,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And I press "RunIt"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm065
     Given the following "questions" exist:
@@ -769,7 +769,7 @@ Feature: interactive/html-classic/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should not exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm068
     Given the following "questions" exist:
@@ -813,7 +813,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "readOnly" value "true" with filter ace inline
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "file... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "files:file contents"
 
   Scenario: interactive_html-classic_python_perm072
     Given the following "questions" exist:
@@ -841,7 +841,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "maxLines" value "3" with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And I press "RunIt"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm074
     Given the following "questions" exist:
@@ -903,7 +903,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "maxLines" value "3" with filter ace inline
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "file... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "files:file contents"
 
   Scenario: interactive_html-classic_python_perm078
     Given the following "questions" exist:
@@ -928,7 +928,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And I press "RunIt"
-    Then I should see the filter-ace-inline-html div containing "hell... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "hello"
 
   Scenario: interactive_html-classic_python_perm080
     Given the following "questions" exist:
@@ -980,7 +980,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "RunIt"
-    Then I should see the filter-ace-inline-html div containing "file... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "files:file contents"
 
   Scenario: interactive_html-classic_python_perm084
     Given the following "questions" exist:
@@ -1014,7 +1014,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "Try it!"
-    Then I should see the filter-ace-inline-html div containing "file... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "files:file contents"
 
   Scenario: interactive_html-classic_python_perm087
     Given the following "questions" exist:
@@ -1070,7 +1070,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "RunIt"
-    Then I should see the filter-ace-inline-html div containing "file... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "files:file contents"
 
   Scenario: interactive_html-classic_python_perm091
     Given the following "questions" exist:
@@ -1123,7 +1123,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "RunIt"
-    Then I should see the filter-ace-inline-html div containing "file... (truncated)"
+    Then I should see the filter-ace-inline-html div containing "files:file contents"
 
   Scenario: interactive_html-classic_python_perm095
     Given the following "questions" exist:

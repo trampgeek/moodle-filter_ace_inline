@@ -1,4 +1,4 @@
-<pre class="python3:interactive:hidden:true:font-size:18pt">import os
+<pre><code class="python3:interactive:hidden:true:font-size:18pt">import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]
@@ -10,4 +10,4 @@ else:
     if stdin_data:
         print("stdin:" + stdin_data)
     else:
-        print("hello")</pre>
+        print("hello")</code></pre>

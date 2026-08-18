@@ -6,7 +6,7 @@
       <text>interactive_html-simplified_c_perm004</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm004.txt</p></br> <pre class="c:interactive:min-lines:20">#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm004.txt</p></br> <pre><code class="c:interactive:min-lines:20">#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
@@ -34,7 +34,7 @@ int main(void)
         }
     }
     return 0;
-}</pre>
+}</code></pre>
 ]]></text>
     </questiontext>
     <generalfeedback format="html">

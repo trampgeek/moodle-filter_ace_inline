@@ -20,6 +20,8 @@ Feature: highlight/markdown-simplified/python scenario fixtures
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And I have enabled the sandbox and ace inline filter
+    And the following config values are set as admin:
+      | simplified_mode | 1 | filter_ace_inline |
 
   Scenario: highlight_markdown-simplified_python_perm001
     Given the following "questions" exist:

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""Generates a Behat feature-file suite under tests/behat/scenarios/, one
-file per tests/scenarios/<render>/<authoring>/python/ leaf directory, with
-one Scenario per fixture in it.
+"""Generates a Behat feature-file suite as flat files directly under
+tests/behat/ (scenarios_<render>_<authoring>_python.feature), one file per
+tests/scenarios/<render>/<authoring>/python/ leaf directory, with one
+Scenario per fixture in it. Flat and directly in tests/behat/ - not a
+subdirectory - because Moodle core only discovers a component's Behat
+features via a non-recursive glob of tests/behat/*.feature; see
+DEFAULT_BEHAT_OUTPUT_DIR's comment below for how this was confirmed.
 
 Python only: this is a genuine per-attribute assertion suite (not a smoke
 test), and getting the same coverage for c/sql would mean maintaining a
@@ -92,7 +96,18 @@ from generate_scenarios import ATTR_META, load_rows
 SCRIPT_DIR = Path(__file__).resolve().parent
 TESTS_DIR = SCRIPT_DIR.parent
 DEFAULT_SCENARIOS_DIR = TESTS_DIR / "scenarios"
-DEFAULT_BEHAT_OUTPUT_DIR = TESTS_DIR / "behat" / "scenarios"
+# Must be tests/behat itself, not a subdirectory: Moodle core discovers a
+# component's Behat features via a single, non-recursive
+# glob("$path/tests/behat/*.feature") (behat_config_util.php,
+# get_components_features()/get_behat_tests_path()) - confirmed by reading
+# that source directly after a generated tests/behat/scenarios/<render>/
+# <authoring>/*.feature layout produced zero discovered scenarios in a real
+# run. Nothing nested any deeper than tests/behat/ is ever found, by moodle-
+# docker, moodle-plugin-ci, or any other Moodle Behat runner - this isn't a
+# local-environment quirk. Output filenames are correspondingly flat (see
+# generate_behat_suite_from_scenarios()), not one-directory-per-combination.
+DEFAULT_BEHAT_OUTPUT_DIR = TESTS_DIR / "behat"
+GENERATED_FEATURE_PREFIX = "scenarios_"
 
 MARKDOWN_AUTHORING_PREFIX = "markdown-"
 LANGUAGE = "python"
@@ -165,12 +180,29 @@ def expected_output_text(attrs: list[str]) -> str:
     (s.substr(0, maxLen) + '... (truncated)') if data-max-output-length is
     set. ATTR_META's value (4) is deliberately shorter than every possible
     marker (all >= 5 characters), so truncation always actually fires.
+
+    NOT used when data-html-output is also present - see
+    expected_html_output_text() for why that path is different, not just a
+    variant of this one.
     """
     marker = base_output_marker(attrs)
     if "data-max-output-length" in attrs:
         max_len = int(ATTR_META["data-max-output-length"]["value"])
         return marker[:max_len] + "... (truncated)"
     return marker
+
+
+def expected_html_output_text(attrs: list[str]) -> str:
+    """base_output_marker(), never truncated, regardless of
+    data-max-output-length. ace_interactive.js's displaySuccess() only calls
+    combinedOutput()/limit() (the truncating path) when html-output is NOT
+    active or the run didn't succeed; on a successful html-output run it
+    instead does `html.innerHTML = response.output` directly, the raw output
+    untouched - confirmed by reading that function, not assumed. A fixture
+    combining html-output with max-output-length therefore still has to show
+    the full, untruncated marker text.
+    """
+    return base_output_marker(attrs)
 
 
 def button_label(attrs: list[str]) -> str:
@@ -272,11 +304,12 @@ def build_scenario(relative_path: Path, attrs: list[str], is_interactive: bool) 
 
     has_unexecutable_affix = "data-prefix" in attrs or "data-suffix" in attrs
     if is_interactive and not has_unexecutable_affix:
-        expected = expected_output_text(attrs)
         lines.append(f'    And I press "{button_label(attrs)}"')
         if "data-html-output" in attrs:
+            expected = expected_html_output_text(attrs)
             lines.append(f'    Then I should see the filter-ace-inline-html div containing "{expected}"')
         else:
+            expected = expected_output_text(attrs)
             lines.append(f'    Then I should see "{expected}"')
 
     return "\n".join(lines)
@@ -302,6 +335,16 @@ def build_feature_file(render: str, authoring: str, scenarios: list) -> str:
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And I have enabled the sandbox and ace inline filter"""
+    # Simplified mode's colon-encoded class syntax is not recognised at all
+    # unless this admin setting is on (confirmed the hard way: every
+    # html-simplified/markdown-simplified fixture failed with "ace_editor
+    # not found" - the <pre> was never even converted into an Ace block -
+    # until this step was added, matching what the hand-written
+    # simplified_class_mode*.feature files already did).
+    if authoring.endswith("simplified"):
+        background += """
+    And the following config values are set as admin:
+      | simplified_mode | 1 | filter_ace_inline |"""
 
     header = f"""@filter @filter_ace_inline @javascript
 Feature: {title}
@@ -341,9 +384,11 @@ def write_with_retry(path: Path, content: str, attempts: int = 5, delay: float =
 def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_DIR,
                                          behat_output_dir: Path = DEFAULT_BEHAT_OUTPUT_DIR) -> int:
     """Walks scenarios_dir for python/*.txt fixtures, groups them by their
-    (render, authoring) leaf directory, and writes one .feature file per
-    group under behat_output_dir. Returns the number of feature files
-    written.
+    (render, authoring) leaf directory, and writes one flat
+    scenarios_<render>_<authoring>_python.feature file per group directly
+    under behat_output_dir (tests/behat/ itself - see
+    DEFAULT_BEHAT_OUTPUT_DIR's comment for why it can't be a subdirectory).
+    Returns the number of feature files written.
 
     Each fixture's attribute list is looked up from permutations.csv (via
     the perm number in its filename), not re-parsed from the fixture's own
@@ -351,9 +396,11 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
     generate the fixture in the first place, so the two can never disagree
     about what a fixture is supposed to contain.
 
-    Clears out any *.feature files already under behat_output_dir first, so
-    that fixtures removed from tests/scenarios/ since the last run don't
-    leave stale, no-longer-matching scenarios behind.
+    Clears out any scenarios_*.feature files already under behat_output_dir
+    first, so that fixtures removed from tests/scenarios/ since the last run
+    don't leave stale, no-longer-matching scenarios behind. Scoped to that
+    prefix specifically (not every *.feature file) since behat_output_dir is
+    tests/behat/ itself, shared with the hand-written suite.
     """
     rows = load_rows()
 
@@ -373,7 +420,7 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
             groups[(render, authoring)].append((relative_path, attrs))
 
     if behat_output_dir.exists():
-        for stale in behat_output_dir.rglob("*.feature"):
+        for stale in behat_output_dir.glob(f"{GENERATED_FEATURE_PREFIX}*.feature"):
             stale.unlink()
 
     written = 0
@@ -385,9 +432,8 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
         ]
         feature_content = build_feature_file(render, authoring, scenarios)
 
-        outdir = behat_output_dir / render / authoring
-        outdir.mkdir(parents=True, exist_ok=True)
-        outpath = outdir / f"{LANGUAGE}.feature"
+        behat_output_dir.mkdir(parents=True, exist_ok=True)
+        outpath = behat_output_dir / f"{GENERATED_FEATURE_PREFIX}{render}_{authoring}_{LANGUAGE}.feature"
         write_with_retry(outpath, feature_content)
         written += 1
 
