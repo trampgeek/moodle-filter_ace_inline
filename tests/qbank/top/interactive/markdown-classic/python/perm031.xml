@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm031</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm031.txt</p></br><p>Attributes: data-button-name, data-dark-theme-mode</p></br> ``` {data-ace-interactive-code= data-lang=python3 data-button-name=RunIt data-dark-theme-mode=2}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm031.txt</p></br><p>Attributes: data-button-name, data-dark-theme-mode</p></br>
+
+``` {data-ace-interactive-code= data-lang=python3 data-button-name=RunIt data-dark-theme-mode=2}
 import os
 import sys
 

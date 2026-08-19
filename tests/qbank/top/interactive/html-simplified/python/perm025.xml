@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_python_perm025</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm025.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br> <pre class="python3:interactive:start-line-number:7:min-lines:20:max-lines:25"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm025.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br>
+
+<pre class="python3:interactive:start-line-number:7:min-lines:20:max-lines:25"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

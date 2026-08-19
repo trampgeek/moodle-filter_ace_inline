@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm078</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm078.txt</p></br><p>Attributes: data-file-taids, data-start-line-number, data-file-upload-id, data-code-mapper, data-min-lines, data-prefix, data-suffix, data-max-lines</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm078.txt</p></br><p>Attributes: data-file-taids, data-start-line-number, data-file-upload-id, data-code-mapper, data-min-lines, data-prefix, data-suffix, data-max-lines</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 <script>
 function mapFn1(s) { return "print(\"mapped\")"; }

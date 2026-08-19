@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_c_perm012</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm012.txt</p></br><p>Attributes: data-file-upload-id</p></br> <input id="uploadbox1" type="file">
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm012.txt</p></br><p>Attributes: data-file-upload-id</p></br>
+
+<input id="uploadbox1" type="file">
 
 ``` {data-ace-interactive-code= data-lang=c data-file-upload-id=uploadbox1}
 #include <stdio.h>

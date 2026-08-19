@@ -6,7 +6,9 @@
       <text>highlight_markdown-simplified_sql_perm019</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/sql/perm019.txt</p></br><p>Attributes: line-numbers</p></br> ```sql:line-numbers:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/sql/perm019.txt</p></br><p>Attributes: line-numbers</p></br>
+
+```sql:line-numbers:3
 CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,

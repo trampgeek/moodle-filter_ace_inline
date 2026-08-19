@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm029</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm029.txt</p></br><p>Attributes: data-button-name, data-font-size</p></br> ```python3:interactive:button-name:RunIt:font-size:18pt
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm029.txt</p></br><p>Attributes: data-button-name, data-font-size</p></br>
+
+```python3:interactive:button-name:RunIt:font-size:18pt
 import os
 import sys
 

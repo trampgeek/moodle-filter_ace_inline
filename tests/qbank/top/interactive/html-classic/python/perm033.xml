@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm033</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm033.txt</p></br><p>Attributes: data-hidden, data-font-size, data-dark-theme-mode</p></br> <pre data-ace-interactive-code data-lang="python3" data-hidden="true" data-font-size="18pt" data-dark-theme-mode="2"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm033.txt</p></br><p>Attributes: data-hidden, data-font-size, data-dark-theme-mode</p></br>
+
+<pre data-ace-interactive-code data-lang="python3" data-hidden="true" data-font-size="18pt" data-dark-theme-mode="2"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

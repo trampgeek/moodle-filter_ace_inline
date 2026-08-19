@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm023</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm023.txt</p></br><p>Attributes: data-min-lines, line-numbers</p></br> ```c:interactive:min-lines:34:line-numbers:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm023.txt</p></br><p>Attributes: data-min-lines, line-numbers</p></br>
+
+```c:interactive:min-lines:34:line-numbers:3
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

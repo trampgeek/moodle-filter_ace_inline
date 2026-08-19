@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm047</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm047.txt</p></br><p>Attributes: data-readonly, data-max-output-length, data-html-output</p></br> ``` {data-ace-interactive-code= data-lang=python3 data-readonly=true data-max-output-length=4 data-html-output=true}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm047.txt</p></br><p>Attributes: data-readonly, data-max-output-length, data-html-output</p></br>
+
+``` {data-ace-interactive-code= data-lang=python3 data-readonly=true data-max-output-length=4 data-html-output=true}
 import os
 import sys
 

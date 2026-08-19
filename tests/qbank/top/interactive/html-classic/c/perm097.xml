@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm097</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm097.txt</p></br><p>Attributes: data-file-taids, data-params, data-max-output-length, data-readonly, data-file-upload-id, data-code-mapper, data-html-output, data-hidden, data-prefix, data-suffix</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm097.txt</p></br><p>Attributes: data-file-taids, data-params, data-max-output-length, data-readonly, data-file-upload-id, data-code-mapper, data-html-output, data-hidden, data-prefix, data-suffix</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 <script>
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }

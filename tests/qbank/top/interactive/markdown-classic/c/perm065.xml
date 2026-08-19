@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_c_perm065</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm065.txt</p></br><p>Attributes: data-font-size, data-button-name, data-code-mapper, data-dark-theme-mode, data-prefix, data-suffix</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm065.txt</p></br><p>Attributes: data-font-size, data-button-name, data-code-mapper, data-dark-theme-mode, data-prefix, data-suffix</p></br>
+
+<script>
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
 </script>
 

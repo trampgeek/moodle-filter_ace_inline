@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm090</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm090.txt</p></br><p>Attributes: data-file-taids, data-params, data-max-output-length, data-font-size, data-readonly, data-file-upload-id, data-button-name, data-start-line-number, data-min-lines, data-html-output, data-dark-theme-mode, data-max-lines</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm090.txt</p></br><p>Attributes: data-file-taids, data-params, data-max-output-length, data-font-size, data-readonly, data-file-upload-id, data-button-name, data-start-line-number, data-min-lines, data-html-output, data-dark-theme-mode, data-max-lines</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 
 <pre data-ace-interactive-code data-lang="python3" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-font-size="18pt" data-readonly="true" data-file-upload-id="uploadbox1" data-button-name="RunIt" data-start-line-number="7" data-min-lines="20" data-html-output="true" data-dark-theme-mode="2" data-max-lines="25"><code>import os

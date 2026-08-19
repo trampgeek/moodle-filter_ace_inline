@@ -6,7 +6,9 @@
       <text>highlight_html-simplified_c_perm022</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/c/perm022.txt</p></br><p>Attributes: data-min-lines, data-max-lines</p></br> <pre class="c:min-lines:34:max-lines:39"><code>#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/c/perm022.txt</p></br><p>Attributes: data-min-lines, data-max-lines</p></br>
+
+<pre class="c:min-lines:34:max-lines:39"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

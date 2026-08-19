@@ -6,7 +6,9 @@
       <text>highlight_markdown-simplified_sql_perm005</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/sql/perm005.txt</p></br><p>Attributes: data-max-lines</p></br> ```sql:max-lines:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/sql/perm005.txt</p></br><p>Attributes: data-max-lines</p></br>
+
+```sql:max-lines:3
 CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,

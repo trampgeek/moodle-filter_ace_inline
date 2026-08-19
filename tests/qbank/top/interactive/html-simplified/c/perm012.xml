@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_c_perm012</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm012.txt</p></br><p>Attributes: data-file-upload-id</p></br> <input id="uploadbox1" type="file">
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm012.txt</p></br><p>Attributes: data-file-upload-id</p></br>
+
+<input id="uploadbox1" type="file">
 
 <pre class="c:interactive:file-upload-id:uploadbox1"><code>#include &lt;stdio.h&gt;
 

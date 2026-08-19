@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_python_perm014</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm014.txt</p></br><p>Attributes: data-code-mapper</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm014.txt</p></br><p>Attributes: data-code-mapper</p></br>
+
+<script>
 function mapFn1(s) { return "print(\"mapped\")"; }
 </script>
 

@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_c_perm055</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm055.txt</p></br><p>Attributes: data-button-name, data-font-size, data-dark-theme-mode</p></br> ``` {data-ace-interactive-code= data-lang=c data-button-name=RunIt data-font-size=18pt data-dark-theme-mode=2}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm055.txt</p></br><p>Attributes: data-button-name, data-font-size, data-dark-theme-mode</p></br>
+
+``` {data-ace-interactive-code= data-lang=c data-button-name=RunIt data-font-size=18pt data-dark-theme-mode=2}
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

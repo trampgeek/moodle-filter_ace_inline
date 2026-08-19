@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm089</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm089.txt</p></br><p>Attributes: data-params, data-max-output-length, data-font-size, data-readonly, data-button-name, data-code-mapper, data-start-line-number, data-min-lines, data-html-output, data-dark-theme-mode, data-prefix, data-suffix, data-max-lines</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm089.txt</p></br><p>Attributes: data-params, data-max-output-length, data-font-size, data-readonly, data-button-name, data-code-mapper, data-start-line-number, data-min-lines, data-html-output, data-dark-theme-mode, data-prefix, data-suffix, data-max-lines</p></br>
+
+<script>
 function mapFn1(s) { return "print(\"mapped\")"; }
 </script>
 

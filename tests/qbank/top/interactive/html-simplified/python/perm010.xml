@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_python_perm010</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br> <textarea id="stdinbox1">hello</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br>
+
+<textarea id="stdinbox1">hello</textarea>
 
 <pre class="python3:interactive:stdin-taid:stdinbox1"><code>import os
 import sys

@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm049</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm049.txt</p></br><p>Attributes: data-readonly, data-max-output-length, data-html-output, data-params</p></br> <pre data-ace-interactive-code data-lang="python3" data-readonly="true" data-max-output-length="4" data-html-output="true" data-params="{&quot;cputime&quot;: 5}"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm049.txt</p></br><p>Attributes: data-readonly, data-max-output-length, data-html-output, data-params</p></br>
+
+<pre data-ace-interactive-code data-lang="python3" data-readonly="true" data-max-output-length="4" data-html-output="true" data-params="{&quot;cputime&quot;: 5}"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

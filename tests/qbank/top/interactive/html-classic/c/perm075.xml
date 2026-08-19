@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm075</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm075.txt</p></br><p>Attributes: data-file-taids, data-font-size, data-button-name, data-file-upload-id, data-start-line-number, data-min-lines, data-dark-theme-mode, data-max-lines</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm075.txt</p></br><p>Attributes: data-file-taids, data-font-size, data-button-name, data-file-upload-id, data-start-line-number, data-min-lines, data-dark-theme-mode, data-max-lines</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 
 <pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-font-size="18pt" data-button-name="RunIt" data-file-upload-id="uploadbox1" data-start-line-number="7" data-min-lines="34" data-dark-theme-mode="2" data-max-lines="39"><code>#include &lt;stdio.h&gt;

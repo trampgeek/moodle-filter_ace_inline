@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm051</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm051.txt</p></br><p>Attributes: data-code-mapper, data-suffix</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm051.txt</p></br><p>Attributes: data-code-mapper, data-suffix</p></br>
+
+<script>
 function mapFn1(s) { return "print(\"mapped\")"; }
 </script>
 

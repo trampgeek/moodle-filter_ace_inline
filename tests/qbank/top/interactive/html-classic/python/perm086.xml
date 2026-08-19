@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm086</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm086.txt</p></br><p>Attributes: data-file-taids, data-params, data-max-output-length, data-readonly, data-file-upload-id, data-html-output, data-hidden</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm086.txt</p></br><p>Attributes: data-file-taids, data-params, data-max-output-length, data-readonly, data-file-upload-id, data-html-output, data-hidden</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 
 <pre data-ace-interactive-code data-lang="python3" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-params="{&quot;cputime&quot;: 5}" data-max-output-length="4" data-readonly="true" data-file-upload-id="uploadbox1" data-html-output="true" data-hidden="true"><code>import os

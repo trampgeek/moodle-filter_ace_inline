@@ -6,7 +6,9 @@
       <text>highlight_markdown-classic_python_perm001</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/python/perm001.txt</p></br><p>Attributes: none</p></br> ``` {data-ace-highlight-code= data-lang=python3}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/python/perm001.txt</p></br><p>Attributes: none</p></br>
+
+``` {data-ace-highlight-code= data-lang=python3}
 import os
 import sys
 

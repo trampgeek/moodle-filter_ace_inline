@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_python_perm035</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm035.txt</p></br><p>Attributes: data-button-name, data-hidden, data-font-size</p></br> <pre class="python3:interactive:button-name:RunIt:hidden:true:font-size:18pt"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm035.txt</p></br><p>Attributes: data-button-name, data-hidden, data-font-size</p></br>
+
+<pre class="python3:interactive:button-name:RunIt:hidden:true:font-size:18pt"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

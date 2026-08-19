@@ -6,7 +6,9 @@
       <text>highlight_markdown-simplified_c_perm019</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/c/perm019.txt</p></br><p>Attributes: line-numbers</p></br> ```c:line-numbers:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/c/perm019.txt</p></br><p>Attributes: line-numbers</p></br>
+
+```c:line-numbers:3
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

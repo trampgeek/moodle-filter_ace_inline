@@ -6,7 +6,9 @@
       <text>highlight_markdown-classic_c_perm004</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/c/perm004.txt</p></br><p>Attributes: data-min-lines</p></br> ``` {data-ace-highlight-code= data-lang=c data-min-lines=34}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/c/perm004.txt</p></br><p>Attributes: data-min-lines</p></br>
+
+``` {data-ace-highlight-code= data-lang=c data-min-lines=34}
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

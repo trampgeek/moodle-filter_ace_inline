@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm016</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm016.txt</p></br><p>Attributes: data-suffix</p></br> ``` {data-ace-interactive-code= data-lang=python3 data-suffix=pass}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm016.txt</p></br><p>Attributes: data-suffix</p></br>
+
+``` {data-ace-interactive-code= data-lang=python3 data-suffix=pass}
 import os
 import sys
 

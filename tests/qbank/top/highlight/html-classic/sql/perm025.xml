@@ -6,7 +6,9 @@
       <text>highlight_html-classic_sql_perm025</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-classic/sql/perm025.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br> <pre data-ace-highlight-code data-lang="sql" data-start-line-number="7" data-min-lines="23" data-max-lines="28"><code>CREATE TABLE staff (
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-classic/sql/perm025.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br>
+
+<pre data-ace-highlight-code data-lang="sql" data-start-line-number="7" data-min-lines="23" data-max-lines="28"><code>CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,
     first_name VARCHAR(100)  NOT NULL,

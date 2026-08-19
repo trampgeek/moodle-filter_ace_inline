@@ -6,7 +6,9 @@
       <text>highlight_markdown-classic_c_perm027</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/c/perm027.txt</p></br><p>Attributes: data-font-size, data-dark-theme-mode</p></br> ``` {data-ace-highlight-code= data-lang=c data-font-size=18pt data-dark-theme-mode=2}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/c/perm027.txt</p></br><p>Attributes: data-font-size, data-dark-theme-mode</p></br>
+
+``` {data-ace-highlight-code= data-lang=c data-font-size=18pt data-dark-theme-mode=2}
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

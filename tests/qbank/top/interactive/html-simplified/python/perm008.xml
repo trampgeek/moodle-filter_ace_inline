@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_python_perm008</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm008.txt</p></br><p>Attributes: data-readonly</p></br> <pre class="python3:interactive:readonly:true"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/python/perm008.txt</p></br><p>Attributes: data-readonly</p></br>
+
+<pre class="python3:interactive:readonly:true"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

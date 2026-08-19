@@ -6,7 +6,9 @@
       <text>highlight_markdown-simplified_python_perm020</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/python/perm020.txt</p></br><p>Attributes: data-start-line-number, data-min-lines</p></br> ```python3:start-line-number:7:min-lines:20
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/python/perm020.txt</p></br><p>Attributes: data-start-line-number, data-min-lines</p></br>
+
+```python3:start-line-number:7:min-lines:20
 import os
 import sys
 

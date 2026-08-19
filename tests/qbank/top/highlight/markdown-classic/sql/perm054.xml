@@ -6,7 +6,9 @@
       <text>highlight_markdown-classic_sql_perm054</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/sql/perm054.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br> ``` {data-ace-highlight-code= data-lang=sql data-start-line-number=7 data-min-lines=23 data-max-lines=28}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/sql/perm054.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br>
+
+``` {data-ace-highlight-code= data-lang=sql data-start-line-number=7 data-min-lines=23 data-max-lines=28}
 CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,

@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm029</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm029.txt</p></br><p>Attributes: data-button-name, data-font-size</p></br> <pre data-ace-interactive-code data-lang="c" data-button-name="RunIt" data-font-size="18pt"><code>#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm029.txt</p></br><p>Attributes: data-button-name, data-font-size</p></br>
+
+<pre data-ace-interactive-code data-lang="c" data-button-name="RunIt" data-font-size="18pt"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm005</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm005.txt</p></br><p>Attributes: data-max-lines</p></br> ```c:interactive:max-lines:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm005.txt</p></br><p>Attributes: data-max-lines</p></br>
+
+```c:interactive:max-lines:3
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

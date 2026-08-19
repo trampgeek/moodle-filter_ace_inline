@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm084</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm084.txt</p></br><p>Attributes: data-file-taids, data-font-size, data-button-name, data-file-upload-id, data-code-mapper, data-dark-theme-mode, data-prefix, data-suffix</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm084.txt</p></br><p>Attributes: data-file-taids, data-font-size, data-button-name, data-file-upload-id, data-code-mapper, data-dark-theme-mode, data-prefix, data-suffix</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 <input id="uploadbox1" type="file">
 <script>
 function mapFn1(s) { return "print(\"mapped\")"; }

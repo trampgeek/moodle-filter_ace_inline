@@ -6,7 +6,9 @@
       <text>highlight_markdown-simplified_python_perm005</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/python/perm005.txt</p></br><p>Attributes: data-max-lines</p></br> ```python3:max-lines:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-simplified/python/perm005.txt</p></br><p>Attributes: data-max-lines</p></br>
+
+```python3:max-lines:3
 import os
 import sys
 

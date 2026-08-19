@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm010</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br> <textarea id="stdinbox1">hello</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br>
+
+<textarea id="stdinbox1">hello</textarea>
 
 ```c:interactive:stdin-taid:stdinbox1
 #include <stdio.h>

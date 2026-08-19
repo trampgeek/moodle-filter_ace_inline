@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm041</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm041.txt</p></br><p>Attributes: data-readonly, data-max-output-length</p></br> ```c:interactive:readonly:true:max-output-length:4
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm041.txt</p></br><p>Attributes: data-readonly, data-max-output-length</p></br>
+
+```c:interactive:readonly:true:max-output-length:4
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

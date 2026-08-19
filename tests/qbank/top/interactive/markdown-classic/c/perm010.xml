@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_c_perm010</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br> <textarea id="stdinbox1">hello</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br>
+
+<textarea id="stdinbox1">hello</textarea>
 
 ``` {data-ace-interactive-code= data-lang=c data-stdin-taid=stdinbox1}
 #include <stdio.h>

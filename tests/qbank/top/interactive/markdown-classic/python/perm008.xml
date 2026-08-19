@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm008</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm008.txt</p></br><p>Attributes: data-readonly</p></br> ``` {data-ace-interactive-code= data-lang=python3 data-readonly=true}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm008.txt</p></br><p>Attributes: data-readonly</p></br>
+
+``` {data-ace-interactive-code= data-lang=python3 data-readonly=true}
 import os
 import sys
 

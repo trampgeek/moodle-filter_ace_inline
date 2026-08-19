@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm041</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm041.txt</p></br><p>Attributes: data-readonly, data-max-output-length</p></br> ```python3:interactive:readonly:true:max-output-length:4
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm041.txt</p></br><p>Attributes: data-readonly, data-max-output-length</p></br>
+
+```python3:interactive:readonly:true:max-output-length:4
 import os
 import sys
 

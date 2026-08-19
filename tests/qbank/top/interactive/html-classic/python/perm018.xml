@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm018</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm018.txt</p></br><p>Attributes: data-max-output-length</p></br> <pre data-ace-interactive-code data-lang="python3" data-max-output-length="4"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm018.txt</p></br><p>Attributes: data-max-output-length</p></br>
+
+<pre data-ace-interactive-code data-lang="python3" data-max-output-length="4"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

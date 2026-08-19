@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm032</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm032.txt</p></br><p>Attributes: data-button-name, data-hidden</p></br> ```python3:interactive:button-name:RunIt:hidden:true
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm032.txt</p></br><p>Attributes: data-button-name, data-hidden</p></br>
+
+```python3:interactive:button-name:RunIt:hidden:true
 import os
 import sys
 

@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm010</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br> <textarea id="stdinbox1">hello</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm010.txt</p></br><p>Attributes: data-stdin-taid</p></br>
+
+<textarea id="stdinbox1">hello</textarea>
 
 <pre data-ace-interactive-code data-lang="c" data-stdin-taid="stdinbox1"><code>#include &lt;stdio.h&gt;
 

@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm015</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm015.txt</p></br><p>Attributes: data-prefix</p></br> <pre data-ace-interactive-code data-lang="c" data-prefix="int"><code>#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm015.txt</p></br><p>Attributes: data-prefix</p></br>
+
+<pre data-ace-interactive-code data-lang="c" data-prefix="int"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

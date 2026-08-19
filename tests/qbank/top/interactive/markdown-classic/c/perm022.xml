@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_c_perm022</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm022.txt</p></br><p>Attributes: data-min-lines, data-max-lines</p></br> ``` {data-ace-interactive-code= data-lang=c data-min-lines=34 data-max-lines=39}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm022.txt</p></br><p>Attributes: data-min-lines, data-max-lines</p></br>
+
+``` {data-ace-interactive-code= data-lang=c data-min-lines=34 data-max-lines=39}
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

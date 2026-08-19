@@ -6,7 +6,9 @@
       <text>highlight_html-simplified_python_perm020</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/python/perm020.txt</p></br><p>Attributes: data-start-line-number, data-min-lines</p></br> <pre class="python3:start-line-number:7:min-lines:20"><code>import os
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-simplified/python/perm020.txt</p></br><p>Attributes: data-start-line-number, data-min-lines</p></br>
+
+<pre class="python3:start-line-number:7:min-lines:20"><code>import os
 import sys
 
 text_files = [f for f in os.listdir() if f.endswith(".txt")]

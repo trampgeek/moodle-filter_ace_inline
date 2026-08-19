@@ -6,7 +6,9 @@
       <text>highlight_markdown-classic_python_perm020</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/python/perm020.txt</p></br><p>Attributes: data-start-line-number, data-min-lines</p></br> ``` {data-ace-highlight-code= data-lang=python3 data-start-line-number=7 data-min-lines=20}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/python/perm020.txt</p></br><p>Attributes: data-start-line-number, data-min-lines</p></br>
+
+``` {data-ace-highlight-code= data-lang=python3 data-start-line-number=7 data-min-lines=20}
 import os
 import sys
 

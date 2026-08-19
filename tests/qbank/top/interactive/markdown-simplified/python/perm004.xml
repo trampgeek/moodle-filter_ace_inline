@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm004</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm004.txt</p></br><p>Attributes: data-min-lines</p></br> ```python3:interactive:min-lines:20
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm004.txt</p></br><p>Attributes: data-min-lines</p></br>
+
+```python3:interactive:min-lines:20
 import os
 import sys
 

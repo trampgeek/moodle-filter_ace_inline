@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm003</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm003.txt</p></br><p>Attributes: data-font-size</p></br> ```c:interactive:font-size:18pt
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm003.txt</p></br><p>Attributes: data-font-size</p></br>
+
+```c:interactive:font-size:18pt
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm006</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm006.txt</p></br><p>Attributes: data-dark-theme-mode</p></br> ```python3:interactive:dark-theme-mode:2
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm006.txt</p></br><p>Attributes: data-dark-theme-mode</p></br>
+
+```python3:interactive:dark-theme-mode:2
 import os
 import sys
 

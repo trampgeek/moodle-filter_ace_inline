@@ -6,7 +6,9 @@
       <text>highlight_markdown-classic_sql_perm002</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/sql/perm002.txt</p></br><p>Attributes: data-start-line-number</p></br> ``` {data-ace-highlight-code= data-lang=sql data-start-line-number=7}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/markdown-classic/sql/perm002.txt</p></br><p>Attributes: data-start-line-number</p></br>
+
+``` {data-ace-highlight-code= data-lang=sql data-start-line-number=7}
 CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,

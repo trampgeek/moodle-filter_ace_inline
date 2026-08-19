@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm008</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm008.txt</p></br><p>Attributes: data-readonly</p></br> ```python3:interactive:readonly:true
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm008.txt</p></br><p>Attributes: data-readonly</p></br>
+
+```python3:interactive:readonly:true
 import os
 import sys
 

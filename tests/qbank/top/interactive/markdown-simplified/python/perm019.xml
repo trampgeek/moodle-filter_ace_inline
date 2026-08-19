@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm019</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm019.txt</p></br><p>Attributes: line-numbers</p></br> ```python3:interactive:line-numbers:3
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm019.txt</p></br><p>Attributes: line-numbers</p></br>
+
+```python3:interactive:line-numbers:3
 import os
 import sys
 

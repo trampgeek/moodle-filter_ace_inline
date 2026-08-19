@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm093</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm093.txt</p></br><p>Attributes: data-params, data-max-output-length, data-font-size, data-readonly, data-button-name, data-code-mapper, data-html-output, data-dark-theme-mode, data-hidden, data-prefix, data-suffix</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm093.txt</p></br><p>Attributes: data-params, data-max-output-length, data-font-size, data-readonly, data-button-name, data-code-mapper, data-html-output, data-dark-theme-mode, data-hidden, data-prefix, data-suffix</p></br>
+
+<script>
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
 </script>
 

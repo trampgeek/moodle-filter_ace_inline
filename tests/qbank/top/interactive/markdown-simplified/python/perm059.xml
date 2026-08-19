@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm059</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm059.txt</p></br><p>Attributes: data-font-size, data-button-name, data-start-line-number, data-min-lines, data-dark-theme-mode, data-max-lines</p></br> ```python3:interactive:font-size:18pt:button-name:RunIt:start-line-number:7:min-lines:20:dark-theme-mode:2:max-lines:25
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm059.txt</p></br><p>Attributes: data-font-size, data-button-name, data-start-line-number, data-min-lines, data-dark-theme-mode, data-max-lines</p></br>
+
+```python3:interactive:font-size:18pt:button-name:RunIt:start-line-number:7:min-lines:20:dark-theme-mode:2:max-lines:25
 import os
 import sys
 

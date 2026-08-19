@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm025</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm025.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br> ```python3:interactive:start-line-number:7:min-lines:20:max-lines:25
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm025.txt</p></br><p>Attributes: data-start-line-number, data-min-lines, data-max-lines</p></br>
+
+```python3:interactive:start-line-number:7:min-lines:20:max-lines:25
 import os
 import sys
 

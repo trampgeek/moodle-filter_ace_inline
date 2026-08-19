@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm006</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm006.txt</p></br><p>Attributes: data-dark-theme-mode</p></br> ```c:interactive:dark-theme-mode:2
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm006.txt</p></br><p>Attributes: data-dark-theme-mode</p></br>
+
+```c:interactive:dark-theme-mode:2
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

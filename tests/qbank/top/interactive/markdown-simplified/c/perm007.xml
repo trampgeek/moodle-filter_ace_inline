@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_c_perm007</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm007.txt</p></br><p>Attributes: data-button-name</p></br> ```c:interactive:button-name:RunIt
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm007.txt</p></br><p>Attributes: data-button-name</p></br>
+
+```c:interactive:button-name:RunIt
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

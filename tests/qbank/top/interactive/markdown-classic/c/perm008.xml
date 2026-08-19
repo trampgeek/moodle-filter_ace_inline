@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_c_perm008</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm008.txt</p></br><p>Attributes: data-readonly</p></br> ``` {data-ace-interactive-code= data-lang=c data-readonly=true}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/c/perm008.txt</p></br><p>Attributes: data-readonly</p></br>
+
+``` {data-ace-interactive-code= data-lang=c data-readonly=true}
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

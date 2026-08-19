@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm007</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm007.txt</p></br><p>Attributes: data-button-name</p></br> ``` {data-ace-interactive-code= data-lang=python3 data-button-name=RunIt}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm007.txt</p></br><p>Attributes: data-button-name</p></br>
+
+``` {data-ace-interactive-code= data-lang=python3 data-button-name=RunIt}
 import os
 import sys
 

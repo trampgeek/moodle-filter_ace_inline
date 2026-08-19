@@ -6,7 +6,9 @@
       <text>highlight_html-classic_c_perm002</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-classic/c/perm002.txt</p></br><p>Attributes: data-start-line-number</p></br> <pre data-ace-highlight-code data-lang="c" data-start-line-number="7"><code>#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/highlight/html-classic/c/perm002.txt</p></br><p>Attributes: data-start-line-number</p></br>
+
+<pre data-ace-highlight-code data-lang="c" data-start-line-number="7"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

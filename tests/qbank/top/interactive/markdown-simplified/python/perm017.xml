@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm017</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm017.txt</p></br><p>Attributes: data-html-output</p></br> ```python3:interactive:html-output:true
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm017.txt</p></br><p>Attributes: data-html-output</p></br>
+
+```python3:interactive:html-output:true
 import os
 import sys
 

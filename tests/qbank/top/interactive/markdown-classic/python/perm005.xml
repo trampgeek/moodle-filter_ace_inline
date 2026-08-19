@@ -6,7 +6,9 @@
       <text>interactive_markdown-classic_python_perm005</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm005.txt</p></br><p>Attributes: data-max-lines</p></br> ``` {data-ace-interactive-code= data-lang=python3 data-max-lines=3}
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-classic/python/perm005.txt</p></br><p>Attributes: data-max-lines</p></br>
+
+``` {data-ace-interactive-code= data-lang=python3 data-max-lines=3}
 import os
 import sys
 

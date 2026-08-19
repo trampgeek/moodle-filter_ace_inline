@@ -6,7 +6,9 @@
       <text>interactive_html-classic_python_perm068</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm068.txt</p></br><p>Attributes: data-code-mapper, data-suffix, data-hidden, data-prefix</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm068.txt</p></br><p>Attributes: data-code-mapper, data-suffix, data-hidden, data-prefix</p></br>
+
+<script>
 function mapFn1(s) { return "print(\"mapped\")"; }
 </script>
 

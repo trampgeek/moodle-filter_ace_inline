@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm011</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm011.txt</p></br><p>Attributes: data-file-taids</p></br> <textarea id="filebox1">file contents</textarea>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm011.txt</p></br><p>Attributes: data-file-taids</p></br>
+
+<textarea id="filebox1">file contents</textarea>
 
 <pre data-ace-interactive-code data-lang="c" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}"><code>#include &lt;stdio.h&gt;
 

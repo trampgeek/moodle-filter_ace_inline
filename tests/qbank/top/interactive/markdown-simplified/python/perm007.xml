@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm007</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm007.txt</p></br><p>Attributes: data-button-name</p></br> ```python3:interactive:button-name:RunIt
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm007.txt</p></br><p>Attributes: data-button-name</p></br>
+
+```python3:interactive:button-name:RunIt
 import os
 import sys
 

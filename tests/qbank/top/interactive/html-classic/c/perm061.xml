@@ -6,7 +6,9 @@
       <text>interactive_html-classic_c_perm061</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm061.txt</p></br><p>Attributes: data-start-line-number, data-code-mapper, data-min-lines, data-prefix, data-suffix, data-max-lines</p></br> <script>
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/c/perm061.txt</p></br><p>Attributes: data-start-line-number, data-code-mapper, data-min-lines, data-prefix, data-suffix, data-max-lines</p></br>
+
+<script>
 function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
 </script>
 

@@ -128,7 +128,7 @@ def build_question_xml(name: str, content: str, questiontext_format: str, source
       <text>{name}</text>
     </name>
     <questiontext format="{questiontext_format}">
-      <text><![CDATA[<p>Scenario: {escaped_comment}</p></br><p>Attributes: {attributes_text}</p></br> {escaped_content}]]></text>
+      <text><![CDATA[<p>Scenario: {escaped_comment}</p></br><p>Attributes: {attributes_text}</p></br>\n\n{escaped_content}]]></text>
     </questiontext>
     <generalfeedback format="html">
       <text></text>

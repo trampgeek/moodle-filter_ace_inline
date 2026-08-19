@@ -6,7 +6,9 @@
       <text>interactive_markdown-simplified_python_perm003</text>
     </name>
     <questiontext format="markdown">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm003.txt</p></br><p>Attributes: data-font-size</p></br> ```python3:interactive:font-size:18pt
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/python/perm003.txt</p></br><p>Attributes: data-font-size</p></br>
+
+```python3:interactive:font-size:18pt
 import os
 import sys
 

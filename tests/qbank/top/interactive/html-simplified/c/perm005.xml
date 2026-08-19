@@ -6,7 +6,9 @@
       <text>interactive_html-simplified_c_perm005</text>
     </name>
     <questiontext format="html">
-      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm005.txt</p></br><p>Attributes: data-max-lines</p></br> <pre class="c:interactive:max-lines:3"><code>#include &lt;stdio.h&gt;
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-simplified/c/perm005.txt</p></br><p>Attributes: data-max-lines</p></br>
+
+<pre class="c:interactive:max-lines:3"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.
