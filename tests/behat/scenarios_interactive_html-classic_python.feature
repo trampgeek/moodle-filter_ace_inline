@@ -2,9 +2,10 @@
 Feature: interactive/html-classic/python scenario fixtures
   In order to trust every data-* attribute combination this filter supports
   As a developer
-  I need every fixture under tests/scenarios/interactive/html-classic/python/
+  I need fixtures under tests/scenarios/interactive/html-classic/python/
   to render and behave (editor config, execution output, structural UI)
-  exactly as its attribute combination specifies
+  exactly as their attribute combination specifies
+  Every fixture under this directory is covered.
 
   Background:
     Given the following "users" exist:

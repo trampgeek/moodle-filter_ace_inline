@@ -16,6 +16,35 @@ generate_scenarios.py's fixtures/qbank, and attribute *behaviour* does not
 vary by language. This suite replaces most of the hand-written
 tests/behat/*.feature scenarios from TESTING.md Phases A-E.
 
+Reduced by default, `--comprehensive` for the full suite: the same
+"behaviour doesn't vary by language, so don't repeat every check for every
+language" reasoning above also applies, mostly, across authoring mode
+(html-classic/html-simplified/markdown-classic/markdown-simplified) - once
+attribute values have been extracted from whichever syntax authored them,
+the same JS runs on the same normalised parameters regardless of source
+syntax. "Mostly" - unlike the language case, this suite does NOT skip the
+other three authoring modes entirely, because cross-authoring-mode testing
+has caught genuine bugs in the past: syntax-specific *extraction* (Simplified
+Mode's colon-split parsing, Markdown Extra's brace-list parsing) is a real,
+separate code path per authoring mode, distinct from the shared runtime
+behaviour once extraction has happened. So the default (reduced) suite
+keeps, for every authoring mode, every fixture's structural/getOption/
+button-name/file-upload-id assertions (REFERENCE_AUTHORING_MODE's `--
+comprehensive`-only extra rows aside - all of these check *what got
+extracted*, i.e. per-syntax correctness) but only runs the execution/output
+assertions (which check shared post-extraction *behaviour*, not extraction)
+on REFERENCE_AUTHORING_MODE ("html-classic" - the most direct syntax, no
+decoding step of its own). It also only runs the full 99-row combinatorial
+permutations.csv sweep on REFERENCE_AUTHORING_MODE; the other three
+authoring modes are restricted to is_baseline_row() fixtures (the "NONE"
+baseline plus each single attribute alone) - enough to confirm every
+attribute's syntax-specific extraction works at all per authoring mode,
+without re-running the full attribute-interaction combinatorics four times
+over for interactions that, once extracted, behave identically regardless of
+source syntax. `--comprehensive` restores the full original suite: every
+row, every authoring mode, every assertion - see
+generate_behat_suite_from_scenarios()'s docstring for exactly what changes.
+
 For each fixture's attribute combination (read from permutations.csv via
 generate_scenarios.ATTR_META/load_rows(), not re-parsed from the fixture
 file, so the expected values used here are always the same values the
@@ -88,6 +117,7 @@ Requires:
 Does not run automatically - see the `if __name__ == "__main__"` guard at
 the bottom.
 """
+import argparse
 import os
 import re
 import time
@@ -116,6 +146,24 @@ MARKDOWN_AUTHORING_PREFIX = "markdown-"
 LANGUAGE = "python"
 
 PERM_FILENAME_RE = re.compile(r"^perm(\d+)$")
+
+# The authoring mode that gets the full 99-row combinatorial sweep and
+# execution/output assertions even in the reduced (default) suite - see the
+# module docstring's "Reduced by default" section. html-classic is the most
+# direct syntax (data-* attributes written as-is, no colon-splitting or
+# brace-list decoding of its own), so it's the natural "ground truth" mode.
+REFERENCE_AUTHORING_MODE = "html-classic"
+
+
+def is_baseline_row(attrs: list[str]) -> bool:
+    """True for the "NONE" row (empty attrs) or any single-attribute row -
+    the rows still run against every authoring mode in the reduced suite,
+    to confirm each authoring mode's own syntax-specific extraction works
+    for every individual attribute, without the full multi-attribute
+    combinatorial sweep permutations.csv otherwise provides (that sweep is
+    only needed once - see REFERENCE_AUTHORING_MODE above).
+    """
+    return len(attrs) <= 1
 
 # attr -> Ace getOption() name.
 GETOPTION_NAMES = {
@@ -295,9 +343,20 @@ def file_upload_id_assertion(attrs: list[str]) -> list[str]:
     return [f'"//input[@id=\'{upload_id}\']" "xpath_element" should exist']
 
 
-def build_scenario(relative_path: Path, attrs: list[str], is_interactive: bool) -> str:
+def build_scenario(relative_path: Path, attrs: list[str], is_interactive: bool,
+                    include_execution: bool = True) -> str:
     """Returns one indented "Scenario: ..." Gherkin block (no trailing
     blank line) for a single fixture.
+
+    :param include_execution: Whether to include the press-button/check-
+        output assertions. False for the reduced suite's non-reference-
+        authoring-mode scenarios (see REFERENCE_AUTHORING_MODE) - execution
+        behaviour is identical regardless of which syntax the attributes
+        were extracted from, so re-checking it there would be pure
+        redundancy, not extra coverage. Every other assertion (structural,
+        getOption, button-name, file-upload-id) still runs regardless, since
+        those check what THIS authoring mode's own syntax actually extracted
+        - genuinely per-syntax coverage, not shared behaviour.
     """
     authoring_mode = relative_path.parts[1]
     is_markdown = authoring_mode.startswith(MARKDOWN_AUTHORING_PREFIX)
@@ -329,7 +388,7 @@ def build_scenario(relative_path: Path, attrs: list[str], is_interactive: bool) 
         lines.append(f"    {keyword} {assertion}")
 
     has_unexecutable_affix = "data-prefix" in attrs or "data-suffix" in attrs
-    if is_interactive and not has_unexecutable_affix:
+    if is_interactive and not has_unexecutable_affix and include_execution:
         lines.append(f'    And I press "{button_label(attrs)}"')
         if "data-html-output" in attrs:
             expected = expected_html_output_text(attrs)
@@ -341,10 +400,18 @@ def build_scenario(relative_path: Path, attrs: list[str], is_interactive: bool) 
     return "\n".join(lines)
 
 
-def build_feature_file(render: str, authoring: str, scenarios: list) -> str:
+def build_feature_file(render: str, authoring: str, scenarios: list, comprehensive: bool) -> str:
     """Returns a complete .feature file (Feature header + Background +
     every scenario in `scenarios`, each already a full "Scenario: ..." block
     as returned by build_scenario()).
+
+    :param comprehensive: Only affects the Feature description text below,
+        not which scenarios are included (that's already decided by the
+        caller, in generate_behat_suite_from_scenarios()) - documents, in
+        the file itself, whether this authoring mode got the full 99-row
+        sweep or just the reduced suite's baseline-row subset, so that's
+        discoverable directly from the generated file without needing to
+        know how it was invoked.
     """
     title = f"{render}/{authoring}/{LANGUAGE} scenario fixtures"
     background = """  Background:
@@ -372,13 +439,25 @@ def build_feature_file(render: str, authoring: str, scenarios: list) -> str:
     And the following config values are set as admin:
       | simplified_mode | 1 | filter_ace_inline |"""
 
+    is_full = comprehensive or authoring == REFERENCE_AUTHORING_MODE
+    scope_note = (
+        "  Every fixture under this directory is covered."
+        if is_full else
+        "  Only the baseline (no-attribute and single-attribute) fixtures under this\n"
+        "  directory are covered here - see generate_behat_suite.py's module docstring\n"
+        "  for why the full attribute-combination sweep only runs on "
+        f"{REFERENCE_AUTHORING_MODE}.\n"
+        "  Run generate_behat_suite.py --comprehensive to regenerate this file with\n"
+        "  every fixture and full execution-output assertions instead."
+    )
     header = f"""@filter @filter_ace_inline @javascript
 Feature: {title}
   In order to trust every data-* attribute combination this filter supports
   As a developer
-  I need every fixture under tests/scenarios/{render}/{authoring}/{LANGUAGE}/
+  I need fixtures under tests/scenarios/{render}/{authoring}/{LANGUAGE}/
   to render and behave (editor config, execution output, structural UI)
-  exactly as its attribute combination specifies
+  exactly as their attribute combination specifies
+{scope_note}
 
 """
 
@@ -408,13 +487,17 @@ def write_with_retry(path: Path, content: str, attempts: int = 5, delay: float =
 
 
 def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_DIR,
-                                         behat_output_dir: Path = DEFAULT_BEHAT_OUTPUT_DIR) -> int:
+                                         behat_output_dir: Path = DEFAULT_BEHAT_OUTPUT_DIR,
+                                         comprehensive: bool = False) -> int:
     """Walks scenarios_dir for python/*.txt fixtures, groups them by their
     (render, authoring) leaf directory, and writes one flat
     scenarios_<render>_<authoring>_python.feature file per group directly
     under behat_output_dir (tests/behat/ itself - see
     DEFAULT_BEHAT_OUTPUT_DIR's comment for why it can't be a subdirectory).
-    Returns the number of feature files written.
+    Returns the number of feature files written - always 8 (every (render,
+    authoring) combination), regardless of `comprehensive`: only which
+    fixtures/assertions each file contains changes, not the file set itself
+    - see the module docstring's "Reduced by default" section.
 
     Each fixture's attribute list is looked up from permutations.csv (via
     the perm number in its filename), not re-parsed from the fixture's own
@@ -422,11 +505,23 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
     generate the fixture in the first place, so the two can never disagree
     about what a fixture is supposed to contain.
 
+    :param comprehensive: False (default) generates the reduced suite:
+        REFERENCE_AUTHORING_MODE gets every fixture with full assertions;
+        every other authoring mode is restricted to is_baseline_row()
+        fixtures, with execution/output assertions dropped (see
+        build_scenario()'s include_execution). True restores the original,
+        full suite - every fixture, every authoring mode, every assertion -
+        useful for a one-off deep check, e.g. after changing how a specific
+        authoring mode's syntax is parsed.
+
     Clears out any scenarios_*.feature files already under behat_output_dir
     first, so that fixtures removed from tests/scenarios/ since the last run
     don't leave stale, no-longer-matching scenarios behind. Scoped to that
     prefix specifically (not every *.feature file) since behat_output_dir is
-    tests/behat/ itself, shared with the hand-written suite.
+    tests/behat/ itself, shared with the hand-written suite. This also means
+    switching `comprehensive` between runs can never leave a mix of
+    reduced- and comprehensive-suite files on disk at once: every run always
+    regenerates and fully replaces all 8 files under its own single mode.
     """
     rows = load_rows()
 
@@ -443,7 +538,13 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
             match = PERM_FILENAME_RE.match(relative_path.stem)
             perm_number = int(match.group(1))
             attrs = rows[perm_number - 1]
-            groups[(render, authoring)].append((relative_path, attrs))
+
+            is_reference = authoring == REFERENCE_AUTHORING_MODE
+            if not comprehensive and not is_reference and not is_baseline_row(attrs):
+                continue
+            include_execution = comprehensive or is_reference
+
+            groups[(render, authoring)].append((relative_path, attrs, include_execution))
 
     if behat_output_dir.exists():
         for stale in behat_output_dir.glob(f"{GENERATED_FEATURE_PREFIX}*.feature"):
@@ -453,10 +554,10 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
     for (render, authoring), fixtures in sorted(groups.items()):
         is_interactive = render == "interactive"
         scenarios = [
-            build_scenario(p, attrs, is_interactive)
-            for p, attrs in sorted(fixtures, key=lambda pair: pair[0])
+            build_scenario(p, attrs, is_interactive, include_execution)
+            for p, attrs, include_execution in sorted(fixtures, key=lambda triple: triple[0])
         ]
-        feature_content = build_feature_file(render, authoring, scenarios)
+        feature_content = build_feature_file(render, authoring, scenarios, comprehensive)
 
         behat_output_dir.mkdir(parents=True, exist_ok=True)
         outpath = behat_output_dir / f"{GENERATED_FEATURE_PREFIX}{render}_{authoring}_{LANGUAGE}.feature"
@@ -466,6 +567,23 @@ def generate_behat_suite_from_scenarios(scenarios_dir: Path = DEFAULT_SCENARIOS_
     return written
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Generate the Behat feature-file suite from tests/scenarios/ fixtures. "
+                    "By default generates the reduced suite (see module docstring); "
+                    "pass --comprehensive for the full combinatorial suite."
+    )
+    parser.add_argument(
+        "--comprehensive", action="store_true",
+        help="Generate the full suite: every permutation row, every authoring mode, "
+             "every assertion (including execution/output) - the suite this defaulted "
+             "to before the reduced suite was introduced.",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    count = generate_behat_suite_from_scenarios()
-    print(f"Wrote {count} feature files to {DEFAULT_BEHAT_OUTPUT_DIR}")
+    args = parse_args()
+    count = generate_behat_suite_from_scenarios(comprehensive=args.comprehensive)
+    suite_kind = "comprehensive" if args.comprehensive else "reduced"
+    print(f"Wrote {count} feature files ({suite_kind} suite) to {DEFAULT_BEHAT_OUTPUT_DIR}")

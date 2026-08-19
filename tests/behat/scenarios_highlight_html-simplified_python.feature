@@ -2,9 +2,14 @@
 Feature: highlight/html-simplified/python scenario fixtures
   In order to trust every data-* attribute combination this filter supports
   As a developer
-  I need every fixture under tests/scenarios/highlight/html-simplified/python/
+  I need fixtures under tests/scenarios/highlight/html-simplified/python/
   to render and behave (editor config, execution output, structural UI)
-  exactly as its attribute combination specifies
+  exactly as their attribute combination specifies
+  Only the baseline (no-attribute and single-attribute) fixtures under this
+  directory are covered here - see generate_behat_suite.py's module docstring
+  for why the full attribute-combination sweep only runs on html-classic.
+  Run generate_behat_suite.py --comprehensive to regenerate this file with
+  every fixture and full execution-output assertions instead.
 
   Background:
     Given the following "users" exist:
@@ -91,105 +96,3 @@ Feature: highlight/html-simplified/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
     And I should see an ace option "firstLineNumber" value "3" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm020
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm020 |
-    And "highlight/html-simplified/python/perm020.txt" exists in question "highlight_html-simplified_python_perm020" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm020" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "firstLineNumber" value "7" with filter ace inline
-    And I should see an ace option "minLines" value "20" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm021
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm021 |
-    And "highlight/html-simplified/python/perm021.txt" exists in question "highlight_html-simplified_python_perm021" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm021" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "firstLineNumber" value "7" with filter ace inline
-    And I should see an ace option "maxLines" value "3" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm022
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm022 |
-    And "highlight/html-simplified/python/perm022.txt" exists in question "highlight_html-simplified_python_perm022" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm022" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "maxLines" value "25" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm023
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm023 |
-    And "highlight/html-simplified/python/perm023.txt" exists in question "highlight_html-simplified_python_perm023" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm023" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "firstLineNumber" value "3" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm024
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm024 |
-    And "highlight/html-simplified/python/perm024.txt" exists in question "highlight_html-simplified_python_perm024" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm024" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "firstLineNumber" value "3" with filter ace inline
-    And I should see an ace option "maxLines" value "3" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm025
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm025 |
-    And "highlight/html-simplified/python/perm025.txt" exists in question "highlight_html-simplified_python_perm025" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm025" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "firstLineNumber" value "7" with filter ace inline
-    And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "maxLines" value "25" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm026
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm026 |
-    And "highlight/html-simplified/python/perm026.txt" exists in question "highlight_html-simplified_python_perm026" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm026" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "firstLineNumber" value "3" with filter ace inline
-    And I should see an ace option "maxLines" value "25" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm027
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm027 |
-    And "highlight/html-simplified/python/perm027.txt" exists in question "highlight_html-simplified_python_perm027" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm027" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "fontSize" value "18pt" with filter ace inline
-    And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
-
-  Scenario: highlight_html-simplified_python_perm054
-    Given the following "questions" exist:
-      | questioncategory | qtype       | name |
-      | Test questions   | description | highlight_html-simplified_python_perm054 |
-    And "highlight/html-simplified/python/perm054.txt" exists in question "highlight_html-simplified_python_perm054" "questiontext" from scenarios for filter ace inline
-    When I am on the "highlight_html-simplified_python_perm054" "core_question > preview" page logged in as teacher
-    Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
-    And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
-    And I should see an ace option "firstLineNumber" value "7" with filter ace inline
-    And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "maxLines" value "25" with filter ace inline

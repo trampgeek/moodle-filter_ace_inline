@@ -1,5 +1,10 @@
 # Change History
 
+ * Version 1.5.3
+   Reduced Behat coverage for authoring modes, other than html-classic, to single attributes
+   only. The script `tests/scripts/generate_behat_suite.py` with CLI flag `--comprehensive`
+   will regenerate the more comprehensive Behat test suite.
+
  * Version 1.5.2
    Updates to make the testing scripts and structure work with qbank_gitsync, should you
    wish to use this infrastructure. Note that for this reason `tests/qbank/`'s question XML
@@ -45,7 +50,7 @@
 
  * Version 1.4.4
    Reworked the name for the new feature from Markdown Extended to Simplified Mode.
-   The feature now allows minimist TinyMCE usage to also result in syntax highlighting.
+   The feature now allows minimist TinyMCE usage to also result in syntax highlighting, i.e simplified mode by encoding the class string in the `<pre>` fence.
 
  * Version 1.4.3
    Added Behat tests for the Extended Markdown rendering mode, covering both
@@ -67,7 +72,7 @@
    Added support for overriding the three administrator settings (button label, dark theme mode, markdown rendering) at a per-context (e.g. per-course) level. From a course's "More > Filters" page, click "Settings" next to "Ace inline" to override any of these for that course; leave a field as "Use site default" to keep inheriting the administrator's setting. Credit to Paul McKeown for this idea.
 
  * Version 1.4.0
-   Added feature for allowing standard language string to be added to a markdown code block (triple tick).  This language string can also be encoded with addition Ace filter parameters - the elements separated by colons (:).  Added administrative setting to allow control of Markdown code block rendered, including this new feature (which is called Extended).
+   Added feature for allowing standard language string to be added to a markdown code block (triple tick).  This language string can also be encoded with additional Ace Inline filter parameters - the elements separated by colons (:).  Added administrative setting to allow control of Markdown code block rendered, including this new feature (which is called Extended).
 
  * Version 1.3.11
    Added code to defer hiding of the original `<pre>` element until the rendering of the content by Ace is complete. If this doesn't happen within 2 seconds,
