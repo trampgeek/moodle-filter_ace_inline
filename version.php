@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026081902;
+$plugin->version = 2026082000;
 $plugin->requires = 2023100900; // Moodle 4.3, the oldest branch tested in CI.
 $plugin->component = 'filter_ace_inline';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.5.4';
+$plugin->release = 'v1.5.5';
 $plugin->dependencies = ['qtype_coderunner' => 2022012000];

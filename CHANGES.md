@@ -1,5 +1,9 @@
 # Change History
 
+ * Version 1.5.5
+   Improvements to filter settings so that you can immediately see the current parent-level
+   setting and whether it has been overridden.
+
  * Version 1.5.4
    Minor changes to reduce CI noise.
 

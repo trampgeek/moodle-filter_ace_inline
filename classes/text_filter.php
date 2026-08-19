@@ -112,9 +112,34 @@ class text_filter extends \filter_ace_inline_base_text_filter {
         if ($this->effectiveconfig !== null) {
             return $this->effectiveconfig;
         }
-        $names = ['button_label', 'dark_theme_mode', 'simplified_mode'];
+        $this->effectiveconfig = self::resolve_effective_config(
+            $this->context,
+            ['button_label', 'dark_theme_mode', 'simplified_mode']
+        );
+        return $this->effectiveconfig;
+    }
+
+    /**
+     * Core context-chain-walking logic behind get_effective_config(), extracted as a public
+     * static method (rather than kept private to get_effective_config()) so the local-settings
+     * form (see filterlocalsettings.php) can also use it to show what a context would inherit
+     * from ABOVE it - i.e. this same walk, but started one level higher, at
+     * $context->get_parent_context(), so the context being edited's own (possibly unsaved)
+     * override is never what gets reported as "the higher-level setting".
+     *
+     * @param \core\context|false|null $context Starting context (inclusive) to search from, or
+     *     a falsy value to skip straight to the site administrator's settings -
+     *     context::get_parent_context() itself returns false once it reaches the system
+     *     context, so passing that straight back in here (as the local-settings form does when
+     *     the context being edited already IS the system context) bottoms out correctly with no
+     *     special-casing needed by the caller.
+     * @param string[] $names Setting names to resolve (a subset of 'button_label',
+     *     'dark_theme_mode', 'simplified_mode').
+     * @return array Effective value for each of $names.
+     */
+    public static function resolve_effective_config($context, array $names) {
         $config = [];
-        for ($context = $this->context; $context; $context = $context->get_parent_context()) {
+        for (; $context; $context = $context->get_parent_context()) {
             $local = filter_get_local_config('ace_inline', $context->id);
             foreach ($names as $name) {
                 if (!array_key_exists($name, $config) && array_key_exists($name, $local)) {
@@ -130,8 +155,7 @@ class text_filter extends \filter_ace_inline_base_text_filter {
                 $config[$name] = get_config('filter_ace_inline', $name);
             }
         }
-        $this->effectiveconfig = $config;
-        return $this->effectiveconfig;
+        return $config;
     }
 
     /**

@@ -68,7 +68,7 @@ Feature: Course-level configuration overrides for the Ace inline filter
     When I am on the "simplifiedmodedemoc2" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'SIMPLIFIEDHIGHLIGHTMARKER')]/following-sibling::div[contains(@class, 'ace_editor')]" "xpath_element" should not exist
 
-  Scenario: A field left as "Use site default" keeps inheriting the administrator's setting
+  Scenario: A field left as "Use higher-level setting" keeps inheriting the administrator's setting
     Given I log in as "admin"
     And I visit "/admin/settings.php?section=filtersettingace_inline"
     And I set the field "Button label" to "Site button"
