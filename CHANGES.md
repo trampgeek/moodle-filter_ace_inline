@@ -1,5 +1,8 @@
 # Change History
 
+ * Version 1.5.4
+   Minor changes to reduce CI noise.
+
  * Version 1.5.3
    Reduced Behat coverage for authoring modes, other than html-classic, to single attributes
    only. The script `tests/scripts/generate_behat_suite.py` with CLI flag `--comprehensive`

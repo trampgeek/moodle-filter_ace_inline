@@ -66,6 +66,52 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
 };
 
 /**
+ * True if element carries an ace-interactive-code marker: the legacy class/attribute, or (in
+ * Simplified Mode) an "interactive" token in its colon-separated class specifier.
+ * @param {HTMLelement} element The <pre> or <code> element being checked.
+ * @param {object} config The plugin configuration settings.
+ * @return {bool}
+ */
+const isInteractiveElement = (element, config) =>
+    element.classList.contains('ace-interactive-code') ||
+    element.hasAttribute('data-ace-interactive-code') ||
+    (isSimplifiedClassMode(element.classList, config) &&
+        element.classList[0].split(':').includes('interactive'));
+
+/**
+ * True if element carries an ace-highlight-code marker: the legacy class/attribute, or a
+ * Simplified Mode class specifier (highlight is Simplified Mode's default, so any valid
+ * specifier qualifies, not just ones with an explicit marker token).
+ * @param {HTMLelement} element The <pre> or <code> element being checked.
+ * @param {object} config The plugin configuration settings.
+ * @return {bool}
+ */
+const isHighlightElement = (element, config) =>
+    element.classList.contains('ace-highlight-code') ||
+    element.hasAttribute('data-ace-highlight-code') ||
+    isSimplifiedClassMode(element.classList, config);
+
+/**
+ * Extract this element's UI parameters (Simplified Mode's colon-separated class specifier, or
+ * the standard data-* attributes) and apply an Ace editor to targetPre.
+ * @param {HTMLelement} element The <pre> or <code> element the parameters are read from.
+ * @param {HTMLelement} targetPre The <pre> element to actually replace with an Ace editor -
+ *     the same as element when element is itself a <pre>, or element's parent <pre> when
+ *     element is a <code> fence.
+ * @param {bool} isInteractive True for ace-interactive otherwise false.
+ * @param {object} config The plugin configuration settings.
+ */
+const processAceElement = (element, targetPre, isInteractive, config) => {
+    const uiParams = new UiParameters(element);
+    if (isSimplifiedClassMode(element.classList, config)) {
+        uiParams.extractSimplifiedClassModeParameters(isInteractive, config, element.classList[0].split(":"));
+    } else {
+        uiParams.extractUiParameters(isInteractive, config);
+    }
+    applyToPre(targetPre, isInteractive, uiParams);
+};
+
+/**
  * Replace all <pre> and <code> elements in the document rooted at root that have
  * the given className or ace-inline attribute, with an Ace editor windows that display the
  * code in whatever language has been set.
@@ -83,23 +129,10 @@ export const applyAceAndBuildUi = async(root, config) => {
         if (pre.classList.contains(OUTPUT_TEXT_CLASS)) {
             continue;
         }
-        const isInteractive = pre.classList.contains('ace-interactive-code') ||
-            pre.hasAttribute('data-ace-interactive-code') ||
-            (isSimplifiedClassMode(pre.classList, config) &&
-                pre.classList[0].split(':').includes('interactive')) ||
-            false;
-        const isHighlight = pre.classList.contains('ace-highlight-code') ||
-            pre.hasAttribute('data-ace-highlight-code') ||
-            isSimplifiedClassMode(pre.classList, config) ||
-            false;
+        const isInteractive = isInteractiveElement(pre, config);
+        const isHighlight = isHighlightElement(pre, config);
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
-            const uiParams = new UiParameters(pre);
-            if (isSimplifiedClassMode(pre.classList, config)) {
-                uiParams.extractSimplifiedClassModeParameters(isInteractive, config, pre.classList[0].split(":"));
-            } else {
-                uiParams.extractUiParameters(isInteractive, config);
-            }
-            applyToPre(pre, isInteractive, uiParams);
+            processAceElement(pre, pre, isInteractive, config);
         }
     }
 
@@ -107,24 +140,10 @@ export const applyAceAndBuildUi = async(root, config) => {
     const codeElements = Array.from(root.getElementsByTagName('code'));
     for (const code of codeElements) {
         if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
-            const isInteractive = code.classList.contains('ace-interactive-code') ||
-                code.hasAttribute('data-ace-interactive-code') ||
-                (isSimplifiedClassMode(code.classList, config) &&
-                    code.classList[0].split(':').includes('interactive')) ||
-                false;
-            const isHighlight = code.classList.contains('ace-highlight-code') ||
-                code.hasAttribute('data-ace-highlight-code') ||
-                isSimplifiedClassMode(code.classList, config) ||
-                false;
-
+            const isInteractive = isInteractiveElement(code, config);
+            const isHighlight = isHighlightElement(code, config);
             if (isInteractive || isHighlight) {
-                const uiParams = new UiParameters(code);
-                if (isSimplifiedClassMode(code.classList, config)) {
-                    uiParams.extractSimplifiedClassModeParameters(isInteractive, config, code.classList[0].split(":"));
-                } else {
-                    uiParams.extractUiParameters(isInteractive, config);
-                }
-                applyToPre(code.parentNode, isInteractive, uiParams);
+                processAceElement(code, code.parentNode, isInteractive, config);
             }
         }
     }

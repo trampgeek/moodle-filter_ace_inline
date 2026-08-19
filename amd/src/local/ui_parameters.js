@@ -68,7 +68,7 @@ const ACE_INTERACTIVE = {
 const popItemPair = (alist, element) => {
   const index = alist.indexOf(element);
   if (index !== -1) {
-      const pair = alist[index+1] || null;
+      const pair = alist[index + 1] || null;
       alist.splice(index, 2);
       return [element, pair];
   }
@@ -160,7 +160,7 @@ export class UiParameters {
         // never mutate the shared ACE_HIGHLIGHT/ACE_INTERACTIVE constants.
         const defaultParams = {...(isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT)};
 
-        defaultParams['lang'] = language;
+        defaultParams.lang = language;
         this.modifiedLang = true;
         if (isInteractive) {
             defaultParams['button-name'] = config.button_label;
