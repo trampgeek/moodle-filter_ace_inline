@@ -1,4 +1,4 @@
-```python3:interactive:font-size:18pt:button-name:RunIt:start-line-number:7:min-lines:20:dark-theme-mode:2:max-lines:3
+```python3:interactive:font-size:18pt:button-name:RunIt:start-line-number:7:min-lines:20:dark-theme-mode:2:max-lines:25
 import os
 import sys
 

@@ -111,7 +111,7 @@ Feature: highlight/html-classic/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
     And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "maxLines" value "3" with filter ace inline
+    And I should see an ace option "maxLines" value "25" with filter ace inline
 
   Scenario: highlight_html-classic_python_perm025
     Given the following "questions" exist:
@@ -123,7 +123,7 @@ Feature: highlight/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "maxLines" value "3" with filter ace inline
+    And I should see an ace option "maxLines" value "25" with filter ace inline
 
   Scenario: highlight_html-classic_python_perm027
     Given the following "questions" exist:
@@ -146,4 +146,4 @@ Feature: highlight/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should not exist
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
-    And I should see an ace option "maxLines" value "3" with filter ace inline
+    And I should see an ace option "maxLines" value "25" with filter ace inline

@@ -1,5 +1,12 @@
 # Change History
 
+ * Version 1.5.2
+   Updates to make the testing scripts and structure work with qbank_gitsync, should you
+   wish to use this infrastructure. Note that for this reason `tests/qbank/`'s question XML
+   files need to be tracked despite being able to be auto-generated. Further, the
+   `tests/scenarios/` fixtures, while also being able to be auto-generated, are tracked
+   because of their connection to the Behat feature files.
+
  * Version 1.5.1
    Added extensive Behat tests - probably too many!
 

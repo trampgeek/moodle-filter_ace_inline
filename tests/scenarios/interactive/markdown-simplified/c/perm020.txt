@@ -1,4 +1,4 @@
-```c:interactive:start-line-number:7:min-lines:20
+```c:interactive:start-line-number:7:min-lines:34
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

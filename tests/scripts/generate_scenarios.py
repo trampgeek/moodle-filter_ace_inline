@@ -32,7 +32,13 @@ Key decisions, spelled out here since they aren't obvious from the code:
   behaviour (that's what tests/behat/ already covers per-attribute). Companion
   elements (textarea/input/script) needed by stdin-taid/file-taids/
   file-upload-id/code-mapper are prepended as raw HTML, same technique already
-  used in tests/fixtures/simplifiedclassmodeattrsdemo.txt.
+  used in tests/fixtures/simplifiedclassmodeattrsdemo.txt. Two exceptions -
+  min-lines and max-lines - are resolved per-fixture instead of being purely
+  fixed (see resolve_attr_value()): min-lines is bumped up, per language, to
+  stay comfortably above that language's own BASE_CODE line count, and
+  max-lines is bumped up to stay above min-lines' own value whenever a row
+  configures both together - both to keep the values realistic/self-
+  consistent rather than because their exact number matters for parsing.
 """
 import csv
 import json
@@ -57,19 +63,32 @@ LANGUAGES = ["python", "c", "sql"]
 ATTR_META: ATTR = {
     "data-start-line-number": dict(value="7", interactive_only=False, simplified_ok=True, skey="start-line-number"),
     "data-font-size": dict(value="18pt", interactive_only=False, simplified_ok=True, skey="font-size"),
-    # Deliberately larger than BASE_CODE["python"]'s own line count (13):
-    # apply_ace_editor.js applies this as minLines: Math.max(numLines,
-    # params['min-lines']), so a configured value smaller than the code's
-    # natural height would be masked by that height and getOption('minLines')
-    # would reflect the code, not this attribute - making the attribute's
-    # effect unobservable. 20 safely exceeds Python's line count, so
-    # Math.max always resolves to this exact configured value there, and
-    # generate_behat_suite.py (Python-only - see its own docstring) can
-    # assert getOption('minLines') == 20 directly. BASE_CODE["c"] is longer
-    # (29 lines) and so would NOT exercise this exact-equality property if
-    # a C getOption suite were ever added - that's fine today since no such
-    # suite exists, but is worth knowing before adding one.
+    # This base placeholder is bumped per-language at render time (see
+    # resolve_attr_value()) to always be at least 5 more than that
+    # language's own BASE_CODE line count: apply_ace_editor.js applies this
+    # as minLines: Math.max(numLines, params['min-lines']), so a configured
+    # value not comfortably clear of the code's natural height would risk
+    # being masked by that height and getOption('minLines') would reflect
+    # the code, not this attribute - making the attribute's effect
+    # unobservable. 20 already safely exceeds Python's line count (13) on
+    # its own, so Math.max always resolves to this exact configured value
+    # there and resolve_attr_value() leaves it untouched; generate_behat_
+    # suite.py (Python-only - see its own docstring) can assert
+    # getOption('minLines') == 20 directly. BASE_CODE["c"] is longer
+    # (29 lines), so resolve_attr_value() bumps this placeholder up to 34
+    # there, preserving the same exact-equality property for any C getOption
+    # suite that gets added later.
     "data-min-lines": dict(value="20", interactive_only=False, simplified_ok=True, skey="min-lines"),
+    # This base placeholder is bumped at render time (see
+    # resolve_attr_value()) to always be at least 5 more than data-min-lines'
+    # own (possibly per-language-bumped) value, whenever a row configures
+    # both attributes together - otherwise apply_ace_editor.js would be
+    # handed a maxLines smaller than minLines, not a realistic editor
+    # configuration and not what those fixtures are meant to exercise. Rows
+    # that configure data-max-lines alone (no data-min-lines) are unaffected
+    # and keep this literal, deliberately-tiny value - small enough that the
+    # editor's own un-overridden height always exceeds it, exercising
+    # max-lines' scrolling/truncation behaviour on its own.
     "data-max-lines": dict(value="3", interactive_only=False, simplified_ok=True, skey="max-lines"),
     "data-dark-theme-mode": dict(value="2", interactive_only=False, simplified_ok=True, skey="dark-theme-mode"),
     "data-button-name": dict(value="RunIt", interactive_only=True, simplified_ok=True, skey="button-name"),
@@ -216,6 +235,48 @@ SELECT s.staff_num, s.first_name, s.last_name, COUNT(o.order_id) AS order_count
 
 LANG_TAG = {"python": "python3", "c": "c", "sql": "sql"}
 
+# Minimum margin data-min-lines must clear above a language's own BASE_CODE
+# line count, and data-max-lines must clear above data-min-lines' own value
+# when both are configured together - see the ATTR_META comments on those
+# two attributes for why each margin matters.
+MIN_LINES_MARGIN = 5
+MAX_LINES_MARGIN = 5
+
+
+def code_line_count(language: str) -> int:
+    """Number of lines in this language's BASE_CODE snippet."""
+    return BASE_CODE[language].count("\n") + 1
+
+
+def resolve_attr_value(attr: str, attrs: list[str], language: str) -> str:
+    """Resolves the placeholder value to actually render for one attribute
+    of one fixture. Every attribute value is fixed (ATTR_META's own
+    placeholder, or - for data-prefix/data-suffix - PREFIX_SUFFIX[language])
+    except two, whose value must instead be computed relative to something
+    else about this specific fixture:
+
+    - data-min-lines: bumped up to MIN_LINES_MARGIN more than this
+      language's own BASE_CODE line count, if ATTR_META's own placeholder
+      isn't already comfortably above it (true for python and sql, not c -
+      see ATTR_META's own comment on this attribute).
+    - data-max-lines: bumped up to MAX_LINES_MARGIN more than data-min-lines'
+      own (possibly just-bumped) value, but only when this fixture's row
+      also configures data-min-lines - otherwise unaffected.
+
+    :param attr: The data-* attribute (or "line-numbers") to resolve.
+    :param attrs: Every attribute this fixture's permutation row configures
+        (from permutations.csv via generate_scenarios.load_rows()) - needed
+        to detect the data-min-lines/data-max-lines interaction above.
+    :param language: "python", "c" or "sql".
+    """
+    meta = ATTR_META[attr]
+    if attr == "data-min-lines":
+        return str(max(int(cast(str, meta["value"])), code_line_count(language) + MIN_LINES_MARGIN))
+    if attr == "data-max-lines" and "data-min-lines" in attrs:
+        min_lines_value = int(resolve_attr_value("data-min-lines", attrs, language))
+        return str(max(int(cast(str, meta["value"])), min_lines_value + MAX_LINES_MARGIN))
+    return PREFIX_SUFFIX[language] if meta["value"] is None else str(meta["value"])
+
 
 def html_escape_code(code: str) -> str:
     """Escapes code for embedding directly as final HTML (html-classic/
@@ -269,8 +330,7 @@ def render_html(attrs: list[str], is_interactive: bool, language: str) -> str:
     marker = "ace-interactive-code" if is_interactive else "ace-highlight-code"
     bits = [f"data-{marker}", f'data-lang="{LANG_TAG[language]}"']
     for attr in attrs:
-        meta = ATTR_META[attr]
-        value = PREFIX_SUFFIX[language] if meta["value"] is None else meta["value"]
+        value = resolve_attr_value(attr, attrs, language)
         name = attr[len("data-"):] if attr.startswith("data-") else attr
         # Double quotes inside the value (e.g. data-file-taids'/data-params' JSON)
         # must be entity-escaped or they prematurely close the HTML attribute -
@@ -314,7 +374,7 @@ def render_html_simplified(attrs: list[str], is_interactive: bool, language: str
         class_parts.append("interactive")
     for attr in attrs:
         meta = ATTR_META[attr]
-        value = PREFIX_SUFFIX[language] if meta["value"] is None else meta["value"]
+        value = resolve_attr_value(attr, attrs, language)
         # ATTR's per-attribute dict type is a single int|str|bool|None union
         # across all keys (it doesn't model each key's own type), so meta's
         # static type for "skey" is wider than reality here. Every attr this
@@ -334,8 +394,7 @@ def render_markdown_classic(attrs: list[str], is_interactive: bool, language: st
     marker = "ace-interactive-code" if is_interactive else "ace-highlight-code"
     bits = [f"data-{marker}=", f"data-lang={LANG_TAG[language]}"]
     for attr in attrs:
-        meta = ATTR_META[attr]
-        value = PREFIX_SUFFIX[language] if meta["value"] is None else meta["value"]
+        value = resolve_attr_value(attr, attrs, language)
         name = attr[len("data-"):] if attr.startswith("data-") else attr
         bits.append(f"data-{name}={value}")
     header = " ".join(bits)
@@ -349,7 +408,7 @@ def render_markdown_simplified(attrs: list[str], is_interactive: bool, language:
         class_parts.append("interactive")
     for attr in attrs:
         meta = ATTR_META[attr]
-        value = PREFIX_SUFFIX[language] if meta["value"] is None else meta["value"]
+        value = resolve_attr_value(attr, attrs, language)
         # See the matching cast in render_html_simplified() above - same
         # reasoning applies here.
         class_parts.append(cast(str, meta["skey"]))

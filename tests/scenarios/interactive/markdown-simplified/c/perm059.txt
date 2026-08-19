@@ -1,4 +1,4 @@
-```c:interactive:font-size:18pt:button-name:RunIt:start-line-number:7:min-lines:20:dark-theme-mode:2:max-lines:3
+```c:interactive:font-size:18pt:button-name:RunIt:start-line-number:7:min-lines:34:dark-theme-mode:2:max-lines:39
 #include <stdio.h>
 
 // Prints the contents of in1.txt if present, else stdin if given,

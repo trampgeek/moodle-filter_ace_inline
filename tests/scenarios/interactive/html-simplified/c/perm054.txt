@@ -1,4 +1,4 @@
-<pre class="c:interactive:start-line-number:7:min-lines:20:max-lines:3"><code>#include &lt;stdio.h&gt;
+<pre class="c:interactive:start-line-number:7:min-lines:34:max-lines:39"><code>#include &lt;stdio.h&gt;
 
 // Prints the contents of in1.txt if present, else stdin if given,
 // else a default greeting.

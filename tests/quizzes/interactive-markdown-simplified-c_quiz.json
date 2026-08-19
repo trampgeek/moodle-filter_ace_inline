@@ -1,0 +1,307 @@
+{
+    "quiz": {
+        "name": "interactive-markdown-simplified-c",
+        "intro": "All interactive/markdown-simplified/c fixtures from moodle-filter_ace_inline's tests/qbank - see tests/scripts/generate_quizzes.py.",
+        "introformat": "0",
+        "questionsperpage": "0",
+        "grade": "100.00000",
+        "navmethod": "free"
+    },
+    "sections": [
+        {
+            "firstslot": "1",
+            "heading": "interactive-markdown-simplified-c",
+            "shufflequestions": 0
+        }
+    ],
+    "questions": [
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm001.xml",
+            "slot": "1",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm002.xml",
+            "slot": "2",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm003.xml",
+            "slot": "3",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm004.xml",
+            "slot": "4",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm005.xml",
+            "slot": "5",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm006.xml",
+            "slot": "6",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm007.xml",
+            "slot": "7",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm008.xml",
+            "slot": "8",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm009.xml",
+            "slot": "9",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm010.xml",
+            "slot": "10",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm012.xml",
+            "slot": "11",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm014.xml",
+            "slot": "12",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm017.xml",
+            "slot": "13",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm018.xml",
+            "slot": "14",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm019.xml",
+            "slot": "15",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm020.xml",
+            "slot": "16",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm021.xml",
+            "slot": "17",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm022.xml",
+            "slot": "18",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm023.xml",
+            "slot": "19",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm024.xml",
+            "slot": "20",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm025.xml",
+            "slot": "21",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm026.xml",
+            "slot": "22",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm027.xml",
+            "slot": "23",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm028.xml",
+            "slot": "24",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm029.xml",
+            "slot": "25",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm030.xml",
+            "slot": "26",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm031.xml",
+            "slot": "27",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm032.xml",
+            "slot": "28",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm033.xml",
+            "slot": "29",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm034.xml",
+            "slot": "30",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm035.xml",
+            "slot": "31",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm036.xml",
+            "slot": "32",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm037.xml",
+            "slot": "33",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm040.xml",
+            "slot": "34",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm041.xml",
+            "slot": "35",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm044.xml",
+            "slot": "36",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm047.xml",
+            "slot": "37",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm054.xml",
+            "slot": "38",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm055.xml",
+            "slot": "39",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm059.xml",
+            "slot": "40",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/markdown-simplified/c/perm063.xml",
+            "slot": "41",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        }
+    ],
+    "feedback": []
+}

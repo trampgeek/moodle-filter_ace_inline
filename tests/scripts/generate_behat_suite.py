@@ -32,9 +32,12 @@ fixture was actually generated with), a Scenario asserts:
   line-numbers -> firstLineNumber, font-size -> fontSize, min-lines ->
   minLines, max-lines -> maxLines, readonly -> readOnly, dark-theme-mode ->
   theme. Skipped entirely when data-hidden is set, since no editor exists
-  to query. See GETOPTION_CHECKS and generate_scenarios.py's data-min-lines
-  comment for why min-lines is safe to check with exact equality despite
-  apply_ace_editor.js applying it as Math.max(numLines, params['min-lines']).
+  to query. See GETOPTION_NAMES/getoption_expected_value() and
+  generate_scenarios.py's resolve_attr_value()/data-min-lines comment for
+  why min-lines is safe to check with exact equality despite
+  apply_ace_editor.js applying it as Math.max(numLines, params['min-lines']),
+  and why min-lines/max-lines' expected values must be recomputed per
+  fixture rather than read as a single constant.
 - button-name, via the button's own text.
 - file-upload-id, via the companion <input> element's mere presence (no
   real file gets uploaded through Behat, so its execution-time effect is
@@ -91,7 +94,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from generate_scenarios import ATTR_META, load_rows
+from generate_scenarios import ATTR_META, load_rows, resolve_attr_value
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 TESTS_DIR = SCRIPT_DIR.parent
@@ -114,20 +117,42 @@ LANGUAGE = "python"
 
 PERM_FILENAME_RE = re.compile(r"^perm(\d+)$")
 
-# attr -> (Ace getOption() name, expected value as getOption()/String() would
-# return it). readonly and dark-theme-mode are not straight passthroughs of
-# ATTR_META's raw value (readOnly is a JS boolean, stringified; theme is a
-# full "ace/theme/..." path derived from the dark-theme-mode number) so they
-# are given explicitly rather than read out of ATTR_META.
-GETOPTION_CHECKS = {
-    "data-start-line-number": ("firstLineNumber", ATTR_META["data-start-line-number"]["value"]),
-    "line-numbers": ("firstLineNumber", ATTR_META["line-numbers"]["value"]),
-    "data-font-size": ("fontSize", ATTR_META["data-font-size"]["value"]),
-    "data-min-lines": ("minLines", ATTR_META["data-min-lines"]["value"]),
-    "data-max-lines": ("maxLines", ATTR_META["data-max-lines"]["value"]),
-    "data-readonly": ("readOnly", "true"),
-    "data-dark-theme-mode": ("theme", "ace/theme/tomorrow_night"),
+# attr -> Ace getOption() name.
+GETOPTION_NAMES = {
+    "data-start-line-number": "firstLineNumber",
+    "line-numbers": "firstLineNumber",
+    "data-font-size": "fontSize",
+    "data-min-lines": "minLines",
+    "data-max-lines": "maxLines",
+    "data-readonly": "readOnly",
+    "data-dark-theme-mode": "theme",
 }
+
+
+def getoption_expected_value(attr: str, attrs: list[str]) -> str:
+    """The exact string getOption()/String() should return for `attr`, given
+    every attribute this fixture's permutation row configures (attrs).
+
+    data-min-lines/data-max-lines are resolved the same way
+    generate_scenarios.py rendered them (via resolve_attr_value(), passing
+    LANGUAGE - this suite is Python-only, see the module docstring) rather
+    than read as a fixed constant: their rendered value depends on
+    BASE_CODE's line count and, for max-lines, on whether min-lines is also
+    in this same row (see resolve_attr_value()'s own docstring) - not purely
+    on ATTR_META's placeholder. readonly and dark-theme-mode are not
+    straight passthroughs of ATTR_META's raw value either (readOnly is a JS
+    boolean, stringified; theme is a full "ace/theme/..." path derived from
+    the dark-theme-mode number) so they are given explicitly. Every other
+    attribute's ATTR_META placeholder is rendered verbatim, so reading it
+    directly is correct.
+    """
+    if attr == "data-readonly":
+        return "true"
+    if attr == "data-dark-theme-mode":
+        return "ace/theme/tomorrow_night"
+    if attr in ("data-min-lines", "data-max-lines"):
+        return resolve_attr_value(attr, attrs, LANGUAGE)
+    return str(ATTR_META[attr]["value"])
 
 DEFAULT_BUTTON_LABEL = "Try it!"
 
@@ -245,8 +270,9 @@ def getoption_assertions(attrs: list[str]) -> list[str]:
         return []
     lines = []
     for attr in attrs:
-        if attr in GETOPTION_CHECKS:
-            optionname, value = GETOPTION_CHECKS[attr]
+        if attr in GETOPTION_NAMES:
+            optionname = GETOPTION_NAMES[attr]
+            value = getoption_expected_value(attr, attrs)
             lines.append(f'I should see an ace option "{optionname}" value "{value}" with filter ace inline')
     return lines
 

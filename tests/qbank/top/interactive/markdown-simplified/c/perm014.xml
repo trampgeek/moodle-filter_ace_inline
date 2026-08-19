@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <!-- generated from tests/scenarios/interactive/markdown-simplified/c/perm014.txt -->
+  <question type="description">
+    <name>
+      <text>interactive_markdown-simplified_c_perm014</text>
+    </name>
+    <questiontext format="markdown">
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/markdown-simplified/c/perm014.txt</p></br><p>Attributes: data-code-mapper</p></br> <script>
+function mapFn1(s) { return "#include <stdio.h>\nint main(void){printf(\"mapped\");return 0;}"; }
+</script>
+
+```c:interactive:code-mapper:mapFn1
+#include <stdio.h>
+
+// Prints the contents of in1.txt if present, else stdin if given,
+// else a default greeting.
+int main(void)
+{
+    FILE *file = fopen("in1.txt", "r");
+    if (file != NULL) {
+        int c = 0;
+        printf("files:");
+        while ((c = fgetc(file)) != EOF) {
+            putchar(c);
+        }
+        fclose(file);
+    } else {
+        int first = getchar();
+        if (first != EOF) {
+            int c = 0;
+            printf("stdin:");
+            putchar(first);
+            while ((c = getchar()) != EOF) {
+                putchar(c);
+            }
+        } else {
+            printf("hello");
+        }
+    }
+    return 0;
+}
+```
+]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+</quiz>

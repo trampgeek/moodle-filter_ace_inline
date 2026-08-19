@@ -1,4 +1,4 @@
-```sql:start-line-number:7:min-lines:20
+```sql:start-line-number:7:min-lines:23
 CREATE TABLE staff (
     PRIMARY KEY (staff_num),
     staff_num  INT(5)        NOT NULL,

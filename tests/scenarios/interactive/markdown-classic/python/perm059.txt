@@ -1,4 +1,4 @@
-``` {data-ace-interactive-code= data-lang=python3 data-font-size=18pt data-button-name=RunIt data-start-line-number=7 data-min-lines=20 data-dark-theme-mode=2 data-max-lines=3}
+``` {data-ace-interactive-code= data-lang=python3 data-font-size=18pt data-button-name=RunIt data-start-line-number=7 data-min-lines=20 data-dark-theme-mode=2 data-max-lines=25}
 import os
 import sys
 

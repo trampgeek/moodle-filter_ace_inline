@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+  <!-- generated from tests/scenarios/interactive/html-classic/python/perm072.txt -->
+  <question type="description">
+    <name>
+      <text>interactive_html-classic_python_perm072</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Scenario: generated from tests/scenarios/interactive/html-classic/python/perm072.txt</p></br><p>Attributes: data-file-taids, data-file-upload-id, data-code-mapper, data-prefix, data-suffix</p></br> <textarea id="filebox1">file contents</textarea>
+<input id="uploadbox1" type="file">
+<script>
+function mapFn1(s) { return "print(\"mapped\")"; }
+</script>
+
+<pre data-ace-interactive-code data-lang="python3" data-file-taids="{&quot;in1.txt&quot;: &quot;filebox1&quot;}" data-file-upload-id="uploadbox1" data-code-mapper="mapFn1" data-prefix="pass" data-suffix="pass"><code>import os
+import sys
+
+text_files = [f for f in os.listdir() if f.endswith(".txt")]
+if text_files:
+    with open(text_files[0]) as fh:
+        print("files:" + fh.read())
+else:
+    stdin_data = sys.stdin.read()
+    if stdin_data:
+        print("stdin:" + stdin_data)
+    else:
+        print("hello")</code></pre>
+]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+</quiz>

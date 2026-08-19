@@ -1,0 +1,104 @@
+{
+    "quiz": {
+        "name": "highlight-markdown-classic-sql",
+        "intro": "All highlight/markdown-classic/sql fixtures from moodle-filter_ace_inline's tests/qbank - see tests/scripts/generate_quizzes.py.",
+        "introformat": "0",
+        "questionsperpage": "0",
+        "grade": "100.00000",
+        "navmethod": "free"
+    },
+    "sections": [
+        {
+            "firstslot": "1",
+            "heading": "highlight-markdown-classic-sql",
+            "shufflequestions": 0
+        }
+    ],
+    "questions": [
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm001.xml",
+            "slot": "1",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm002.xml",
+            "slot": "2",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm003.xml",
+            "slot": "3",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm004.xml",
+            "slot": "4",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm005.xml",
+            "slot": "5",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm006.xml",
+            "slot": "6",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm020.xml",
+            "slot": "7",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm021.xml",
+            "slot": "8",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm022.xml",
+            "slot": "9",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm025.xml",
+            "slot": "10",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm027.xml",
+            "slot": "11",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/highlight/markdown-classic/sql/perm054.xml",
+            "slot": "12",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        }
+    ],
+    "feedback": []
+}
