@@ -2,6 +2,7 @@
 /nbproject/
 /amd/src/grunt
 /tests/fixtures/test-sandbox-config.php
+/sync-to-moodle.sh
 __pycache__/
 .DS_Store
 .mypy_cache/
