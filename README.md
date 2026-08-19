@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.5.0, 17 August 2026.
+Version 1.5.1, 18 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -11,14 +11,14 @@ Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 A Moodle filter for displaying and optionally interacting with program code by utilising the Moodle CodeRunner question type plugin.
 Unlike most Moodle filters, this one is mostly implemented in JavaScript rather than PHP and operates on the rendered HTML rather than the original text. This filter is applied over all HTML elements, therefore can be displayed throughout courses where the user can edit/create HTML elements.
 
-As of Moodle 4.1, the following code adding and editing options are available:
-  1. **Utilising the new TinyMCE editor's 'Code sample' option (Moodle 4.1+)**
+The following code adding and editing options are available:
+  1. **Utilising the TinyMCE editor's 'Code sample' option**
      * This option is recommended for casual code authors, as the editing UI allows direct copying and pasting of code without reformatting. Note: Due to TinyMCE's quirks, certain options are limited. See further information below.
-  2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
+  2. **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions**
      * **WARNING:** Due a bug in Moodle, editing of Ace-inline code using Markdown Extra was unavailable
        from around Moodle 4.06 until the bug was fixed in August 2023. You probably
        need a recently updated Moodle 4.2 or later for this feature to be usable.
-  3. **Editing the HTML directly in an HTML editor (Moodle 3.11+)**
+  3. **Editing the HTML directly in an HTML editor**
      * This option is recommended for code authors who require full functionality/customisation and are comfortable using HTML.
   4. **Simplified rendering control modes, from Version 1.4.0**
      * Prior to this version all fenced `<pre><code>` blocks needed to be decorated with appropriate ace-inline filter attributes to enable the ace-inline editor.  With this mode enabled, just specifying the *language string* in the class is sufficient.  This is particularly useful if writing Markdown as the *language string* following the triple-ticks (\`\`\`) can now be parsed with this mode enabled, details below.
@@ -30,9 +30,9 @@ The plugin provides two separate filter operations:
 
 It should be noted that the 'interactive' elements are interactive only in the sense that the user can edit and run them; the user cannot interact with the code whilst it is running. However, the code can be modified between executions. As this implementation is a filter, data is not stored persistently, and any changes to the code whilst the filter is activated will not be stored.
 
-The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. **CodeRunner version 4.2.3 and Moodle 3.11 or later is required for basic functionality**, although some errors may not display properly.
+The plugin requires the CodeRunner plugin to be installed first, since that furnishes the Ace editor required for filter operations. **CodeRunner version 4.2.3 and Moodle 4.3 or later is required for basic functionality**, although some errors may not display properly.
 
-It is *recommended* to use CodeRunner version 5.1+ in conjunction with Moodle 4.1 for full functionality.
+It is *recommended* to use CodeRunner version 5.1+ in conjunction with Moodle 4.3 or later for full functionality.
 
 In addition, the ace-interactive-code filter requires that the system administrator has enabled the CodeRunner sandbox web service which is disabled by default. The `Try it!` button send the code from the Ace editor to the CodeRunner sandbox (usually a Jobe server) for execution using that web service.
 
@@ -82,7 +82,7 @@ If you're only interested in the syntax highlighting then *enable* the simplifie
 
 This method is recommended for those who want a familiar, consistent way of implementing code in Moodle's editors or in imported XML files. This method is editor-independent and would suffice for basic use and implementation of code in most circumstances.
 
-**Note caveat for bug in (Moodle 3.11+) above.**
+**Note the caveat above about the Moodle Markdown Extra bug.**
 
 **How to use (Standard Use):**
 
@@ -348,6 +348,30 @@ This may cause some visual discrepancies between other browsers and Firefox, how
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 ## Change History
+ * Version 1.5.1
+   Bug fixes from a code review of the 1.5.0 changes, made with the aid of Claude:
+   * Fixed a regression in Simplified Mode: a code block carrying explicit `data-ace-*`
+     decoration was parsed as though its class were a language specifier, so its `data-*`
+     attributes (button name, stdin, prefix/suffix, ...) were discarded and its class was
+     used verbatim as the language name. Enabling Simplified Mode site-wide therefore broke
+     existing TinyMCE- and HTML-authored content, which is exactly the content the mode is
+     meant to coexist with. Explicit decoration now always takes priority.
+   * Fixed Simplified Mode not applying the `python` &rarr; `python3` language mapping, so
+     a ```` ```python:interactive ```` block highlighted correctly but failed to run, Jobe
+     having `python3` and not `python`. The mapping, and the stripping of the `language-`
+     prefix that TinyMCE and Markdown renderers add, are now shared by both paths.
+   * Fixed two file-upload widgets on the same page clobbering each other when given files
+     of the same name: the second upload discarded the first widget's file.
+   * The C/C++ datatype-highlighting warning is now issued once per page rather than once
+     per code block.
+   * Corrected the stated requirements (Moodle 4.3+, matching `version.php`), reworded the
+     Simplified Mode admin setting, and fixed invalid PHPDoc that failed the CI docs check.
+   * Testing: added coverage for each of the fixes above, and made the Behat
+     syntax-highlighting assertions match tokens exactly. They previously matched on a
+     substring, which let an assertion be satisfied by an unrelated token in a different
+     code block on the same page.
+   * Development: the local Jobe sandbox config is no longer tracked in git, and developer
+     tooling is excluded from release archives.
  * Version 1.5.0
    Merged a large pull request from Andrew Bainbridge-Smith (thanks Andrew!):
    * Consolidated the two Ace initialisation entry points (`initAceHighlighting` and

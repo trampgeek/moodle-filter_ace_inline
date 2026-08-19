@@ -31,9 +31,9 @@ Feature: Visual checks for JavaScript syntax highlighting
     And I should see "constant" highlighting on "true" with filter ace inline
     And I should see "constant" highlighting on "null" with filter ace inline
     # "function" is a storage/type-declaring keyword in Ace's tokenisation (ace_storage
-    # ace_type), the same category as SQL's column type names - hence "sqltype" here, not
+    # ace_type), the same category as SQL's column type names - hence "type" here, not
     # "keyword".
-    And I should see "sqltype" highlighting on "function" with filter ace inline
+    And I should see "type" highlighting on "function" with filter ace inline
 
   Scenario: Checks text is not highlighted in other languages
     When I am on the "javascriptdemo" "core_question > preview" page logged in as teacher

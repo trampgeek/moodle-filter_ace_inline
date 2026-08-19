@@ -43,6 +43,10 @@ const KEYWORD_RULE_REGEX = "[a-zA-Z_$][a-zA-Z0-9_$]*";
 
 let cachedMode = null;
 
+// Ace constructs HighlightRules once per editor session, so without this the warning below
+// would repeat for every C/C++ block on the page. The cause is the same each time, so say it once.
+let keywordRuleWarningIssued = false;
+
 /**
  * Builds (once) and returns an Ace Mode instance for C/C++ that additionally
  * classifies "_t"-suffixed and PascalCase identifiers as "support.type"
@@ -77,8 +81,11 @@ export const getCDatatypeMode = async() => {
             // some arbitrary wrong position. Fail visibly instead and fall back to plain,
             // correct C/C++ highlighting for this mode instance rather than risk corrupting
             // rule ordering.
-            globalThis.console.warn('filter_ace_inline: could not find the C/C++ keyword rule to splice ' +
-                'datatype highlighting before; skipping datatype highlighting for this session.');
+            if (!keywordRuleWarningIssued) {
+                keywordRuleWarningIssued = true;
+                globalThis.console.warn('filter_ace_inline: could not find the C/C++ keyword rule to splice ' +
+                    'datatype highlighting before; skipping datatype highlighting for this session.');
+            }
             return;
         }
         startRules.splice(keywordRuleIndex, 0, {

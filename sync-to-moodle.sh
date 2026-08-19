@@ -14,7 +14,9 @@ set -euo pipefail
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MOODLE_DIR="${MOODLE_DIR:-$HOME/working/moodle-dev/moodle}"
 DEST="$MOODLE_DIR/public/filter/ace_inline"
-NODE22="/opt/homebrew/opt/node@22/bin"
+# Node 22 is what Moodle's Grunt tooling expects. Default is the Homebrew location on macOS;
+# override NODE_BIN elsewhere, or leave it unset/empty to use whatever node is already on PATH.
+NODE_BIN="${NODE_BIN-/opt/homebrew/opt/node@22/bin}"
 
 if [ ! -d "$MOODLE_DIR" ]; then
     echo "Error: Moodle checkout not found at $MOODLE_DIR" >&2
@@ -35,7 +37,7 @@ fi
 
 (
     cd "$MOODLE_DIR"
-    PATH="$NODE22:$PATH" npx grunt amd --root=public/filter/ace_inline --force
+    PATH="${NODE_BIN:+$NODE_BIN:}$PATH" npx grunt amd --root=public/filter/ace_inline --force
 )
 
 rsync -a "$DEST/amd/build/" "$SRC/amd/build/"

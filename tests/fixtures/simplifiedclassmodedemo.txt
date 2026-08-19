@@ -25,3 +25,12 @@ def main():
     print("HelloPyInteractive")
 main()
 ```
+
+```python:interactive:button-name:AliasPy
+def main():
+    # Assembled from fragments so the expected output does not appear literally in the
+    # displayed source, which would make "should not see" pass before the code is run.
+    parts = ("Alias", "Py", "Ran")
+    print("".join(parts))
+main()
+```

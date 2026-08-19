@@ -85,10 +85,21 @@ class behat_filter_ace_inline extends behat_base {
         // Parse the typeString.
         $acetype = $this->parse_type_string($typestring);
 
-        // Check if there is a <span> containing the expected text of that class-type.
+        // Check if there is a <span> holding exactly the expected text, of that class-type.
         // Needs starts-with as C's function tag is particular and boolean flags.
-        $xpath = "//span[starts-with(@class, '$acetype') and contains(text(), "
-            . behat_context_helper::escape($textstring) . ")]";
+        //
+        // The text match is exact rather than a substring. With contains(), an assertion that
+        // "int" is a C keyword was also satisfied by Python's "print" in a different block on
+        // the same page, so a token could be reported as correctly highlighted when it was not
+        // highlighted, or even present, anywhere in the block under test.
+        //
+        // Quotes and angle brackets are stripped before comparing, because Ace includes a
+        // token's delimiters in its span: a string literal is one span reading "text" and an
+        // include is one span reading <stdio.h>. Features name the token itself, so those
+        // characters have to come off before the comparison. Everything else must match exactly.
+        $strippeddelimiters = "translate(text(), concat('\"', \"'\", '<>'), '')";
+        $xpath = "//span[starts-with(@class, '$acetype') and normalize-space($strippeddelimiters) = "
+            . behat_context_helper::escape($textstring) . "]";
         $error = "'{$textstring}' is not found/formatted as an $acetype";
         $driver = $this->getSession()->getDriver();
         if (!$driver->find($xpath)) {
@@ -157,6 +168,10 @@ class behat_filter_ace_inline extends behat_base {
             "include" => "ace_constant ace_other",
             "constant" => "ace_constant ace_language",
             "function" => "ace_support ace_function",
+            "type" => "ace_storage ace_type",
+            // Deprecated alias for "type". Ace tags C's bool and JavaScript's function with the
+            // same token classes as SQL's types, so the name is no longer SQL-specific; kept so
+            // any feature file not yet migrated keeps working.
             "sqltype" => "ace_storage ace_type",
         ];
 
@@ -166,6 +181,34 @@ class behat_filter_ace_inline extends behat_base {
             $acetype = "error";
         }
         return ($acetype);
+    }
+
+    /**
+     * Attaches a file to one of the filter's upload widgets, which is a plain
+     * <input type="file"> rather than a Moodle filemanager, so core's
+     * "I upload ... file to ... filemanager" step does not apply to it.
+     *
+     * The path must be inside $CFG->dirroot. Selenium drives a browser in its own container,
+     * which mounts only the Moodle tree, at the same path the webserver sees it under; a file
+     * anywhere else - including this plugin's own tests/fixtures, which is bind-mounted into
+     * the webserver alone - does not exist as far as the browser is concerned.
+     *
+     * @Given I attach the file :filepath to the ace inline upload box :elementid
+     * @throws ExpectationException If the file or the upload box cannot be found.
+     * @param string $filepath Path to the file to attach, relative to the Moodle root.
+     * @param string $elementid The id of the <input type="file"> element.
+     */
+    public function i_attach_file_to_upload_box($filepath, $elementid) {
+        global $CFG;
+        $fullpath = $CFG->dirroot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $filepath);
+        if (!is_readable($fullpath)) {
+            throw new ExpectationException("The file to be uploaded, {$fullpath}, does not exist.", $this->getSession());
+        }
+        $input = $this->getSession()->getPage()->findById($elementid);
+        if ($input === null) {
+            throw new ExpectationException("There is no upload box with id '{$elementid}'.", $this->getSession());
+        }
+        $input->attachFile($fullpath);
     }
 
     /**

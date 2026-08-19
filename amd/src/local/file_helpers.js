@@ -130,8 +130,12 @@ export const setupFileHandler = async(uploadElementId) => {
                         + '</strong></li>' + fatalHtml.innerHTML;
                 });
             if (Object.keys(fileValues).length !== 0) {
-                // Maps the name with the filevalue map of id to value.
-                uploadFiles[parsedName] = fileValues;
+                // Maps the name with the filevalue map of id to value. Merged rather than
+                // assigned: uploadFiles is keyed by filename first and widget id second, so if two
+                // upload widgets on the same page are each given a file of the same name they
+                // share this entry, and a plain assignment would discard the other widget's
+                // contents - which getFiles() above then can't find for that widget.
+                uploadFiles[parsedName] = {...uploadFiles[parsedName], ...fileValues};
             }
         }
         displayAllFileErrors(errorNode, errorHtml, fatalHtml);
