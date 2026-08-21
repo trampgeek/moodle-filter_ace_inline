@@ -1,5 +1,9 @@
 # Change History
 
+ * Version 1.5.7, 22 August 2026.
+    * Blame: morriemajor
+    * Reduced the configuration options window to remove the ability to change settings in a Question Bank view, as this could lead to a misleading understanding of the rendered output. Updated Behat tests to test configuration setting behaviour. Further improvements to README.
+
  * Version 1.5.6, 20 August 2026.
     * Blame: morriemajor
     * Redrafting README.md

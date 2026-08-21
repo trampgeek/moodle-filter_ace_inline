@@ -34,6 +34,27 @@
 class ace_inline_filter_local_settings_form extends \filter_local_settings_form {
     #[\Override]
     protected function definition_inner($mform) {
+        // A Question Bank module's own context is never an ancestor of anywhere these
+        // questions are actually rendered (e.g. a quiz that uses them): module contexts are
+        // always siblings under their course, and question-usage filtering at attempt time
+        // uses the quiz's own context regardless of where a question was authored. The only
+        // place an override set here would ever apply is this question bank's own preview
+        // pages - not offering the fields at all, rather than offering ones whose effect
+        // would be real but misleadingly narrow (a teacher would reasonably expect this to
+        // govern how their questions look wherever they're used, which it can't).
+        if ($this->context->contextlevel == CONTEXT_MODULE) {
+            [, $cm] = get_course_and_cm_from_cmid($this->context->instanceid);
+            if ($cm->modname === 'qbank') {
+                $mform->addElement(
+                    'static',
+                    'qbank_context_notice',
+                    '',
+                    get_string('settings_qbank_context_unavailable', 'filter_ace_inline')
+                );
+                return;
+            }
+        }
+
         // What each setting would resolve to if THIS context had no override of its own -
         // i.e. the same context-chain walk text_filter::filter() uses at render time, but
         // started one level up, at the parent context. Not "the site admin default": if an
@@ -41,10 +62,18 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
         // that's what actually gets inherited here, not necessarily the site setting - see the
         // "Use higher-level setting" label/settings_current_parent_value below, both worded to
         // reflect that.
+        $parentcontext = $this->context->get_parent_context();
         $parentconfig = \filter_ace_inline\text_filter::resolve_effective_config(
-            $this->context->get_parent_context(),
+            $parentcontext,
             ['button_label', 'dark_theme_mode', 'simplified_mode']
         );
+        // Deliberately just the immediate parent, not wherever up the chain the override
+        // (if any) actually lives: that could be several levels further up, possibly in a
+        // context this user has no permission to even see, let alone change - the immediate
+        // parent is always a safe, relevant place to point at (its own value might just be
+        // inherited too, but that's for its own settings page to reveal in turn).
+        $parentname = $this->parent_context_description($parentcontext);
+
         // Unlike dark_theme_mode/simplified_mode (selects, whose own selected option already
         // unambiguously shows whether this context is overriding or not), button_label is a
         // plain text field where "blank" is the only way to mean "not overridden" - so it can't
@@ -74,7 +103,7 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
             get_string(
                 'settings_current_parent_value',
                 'filter_ace_inline',
-                $darkoptions[$parentconfig['dark_theme_mode']]
+                (object) ['value' => $darkoptions[$parentconfig['dark_theme_mode']], 'parentname' => $parentname]
             )
         );
 
@@ -92,7 +121,7 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
             get_string(
                 $hasownbuttonlabel ? 'settings_overriding_parent' : 'settings_following_parent',
                 'filter_ace_inline',
-                $parentconfig['button_label']
+                (object) ['value' => $parentconfig['button_label'], 'parentname' => $parentname]
             )
         );
 
@@ -114,9 +143,37 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
             get_string(
                 'settings_current_parent_value',
                 'filter_ace_inline',
-                $enablemodeoptions[$parentconfig['simplified_mode']]
+                (object) ['value' => $enablemodeoptions[$parentconfig['simplified_mode']], 'parentname' => $parentname]
             )
         );
+    }
+
+    /**
+     * Human-readable, possibly-linked description of where to look to check or change
+     * whatever this context would inherit - the immediate parent context, or (when this
+     * context IS the system context, so has no parent) the site administrator settings page.
+     * Deliberately never further up the chain than that - see definition_inner()'s comment on
+     * $parentname for why.
+     *
+     * @param \core\context|false $parentcontext $this->context->get_parent_context()'s result.
+     * @return string HTML - a link when the current user can actually manage settings there,
+     *     otherwise the plain (unlinked) name, so we never offer a link that would just 403.
+     */
+    private function parent_context_description($parentcontext) {
+        if (!$parentcontext) {
+            $name = get_string('settings_site_admin_settings_page', 'filter_ace_inline');
+            if (!has_capability('moodle/site:config', \context_system::instance())) {
+                return $name;
+            }
+            $url = new \moodle_url('/admin/settings.php', ['section' => 'filtersettingace_inline']);
+            return \html_writer::link($url, $name);
+        }
+        $name = $parentcontext->get_context_name();
+        if (!has_capability('moodle/filter:manage', $parentcontext)) {
+            return $name;
+        }
+        $url = new \moodle_url('/filter/manage.php', ['contextid' => $parentcontext->id, 'filter' => $this->filter]);
+        return \html_writer::link($url, $name);
     }
 
     #[\Override]
