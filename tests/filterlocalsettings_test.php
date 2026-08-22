@@ -76,7 +76,16 @@ final class filterlocalsettings_test extends \advanced_testcase {
         $this->setAdminUser();
 
         $course = $this->getDataGenerator()->create_course();
-        $qbank = $this->getDataGenerator()->create_module('qbank', ['course' => $course->id]);
+        try {
+            $qbank = $this->getDataGenerator()->create_module('qbank', ['course' => $course->id]);
+        } catch (\coding_exception $e) {
+            // mod_qbank (the dedicated Question Bank activity type this test is about) was
+            // introduced after this plugin's own minimum supported Moodle version and isn't
+            // generator-testable (or doesn't exist at all) on older branches - confirmed on
+            // Moodle 4.3/4.4/4.5 in CI, all with this exact "does not support generators yet"
+            // message. Nothing to test here on those versions; skip rather than fail.
+            $this->markTestSkipped('mod_qbank is not available on this Moodle version: ' . $e->getMessage());
+        }
         $context = \context_module::instance($qbank->cmid);
 
         $html = $this->render_form($context);
