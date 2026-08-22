@@ -79,7 +79,7 @@ final class filterlocalsettings_test extends \advanced_testcase {
         try {
             $qbank = $this->getDataGenerator()->create_module('qbank', ['course' => $course->id]);
         } catch (\coding_exception $e) {
-            // mod_qbank (the dedicated Question Bank activity type this test is about) was
+            // Mod_qbank (the dedicated Question Bank activity type this test is about) was
             // introduced after this plugin's own minimum supported Moodle version and isn't
             // generator-testable (or doesn't exist at all) on older branches - confirmed on
             // Moodle 4.3/4.4/4.5 in CI, all with this exact "does not support generators yet"
