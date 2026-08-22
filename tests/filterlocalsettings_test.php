@@ -16,6 +16,30 @@
 
 namespace filter_ace_inline;
 
+defined('MOODLE_INTERNAL') || die();
+
+// Ensure the "local settings form" base class our plugin extends is actually loaded first,
+// mirroring what core's filter/manage.php itself always does before it ever touches a
+// filter's own filterlocalsettings.php. Which file (and even which namespace) defines that
+// base class differs by Moodle version: before Moodle 4.5 it's the global-namespace
+// filter_local_settings_form, defined directly in filter/local_settings_form.php; from 4.5 on
+// it's \core_filters\local_settings_form (filter/classes/form/local_settings_form.php),
+// autoloaded on first reference, with that same file also class_alias()-ing itself to
+// \filter_local_settings_form for exactly this kind of backward-compatible reference. A bare
+// require_once() of our own filterlocalsettings.php, with neither of those already loaded,
+// fatals with "Class not found" - confirmed directly against Moodle core's own release
+// branches (filter/local_settings_form.php exists on MOODLE_403_STABLE/MOODLE_404_STABLE,
+// 404s from MOODLE_405_STABLE on; filter/classes/form/local_settings_form.php is the reverse)
+// after CI failed on 4.3/4.4/4.5 but passed on 5.0+ the first time this test file ran:
+// PHPUnit never goes through manage.php's own require, so nothing else guarantees this
+// ordering here. filterlocalsettings.php itself needs no equivalent guard - manage.php always
+// requires the right file before it ever reaches a filter's own settings form in real use.
+global $CFG;
+if (file_exists($CFG->dirroot . '/filter/local_settings_form.php')) {
+    require_once($CFG->dirroot . '/filter/local_settings_form.php');
+} else {
+    class_exists('\core_filters\local_settings_form'); // Triggers autoload; defines the alias.
+}
 require_once(__DIR__ . '/../filterlocalsettings.php');
 
 /**
