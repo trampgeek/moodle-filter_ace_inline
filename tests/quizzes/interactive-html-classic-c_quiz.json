@@ -1,0 +1,685 @@
+{
+    "quiz": {
+        "name": "interactive-html-classic-c",
+        "intro": "All interactive/html-classic/c fixtures from moodle-filter_ace_inline's tests/qbank - see tests/scripts/generate_quizzes.py.",
+        "introformat": "0",
+        "questionsperpage": "0",
+        "grade": "100.00000",
+        "navmethod": "free"
+    },
+    "sections": [
+        {
+            "firstslot": "1",
+            "heading": "interactive-html-classic-c",
+            "shufflequestions": 0
+        }
+    ],
+    "questions": [
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm001.xml",
+            "slot": "1",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm002.xml",
+            "slot": "2",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm003.xml",
+            "slot": "3",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm004.xml",
+            "slot": "4",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm005.xml",
+            "slot": "5",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm006.xml",
+            "slot": "6",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm007.xml",
+            "slot": "7",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm008.xml",
+            "slot": "8",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm009.xml",
+            "slot": "9",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm010.xml",
+            "slot": "10",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm011.xml",
+            "slot": "11",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm012.xml",
+            "slot": "12",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm013.xml",
+            "slot": "13",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm014.xml",
+            "slot": "14",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm015.xml",
+            "slot": "15",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm016.xml",
+            "slot": "16",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm017.xml",
+            "slot": "17",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm018.xml",
+            "slot": "18",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm020.xml",
+            "slot": "19",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm021.xml",
+            "slot": "20",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm022.xml",
+            "slot": "21",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm025.xml",
+            "slot": "22",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm027.xml",
+            "slot": "23",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm028.xml",
+            "slot": "24",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm029.xml",
+            "slot": "25",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm030.xml",
+            "slot": "26",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm031.xml",
+            "slot": "27",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm032.xml",
+            "slot": "28",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm033.xml",
+            "slot": "29",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm034.xml",
+            "slot": "30",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm035.xml",
+            "slot": "31",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm036.xml",
+            "slot": "32",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm037.xml",
+            "slot": "33",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm038.xml",
+            "slot": "34",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm039.xml",
+            "slot": "35",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm040.xml",
+            "slot": "36",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm041.xml",
+            "slot": "37",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm042.xml",
+            "slot": "38",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm043.xml",
+            "slot": "39",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm044.xml",
+            "slot": "40",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm045.xml",
+            "slot": "41",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm046.xml",
+            "slot": "42",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm047.xml",
+            "slot": "43",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm048.xml",
+            "slot": "44",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm049.xml",
+            "slot": "45",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm050.xml",
+            "slot": "46",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm051.xml",
+            "slot": "47",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm052.xml",
+            "slot": "48",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm053.xml",
+            "slot": "49",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm054.xml",
+            "slot": "50",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm055.xml",
+            "slot": "51",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm056.xml",
+            "slot": "52",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm057.xml",
+            "slot": "53",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm058.xml",
+            "slot": "54",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm059.xml",
+            "slot": "55",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm060.xml",
+            "slot": "56",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm061.xml",
+            "slot": "57",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm062.xml",
+            "slot": "58",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm063.xml",
+            "slot": "59",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm064.xml",
+            "slot": "60",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm065.xml",
+            "slot": "61",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm066.xml",
+            "slot": "62",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm067.xml",
+            "slot": "63",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm068.xml",
+            "slot": "64",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm069.xml",
+            "slot": "65",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm070.xml",
+            "slot": "66",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm071.xml",
+            "slot": "67",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm072.xml",
+            "slot": "68",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm073.xml",
+            "slot": "69",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm074.xml",
+            "slot": "70",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm075.xml",
+            "slot": "71",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm076.xml",
+            "slot": "72",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm077.xml",
+            "slot": "73",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm078.xml",
+            "slot": "74",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm079.xml",
+            "slot": "75",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm080.xml",
+            "slot": "76",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm081.xml",
+            "slot": "77",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm082.xml",
+            "slot": "78",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm083.xml",
+            "slot": "79",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm084.xml",
+            "slot": "80",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm085.xml",
+            "slot": "81",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm086.xml",
+            "slot": "82",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm087.xml",
+            "slot": "83",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm088.xml",
+            "slot": "84",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm089.xml",
+            "slot": "85",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm090.xml",
+            "slot": "86",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm091.xml",
+            "slot": "87",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm092.xml",
+            "slot": "88",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm093.xml",
+            "slot": "89",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm094.xml",
+            "slot": "90",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm095.xml",
+            "slot": "91",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm096.xml",
+            "slot": "92",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm097.xml",
+            "slot": "93",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm098.xml",
+            "slot": "94",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        },
+        {
+            "nonquizfilepath": "/top/interactive/html-classic/c/perm099.xml",
+            "slot": "95",
+            "page": "1",
+            "requireprevious": 0,
+            "maxmark": "1.0000000"
+        }
+    ],
+    "feedback": []
+}

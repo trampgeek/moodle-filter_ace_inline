@@ -2,3 +2,13 @@
 /nbproject/
 /amd/src/grunt
 /tests/fixtures/test-sandbox-config.php
+/sync-to-moodle.sh
+__pycache__/
+.DS_Store
+.mypy_cache/
+# moodle-qbank_gitsync manifest files - instance-specific, not meant to be
+# committed (see moodle-qbank_gitsync's own README on this convention).
+tests/qbank/*_question_manifest.json
+tests/qbank/manifest_backups/
+tests/quizzes/*_question_manifest.json
+tests/quizzes/manifest_backups/

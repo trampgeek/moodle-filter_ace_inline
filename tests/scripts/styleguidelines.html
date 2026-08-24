@@ -1,0 +1,2533 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<HTML>
+
+<HEAD>
+    <base href="./" />
+
+   <TITLE>ENCE260 C Programming Style Guidelines </TITLE>
+   <META NAME="Original author"   CONTENT="Geotechnical Software Services">
+   <META NAME="Modified" CONTENT="with permission by Richard Lobb, Department of Computer Science University of Canterbury">
+   <META NAME="Keywords" CONTENT="C, programming, code, style, guideline, guidelines, recommendation, recommendations, layout, standard, conventions, standardization, naming, names, indentation, block, readability, maintainability, mixed case, suffix, prefix, statement, statements, conditional, white space, align, alignment comments, code complete, steve mcconnel, geosoft, geotechnical, software, services, stavanger, norway">
+   <META NAME="Description"  CONTENT="C++ Programming Style Guidelines. A modified version of GeoSoft's style rules for C/C++ developers for use in the University of Canterbury course COSC208">
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <LINK REL=STYLESHEET HREF="./style_style.css" TYPE="text/css">
+</HEAD>
+
+
+<BODY>
+
+<TABLE CELLPADDING=10 BORDER=0 CELLSPACING=0>
+
+<tr>
+
+
+
+<!--
+*******************************************************************************
+   Document content on right hand side
+*******************************************************************************
+-->
+
+<td>
+
+<center>
+<H1>ENCE260 C Programming Style Guidelines</H1>
+</center>
+
+<center><I>Version 1.3, July 2015</I></center>
+
+
+<p>
+<HR WIDTH="100%">
+<H2>
+Table of Contents</H2>
+
+<UL>
+
+<LI>
+<A HREF="styleguidelines.html#introduction">1 Introduction</A>
+<UL>
+<LI><A HREF="styleguidelines.html#Layout of the Recommendations">1.1 Layout of the
+Recommendations</A></LI>
+<LI><A HREF="styleguidelines.html#Recommendation">1.2 Recommendations Importance</A></LI>
+</UL>
+</LI>
+
+<LI><A HREF="styleguidelines.html#General Recomendations">2 General Recommendations</A></LI>
+
+<LI>
+<A HREF="styleguidelines.html#Naming Conventions">3 Naming Conventions</A>
+<UL>
+<LI><A HREF="styleguidelines.html#General">3.1 General</A></LI>
+<LI><A HREF="styleguidelines.html#Specific">3.2 Specific</A></LI>
+</UL>
+</LI>
+
+<LI><A HREF="styleguidelines.html#Files">4 Files</A>
+<UL>
+<LI><A HREF="styleguidelines.html#Source Files">4.1 Source Files</A></LI>
+<LI><A HREF="styleguidelines.html#Include Files">4.2 Include Files and Include Statements</A></LI>
+</UL>
+</LI>
+
+<LI>
+<A HREF="styleguidelines.html#Statements">5 Statements</A>
+<UL>
+<LI><A HREF="styleguidelines.html#Types">5.1 Types</A></LI>
+<LI><A HREF="styleguidelines.html#Variables">5.2 Variables</A></LI>
+<LI><A HREF="styleguidelines.html#Loops">5.3 Loops</A></LI>
+<LI><A HREF="styleguidelines.html#Conditionals">5.4 Conditionals</A></LI>
+<LI><A HREF="styleguidelines.html#Misc">5.5 Miscellaneous</A></LI>
+</UL>
+</LI>
+
+<LI>
+<A HREF="styleguidelines.html#Layout and Comments">6 Layout and Comments</A>
+<UL>
+<LI><A HREF="styleguidelines.html#Layout">6.1 Layout</A></LI>
+<LI><A HREF="styleguidelines.html#White Space">6.2 White space</A></LI>
+<LI><A HREF="styleguidelines.html#Comments">6.3 Comments</A></LI>
+</UL>
+</LI>
+<LI><A HREF="styleguidelines.html#RuleSummary">7 Rule Summary</A></LI>
+
+<LI><A HREF="styleguidelines.html#References">8 References</A></LI>
+
+</UL>
+
+<HR WIDTH="100%">
+<h1>
+<A NAME="introduction"></A>1 Introduction
+</h1>
+
+<p>
+This document lists C coding recommendations for use in the University of Canterbury Course ENCE260. It is a modified version of C/C++ guideline used in COSC208 in previous years, which
+in turn is a modified version of the Geotechnical Software Services document available at <a href="http://geosoft.no/styleguidelines.html">http://geosoft.no/styleguidelines.html</a>, modified with permission. Most of the recommendations are common in the C/C++ development community, and are based on established standards collected from a number of sources, individual experience, local requirements/needs, as well as
+suggestions given in
+<A HREF="styleguidelines.html#ref1">[1]</A> - <A HREF=" styleguidelines.html#ref4">[4]</A>.
+
+<p>
+There are several reasons for introducing a new guideline rather
+than just referring to the ones above. The main reason is that these
+are far too general in their scope and that more specific rules (especially
+naming rules) need to be established. Also, the present guide has an
+annotated form that makes it far easier to use during project code
+reviews than most other existing guidelines.
+In addition, programming recommendations generally tend to mix
+style issues with language technical issues in a somewhat confusing manner.
+The present document does not contain any C technical recommendations at
+all, but focuses mainly on programming style.
+
+<p>
+While a given development environment (IDE) can improve the readability
+of code by access visibility, color coding, automatic formatting and so on,
+the programmer should never <em>rely</em> on such features.
+Source code should always be considered <em>larger</em> than the IDE
+it is developed within and should be written in a way that maximise
+its readability independent of any IDE.
+
+
+
+<H3>
+<A NAME="Layout of the Recommendations"></A>1.1 Layout of the
+Recommendations.</H3>
+
+<p>
+The recommendations are grouped by topic and each recommendation is
+numbered to make it easier to refer to during reviews.
+
+<p>
+Layout of the recommendations is as follows:
+
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="GuidelineName"></A>0. GuidelineName: short description
+</td>
+</tr>
+
+<tr>
+<td class="example">Example if applicable
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Motivation, background and additional information.
+</td>
+</tr>
+</table>
+
+<p>
+The motivation section is important. Coding standards and guidelines
+tend to start "religious wars", and it is important to state the background
+for the recommendation.
+
+
+<H3>
+<A NAME="Recommendation"></A>1.2 Recommendation Importance</H3>
+
+<p>
+In the guideline sections the terms <I>must</I>, <I>should </I>and <I>can
+</I>have special meaning. A <I>must </I>requirement must be followed, a
+<I>should </I>is a strong recommendation, and a <I>can </I>is a general
+guideline.
+
+
+<h1>
+<A NAME="General Recomendations"></A>2 General Recommendations
+</h2>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="Violations"></A>1. Violations: any violation to these guidelines is allowed if it enhances readability.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class=rationale>
+The main goal of the recommendation is to improve readability and thereby
+the understanding and the maintainability and general quality of the code.
+It is impossible to cover all the specific cases in a general guide and
+the programmer should be flexible.
+</td>
+</tr>
+</table>
+
+<p>
+<h1>
+<A NAME="Naming Conventions"></A>3 Naming Conventions
+</h1>
+
+<H3>
+<A NAME="General"></A>3.1 General Naming Conventions</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="General naming"></A>2. General naming: all entities should be given names that communicate the entity's role to the reader.
+</td>
+</tr>
+
+<tr>
+<td class="example">cost, durationInSeconds, Employee, MAX_NUM_CHARS, setImageType()
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+This is the single most important naming rule. One-character identifiers must not be used except
+for the following situations:
+<ol>
+<li>Generic temporary variables of basic types where there is a well-established
+convention, e.g., <tt>char c; char* s; int i;</tt></li>
+<li>Variables that represent common physics measures that are conventionally represented with a single
+character, e.g., <tt>x</tt> and <tt>y</tt> for coordinates, <tt>t</tt> for generic time,
+<tt>v</tt> for generic velocity. However, <tt>l</tt> (el) should never be used for length or anything else, as it is
+difficult to distinguish from <tt>1</tt> (one) in most type fonts.</li>
+<li>In mathematical programs, when implementing a formula, e.g.,
+<tt>discriminant = sqrt(b * b - 4 * a * c)</tt></li>
+</ol>
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Type names"></A>3. Type names: names representing types must be in mixed case starting with upper case.
+</td>
+</tr>
+
+<tr>
+<td class="example">Line, SavingsAccount
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Common practice in the C/C++ development community.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Variable names"></A>4. Variable names: must be in mixed case starting with lower case.
+</td>
+</tr>
+
+<tr>
+<td class="example">line, savingsAccount
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Common practice in the C/C++ development community. Makes variables easy to
+distinguish from types, and effectively resolves potential naming collision
+as in the declaration <tt>Line line</tt>;
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Constant names"></A>5. Constant names: named constants must be all uppercase using underscore to separate words.
+This includes enumeration values and macros.
+</td>
+</tr>
+
+<tr>
+<td class="example">MAX_ITERATIONS, COLOR_RED, PI
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Common practice in the C/C++ development community.
+
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Function names"></A>6. Function names: names representing functions must be in mixed case starting with lower case.
+</td>
+</tr>
+
+<tr>
+<td class="example">firstName(), computeTotalWidth()
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Common practice in the C/C++ development community.
+This is identical to variable names, but functions in C are already
+distingushable from variables by their specific form.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Abbreviations"></A>7. Abbreviations: abbreviations and acronyms must not be uppercase when used in names [4].
+</td>
+</tr>
+
+<tr>
+<td class="example">exportHtmlSource(); <i class="not">// NOT: exportHTMLSource();</i>
+openDvdPlayer();    <i class="not">// NOT: openDVDPlayer();</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Using all uppercase for the base name will give conflicts with the naming
+conventions given above. A variable of this type whould have to be
+named dVD, hTML
+etc., which is not very readable.
+Another problem is illustrated in the examples above: when the name is
+connected to another, the readability is seriously reduced; the word
+following the abbreviation does not stand out as it should.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Generic variables of user-defined types"></A>8. Generic variables of user-defined types: should have the same name as their type.
+</td>
+</tr>
+
+<tr>
+<td class="example">void setTopic(Topic* topic) <i class="not">// NOT: void setTopic(Topic* value)</i>
+                            <i class="not">// NOT: void setTopic(Topic* aTopic)</i>
+                            <i class="not">// NOT: void setTopic(Topic* t)</i>
+
+void connect(Database* database) <i class="not">// NOT: void connect(Database* db)</i>
+                                 <i class="not">// NOT: void connect (Database* oracleDB)</i>
+</td>
+
+</tr>
+<tr><td class="rationale">Obviously this convention cannot be used with built-in types like <em>int</em>
+which are reserved words.</td></tr>
+<tr>
+<td class="rationale">
+Reduce complexity by reducing the number of terms and names used.
+Also makes it easy to deduce the type given a variable name only.
+<p>
+If for some reason this convention doesn't seem to <em>fit</em> it is a strong
+indication that the type name is badly chosen.
+<p>
+Non-generic variables have a <em>role</em>. These variables can often be named
+by combining role and type:
+
+<p>
+<pre>
+  Point  startingPoint, centerPoint;
+  Name   loginName;
+</pre>
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Scope implications"></A>9. Scope implications: shorter names can be used with variables having shorter scope.
+Variables with a large scope should have long names [1].
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Scratch variables used for temporary storage or indices are best kept short.
+A programmer reading such variables should be able to assume that its value
+is not used outside of a few lines of code. Common scratch variables for integers
+are <EM>i</EM>, <EM>j</EM>, <EM>k</EM> and for
+characters <EM>c</EM>.
+</td>
+</tr>
+</table>
+
+
+
+<H3>
+<A NAME="Specific"></A>3.2 Specific Naming Conventions</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Initialising"></A>10. Initialising: the term <I>initialise</I> (or <I>initialize</I> or <i>init</i>) can be used where an object or a concept is established.
+</td>
+</tr>
+
+<tr>
+<td class="example">initialiseFontSet();
+</td>
+</tr>
+
+<tr>
+<td class="rationale"></td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="GUI components"></A>11. GUI components: variables representing GUI components should be suffixed by the component type name.
+</td>
+</tr>
+
+<tr>
+<td class="example">mainWindow, propertiesDialog, widthScale, loginText,
+leftScrollbar, mainForm, fileMenu, minLabel, exitButton, yesToggle etc.
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Enhances readability since the name gives the user an immediate clue of the
+type of the variable and thereby the object's resources.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Plurals"></A>12. Plurals: plural form should be used on names representing a collection of objects.
+</td>
+</tr>
+
+<tr>
+<td class="example">Point  points[];
+int    values[];
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Enhances readability since the name gives the user an immediate clue of the
+type of the variable and the operations that can be performed on its elements.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Cardinalities"></A>13. Cardinalities: the prefix <I>n</I> should be used for variables representing cardinalities of sets of objects.
+</td>
+</tr>
+
+<tr>
+<td class="example">nPoints, nLines
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+The notation is taken from mathematics where it is an established
+convention.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="Entity identifiers"></A>14. Entity identifiers: suffix <I>No</I> should be used for variables representing an entity number.
+</td>
+</tr>
+
+<tr>
+<td class="example">tableNo, employeeNo
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+The notation is taken from mathematics where it is an established
+convention for indicating an entity number.
+<p>
+Two alternative are the suffix <em>Num</em> or, in database contexts, the suffix
+<it>Id</it>: <tt>employeeNum, userId, itemId</tt>. A single
+convention should be used throughout, however.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="Iterators"></A>15. Iterators: iterator variables should be called <em>i</em>, <em>j</em>, <em>k</em> etc.
+</td>
+</tr>
+
+<tr>
+<td class="example">for (int i = 0; i &lt; nTables; i++) {
+  ...
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+The notation is taken from mathematics where it is an established
+convention for indicating iterators.
+<p>
+Variables named <em>j</em>, <em>k</em> etc. should be used
+for nested loops only.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Boolean names"></A>16. Boolean names: the prefix <I>is</I> can
+usefully be used for boolean variables and functions.
+</td>
+</tr>
+
+<tr>
+<td class="example">isSet, isVisible, isFinished, isFound, isOpen
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Common practice in the C/C++ development community.
+<p>
+Using the <I>is</I> prefix solves a common problem of
+choosing bad boolean names like <tt>status</tt> or <tt>flag</tt>.
+<tt>isStatus</tt> or <tt>isFlag</tt> simply doesn't fit, and the programmer
+is forced to choose more meaningful names.
+<p>
+There are a few alternatives to the <em>is</em> prefix that fit better in some
+situations, e.g. <em>has</em>,  <em>can</em> and
+<em>should</em>:
+<pre class="example">  bool hasLicense();
+  bool canEvaluate();
+  bool shouldSort();
+</pre>
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="Abbreviations"></A>17. Abbreviations: abbreviations in names should be avoided.</td>
+</tr>
+
+<tr>
+<td class="example">computeAverage();   <i class="not">// NOT: compAvg();</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+However, abbreviations are acceptable where they are widely used, and in fact
+are recommended where they are standard acronyms.
+<p>
+<table style="text-align:center">
+<tr><td><TT>cmd</TT></td><td>is acceptable for</td><td><TT>command</TT></td></tr>
+<tr><td><TT>init</TT></td><td>is acceptable for</td><td><TT>initialise</TT></td></tr>
+<tr><td><TT>&nbsp;&nbsp;html&nbsp;&nbsp;</TT></td><td>should be used rather than</td><td><TT>&nbsp;&nbsp;HypertextMarkupLanguage&nbsp;&nbsp;</TT></td></tr>
+<tr><td><TT>cpu</TT></td><td>should be used rather than</td><td><TT>CentralProcessingUnit</TT></td></tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Negated booleans"></A>18. Negated booleans: negated boolean variable names must be avoided.
+</td>
+</tr>
+
+<tr>
+<td class="example">bool isError; <i class="not">// NOT: isNoError</i>
+bool isFound; <i class="not">// NOT: isNotFound</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+The problem arises when such a name is used in conjunction with the logical
+negation operator as this results in a double negative.
+It is not immediately apparent what <tt>!isNotFound</tt>
+means.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Enumerations"></A>19. Enumerations: enumeration constants can be prefixed by a common type name.
+</td>
+</tr>
+
+<tr>
+<td class="example">enum Colour {
+  COLOUR_RED,
+  COLOUR_GREEN,
+  COLOUR_BLUE
+};
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+This gives additional information of where the declaration can be found,
+which constants belongs together, and what concept the constants represent.
+<p>
+
+Note also that the enum name typically should be <em>singular</em> as
+in <tt>enum Colour {...}</tt>. A plural name like <tt>enum Colours {...}</tt>
+may look fine when declaring the type, but it will look silly in use,
+particularly if you move to C++ where you find yourself writing things like
+<tt>Colours::RED</tt> rather than <tt>Colour::RED</tt>
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Functions"></A>20. Functions: functions should be named after what they return.
+</td>
+</tr>
+
+<tr>
+<td class="example">lastModifiedTime(...), maximumAge(...), rotationAngle(...)
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Increase readability. Makes it clear what the unit should do.
+</td>
+</tr>
+</table>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Procedures"></A>21. Procedures: Procedures (<I>void</I> functions) should be named after what they do.
+</td>
+</tr>
+
+<tr>
+<td class="example">generateReport(...), readFile(...), updateCounts(...)
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Increase readability. Makes it clear what the unit should do.
+</td>
+</tr>
+</table>
+
+
+<p>
+<h1>
+<A NAME="Files"></A>4 Files
+</h1>
+
+<h3>
+<A NAME="Source Files"></A>4.1 Source Files
+</h3>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Header files"></A>22. Header files: C header files should have the extension <I>.h</I>
+and source files the extension <I>.c</I>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+These are the established C conventions.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Definitions"></A>23. Definitions: all definitions should reside in source files.
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+The header files should declare an interface, the source file should
+implement it. When looking for an implementation, the programmer should
+always know that it is found in the source file.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Struct declarations/definitions"></A>24. Struct declarations/definitions: give important structs their own files
+<br>Any non-trivial struct
+and its associated functions (which are effectively its methods)
+should be declared in a header file and defined in a source file,
+where the name of the files match the name of the struct.
+</td>
+</tr>
+
+<tr>
+<td class="example">student.h, student.c
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Makes it easy to find the associated files of a given type.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Line length"></A>25. Line length: file content must be kept within 80 columns.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+80 columns is a common dimension for editors, terminal emulators,
+printers and
+debuggers, so ideally you should stay within that limit. Multiple source files can then
+be viewed side-by-side on screen. A further benefit
+from short lines is that they improve readability c.f. the use of columns of text
+in a newspaper.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Special characters"></A>26. Special characters: special characters like TAB and page break within source files must be avoided.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+These characters are bound to cause problem for editors, printers, terminal
+emulators or debuggers when used in a multi-programmer, multi-platform
+environment.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Split lines"></A>27. Split lines: the incompleteness of split lines must be made obvious [1].
+</td>
+</tr>
+
+<tr>
+<td class="example">totalSum = a + b + c +
+           d + e;
+
+functionCall (param1, param2,
+          param3);
+
+setText ("Long line split "
+         "into two parts.");
+
+for (tableNo = 0; tableNo &lt; nTables;
+     tableNo += tableStep) {
+  ...
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Split lines occurs when a statement exceed the 80 column limit given above.
+It is difficult to give rigid rules for how lines should be split, but the
+examples above should give a general hint.
+
+<p>
+In general:
+<UL>
+<LI> Break after a comma or an operator, and </LI>
+<LI> Align the new line with the beginning of the expression on the
+previous line.</LI>
+</UL>
+
+</td>
+</tr>
+</table>
+
+
+
+<H3>
+<A NAME="Include Files"></A>4.2 Include Files and Include Statements</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Include guards"></A>28. Include guards: header files must contain an include guard.
+</td>
+</tr>
+
+<tr>
+<td class="example">#ifndef COM_COMPANY_MODULE_CLASSNAME_H
+#define COM_COMPANY_MODULE_CLASSNAME_H
+  :
+#endif // COM_COMPANY_MODULE_CLASSNAME_H
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+The construction is to avoid compilation errors. The name convention
+resembles the location of the file inside the source tree and prevents
+naming conflicts.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Ordering includes"></A>29. Ordering includes: include statements should be sorted and grouped.
+Sort them by their hierarchical position in the system with low level files included first.
+Leave an empty line between groups of include statements.
+</td>
+</tr>
+
+<tr>
+<td class="example">#include &lt;fstream&gt;
+#include &lt;iomanip&gt;
+
+#include &lt;qt/qbutton.h&gt;
+#include &lt;qt/qtextfield.h&gt;
+
+#include "com/company/ui/PropertiesDialog.h"
+#include "com/company/ui/MainWindow.h"
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+In addition to show the reader the individual include files, it also give an
+immediate clue about the modules that are involved.
+<p>
+Include file paths must never be absolute. Compiler directives should
+instead be used to indicate root directories for includes.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Positioning includes"></A>30. Positioning includes: include statements must be located at the top of a file only.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Common practice. Avoid unwanted compilation side effects by "hidden"
+include statements deep into a source file.
+</td>
+</tr>
+</table>
+
+
+<p>
+<h1>
+<A NAME="Statements"></A>5 Statements
+</h1>
+
+<H3>
+<A NAME="Types"></A>5.1 Types</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Local types"></A>31. Local types: types that are local to one file only can be declared inside that file.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Enforces information hiding.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Explicit type conversions"></A>32. Explicit type conversions: type conversions must always be done explicitly.
+Never rely on implicit type conversion.
+</td>
+</tr>
+
+<tr>
+<td class="example">floatValue = (float) intValue; <i class="not">// NOT: floatValue = intValue;</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+By this, the programmer indicates that he/she is aware of the different types
+involved and that the mix is intentional.
+</td>
+</tr>
+</table>
+
+
+
+<H3>
+<A NAME="Variables"></A>5.2 Variables</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Initialising variables"></A>33. Initialising variables: variables should be initialized when they are declared.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+This ensures that variables are valid at any time and behaviour is deterministic.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Single meaning for variables"></A>34. Single meaning for variables: variables must never have dual meaning.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Enhance readability by ensuring all concepts are represented
+uniquely. Reduce chance of error by side effects.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Globals"></A>35. Globals: use of global variables should be minimized.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Global variables reduce the portability of functions and increase the
+cognitive load on the reader (who has to search for the declaration and
+possibly other functions manipulating the variables to understand their roles
+fully. The contravene the rule of minimum scope, which is the goal
+of minimising the number of lines of code over which any identifier is
+visible. [See the <em>Limiting Scope</em> rule below.]
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Implicit zero test"></A>36. Implicit zero test: implicit test for <I>0</I> or <I>NULL</I> should not be used other than for boolean variables.
+</td>
+</tr>
+
+<tr>
+<td class="example">if (nLines != 0)  <i class="not">// NOT: if (nLines)</i>
+if (value != 0.0) <i class="not">// NOT: if (value)</i>
+if (buffer != NULL) <i class="not">// NOT: if (buffer)</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+It is not necessarily defined by the C standard that ints and floats 0 are
+implemented as binary 0. Also, by using an explicit test the statement gives
+an immediate clue of the type being tested.
+
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Limiting scope"></A>37. Limiting scope: variables should be declared in the smallest scope possible.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Keeping the operations on a variable within a small scope, it is easier to
+control the effects and side effects of the variable.
+</td>
+</tr>
+</table>
+
+
+
+<H3> <A NAME="Loops"></A>5.3 Loops</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="for loops"></A>38. for loops: only loop control statements must be included in the <tt>for()</tt> construction.
+</td>
+</tr>
+
+<tr>
+<td class="example">sum = 0;                       <i class="not">// NOT: for (i = 0, sum = 0; i &lt; 100; i++) {</i>
+for (i = 0; i &lt; 100; i++) {   <i class="not"> //          sum += value[i];</i>
+    sum += value[i]; <i class="not">          //      }</i>
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Increase maintainability and readability. Make a clear distinction of
+what <em>controls</em> and what is <em>contained</em> in the loop.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Loop variable initialisation"></A>39. Loop variable initialisation: loop variables should be initialised immediately before the loop.
+</td>
+</tr>
+
+<tr>
+<td class="example">isDone = false;           <i class="not">// NOT: bool isDone = false;</i>
+while (!isDone) {         <i class="not">//      ...</i>
+  ...                     <i class="not">//      while (!isDone) {</i>
+}                         <i class="not">//        ...</i>
+                          <i class="not">//      }</i>
+</pre>
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="Break and continue"></A>40. Break and continue: the use of <tt>break</tt> and <tt>continue</tt> in loops should be minimised.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+These statements should only be used if they give higher
+readability than their structured counterparts. Since programmers are inclined
+to use these statements out of laziness, alternatives should be investigated
+thoroughly. It is much harder to reason about whether the post-condition of
+a loop is satisfied if the loop body execution can be terminated prematurely.
+</td>
+</tr>
+</table>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom">
+<A name="Single return"></A>41. Single return: functions should have a single <tt>return</tt> statement at the end.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+<tt>return</tt> statements from within the body of a function should be avoided for
+the same reason as <tt>break</tt> and <tt>continue</tt> should be avoided within
+loops. One exception is recursive functions which often start with a test for a base
+case and return the simple solution in that case. Also, it is sometimes permissible
+to start a function with error checks and
+prematurely return with an error value in those cases.
+</td>
+</tr>
+</table>
+
+
+
+<H3>
+<A NAME="Conditionals"></A>5.4 Conditionals</H3>
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Equality of booleans"></A>42. Equality of booleans: do not write code that compares boolean expressions for equality with <i>1</i> or <i>0</i>.
+</td>
+</tr>
+
+<tr>
+<td class="example">if (isReady and !isError) {
+  ...
+}
+
+<i class="not">// NOT:
+if (isReady == 1 && isError == 0) {
+  ...
+}
+</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+In ordinary speech we don't say things like "If it's raining is false
+I'll go for a walk", so why introduce this clumsy additional equality test
+into your programs? It just impedes readability or worse correctness,
+since values other than 1 may represent <em>true</em>.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Complex conditions"></A>43. Complex conditions: complex conditional expressions must be avoided. Introduce temporary boolean variables instead [1].
+</td>
+</tr>
+
+<tr>
+<td class="example">bool isFinished = (elementNo &lt; 0) || (elementNo &gt; maxElement);
+bool isRepeatedEntry = elementNo == lastElement;
+if (isFinished || isRepeatedEntry) {
+  ...
+}
+
+<i class="not">// NOT:
+if ((elementNo &lt; 0) || (elementNo &gt; maxElement)||
+     elementNo == lastElement) {
+  ...
+}
+</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+By assigning boolean variables to expressions, the program gets automatic
+documentation. The construction will be easier to read, debug and
+maintain.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Side-effects in expressions"></A>44. Side-effects in expressions: executable statements in conditionals and loop conditions should be avoided.
+</td>
+</tr>
+
+<tr>
+<td class="example">File *fileHandle = open(fileName, "w");
+if (!fileHandle) {
+  ...
+}
+
+<i class="not">// NOT:
+if (!(fileHandle = open(fileName, "w"))) {
+  ...
+}
+</i>
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Conditionals with executable statements are just very difficult to read.
+This is especially true for programmers new to C/C++.
+<p>
+An allowable exception is the common end-of-file or end-of-string idiom:
+<pre>
+while ((c = getchar()) != EOF) { ...
+</pre>
+</td>
+</tr>
+</table>
+
+
+
+<H3> <A NAME="Misc"></A>5.5 Miscellaneous</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Literals"></A>45. Literals: the use of magic numbers in the code should be avoided.
+Numbers other than <I>0 </I>and <I>1 </I>should be declared as named constants instead.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+If the number does not have an obvious meaning by itself, the readability is
+enhanced by introducing a named constant instead.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Floating point literals"></A>46. Floating point literals: floating point literals should always be written with a decimal point
+and at least one digit before and after the point.
+
+</td>
+</tr>
+
+<tr><td class="example">double total = 0.0;    <i class="not">// NOT:  double total = 0;</i>
+double speed = 3.0e8;  <i class="not">// NOT:  double speed = 3e8;</i>
+double fract = 0.5;  <i class="not">  // NOT:  double fract = .5;</i>
+
+double sum;
+...
+sum = (a + b) * 10.0;
+
+</td></tr>
+
+<tr>
+<td class="rationale">
+This emphasizes the different nature of integer and floating
+point numbers. Mathematically the two model completely different
+and non-compatible concepts.
+<p>
+Also, as in the last example above, it emphasizes the type of the assigned
+variable (<tt>sum</tt>) at a point in the code where this might not be
+evident.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Function return type"></A>47. Function return type: functions must always have the return type specified explicitly.
+</td>
+</tr>
+
+<tr>
+<td class="example">int getValue()   <i class="not">// NOT: getValue()</i>
+{
+  ...
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+If not explicitly specified, C/C++ assumes an <tt>int</tt> return value for
+functions. A programmer must never rely on this feature, since this
+might be confusing for programmers not aware of this artifact. Note too that
+the GNU C compiler will accept without warning a missing type for a
+function parameter, and assume <tt>int</tt>. This default must never be used.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Goto"></A>48. Goto: <tt>goto</tt> should not be used.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+Goto statements violate the idea of structured code. Only in some very few
+cases (for instance breaking out of deeply nested structures) should goto be
+considered, and only if the alternative structured counterpart is proven to
+be less readable.
+</td>
+</tr>
+</table>
+
+
+<p>
+<h1>
+<A NAME="Layout and Comments"></A>6 Layout and Comments
+</h1>
+
+<H3>
+<A NAME="Layout"></A>6.1 Layout</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Indentation amount"></A>49. Indentation amount: basic indentation should be 4.
+</td>
+</tr>
+
+<tr>
+<td class="example">for (i = 0; i &lt; nElements; i++) {
+  a[i] = 0;
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Indentation of 1 is too small to emphasize the logical layout of the code.
+Indentation larger than 4 makes deeply nested code difficult to read and
+increases the chance that the lines must be split. 2 and 4 are the more common, and 4
+has been chosen because it produces a less cramped appearance.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%">
+<tr>
+<td class="recom" COLSPAN="3">
+<A name="Block layout"></A>50. Block layout: block layout should be as illustrated in example 1 below (recommended)
+or example 2, and must not be as shown in example 3 [4]. Function and
+class blocks must use the block layout of example 2.
+</td>
+</tr>
+
+<tr>
+<td width="33%" class="example">while (!done) {
+    doSomething();
+    done = moreToDo();
+}<BR>
+</td>
+
+<td width="33%" class="example">while (!done)
+{
+    doSomething();
+    done = moreToDo();
+}
+</td>
+
+<td class="example"><i class="not">while (!done)
+  {
+    doSomething();
+    done = moreToDo();
+  }
+</i>
+</td>
+</tr>
+
+<tr>
+<td colspan="3" class="rationale">
+Example 3 introduces an extra indentation level which doesn't emphasize the
+logical structure of the code as clearly as examples 1 and 2.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="<i>if-else</i> layout"></A>51. <i>if-else</i> layout: the <tt>if-else</tt> class of statements should have the following form:
+</td>
+</tr>
+
+<tr>
+<td class="example">if (condition) {
+    statements;
+}
+
+if (condition) {
+    statements;
+} else {
+    statements;
+}
+
+if (condition) {
+    statements;
+} else if (condition) {
+    statements;
+} else {
+    statements;
+}
+</td>
+</tr>
+
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="<i>for</i> layout"></A>52. <i>for</i> layout: a <tt>for</tt> statement should have the following form:
+</td>
+</tr>
+
+<tr>
+<td class="example">for (initialization; condition; update) {
+    statements;
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+This follows from the general block rule above.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Empty statement"></A>53. Empty statement: an empty <tt>for</tt> statement should have the following form:
+</td>
+</tr>
+
+<tr>
+<td class="example">for (initialization; condition; update)
+  ;
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+This emphasizes the fact that the for statement is empty and it makes
+it obvious for the reader that this is intentional.
+Empty loops should be avoided however.
+</td>
+</tr>
+</table>
+
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="<i>while</i> layout"></A>54. <i>while</i> layout: A <tt>while</tt> statement should have the following form:
+</td>
+</tr>
+
+<tr>
+<td class="example">while (condition) {
+    statements;
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+This follows from the general block rule above.
+</td>
+</tr>
+</table>
+
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="<i>do-while</i> layout"></A>55. <i>do-while</i> layout: a <tt>do-while</tt> statement should have the following form:
+</td>
+</tr>
+
+<tr>
+<td class="example">do {
+    statements;
+} while (condition);
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+This follows from the general block rule above.
+</td>
+</tr>
+</table>
+
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="<i>switch</i> layout"></A>56. <i>switch</i> layout: a <tt>switch</tt> statement should have the following form:
+</td>
+</tr>
+
+<tr>
+<td class="example">switch (condition) {
+  case ABC :
+    statements;
+    /* Fallthrough */
+
+  case DEF :
+    statements;
+    break;
+
+  case XYZ :
+    statements;
+    break;
+
+  default :
+    statements;
+    break;
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Note that each <tt>case</tt> keyword is indented relative
+to the switch statement as a whole. This makes the entire switch statement
+stand out. Note also the extra space before the <i>:</i> character.
+The explicit <i>Fallthrough</i> comment should be included whenever
+there is a case statement without a <tt>break</tt> statement. Leaving the
+<tt>break</tt> out is a common error, and it must be made clear that it
+is intentional when it is not there.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Embedded statements"></A>57. Embedded statements: even single statement <tt>if-else</tt>, <tt>for</tt> or <tt>while</tt>
+statements should be written with braces.
+</td>
+</tr>
+
+<tr>
+<td class="example">if (condition) {
+    statement;
+}
+
+while (condition) {
+    statement;
+}
+
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Use of braces in all cases produces a consistent-looking layout and allows
+extra statements to be added later without the risk of an omitted brace changing
+the meaning of the statement.
+</td>
+</tr>
+</table>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Depth of nesting"></A>58. Depth of nesting: within a function, statements must not be nested more than three deep.
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Nested structures are difficult to read and debug. The guideline allows for, say,
+an outer loop, an inner loop and an embedded <i>if</i> statement. Any logic
+more complicated than this should be simplified by use of support functions. For example,
+if processing an image by row then by column (which is already two levels of nesting),
+consider defining a
+function to compute each new pixel value, rather than embedding the per-pixel logic
+within the two nested loops.
+</td>
+</tr>
+</table>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Function size"></A>59. Function size: no single function should be more than 40 lines long, including comments
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+It must be possible for the reader to study a function on
+the screen in its entirety
+without scrolling. Furthermore, good maintainable code requires that
+a problem be decomposed into small well-defined steps and a function
+more than 40 lines long is probably doing too much and needs further decomposition.
+</td>
+</tr>
+</table>
+
+<H3> <A NAME="White Space"></A>6.2 White Space</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="White space"></A>60. White space: use it!<BR>
+- Conventional operators should be surrounded by a space character. <BR>
+- C reserved words should be followed by a white space. <BR>
+- Commas should be followed by a white space. <BR>
+- Semicolons in for statments should be followed by a space character.
+</td>
+</tr>
+
+<tr>
+<td class="example">a = (b + c) * d; <i class="not">// NOT: a=(b+c)*d</i>
+
+while (true)   <i class="not">// NOT: while(true) </i>
+{
+  ...
+
+doSomething(a, b, c, d);  <i class="not">// NOT: doSomething(a,b,c,d);</i>
+
+
+for (i = 0; i &lt; 10; i++) {  <i class="not">// NOT: for(i=0;i&lt;10;i++){<i>
+  ...
+</td>
+</tr>
+
+
+<tr>
+<td class="rationale">
+Makes the individual components of the statements stand out. Enhances
+readability. It is difficult to give a complete list of the suggested use of
+whitespace in C/C++ code. The examples above however should give a general idea
+of the intentions.
+</td>
+</tr>
+</table>
+
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Blank lines (a)"></A>61. Blank lines (a): logical units within a block should be separated by one blank line.
+</td>
+</tr>
+
+<tr>
+<td class="example">Matrix4x4 matrix;
+
+double cosAngle = cos(angle);
+double sinAngle = in(angle);
+
+setElement(&amp;matrix, 1, 1,  cosAngle);
+setElement(&amp;1, 2,  sinAngle);
+setElement(&amp;2, 1, -sinAngle);
+setElement(&amp;2, 2,  cosAngle);
+
+multiply(matrix);
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Enhance readability by introducing white space between logical units of
+a block.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Blank lines (b)"></A>62. Blank lines (b): functions should be separated by three blank lines.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+By making the space larger than space within a function, the functions will
+stand out more clearly.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Variable alignment"></A>63. Variable alignment: variables in declarations can be left aligned.
+</td>
+</tr>
+
+<tr>
+<td class="example">AsciiFile *file;
+int        nPoints;
+float      x, y;
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+Enhance readability. The variables are easier to spot from the types by
+alignment.
+</td>
+</tr>
+</table>
+
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<p>
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Statement alignment"></A>64. Statement alignment: use alignment wherever it enhances readability.
+</td>
+</tr>
+
+<tr>
+<td class="example">value = (potential        * oilDensity)   / constant1 +
+        (depth            * waterDensity) / constant2 +
+        (zCoordinateValue * gasDensity)   / constant3;
+
+minPosition     = computeDistance(min,     x, y, z);
+averagePosition = computeDistance(average, x, y, z);
+
+switch (value) {
+  case PHASE_OIL   : strncpy(phase, "Oil", PHASE_BUFF_SIZE);   break;
+  case PHASE_WATER : strncpy(phase, "Water", PHASE_BUFF_SIZE); break;
+  case PHASE_GAS   : strncpy(phase, "Gas", PHASE_BUFF_SIZE);   break;
+}
+</td>
+</tr>
+
+<tr>
+<td class="rationale">
+There are a number of places in the code where white space can
+be included to enhance readability even if this violates common guidelines.
+Many of these cases have to do with code alignment. General guidelines on
+code alignment are difficult to give, but the examples above should give
+a general clue.
+</td>
+</tr>
+</table>
+
+
+
+<H3> <A NAME="Comments"></A>6.3 Comments</H3>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Function comments"></A>65. Function comments: every function must have an explanatory comment.
+The comment should immediately precede the function signature.
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+The comment must explain what the function <em>does</em>, not how it does it.
+For functions that are part of the interface to a module, the comment should
+appear in the header file, not in the implementation file. The comment should
+not be replicated in the implementation, since redundancy is bad and it is likely
+that during maintenance the comments will not both be updated to match.
+</td>
+</tr>
+</table>
+
+<!--
+****************************************************************************
+   Rule
+****************************************************************************
+-->
+<table class="rule" width="100%" >
+<tr>
+<td class="recom">
+<A name="Tricky code"></A>66. Tricky code: tricky code should not be commented but rewritten! [1]
+</td>
+</tr>
+
+<tr>
+<td class="example"></td>
+</tr>
+
+<tr>
+<td class="rationale">
+In general, the use of comments should be minimized by making
+the code self-documenting by appropriate name choices and an explicit
+logical structure.
+</td>
+</tr>
+</table>
+
+
+<!-- **Start index** -->
+<a name='RuleSummary'></a><H1>7 Rule Summary</H1>
+<table>
+<tr><td>1:</td><td><A href="styleguidelines.html#Violations">Violations</A></td><td> any violation to these guidelines is allowed if it enhances readability.
+</td></tr>
+<tr><td>2:</td><td><A href="styleguidelines.html#General naming">General naming</A></td><td> all entities should be given names that communicate the entity's role to the reader.
+</td></tr>
+<tr><td>3:</td><td><A href="styleguidelines.html#Type names">Type names</A></td><td> names representing types must be in mixed case starting with upper case.
+</td></tr>
+<tr><td>4:</td><td><A href="styleguidelines.html#Variable names">Variable names</A></td><td> must be in mixed case starting with lower case.
+</td></tr>
+<tr><td>5:</td><td><A href="styleguidelines.html#Constant names">Constant names</A></td><td> named constants must be all uppercase using underscore to separate words.
+</td></tr>
+<tr><td>6:</td><td><A href="styleguidelines.html#Function names">Function names</A></td><td> names representing functions must be in mixed case starting with lower case.
+</td></tr>
+<tr><td>7:</td><td><A href="styleguidelines.html#Abbreviations">Abbreviations</A></td><td> abbreviations and acronyms must not be uppercase when used in names.
+</td></tr>
+<tr><td>8:</td><td><A href="styleguidelines.html#Generic variables of user-defined types">Generic variables of user-defined types</A></td><td> should have the same name as their type.
+</td></tr>
+<tr><td>9:</td><td><A href="styleguidelines.html#Scope implications">Scope implications</A></td><td> shorter names can be used with variables having shorter scope.
+</td></tr>
+<tr><td>10:</td><td><A href="styleguidelines.html#Initialising">Initialising</A></td><td> the term <I>initialise</I> (or <I>initialize</I> or <i>init</i>) can be used where an object or a concept is established.
+</td></tr>
+<tr><td>11:</td><td><A href="styleguidelines.html#GUI components">GUI components</A></td><td> variables representing GUI components should be suffixed by the component type name.
+</td></tr>
+<tr><td>12:</td><td><A href="styleguidelines.html#Plurals">Plurals</A></td><td> plural form should be used on names representing a collection of objects.
+</td></tr>
+<tr><td>13:</td><td><A href="styleguidelines.html#Cardinalities">Cardinalities</A></td><td> the prefix <I>n</I> should be used for variables representing cardinalities of sets of objects.
+</td></tr>
+<tr><td>14:</td><td><A href="styleguidelines.html#Entity identifiers">Entity identifiers</A></td><td> suffix <I>No</I> should be used for variables representing an entity number.
+</td></tr>
+<tr><td>15:</td><td><A href="styleguidelines.html#Iterators">Iterators</A></td><td> iterator variables should be called <em>i</em>, <em>j</em>, <em>k</em> etc.
+</td></tr>
+<tr><td>16:</td><td><A href="styleguidelines.html#Boolean names">Boolean names</A></td><td> the prefix <I>is</I> can
+</td></tr>
+<tr><td>17:</td><td><A href="styleguidelines.html#Abbreviations">Abbreviations</A></td><td> abbreviations in names should be avoided.</td>
+</td></tr>
+<tr><td>18:</td><td><A href="styleguidelines.html#Negated booleans">Negated booleans</A></td><td> negated boolean variable names must be avoided.
+</td></tr>
+<tr><td>19:</td><td><A href="styleguidelines.html#Enumerations">Enumerations</A></td><td> enumeration constants can be prefixed by a common type name.
+</td></tr>
+<tr><td>20:</td><td><A href="styleguidelines.html#Functions">Functions</A></td><td> functions should be named after what they return.
+</td></tr>
+<tr><td>21:</td><td><A href="styleguidelines.html#Procedures">Procedures</A></td><td> Procedures (<I>void</I> functions) should be named after what they do.
+</td></tr>
+<tr><td>22:</td><td><A href="styleguidelines.html#Header files">Header files</A></td><td> C header files should have the extension <I>.h</I>
+</td></tr>
+<tr><td>23:</td><td><A href="styleguidelines.html#Definitions">Definitions</A></td><td> all definitions should reside in source files.
+</td></tr>
+<tr><td>24:</td><td><A href="styleguidelines.html#Struct declarations/definitions">Struct declarations/definitions</A></td><td> give important structs their own files
+</td></tr>
+<tr><td>25:</td><td><A href="styleguidelines.html#Line length">Line length</A></td><td> file content must be kept within 80 columns.
+</td></tr>
+<tr><td>26:</td><td><A href="styleguidelines.html#Special characters">Special characters</A></td><td> special characters like TAB and page break within source files must be avoided.
+</td></tr>
+<tr><td>27:</td><td><A href="styleguidelines.html#Split lines">Split lines</A></td><td> the incompleteness of split lines must be made obvious.
+</td></tr>
+<tr><td>28:</td><td><A href="styleguidelines.html#Include guards">Include guards</A></td><td> header files must contain an include guard.
+</td></tr>
+<tr><td>29:</td><td><A href="styleguidelines.html#Ordering includes">Ordering includes</A></td><td> include statements should be sorted and grouped.
+</td></tr>
+<tr><td>30:</td><td><A href="styleguidelines.html#Positioning includes">Positioning includes</A></td><td> include statements must be located at the top of a file only.
+</td></tr>
+<tr><td>31:</td><td><A href="styleguidelines.html#Local types">Local types</A></td><td> types that are local to one file only can be declared inside that file.
+</td></tr>
+<tr><td>32:</td><td><A href="styleguidelines.html#Explicit type conversions">Explicit type conversions</A></td><td> type conversions must always be done explicitly.
+</td></tr>
+<tr><td>33:</td><td><A href="styleguidelines.html#Initialising variables">Initialising variables</A></td><td> variables should be initialized when they are declared.
+</td></tr>
+<tr><td>34:</td><td><A href="styleguidelines.html#Single meaning for variables">Single meaning for variables</A></td><td> variables must never have dual meaning.
+</td></tr>
+<tr><td>35:</td><td><A href="styleguidelines.html#Globals">Globals</A></td><td> use of global variables should be minimized.
+</td></tr>
+<tr><td>36:</td><td><A href="styleguidelines.html#Implicit zero test">Implicit zero test</A></td><td> implicit test for <I>0</I> or <I>NULL</I> should not be used other than for boolean variables.
+</td></tr>
+<tr><td>37:</td><td><A href="styleguidelines.html#Limiting scope">Limiting scope</A></td><td> variables should be declared in the smallest scope possible.
+</td></tr>
+<tr><td>38:</td><td><A href="styleguidelines.html#for loops">for loops</A></td><td> only loop control statements must be included in the <tt>for()</tt> construction.
+</td></tr>
+<tr><td>39:</td><td><A href="styleguidelines.html#Loop variable initialisation">Loop variable initialisation</A></td><td> loop variables should be initialised immediately before the loop.
+</td></tr>
+<tr><td>40:</td><td><A href="styleguidelines.html#Break and continue">Break and continue</A></td><td> the use of <tt>break</tt> and <tt>continue</tt> in loops should be minimised.
+</td></tr>
+<tr><td>41:</td><td><A href="styleguidelines.html#Single return">Single return</A></td><td> functions should have a single <tt>return</tt> statement at the end.
+</td></tr>
+<tr><td>42:</td><td><A href="styleguidelines.html#Equality of booleans">Equality of booleans</A></td><td> do not write code that compares boolean expressions for equality with <i>1</i> or <i>0</i>.
+</td></tr>
+<tr><td>43:</td><td><A href="styleguidelines.html#Complex conditions">Complex conditions</A></td><td> complex conditional expressions must be avoided. Introduce temporary boolean variables instead.
+</td></tr>
+<tr><td>44:</td><td><A href="styleguidelines.html#Side-effects in expressions">Side-effects in expressions</A></td><td> executable statements in conditionals and loop conditions should be avoided.
+</td></tr>
+<tr><td>45:</td><td><A href="styleguidelines.html#Literals">Literals</A></td><td> the use of magic numbers in the code should be avoided.
+</td></tr>
+<tr><td>46:</td><td><A href="styleguidelines.html#Floating point literals">Floating point literals</A></td><td> floating point literals should always be written with a decimal point
+</td></tr>
+<tr><td>47:</td><td><A href="styleguidelines.html#Function return type">Function return type</A></td><td> functions must always have the return type specified explicitly.
+</td></tr>
+<tr><td>48:</td><td><A href="styleguidelines.html#Goto">Goto</A></td><td> <tt>goto</tt> should not be used.
+</td></tr>
+<tr><td>49:</td><td><A href="styleguidelines.html#Indentation amount">Indentation amount</A></td><td> basic indentation should be 4.
+</td></tr>
+<tr><td>50:</td><td><A href="styleguidelines.html#Block layout">Block layout</A></td><td> block layout should be as illustrated in example 1 below (recommended)
+</td></tr>
+<tr><td>51:</td><td><A href="styleguidelines.html#<i>if-else</i> layout"><i>if-else</i> layout</A></td><td> the <tt>if-else</tt> class of statements should have the following form:
+</td></tr>
+<tr><td>52:</td><td><A href="styleguidelines.html#<i>for</i> layout"><i>for</i> layout</A></td><td> a <tt>for</tt> statement should have the following form:
+</td></tr>
+<tr><td>53:</td><td><A href="styleguidelines.html#Empty statement">Empty statement</A></td><td> an empty <tt>for</tt> statement should have the following form:
+</td></tr>
+<tr><td>54:</td><td><A href="styleguidelines.html#<i>while</i> layout"><i>while</i> layout</A></td><td> A <tt>while</tt> statement should have the following form:
+</td></tr>
+<tr><td>55:</td><td><A href="styleguidelines.html#<i>do-while</i> layout"><i>do-while</i> layout</A></td><td> a <tt>do-while</tt> statement should have the following form:
+</td></tr>
+<tr><td>56:</td><td><A href="styleguidelines.html#<i>switch</i> layout"><i>switch</i> layout</A></td><td> a <tt>switch</tt> statement should have the following form:
+</td></tr>
+<tr><td>57:</td><td><A href="styleguidelines.html#Embedded statements">Embedded statements</A></td><td> even single statement <tt>if-else</tt>, <tt>for</tt> or <tt>while</tt>
+</td></tr>
+<tr><td>58:</td><td><A href="styleguidelines.html#Depth of nesting">Depth of nesting</A></td><td> within a function, statements must not be nested more than three deep.
+</td></tr>
+<tr><td>59:</td><td><A href="styleguidelines.html#Function size">Function size</A></td><td> no single function should be more than 40 lines long, including comments
+</td></tr>
+<tr><td>60:</td><td><A href="styleguidelines.html#White space">White space</A></td><td> use it!<BR>
+</td></tr>
+<tr><td>61:</td><td><A href="styleguidelines.html#Blank lines (a)">Blank lines (a)</A></td><td> logical units within a block should be separated by one blank line.
+</td></tr>
+<tr><td>62:</td><td><A href="styleguidelines.html#Blank lines (b)">Blank lines (b)</A></td><td> functions should be separated by three blank lines.
+</td></tr>
+<tr><td>63:</td><td><A href="styleguidelines.html#Variable alignment">Variable alignment</A></td><td> variables in declarations can be left aligned.
+</td></tr>
+<tr><td>64:</td><td><A href="styleguidelines.html#Statement alignment">Statement alignment</A></td><td> use alignment wherever it enhances readability.
+</td></tr>
+<tr><td>65:</td><td><A href="styleguidelines.html#Function comments">Function comments</A></td><td> every function must have an explanatory comment.
+</td></tr>
+<tr><td>66:</td><td><A href="styleguidelines.html#Tricky code">Tricky code</A></td><td> tricky code should not be commented but rewritten!
+</td></tr>
+</table>
+<!-- **End index** -->
+
+<p>
+<h1>
+<A NAME="References"></A>8 References
+</h1>
+
+<p><A NAME="ref1"></A>[1] Code Complete, Steve McConnell - Microsoft Press
+
+<p><A NAME="ref2"></A>[2] Programming in C++, Rules and Recommendations,
+M Henricson, e. Nyquist,&nbsp; Ellemtel (Swedish telecom)
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="http://www.doc.ic.ac.uk/lab/cplus/c%2b%2b.rules/">
+http://www.doc.ic.ac.uk/lab/cplus/c%2b%2b.rules/
+</A>
+
+<p><A NAME="ref3"></A>[3] Wildfire C++ Programming Style, Keith Gabryelski,
+Wildfire Communications Inc.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="http://www.wildfire.com/~ag/Engineering/Development/C++Style/">
+http://www.wildfire.com/~ag/Engineering/Development/C++Style/
+</A>
+
+<p><A NAME="ref4"></A>[4] C++ Coding Standard, Todd Hoff
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="http://www.possibility.com/Cpp/CppCodingStandard.html">
+http://www.possibility.com/Cpp/CppCodingStandard.htm
+</A>
+
+<p><A NAME="ref5"></A>[5] Doxygen documentation system
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="http://www.stack.nl/~dimitri/doxygen/index.html">
+http://www.stack.nl/~dimitri/doxygen/index.html
+</A>
+
+<p><A NAME="ref6"></A>[6] C++ Programming Style Guidelines
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<A HREF="http://geosoft.no/development/cpppractice.html">
+http://geosoft.no/development/cpppractice.html
+</A>
+<p>
+<h1>
+<A NAME="References"></A>Acknowledgements
+</h1>
+
+Thanks to Robert P.J. Day for valuable contributions.
+
+
+<!--
+*******************************************************************************
+   Footer
+*******************************************************************************
+-->
+
+<br>
+<br>
+
+<hr size=1>
+
+<table width="100%">
+  <tr>
+    <td>
+      <center class=footnote>
+        &copy; 1998 - 2008 Geotechnical Software Services. All rights reserved.<br>
+        This page is maintained by
+        <a href="mailto:webwizard@geosoft.no">webwizard@geosoft.no</a>
+      </center>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+

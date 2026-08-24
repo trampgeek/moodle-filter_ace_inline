@@ -108,6 +108,30 @@ final class text_filter_test extends \advanced_testcase {
         $this->assertSame('Course override', $config['button_label']);
     }
 
+    public function test_effective_config_uses_category_level_override(): void {
+        $this->resetAfterTest(true);
+        set_config('button_label', 'Site default', 'filter_ace_inline');
+
+        $category = $this->getDataGenerator()->create_category();
+        $categorycontext = \context_coursecat::instance($category->id);
+        $course = $this->getDataGenerator()->create_course(['category' => $category->id]);
+        $modcontext = \context_module::instance(
+            $this->getDataGenerator()->create_module('page', ['course' => $course->id])->cmid
+        );
+
+        filter_set_local_config('ace_inline', $categorycontext->id, 'button_label', 'Category override');
+
+        // A category-level override must reach content in a module two levels below it
+        // (course, then module), the same walk-up-the-chain mechanism already covered for a
+        // course-level override reaching a nested module - this is the other documented
+        // hierarchy level (README: "Course Category, Course, and individual Module") that
+        // previously had no coverage at all.
+        $filter = $this->make_filter($modcontext);
+        $config = $this->call_protected($filter, 'get_effective_config');
+
+        $this->assertSame('Category override', $config['button_label']);
+    }
+
     public function test_effective_config_nearest_context_override_wins(): void {
         $this->resetAfterTest(true);
 

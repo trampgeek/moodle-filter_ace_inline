@@ -67,7 +67,24 @@ The colon-based fenced-code-block class syntax (e.g. ` ```python:interactive `) 
 that name is deprecated and was renamed throughout `amd/src/`, `tests/behat/`, and
 `tests/fixtures/` (see `isSimplifiedClassMode`, `extractSimplifiedClassModeParameters`,
 `simplified_class_mode*.feature`). Do not reintroduce the old name in new code; it may still
-appear in the README's historical change log, which is left as-is.
+appear in [CHANGES.md](CHANGES.md)'s historical entries, which are left as-is.
+
+## Version consistency: version.php / README.md / CHANGES.md
+
+Whenever you bump the plugin version, all three of these must agree:
+`version.php`'s `$plugin->release`, the `Version X.Y.Z,` line at the top of
+`README.md`, and the newest `* Version X.Y.Z` entry in `CHANGES.md` (the
+Moodle Plugins Directory reads `CHANGES.md`'s contents to prefill release
+notes on upload, so it has to actually be current). `README.md` no longer
+holds the changelog itself - it just points at `CHANGES.md`.
+
+`scripts/check-version-consistency.sh` checks this and is wired up as both
+a pre-commit and pre-push hook via `.githooks/` - but `core.hooksPath` is a
+local git config, not something a fresh clone gets automatically, so run
+`git config core.hooksPath .githooks` once per checkout to enable it (this
+repo's current checkout already has it set). If a commit or push is ever
+rejected for a version mismatch, that means one of the three was updated
+without the others - fix the stale one, don't bypass the hook.
 
 ## `tests/fixtures/test-sandbox-config.php`
 

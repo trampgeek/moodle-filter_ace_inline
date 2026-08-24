@@ -46,7 +46,12 @@ $string['settings_simplified_mode_enabled'] = 'Enabled';
 $string['settings_simplified_mode_label'] = 'Simplified mode';
 $string['settings_simplified_mode_desc'] = 'When enabled, code blocks can be configured directly via a colon-separated class attribute (e.g. "python3:interactive:button-name:Run"), instead of requiring separate data attributes.';
 $string['settings_heading'] = 'Ace inline filter settings';
-$string['settings_use_default'] = 'Use site default';
+$string['settings_use_parent'] = 'Use higher-level setting';
+$string['settings_current_parent_value'] = 'Higher-level setting is currently: {$a->value} (see {$a->parentname} to check or change this)';
+$string['settings_overriding_parent'] = 'Overriding the higher-level setting (currently: {$a->value}) - see {$a->parentname} to check or change this.';
+$string['settings_following_parent'] = 'Following the higher-level setting (currently: {$a->value}) - see {$a->parentname} to check or change this.';
+$string['settings_site_admin_settings_page'] = 'the site administrator settings';
+$string['settings_qbank_context_unavailable'] = 'Overriding these settings is not available for a question bank. Override at the course, or quiz level instead.';
 
 // Error strings.
 $string['error_access_denied'] = 'Sandbox server access denied';

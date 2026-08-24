@@ -6,20 +6,6 @@ int main(void) {
 }
 ```
 
-```c:interactive
-#include <stdio.h>
-int main(void) {
-    printf("HelloCInteractive");
-    return 0;
-}
-```
-
-```python3
-def main():
-    print("HelloPyHighlight")
-main()
-```
-
 ```python3:interactive
 def main():
     print("HelloPyInteractive")
