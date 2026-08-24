@@ -94,6 +94,8 @@ final class filterlocalsettings_test extends \advanced_testcase {
         $this->assertStringNotContainsString('name="dark_theme_mode"', $html);
         $this->assertStringNotContainsString('name="button_label"', $html);
         $this->assertStringNotContainsString('name="simplified_mode"', $html);
+        // Save/Cancel would be pointless (and misleading) here: there are no fields to submit.
+        $this->assertStringNotContainsString('name="submitbutton"', $html);
     }
 
     public function test_non_qbank_module_context_shows_the_override_fields(): void {
@@ -110,6 +112,7 @@ final class filterlocalsettings_test extends \advanced_testcase {
         $this->assertStringContainsString('name="dark_theme_mode"', $html);
         $this->assertStringContainsString('name="button_label"', $html);
         $this->assertStringContainsString('name="simplified_mode"', $html);
+        $this->assertStringContainsString('name="submitbutton"', $html);
     }
 
     public function test_parent_context_hint_links_to_the_immediate_parent_when_user_can_manage_it(): void {

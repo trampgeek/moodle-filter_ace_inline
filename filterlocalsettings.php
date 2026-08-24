@@ -32,6 +32,17 @@
  * Local settings form for the ace_inline filter.
  */
 class ace_inline_filter_local_settings_form extends \filter_local_settings_form {
+    /**
+     * Set by definition_inner() when this context can't offer any override fields at all (the
+     * Question Bank case below) - add_action_buttons() checks this to suppress Save/Cancel too,
+     * since the base class's definition() calls it unconditionally after definition_inner(), and
+     * showing Save/Cancel next to a "not available here" notice with no fields to submit would be
+     * misleading (and Save would just re-display the same notice with nothing to actually save).
+     *
+     * @var bool
+     */
+    private $hideactionbuttons = false;
+
     #[\Override]
     protected function definition_inner($mform) {
         // A Question Bank module's own context is never an ancestor of anywhere these
@@ -51,6 +62,7 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
                     '',
                     get_string('settings_qbank_context_unavailable', 'filter_ace_inline')
                 );
+                $this->hideactionbuttons = true;
                 return;
             }
         }
@@ -146,6 +158,14 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
                 (object) ['value' => $enablemodeoptions[$parentconfig['simplified_mode']], 'parentname' => $parentname]
             )
         );
+    }
+
+    #[\Override]
+    public function add_action_buttons($cancel = true, $submitlabel = null) {
+        if ($this->hideactionbuttons) {
+            return;
+        }
+        parent::add_action_buttons($cancel, $submitlabel);
     }
 
     /**

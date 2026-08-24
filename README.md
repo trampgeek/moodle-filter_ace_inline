@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.5.7, 22 August 2026.
+Version 1.5.8, 24 August 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 

@@ -46,7 +46,7 @@ import os
 import time
 from typing import cast
 
-type ATTR = dict[str, dict[str, int|str|bool|None]]
+ATTR = dict[str, dict[str, int|str|bool|None]]
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
