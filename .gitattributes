@@ -1,0 +1,5 @@
+# Developer tooling and notes: wanted in the repo, but not in a release archive built with
+# `git archive` (which is how the Moodle plugins directory packages a tag).
+sync-to-moodle.sh export-ignore
+CLAUDE.md         export-ignore
+.gitattributes    export-ignore

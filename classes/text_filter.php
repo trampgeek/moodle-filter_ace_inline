@@ -166,9 +166,9 @@ class text_filter extends \filter_ace_inline_base_text_filter {
      * apparently Mathjax generates a small content fragment, which is passed
      * through all filters, on all content pages, even editing pages. We
      * don't wish to use our filter on pages being edited.
-     * @param {string} $text The text to be processed.
-     * @param {array} $config The plugin configuration info.
-     * @return {string} The processed text.
+     * @param string $text The text to be processed.
+     * @param array $config The plugin configuration info.
+     * @return string The processed text.
      */
     public function do_ace_editor($text, $config) {
         $hasexplicitmarker = strpos($text, 'ace-interactive-code') !== false

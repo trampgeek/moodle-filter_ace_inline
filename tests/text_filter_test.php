@@ -182,8 +182,12 @@ final class text_filter_test extends \advanced_testcase {
         set_config('button_label', 'Changed after first call', 'filter_ace_inline');
         $second = $this->call_protected($filter, 'get_effective_config');
 
+        // Both assertions are on the value, deliberately: assertSame() on two arrays is a value
+        // comparison, not an identity one, so asserting $first === $second would pass even if
+        // get_effective_config() had re-read the (now changed) config and rebuilt the array.
+        // Asserting the second call still reports the pre-change label is what shows it did not.
         $this->assertSame('Original', $first['button_label']);
-        $this->assertSame($first, $second);
+        $this->assertSame('Original', $second['button_label']);
     }
 
     public function test_do_ace_editor_ignores_bare_code_tag_when_simplified_mode_is_off(): void {
@@ -203,6 +207,20 @@ final class text_filter_test extends \advanced_testcase {
         $filter = $this->make_filter(\context_course::instance($course->id));
 
         $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 1];
+        $this->call_protected($filter, 'do_ace_editor', ['<p>some text with a <code>tag</code></p>', $config]);
+
+        $this->assertStringContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
+    }
+
+    public function test_do_ace_editor_loads_module_for_bare_code_tag_when_simplified_mode_is_string_one(): void {
+        $this->resetAfterTest(true);
+        $course = $this->getDataGenerator()->create_course();
+        $filter = $this->make_filter(\context_course::instance($course->id));
+
+        // Both get_config() and filter_get_local_config() return strings, so this is the type
+        // do_ace_editor() actually receives in production - the int used by the tests above is
+        // the atypical case. Pin it, since the check is a loose comparison.
+        $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => '1'];
         $this->call_protected($filter, 'do_ace_editor', ['<p>some text with a <code>tag</code></p>', $config]);
 
         $this->assertStringContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));

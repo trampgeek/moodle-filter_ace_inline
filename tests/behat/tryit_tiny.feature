@@ -69,3 +69,22 @@ Feature: Basic Try it! checks with formatting for TinyMCE compatibility
     And I should see "This ran C"
     And I press "legacy"
     Then I should see "This ran C"
+
+  Scenario: Explicit data-ace attributes still win when simplified mode is enabled site-wide
+    Given the following config values are set as admin:
+      | simplified_mode | 1 | filter_ace_inline |
+    When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
+    And I should not see "This ran Java"
+    # The button keeps its data-button-name, and the language- prefix is stripped from the class,
+    # so Jobe is sent "java" rather than "language-java". Simplified mode must not consume a block
+    # that carries explicit data-ace-* decoration.
+    And I press "Java"
+    Then I should see "This ran Java"
+
+  Scenario: Explicit data-ace attributes on a legacy class still win when simplified mode is enabled
+    Given the following config values are set as admin:
+      | simplified_mode | 1 | filter_ace_inline |
+    When I am on the "tryittinydemo" "core_question > preview" page logged in as teacher
+    And I should not see "This ran C"
+    And I press "legacy"
+    Then I should see "This ran C"

@@ -345,9 +345,5 @@ Firefox browsers have dynamic scrollbars that hide when the cursor is not hoveri
 It is also recommended to adjust the settings of the scrollbar style in the Firefox browser to allow ease of use.
 
 
- **Utilising Markdown Extra, either in the Moodle editor or externally for importing questions (Moodle 3.11+)**
-     * **WARNING:** Due to a bug in Moodle, editing of Ace-inline code using Markdown Extra was unavailable from around Moodle 4.06 until the bug was fixed in August 2023. You probably need a recently updated Moodle 4.2 or later for this feature to be usable.
-
-
 ## Change History
 See [CHANGES.md](CHANGES.md).

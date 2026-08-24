@@ -65,6 +65,25 @@ const ACE_INTERACTIVE = {
     'dark-theme-mode': null
 };
 
+// Language names that Jobe knows under a different name than the one authors habitually write
+// (and that Markdown renderers habitually emit).
+const JOBE_LANG_ALIASES = {
+    'python': 'python3'
+};
+
+/**
+ * Normalise a language name into one Jobe and Ace will recognise: strip the "language-" prefix
+ * that TinyMCE's Prism filter and most Markdown renderers put on the class, then map any known
+ * alias. Applied on both the explicit-attribute and simplified-class-mode paths, so the two
+ * agree on what a bare "python" fence or class="language-python" means.
+ * @param {string} lang The raw language name, as authored.
+ * @return {string} The normalised language name.
+ */
+const normaliseLang = (lang) => {
+    const stripped = String(lang).replace(/^language-/, '');
+    return JOBE_LANG_ALIASES.hasOwnProperty(stripped) ? JOBE_LANG_ALIASES[stripped] : stripped;
+};
+
 const popItemPair = (alist, element) => {
   const index = alist.indexOf(element);
   if (index !== -1) {
@@ -175,6 +194,11 @@ export class UiParameters {
             this.paramsMap[attrName] = value;
         }
 
+        // Normalised after the loop rather than before it, because 'lang' is itself one of the
+        // keys above: an explicit "python:interactive:lang:python" pair would otherwise overwrite
+        // an already-normalised value and slip past unmapped.
+        this.paramsMap.lang = normaliseLang(this.paramsMap.lang);
+
         // Sets dark theme according to config if not previously set (mirrors extractUiParameters()).
         if (this.paramsMap['dark-theme-mode'] === null) {
             this.paramsMap['dark-theme-mode'] = config.dark_theme_mode; // 0, 1, 2 for never, sometimes, always.
@@ -190,13 +214,10 @@ export class UiParameters {
         // Left open so can deal with more attributes if desired.
         splitClass.forEach((attribute) => {
             if (attribute.startsWith('language') && this.modifiedLang === false) {
-                this.paramsMap.lang = attribute.replace('language-', '');
+                this.paramsMap.lang = attribute;
             }
         });
-        // Handle the one case of python3 in JOBE.
-        if (this.paramsMap.lang === 'python') {
-            this.paramsMap.lang = 'python3';
-        }
+        this.paramsMap.lang = normaliseLang(this.paramsMap.lang);
     }
 
     /**
