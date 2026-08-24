@@ -33,31 +33,6 @@ use Facebook\WebDriver\Exception\NoSuchAlertException;
  */
 class behat_filter_ace_inline extends behat_base {
     /**
-     * Regenerates tests/scenarios/ fixtures from permutations.csv before the
-     * suite runs. Those fixtures are generated (tests/scripts/
-     * generate_scenarios.py) and not tracked in git - fully reproducible, so
-     * committing them was pure repo bloat - so without this they simply
-     * would not exist on a fresh checkout: scenario_fixture_exists_in_
-     * question_contents() below reads them straight from disk at runtime,
-     * not from anything baked into the generated tests/behat/scenarios_*.
-     * feature files. Runs once per Behat process (a @BeforeSuite hook fires
-     * for the whole run, not just when this plugin's own features execute),
-     * which is harmless: the script is idempotent and fast.
-     *
-     * @BeforeSuite
-     */
-    public static function generate_scenario_fixtures(): void {
-        $script = __DIR__ . '/../scripts/generate_scenarios.py';
-        exec('python3 ' . escapeshellarg($script) . ' 2>&1', $output, $exitcode);
-        if ($exitcode !== 0) {
-            throw new \Exception(
-                "filter_ace_inline: failed to generate tests/scenarios/ fixtures via $script:\n"
-                . implode("\n", $output)
-            );
-        }
-    }
-
-    /**
      * Enables the ace inline functionality globally and
      * the webserver sandbox to enabled for testing purposes.
      * Reads the configurations from test-sandbox-config.php which
