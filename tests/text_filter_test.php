@@ -201,18 +201,19 @@ final class text_filter_test extends \advanced_testcase {
         $this->assertStringNotContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
     }
 
-    public function test_do_ace_editor_loads_module_for_bare_code_tag_when_simplified_mode_is_on(): void {
+    public function test_do_ace_editor_loads_module_for_fence_pair_when_simplified_mode_is_on(): void {
         $this->resetAfterTest(true);
         $course = $this->getDataGenerator()->create_course();
         $filter = $this->make_filter(\context_course::instance($course->id));
 
         $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 1];
-        $this->call_protected($filter, 'do_ace_editor', ['<p>some text with a <code>tag</code></p>', $config]);
+        $text = '<pre class="python3"><code>print("hi")</code></pre>';
+        $this->call_protected($filter, 'do_ace_editor', [$text, $config]);
 
         $this->assertStringContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
     }
 
-    public function test_do_ace_editor_loads_module_for_bare_code_tag_when_simplified_mode_is_string_one(): void {
+    public function test_do_ace_editor_loads_module_for_fence_pair_when_simplified_mode_is_string_one(): void {
         $this->resetAfterTest(true);
         $course = $this->getDataGenerator()->create_course();
         $filter = $this->make_filter(\context_course::instance($course->id));
@@ -221,9 +222,41 @@ final class text_filter_test extends \advanced_testcase {
         // do_ace_editor() actually receives in production - the int used by the tests above is
         // the atypical case. Pin it, since the check is a loose comparison.
         $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => '1'];
-        $this->call_protected($filter, 'do_ace_editor', ['<p>some text with a <code>tag</code></p>', $config]);
+        $text = '<pre class="python3"><code>print("hi")</code></pre>';
+        $this->call_protected($filter, 'do_ace_editor', [$text, $config]);
 
         $this->assertStringContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
+    }
+
+    public function test_do_ace_editor_ignores_unrelated_code_tag_when_simplified_mode_is_on(): void {
+        $this->resetAfterTest(true);
+        $course = $this->getDataGenerator()->create_course();
+        $filter = $this->make_filter(\context_course::instance($course->id));
+
+        // Simplified Mode syntax is only ever a genuine <pre><code> fence pair with a class on
+        // one of the two tags (see hasPreCodePair()/isSimplifiedClassMode() in
+        // apply_ace_editor.js) - a bare, unrelated <code> tag elsewhere on the page (a forum
+        // post, inline documentation, ...) must not be enough to queue the AMD module and scan
+        // the whole page, even with Simplified Mode enabled site-wide.
+        $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 1];
+        $this->call_protected($filter, 'do_ace_editor', ['<p>some text with a <code>tag</code></p>', $config]);
+
+        $this->assertStringNotContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
+    }
+
+    public function test_do_ace_editor_ignores_classless_fence_pair_when_simplified_mode_is_on(): void {
+        $this->resetAfterTest(true);
+        $course = $this->getDataGenerator()->create_course();
+        $filter = $this->make_filter(\context_course::instance($course->id));
+
+        // A real <pre><code> pair with no class at all (e.g. a plain preformatted example) is
+        // never valid Simplified Mode syntax either - isSimplifiedClassMode() always requires
+        // exactly one class - so the PHP gate's class-attribute check must still reject it.
+        $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 1];
+        $text = '<pre><code>plain preformatted text</code></pre>';
+        $this->call_protected($filter, 'do_ace_editor', [$text, $config]);
+
+        $this->assertStringNotContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
     }
 
     public function test_do_ace_editor_loads_module_for_explicit_marker_regardless_of_simplified_mode(): void {

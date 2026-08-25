@@ -173,10 +173,22 @@ class text_filter extends \filter_ace_inline_base_text_filter {
     public function do_ace_editor($text, $config) {
         $hasexplicitmarker = strpos($text, 'ace-interactive-code') !== false
             || strpos($text, 'ace-highlight-code') !== false;
-        // The bare '<code' check only applies under simplified mode - without it, this would
-        // queue the AMD module on almost every page on most sites, for no reason, since nearly
-        // all rendered content contains a <code> element somewhere.
-        $hassimplifiedcode = $config['simplified_mode'] == 1 && strpos($text, '<code') !== false;
+        // Simplified Mode has no attribute of its own to opt in with - its only signal is a class
+        // on an otherwise-ordinary <pre>/<code> - so this stays deliberately permissive rather
+        // than trying to validate the class is a real language name (that's the JS's job; see
+        // isSimplifiedClassMode() in apply_ace_editor.js - duplicating Ace's own mode list here
+        // would mean keeping a second copy in sync with whatever Ace version CodeRunner ships).
+        // It must stay a superset of what the JS actually accepts: every genuine Simplified Mode
+        // authoring path (this plugin's own generators, TinyMCE, Markdown Extra) always produces
+        // a full <pre><code>...</code></pre> pair with the class on one of the two tags, so the
+        // three checks below - both tags present, at least one carrying a class - can never
+        // reject anything the JS (isSimplifiedClassMode()'s own hasPreCodePair() check) would
+        // have accepted. The two strpos() calls are cheap and short-circuit before the regex ever
+        // runs, which also keeps this fast on the common case of a page with neither tag at all.
+        $hassimplifiedcode = $config['simplified_mode'] == 1
+            && strpos($text, '<pre') !== false
+            && strpos($text, '<code') !== false
+            && preg_match('/<(?:pre|code)\b[^>]*\bclass\s*=/i', $text) === 1;
         if ($hasexplicitmarker || $hassimplifiedcode) {
             $this->page->requires->js_call_amd(
                 'filter_ace_inline/ace_inline_code',

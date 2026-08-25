@@ -71,6 +71,24 @@ const hasExplicitMarker = (element) => {
 };
 
 /**
+ * True if element is one half of a genuine <pre><code>...</code></pre> fence pair - the only
+ * shape every real Simplified Mode authoring path (this plugin's own generators, TinyMCE's Code
+ * sample, Markdown Extra's fenced blocks) ever produces. Unlike explicit decoration (checked by
+ * hasExplicitMarker() above), Simplified Mode has no attribute of its own to opt in with - its
+ * only signal is the class on an otherwise-ordinary <pre>/<code> - so without this, any classed
+ * <pre> with no <code> inside it (e.g. a WYSIWYG table cell styled with a layout class) would be
+ * misread as Simplified Mode syntax too.
+ * @param {HTMLElement} element The <pre> or <code> element being checked.
+ * @return {bool}
+ */
+const hasPreCodePair = (element) => {
+    if (element.nodeName === 'PRE') {
+        return element.children.length === 1 && element.children[0].nodeName === 'CODE';
+    }
+    return element.nodeName === 'CODE' && element.parentNode !== null && element.parentNode.nodeName === 'PRE';
+};
+
+/**
  * True if simplified mode is enabled and this element's class should be parsed as a bare or
  * colon-separated "language[:option:value...]" specifier rather than treated as a normal HTML
  * class.
@@ -82,6 +100,7 @@ const hasExplicitMarker = (element) => {
 const isSimplifiedClassMode = (element, config, languages) =>
     Number(config.simplified_mode) === SIMPLIFIED_MODE_ENABLED &&
         element.classList.length === 1 && !hasExplicitMarker(element) &&
+        hasPreCodePair(element) &&
         languages.has(element.classList[0].split(':')[0].toLowerCase());
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
@@ -92,7 +111,7 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
     'cpp': 'c_cpp',
     'js': 'javascript',
     'nodejs': 'javascript',
-    'c#': 'cs',
+    'c#': 'csharp',
     'octave': 'matlab',
     'c++': 'c_cpp',
     'python2': 'python',

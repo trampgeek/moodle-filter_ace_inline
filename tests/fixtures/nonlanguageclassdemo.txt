@@ -17,3 +17,10 @@ Simplified Mode specifiers and must be left exactly as authored.</p>
 </pre></td>
   </tr>
 </table>
+
+<p>A single class that really is a language name, but with no <code> child - not a genuine
+Simplified Mode fence pair, so this must also be left exactly as authored.</p>
+
+<pre class="python3">NOCODEMARKER
+plain preformatted text, no code element in sight
+</pre>
