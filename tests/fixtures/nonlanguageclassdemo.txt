@@ -1,0 +1,19 @@
+<p>Simplified Mode block whose single class really is a language - must still render.</p>
+
+<pre class="python3"><code>def simplified_positive():
+    return "SIMPLIFIEDPOSITIVE"
+</code></pre>
+
+<p>Plain preformatted table cells carrying an ordinary layout class. These are not
+Simplified Mode specifiers and must be left exactly as authored.</p>
+
+<table>
+  <tr>
+    <td><pre class="tablecell">TABLECELLMARKER
+    plain preformatted text
+</pre></td>
+    <td><pre class="example">EXAMPLEMARKER
+    more plain preformatted text
+</pre></td>
+  </tr>
+</table>
