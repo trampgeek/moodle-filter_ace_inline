@@ -1,8 +1,16 @@
 # Change History
 
+ * Version 1.5.10, 26 August 2026.
+    * Blame: morriemajor
+    * Closes out the remaining fixes from Paul McKeown's Simplified Mode investigation not yet recorded in this history:
+    * Fixed Simplified Mode over-matching: a single ordinary CSS class (e.g. a WYSIWYG table cell's layout class) was being treated as a language specifier and silently turned into an unhighlighted Ace editor. A class is now only read as Simplified Mode syntax if it both names a real Ace language and the element is a genuine `<pre><code>` fence pair - tightened in both the JS opt-in check and the PHP filter gate that decides whether to load the Ace JS at all.
+    * Fixed `ACE_MODE_MAP`'s `c#` entry, which pointed at a non-existent Ace mode (`cs` instead of `csharp`), silently disabling C# syntax highlighting.
+
  * Version 1.5.9, 26 August 2026.
     * Blame: morriemajor
-    * Filter now processes only the ace-line filtered fenced sections, with only a fallback to the entire document if needs be. Fixed line number issue in simplified mode. Note that a cache invalidation issue can occur, it is important to bump version AND run CLI upgrade to clear caches on updates.
+    * Filter now processes only the ace-line filtered fenced sections, with only a fallback to the entire document if needs be. 
+    * Fixed line number issue in simplified mode. 
+    * Note that a cache invalidation issue can occur, it is important to bump version AND run CLI upgrade to clear caches on updates.
 
  * Version 1.5.8, 24 August 2026.
     * Blame: morriemajor
