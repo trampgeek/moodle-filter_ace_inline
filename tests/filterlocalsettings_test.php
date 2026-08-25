@@ -165,4 +165,23 @@ final class filterlocalsettings_test extends \advanced_testcase {
         $this->assertStringContainsString('the site administrator settings', $html);
         $this->assertStringContainsString('section=filtersettingace_inline', $html);
     }
+
+    public function test_top_level_category_hint_points_at_the_site_admin_settings_page(): void {
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+
+        // A top-level category's own parent context IS the system context (not false), so this
+        // exercises a different branch to test_system_context_hint_... above: without the
+        // contextlevel == CONTEXT_SYSTEM check, this used to fall through to the generic
+        // "named/linked parent context" branch and link to /filter/manage.php?contextid=1
+        // instead of the site administrator settings page.
+        $category = $this->getDataGenerator()->create_category();
+        $categorycontext = \context_coursecat::instance($category->id);
+
+        $html = $this->render_form($categorycontext);
+
+        $this->assertStringContainsString('the site administrator settings', $html);
+        $this->assertStringContainsString('section=filtersettingace_inline', $html);
+        $this->assertStringNotContainsString('/filter/manage.php?contextid=1&', $html);
+    }
 }
