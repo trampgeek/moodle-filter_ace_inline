@@ -259,6 +259,54 @@ final class text_filter_test extends \advanced_testcase {
         $this->assertStringNotContainsString('filter_ace_inline/ace_inline_code', $this->queued_amd_modules($filter));
     }
 
+    public function test_do_ace_editor_wraps_candidate_text_for_js_scoped_scanning(): void {
+        $this->resetAfterTest(true);
+        $course = $this->getDataGenerator()->create_course();
+        $filter = $this->make_filter(\context_course::instance($course->id));
+
+        // Whenever the AMD module is queued, the returned text must also carry the
+        // data-ace-inline-scan marker div - see applyAceAndBuildUi() in apply_ace_editor.js,
+        // which scans only marked fragments (falling back to the whole document only when none
+        // exist at all), so that unrelated content elsewhere on the page - other plugins,
+        // navigation, other filter() calls that had nothing to do with this fragment - is never
+        // considered.
+        $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 1];
+        $text = '<pre class="python3"><code>print("hi")</code></pre>';
+        $result = $this->call_protected($filter, 'do_ace_editor', [$text, $config]);
+
+        $this->assertStringContainsString('data-ace-inline-scan', $result);
+        $this->assertStringContainsString($text, $result);
+    }
+
+    public function test_do_ace_editor_leaves_non_candidate_text_completely_unchanged(): void {
+        $this->resetAfterTest(true);
+        $course = $this->getDataGenerator()->create_course();
+        $filter = $this->make_filter(\context_course::instance($course->id));
+
+        // Text with nothing for this filter to do must come back byte-for-byte identical - not
+        // just free of the marker div, but not touched or re-encoded in any way. This matters
+        // for Mathjax's small content fragment, passed through every filter on every content
+        // page (even editing pages) - wrapping it in a div here would be a real behaviour change,
+        // not just an internal implementation detail.
+        $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 1];
+        $text = '<p>nothing special here</p>';
+        $result = $this->call_protected($filter, 'do_ace_editor', [$text, $config]);
+
+        $this->assertSame($text, $result);
+    }
+
+    public function test_do_ace_editor_wraps_explicit_marker_text_regardless_of_simplified_mode(): void {
+        $this->resetAfterTest(true);
+        $course = $this->getDataGenerator()->create_course();
+        $filter = $this->make_filter(\context_course::instance($course->id));
+
+        $config = ['button_label' => 'Try it!', 'dark_theme_mode' => 0, 'simplified_mode' => 0];
+        $text = '<pre class="ace-interactive-code">print("hi")</pre>';
+        $result = $this->call_protected($filter, 'do_ace_editor', [$text, $config]);
+
+        $this->assertStringContainsString('data-ace-inline-scan', $result);
+    }
+
     public function test_do_ace_editor_loads_module_for_explicit_marker_regardless_of_simplified_mode(): void {
         $this->resetAfterTest(true);
         $course = $this->getDataGenerator()->create_course();

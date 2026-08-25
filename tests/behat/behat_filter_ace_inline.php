@@ -282,6 +282,27 @@ class behat_filter_ace_inline extends behat_base {
     }
 
     /**
+     * Inserts a fresh, undecorated ace-highlight <pre> element directly into the page body via
+     * JavaScript - bypassing this filter entirely - then invokes the documented
+     * globalThis.applyAceInteractive() hook. Simulates dynamically generated content added after
+     * the page has already loaded (e.g. an AJAX response), which never goes through
+     * text_filter::do_ace_editor() and so is never wrapped in the data-ace-inline-scan marker
+     * div - proving applyAceAndBuildUi()'s whole-document fallback scan still works when no
+     * marked fragment covers the new content.
+     *
+     * @Given I insert a fresh ace pre element and call applyAceInteractive for filter ace inline
+     */
+    public function insert_fresh_ace_pre_and_call_apply_ace_interactive() {
+        $js = "var el = document.createElement('pre');"
+            . "el.setAttribute('data-ace-highlight-code', '');"
+            . "el.setAttribute('data-lang', 'python3');"
+            . "el.textContent = 'FRESHLYINSERTEDMARKER';"
+            . "document.body.appendChild(el);"
+            . "window.applyAceInteractive();";
+        $this->getSession()->executeScript($js);
+    }
+
+    /**
      * Adds the contents of a text file into a specified field in a question.
      *
      * @Given :filename exists in question :name :field for filter ace inline

@@ -35,8 +35,12 @@ export const initAceInlineEditor = async(config) => {
         while (!globalThis.ace) {
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        applyAceAndBuildUi(document, config);
-        // Add a hook for use by dynamically generated content.
+        // Scoped: this is the one-time initial pass, so it only needs to scan the fragments
+        // this filter actually produced (see applyAceAndBuildUi()'s own docblock).
+        applyAceAndBuildUi(document, config, true);
+        // Add a hook for use by dynamically generated content. Deliberately NOT scoped: content
+        // inserted after this point never goes through the filter, so it is never marked -
+        // scoping this call would silently stop finding it.
         globalThis.applyAceInteractive = function() {
             applyAceAndBuildUi(document, config);
         };

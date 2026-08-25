@@ -225,15 +225,27 @@ const processAceElement = (element, targetPre, isInteractive, config, languages)
  * code in whatever language has been set.
  * @param {object} root The root of the HTML document to modify.
  * @param {object} config The plugin configuration settings.
+ * @param {bool} scoped When true, scan only the fragments text_filter.php actually produced
+ *     (marked with data-ace-inline-scan - see do_ace_editor()), not the whole document: content
+ *     from other plugins, navigation, or anything else on the page was never something this
+ *     filter touched and must never be considered. Falls back to the whole document if no marked
+ *     fragment exists at all. Must be false (the default) for globalThis.applyAceInteractive(),
+ *     the documented hook for dynamically generated content: that content was inserted directly
+ *     into the DOM after the page had already loaded, so it never went through
+ *     do_ace_editor() and is never marked, regardless of whether other, earlier content on the
+ *     same page happens to be - scoping this call would silently stop finding it forever.
  */
-export const applyAceAndBuildUi = async(root, config) => {
+export const applyAceAndBuildUi = async(root, config, scoped = false) => {
     const languages = await getKnownLanguages();
+    const scanned = scoped ? root.querySelectorAll('[data-ace-inline-scan]') : [];
+    const scopes = scanned.length ? Array.from(scanned) : [root];
+
     // Look for ace editor controls in the <pre> fench first.
     // Snapshot into a plain array: applyToPre() below can insert a new <pre> (the output box
     // addUi() builds) as a later sibling of the pre it's attached to, and getElementsByTagName's
     // collection is live - without this the loop would go on to process its own freshly-inserted
     // output box as if it were more content to highlight.
-    const preElements = Array.from(root.getElementsByTagName('pre'));
+    const preElements = scopes.flatMap((scope) => Array.from(scope.getElementsByTagName('pre')));
     for (const pre of preElements) {
         if (pre.classList.contains(OUTPUT_TEXT_CLASS)) {
             continue;
@@ -246,7 +258,7 @@ export const applyAceAndBuildUi = async(root, config) => {
     }
 
     // Look for ace editor controls in the <code> fence, this should take priority over ace editor controls in the <pre> fence.
-    const codeElements = Array.from(root.getElementsByTagName('code'));
+    const codeElements = scopes.flatMap((scope) => Array.from(scope.getElementsByTagName('code')));
     for (const code of codeElements) {
         if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
             const isInteractive = isInteractiveElement(code, config, languages);
