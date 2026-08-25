@@ -21,7 +21,7 @@ Download the plugin from the repository, and unzip the code into
 
         <moodlehome>/public/filter/ace_inline
 
-Then visit Site administration > Notifications. You should receive the usual prompt about updating the database to incorporate the new plugin.
+Then visit Site administration > Notifications. You should receive the usual prompt about updating the database to incorporate the new plugin;  this is important to clear cached pages.
 
 Once installed, visit Site administration > Plugins > Plugins overview > Additional plugins. From this page, click the icon next to "Text filters" and turn "Ace inline" to "Off, but available".
 
