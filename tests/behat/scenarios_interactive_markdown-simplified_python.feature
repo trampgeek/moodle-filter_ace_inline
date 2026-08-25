@@ -46,6 +46,7 @@ Feature: interactive/markdown-simplified/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
 
   Scenario: interactive_markdown-simplified_python_perm003
     Given the following "questions" exist:
@@ -171,3 +172,4 @@ Feature: interactive/markdown-simplified/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "firstLineNumber" value "3" with filter ace inline
+    And I should see line numbers starting at 3 with filter ace inline

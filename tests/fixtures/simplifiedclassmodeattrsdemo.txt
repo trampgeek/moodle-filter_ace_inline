@@ -1,10 +1,12 @@
-<!-- These two blocks (line-numbers, dark-theme-mode) are no longer each
-individually asserted on for their own attribute effect - that's covered by
-the generated tests/behat/scenarios/ suite now - but both are still needed
-here as page-order context for the "earlier block's line-numbers does not
-leak into a later block" regression test below, which is unique to this
-multi-block-per-page fixture and can't be reproduced by the generated
-suite's one-fixture-per-page architecture. -->
+<!-- The dark-theme-mode block below is no longer individually asserted on for its own
+attribute effect - that's covered by the generated tests/behat/scenarios/ suite now - but
+it's still needed as page-order context for the "earlier block's line-numbers does not
+leak into a later block" regression test further down, which is unique to this
+multi-block-per-page fixture and can't be reproduced by the generated suite's
+one-fixture-per-page architecture. The line-numbers block above it IS still individually
+asserted on: not just its own leak-avoidance, but that the gutter sequence Ace actually
+renders both starts at the right number and increments by 1 per line - the generated
+suite only checks the getOption('firstLineNumber') value, not the rendered DOM sequence. -->
 
 ```c:line-numbers:5
 int alpha;
@@ -17,4 +19,14 @@ int darkforcec;
 
 ```python3:interactive:dark-theme-mode:0
 lightforcepy = 1
+```
+
+<!-- No fixture anywhere else uses the "start-line-number" key directly in Simplified Mode
+class syntax - only its "line-numbers" alias above. Kept here specifically to exercise that
+fallback path (see extractSimplifiedClassModeParameters()'s popItemPair() calls). -->
+
+```python3:start-line-number:10
+gammaline = 1
+deltaline = 2
+epsilonline = 3
 ```

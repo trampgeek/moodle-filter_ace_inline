@@ -42,6 +42,7 @@ Feature: interactive/html-classic/python scenario fixtures
     Then "//div[contains(@class, 'ace_editor')]" "xpath_element" should exist
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And I press "Try it!"
     Then I should see "hello"
 
@@ -234,6 +235,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And I press "Try it!"
     Then I should see "hello"
 
@@ -247,6 +249,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]" "xpath_element" should exist
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "maxLines" value "3" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And I press "Try it!"
     Then I should see "hello"
 
@@ -274,6 +277,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And I press "Try it!"
     Then I should see "hello"
 
@@ -598,6 +602,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And I press "Try it!"
     Then I should see "hello"
 
@@ -661,6 +666,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And I press "RunIt"
     Then I should see "hello"
@@ -677,6 +683,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And I press "Try it!"
     Then I should see the filter-ace-inline-html div containing "hello"
 
@@ -691,6 +698,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
 
   Scenario: interactive_html-classic_python_perm062
     Given the following "questions" exist:
@@ -703,6 +711,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "Try it!"
     Then I should see "files:file contents"
@@ -840,6 +849,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And I press "RunIt"
     Then I should see the filter-ace-inline-html div containing "hello"
@@ -857,6 +867,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
 
   Scenario: interactive_html-classic_python_perm075
@@ -872,6 +883,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "RunIt"
@@ -889,6 +901,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
 
   Scenario: interactive_html-classic_python_perm077
     Given the following "questions" exist:
@@ -902,6 +915,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "Try it!"
     Then I should see the filter-ace-inline-html div containing "files:file contents"
@@ -917,6 +931,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//input[@id='uploadbox1']" "xpath_element" should exist
 
   Scenario: interactive_html-classic_python_perm079
@@ -1052,6 +1067,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
 
   Scenario: interactive_html-classic_python_perm090
@@ -1068,6 +1084,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
     And I press "RunIt"
@@ -1086,6 +1103,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
 
@@ -1101,6 +1119,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "firstLineNumber" value "7" with filter ace inline
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//input[@id='uploadbox1']" "xpath_element" should exist
 
   Scenario: interactive_html-classic_python_perm093
@@ -1175,6 +1194,7 @@ Feature: interactive/html-classic/python scenario fixtures
     And I should see an ace option "minLines" value "20" with filter ace inline
     And I should see an ace option "theme" value "ace/theme/tomorrow_night" with filter ace inline
     And I should see an ace option "maxLines" value "25" with filter ace inline
+    And I should see line numbers starting at 7 with filter ace inline
     And "//div[contains(@class, 'filter-ace-inline-ui-area')]//button[contains(@class, 'btn-ace-inline-execution') and contains(text(), 'RunIt')]" "xpath_element" should exist
     And "//input[@id='uploadbox1']" "xpath_element" should exist
 

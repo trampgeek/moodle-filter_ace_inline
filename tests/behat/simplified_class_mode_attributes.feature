@@ -31,6 +31,14 @@ Feature: Simplified class mode display and behaviour attributes
     When I am on the "simplifiedclassmodeattrsdemo" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'darkforcec')]/following-sibling::div[contains(@class, 'ace_editor')][1]//div[contains(@class, 'ace_gutter-active-line') and text()='5']" "xpath_element" should not exist
 
+  Scenario: a "line-numbers" value renders a gutter sequence that starts at the right number and increments by 1 (C, highlighted)
+    When I am on the "simplifiedclassmodeattrsdemo" "core_question > preview" page logged in as teacher
+    And I should see line numbers starting at 5 after "int alpha" with filter ace inline
+
+  Scenario: a "start-line-number" value renders a gutter sequence that starts at the right number and increments by 1 (Python, highlighted)
+    When I am on the "simplifiedclassmodeattrsdemo" "core_question > preview" page logged in as teacher
+    And I should see line numbers starting at 10 after "gammaline" with filter ace inline
+
   Scenario: dark-theme-mode forces the light theme regardless of the site default (Python, interactive)
     When I am on the "simplifiedclassmodeattrsdemo" "core_question > preview" page logged in as teacher
     Then "//pre[contains(., 'lightforcepy')]/following-sibling::div[contains(@class, 'ace_editor')][1][contains(concat(' ', normalize-space(@class), ' '), ' ace-tm ')]" "xpath_element" should exist
