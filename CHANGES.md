@@ -1,5 +1,9 @@
 # Change History
 
+ * Version 1.5.9, 26 August 2026.
+    * Blame: morriemajor
+    * Filter now processes only the ace-line filtered fenced sections, with only a fallback to the entire document if needs be. Fixed line number issue in simplified mode. Note that a cache invalidation issue can occur, it is important to bump version AND run CLI upgrade to clear caches on updates.
+
  * Version 1.5.8, 24 August 2026.
     * Blame: morriemajor
     * Merged numerous fixes from Richard Lobb (thanks!) and Paul's suggestion to hide control buttons on QBank filter config (as you can't edit anything!). Also removed type hinting from python script so should be compatible with python3.11 upwards.
