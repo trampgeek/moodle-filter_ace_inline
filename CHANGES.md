@@ -1,5 +1,9 @@
 # Change History
 
+ * Version 1.5.11, 10 September 2026.
+    * Blame: morriemajor
+    * Fixed a real contrast bug: a readonly (highlight-mode) Ace editor under the dark theme rendered with a light grey background instead of the dark theme's own background, while its foreground text stayed the dark theme's light colour - making the code very hard to read. Caused by a `styles.css` rule that unconditionally forces a light grey background on any readonly Ace editor (added in 2024, after dark-theme support, without accounting for it) at higher CSS specificity than the dark theme's own background rule. The rule now excludes the dark theme explicitly; a regression test asserts the actual computed background colour, not just class presence, for both themes.
+
  * Version 1.5.10, 26 August 2026.
     * Blame: morriemajor
     * Closes out the remaining fixes from Paul McKeown's Simplified Mode investigation not yet recorded in this history:
