@@ -353,6 +353,39 @@ class behat_filter_ace_inline extends behat_base {
     }
 
     /**
+     * Checks the actual rendered (computed) background colour of the Ace editor div that carries
+     * all of the given space-separated classes - deliberately checking the computed style rather
+     * than mere class presence, since CSS cascade/specificity can make the rendered background
+     * disagree with what the class list alone would suggest. This is exactly what let a real bug
+     * slip through unnoticed: a readonly Ace editor under the dark theme carries both
+     * "ace-tomorrow-night" and "readonly", but a separate, higher-specificity styles.css rule
+     * targeting ".readonly" alone silently overrode the dark theme's own background with a
+     * light grey, regardless of which theme was actually active.
+     *
+     * @Then I should see computed background colour :colour on the ace editor with classes :classes with filter ace inline
+     * @param string $colour Expected CSS computed colour, e.g. "rgb(29, 31, 33)".
+     * @param string $classes Space-separated classes the target div must all carry.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_computed_background_colour($colour, $classes) {
+        $classlist = array_filter(array_map('trim', explode(' ', $classes)));
+        $conditions = array_map(function($class) {
+            return "contains(concat(' ', normalize-space(@class), ' '), " . json_encode(" {$class} ") . ")";
+        }, $classlist);
+        $xpath = "//div[" . implode(' and ', $conditions) . "]";
+        $js = "getComputedStyle(document.evaluate(" . json_encode($xpath)
+            . ", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).backgroundColor;";
+        $actual = $this->getSession()->evaluateScript($js);
+        if ($actual !== $colour) {
+            throw new ExpectationException(
+                "Expected background colour '{$colour}' on the ace editor with classes '{$classes}',"
+                    . " found '{$actual}'",
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
      * Inserts a fresh, undecorated ace-highlight <pre> element directly into the page body via
      * JavaScript - bypassing this filter entirely - then invokes the documented
      * globalThis.applyAceInteractive() hook. Simulates dynamically generated content added after
