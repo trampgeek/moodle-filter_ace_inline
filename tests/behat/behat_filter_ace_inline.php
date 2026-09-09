@@ -369,7 +369,7 @@ class behat_filter_ace_inline extends behat_base {
      */
     public function i_see_computed_background_colour($colour, $classes) {
         $classlist = array_filter(array_map('trim', explode(' ', $classes)));
-        $conditions = array_map(function($class) {
+        $conditions = array_map(function ($class) {
             return "contains(concat(' ', normalize-space(@class), ' '), " . json_encode(" {$class} ") . ")";
         }, $classlist);
         $xpath = "//div[" . implode(' and ', $conditions) . "]";
