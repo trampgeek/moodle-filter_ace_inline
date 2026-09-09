@@ -67,6 +67,16 @@ fixture was actually generated with), a Scenario asserts:
   apply_ace_editor.js applying it as Math.max(numLines, params['min-lines']),
   and why min-lines/max-lines' expected values must be recomputed per
   fixture rather than read as a single constant.
+- For start-line-number/line-numbers specifically, also the actual rendered
+  gutter sequence (every .ace_gutter-cell Ace painted into the DOM, checked
+  to start at the right number and increment by exactly 1 per line), not
+  just the firstLineNumber option above. The two catch different bugs: a
+  2026-08 regression set firstLineNumber to a string instead of a number,
+  which getOption() still reported back correctly (it does not coerce), but
+  which corrupted every rendered line number after the first via string
+  concatenation instead of addition - only visible by reading the gutter
+  itself. See line_number_sequence_assertions() and
+  i_see_sole_editor_line_numbers_starting_at() in behat_filter_ace_inline.php.
 - button-name, via the button's own text.
 - file-upload-id, via the companion <input> element's mere presence (no
   real file gets uploaded through Behat, so its execution-time effect is
@@ -113,6 +123,9 @@ Requires:
   - this suite gives every fixture its own dedicated question page, so
   there is always exactly one Ace editor on the page and no marker-based
   <pre> lookup is needed.
+- Likewise i_see_sole_editor_line_numbers_starting_at(), the no-marker
+  sibling of i_see_line_numbers_starting_at() - same one-editor-per-page
+  reasoning as i_see_ace_option_value() above.
 
 Does not run automatically - see the `if __name__ == "__main__"` guard at
 the bottom.
@@ -309,6 +322,26 @@ def structural_assertions(attrs: list[str], is_interactive: bool) -> list[str]:
     return assertions
 
 
+LINE_NUMBER_ATTRS = ("data-start-line-number", "line-numbers")
+
+
+def line_number_sequence_assertions(attrs: list[str]) -> list[str]:
+    """Gherkin line (no leading keyword) verifying the actual rendered gutter sequence for
+    start-line-number/line-numbers, on top of getoption_assertions()'s firstLineNumber check -
+    see the module docstring for why both are needed. At most one line: permutations.csv never
+    combines data-start-line-number with line-numbers in the same row (they are two different
+    spellings of the same effect, not independent attributes). None at all if data-hidden means
+    there is no editor to query, matching getoption_assertions().
+    """
+    if "data-hidden" in attrs:
+        return []
+    for attr in LINE_NUMBER_ATTRS:
+        if attr in attrs:
+            value = getoption_expected_value(attr, attrs)
+            return [f"I should see line numbers starting at {value} with filter ace inline"]
+    return []
+
+
 def getoption_assertions(attrs: list[str]) -> list[str]:
     """Gherkin lines (no leading keyword) for every getOption()-checkable
     attribute present, or none at all if data-hidden means there is no
@@ -380,6 +413,7 @@ def build_scenario(relative_path: Path, attrs: list[str], is_interactive: bool,
 
     assertions = structural_assertions(attrs, is_interactive)
     assertions += getoption_assertions(attrs)
+    assertions += line_number_sequence_assertions(attrs)
     assertions += button_name_assertion(attrs)
     assertions += file_upload_id_assertion(attrs)
 

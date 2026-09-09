@@ -170,17 +170,20 @@ class ace_inline_filter_local_settings_form extends \filter_local_settings_form 
 
     /**
      * Human-readable, possibly-linked description of where to look to check or change
-     * whatever this context would inherit - the immediate parent context, or (when this
-     * context IS the system context, so has no parent) the site administrator settings page.
-     * Deliberately never further up the chain than that - see definition_inner()'s comment on
-     * $parentname for why.
+     * whatever this context would inherit - the immediate parent context, or the site
+     * administrator settings page when that parent either doesn't exist (this context IS the
+     * system context) or IS the system context itself (e.g. a top-level course category, whose
+     * parent context is the system context, not a "manage filters" page for it - the system
+     * context has no such settings of its own outside the site administrator's page). Deliberately
+     * never further up the chain than that - see definition_inner()'s comment on $parentname for
+     * why.
      *
      * @param \core\context|false $parentcontext $this->context->get_parent_context()'s result.
      * @return string HTML - a link when the current user can actually manage settings there,
      *     otherwise the plain (unlinked) name, so we never offer a link that would just 403.
      */
     private function parent_context_description($parentcontext) {
-        if (!$parentcontext) {
+        if (!$parentcontext || $parentcontext->contextlevel == CONTEXT_SYSTEM) {
             $name = get_string('settings_site_admin_settings_page', 'filter_ace_inline');
             if (!has_capability('moodle/site:config', \context_system::instance())) {
                 return $name;

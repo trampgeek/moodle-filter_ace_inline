@@ -90,7 +90,13 @@ div[class='filter-ace-inline-file-error'] {
    Ace-inline divs. Overrides Ace's default,
    and grunt objects to the use of !important,
    hence the clumsy selector.
+
+   Excludes the dark theme (ace-tomorrow-night, see ACE_DARK_THEME in
+   apply_ace_editor.js): without this exclusion, this rule's higher
+   specificity beats the dark theme's own single-class background rule
+   unconditionally, forcing a near-white background under the dark theme's
+   light foreground text and making it unreadable.
 */
-div[class*="ace_editor"][class*="readonly"] {
+div[class*="ace_editor"][class*="readonly"]:not([class*="ace-tomorrow-night"]) {
     background-color: #f4f4f4;
 }

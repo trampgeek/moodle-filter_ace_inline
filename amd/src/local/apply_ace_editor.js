@@ -40,6 +40,11 @@ const SIMPLIFIED_MODE_ENABLED = 1;
 // simplified mode is also enabled site-wide alongside older, explicitly-classed content.
 const LEGACY_MARKER_CLASSES = ['ace-highlight-code', 'ace-interactive-code'];
 
+// How long to wait, and how often to look, for Ace's modelist extension before giving up on it
+// and falling back to ACE_MODE_MAP alone - see getKnownLanguages().
+const MODELIST_TIMEOUT = 2000;
+const MODELIST_POLL_INTERVAL = 50;
+
 /**
  * True if this element carries an explicit ace-inline marker: a data-ace-*-code attribute or
  * one of the legacy opt-in classes.
@@ -66,16 +71,37 @@ const hasExplicitMarker = (element) => {
 };
 
 /**
+ * True if element is one half of a genuine <pre><code>...</code></pre> fence pair - the only
+ * shape every real Simplified Mode authoring path (this plugin's own generators, TinyMCE's Code
+ * sample, Markdown Extra's fenced blocks) ever produces. Unlike explicit decoration (checked by
+ * hasExplicitMarker() above), Simplified Mode has no attribute of its own to opt in with - its
+ * only signal is the class on an otherwise-ordinary <pre>/<code> - so without this, any classed
+ * <pre> with no <code> inside it (e.g. a WYSIWYG table cell styled with a layout class) would be
+ * misread as Simplified Mode syntax too.
+ * @param {HTMLElement} element The <pre> or <code> element being checked.
+ * @return {bool}
+ */
+const hasPreCodePair = (element) => {
+    if (element.nodeName === 'PRE') {
+        return element.children.length === 1 && element.children[0].nodeName === 'CODE';
+    }
+    return element.nodeName === 'CODE' && element.parentNode !== null && element.parentNode.nodeName === 'PRE';
+};
+
+/**
  * True if simplified mode is enabled and this element's class should be parsed as a bare or
  * colon-separated "language[:option:value...]" specifier rather than treated as a normal HTML
  * class.
  * @param {HTMLElement} element The <pre> or <code> element being checked.
  * @param {object} config The plugin configuration settings.
+ * @param {Set} languages The language names simplified mode accepts (see getKnownLanguages()).
  * @return {bool}
  */
-const isSimplifiedClassMode = (element, config) =>
+const isSimplifiedClassMode = (element, config, languages) =>
     Number(config.simplified_mode) === SIMPLIFIED_MODE_ENABLED &&
-        element.classList.length === 1 && !hasExplicitMarker(element);
+        element.classList.length === 1 && !hasExplicitMarker(element) &&
+        hasPreCodePair(element) &&
+        languages.has(element.classList[0].split(':')[0].toLowerCase());
 
 const ACE_DARK_THEME = 'ace/theme/tomorrow_night';
 const ACE_LIGHT_THEME = 'ace/theme/textmate';
@@ -85,7 +111,7 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
     'cpp': 'c_cpp',
     'js': 'javascript',
     'nodejs': 'javascript',
-    'c#': 'cs',
+    'c#': 'csharp',
     'octave': 'matlab',
     'c++': 'c_cpp',
     'python2': 'python',
@@ -93,17 +119,69 @@ const ACE_MODE_MAP = { // Ace modes for various languages (default: use language
     'markup': 'html'
 };
 
+// Lazily-built, memoised return value of getKnownLanguages(); null until Ace's modelist
+// extension has actually been read.
+let knownLanguages = null;
+
+/**
+ * Ace's modelist extension, if it has been loaded. Ace's own loader returns undefined for a
+ * module it doesn't have, but be defensive about it throwing too.
+ * @return {object|null} The modelist module, or null if it isn't available.
+ */
+const getAceModelist = () => {
+    try {
+        return (globalThis.ace && globalThis.ace.require &&
+            globalThis.ace.require('ace/ext/modelist')) || null;
+    } catch {
+        return null;
+    }
+};
+
+/**
+ * The set of language names a Simplified Mode class specifier is allowed to start with: every
+ * mode Ace itself knows about, plus the aliases ACE_MODE_MAP translates.
+ *
+ * Without this, simplified mode's opt-in test degenerates to "carries exactly one class", so any
+ * ordinary styling class turns a plain preformatted block into an Ace editor - a
+ * <pre class="tablecell"> in a table becomes a request for an editor in a language called
+ * "tablecell", which Ace silently renders as unhighlighted plain text.
+ *
+ * qtype_coderunner's load_ace() (called from this filter's setup()) requests ext-modelist.js
+ * alongside ace.js, but they are two separate script loads, so allow a short window for the
+ * second one to arrive. Only a set built from a modelist that really did load is memoised; the
+ * ACE_MODE_MAP-only fallback is deliberately not, so a later call can still get the full set.
+ * @return {Promise<Set>} The acceptable language names, lower case.
+ */
+const getKnownLanguages = async() => {
+    if (knownLanguages) {
+        return knownLanguages;
+    }
+    const deadline = Date.now() + MODELIST_TIMEOUT;
+    let modelist = getAceModelist();
+    while (!modelist && Date.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, MODELIST_POLL_INTERVAL));
+        modelist = getAceModelist();
+    }
+    const languages = new Set([...Object.keys(ACE_MODE_MAP), ...Object.values(ACE_MODE_MAP)]);
+    if (modelist) {
+        Object.keys(modelist.modesByName).forEach((name) => languages.add(name));
+        knownLanguages = languages;
+    }
+    return languages;
+};
+
 /**
  * True if element carries an ace-interactive-code marker: the legacy class/attribute, or (in
  * Simplified Mode) an "interactive" token in its colon-separated class specifier.
  * @param {HTMLelement} element The <pre> or <code> element being checked.
  * @param {object} config The plugin configuration settings.
+ * @param {Set} languages The language names simplified mode accepts (see getKnownLanguages()).
  * @return {bool}
  */
-const isInteractiveElement = (element, config) =>
+const isInteractiveElement = (element, config, languages) =>
     element.classList.contains('ace-interactive-code') ||
     element.hasAttribute('data-ace-interactive-code') ||
-    (isSimplifiedClassMode(element, config) &&
+    (isSimplifiedClassMode(element, config, languages) &&
         element.classList[0].split(':').includes('interactive'));
 
 /**
@@ -112,12 +190,13 @@ const isInteractiveElement = (element, config) =>
  * specifier qualifies, not just ones with an explicit marker token).
  * @param {HTMLelement} element The <pre> or <code> element being checked.
  * @param {object} config The plugin configuration settings.
+ * @param {Set} languages The language names simplified mode accepts (see getKnownLanguages()).
  * @return {bool}
  */
-const isHighlightElement = (element, config) =>
+const isHighlightElement = (element, config, languages) =>
     element.classList.contains('ace-highlight-code') ||
     element.hasAttribute('data-ace-highlight-code') ||
-    isSimplifiedClassMode(element, config);
+    isSimplifiedClassMode(element, config, languages);
 
 /**
  * Extract this element's UI parameters (Simplified Mode's colon-separated class specifier, or
@@ -128,10 +207,11 @@ const isHighlightElement = (element, config) =>
  *     element is a <code> fence.
  * @param {bool} isInteractive True for ace-interactive otherwise false.
  * @param {object} config The plugin configuration settings.
+ * @param {Set} languages The language names simplified mode accepts (see getKnownLanguages()).
  */
-const processAceElement = (element, targetPre, isInteractive, config) => {
+const processAceElement = (element, targetPre, isInteractive, config, languages) => {
     const uiParams = new UiParameters(element);
-    if (isSimplifiedClassMode(element, config)) {
+    if (isSimplifiedClassMode(element, config, languages)) {
         uiParams.extractSimplifiedClassModeParameters(isInteractive, config, element.classList[0].split(":"));
     } else {
         uiParams.extractUiParameters(isInteractive, config);
@@ -145,33 +225,46 @@ const processAceElement = (element, targetPre, isInteractive, config) => {
  * code in whatever language has been set.
  * @param {object} root The root of the HTML document to modify.
  * @param {object} config The plugin configuration settings.
+ * @param {bool} scoped When true, scan only the fragments text_filter.php actually produced
+ *     (marked with data-ace-inline-scan - see do_ace_editor()), not the whole document: content
+ *     from other plugins, navigation, or anything else on the page was never something this
+ *     filter touched and must never be considered. Falls back to the whole document if no marked
+ *     fragment exists at all. Must be false (the default) for globalThis.applyAceInteractive(),
+ *     the documented hook for dynamically generated content: that content was inserted directly
+ *     into the DOM after the page had already loaded, so it never went through
+ *     do_ace_editor() and is never marked, regardless of whether other, earlier content on the
+ *     same page happens to be - scoping this call would silently stop finding it forever.
  */
-export const applyAceAndBuildUi = async(root, config) => {
+export const applyAceAndBuildUi = async(root, config, scoped = false) => {
+    const languages = await getKnownLanguages();
+    const scanned = scoped ? root.querySelectorAll('[data-ace-inline-scan]') : [];
+    const scopes = scanned.length ? Array.from(scanned) : [root];
+
     // Look for ace editor controls in the <pre> fench first.
     // Snapshot into a plain array: applyToPre() below can insert a new <pre> (the output box
     // addUi() builds) as a later sibling of the pre it's attached to, and getElementsByTagName's
     // collection is live - without this the loop would go on to process its own freshly-inserted
     // output box as if it were more content to highlight.
-    const preElements = Array.from(root.getElementsByTagName('pre'));
+    const preElements = scopes.flatMap((scope) => Array.from(scope.getElementsByTagName('pre')));
     for (const pre of preElements) {
         if (pre.classList.contains(OUTPUT_TEXT_CLASS)) {
             continue;
         }
-        const isInteractive = isInteractiveElement(pre, config);
-        const isHighlight = isHighlightElement(pre, config);
+        const isInteractive = isInteractiveElement(pre, config, languages);
+        const isHighlight = isHighlightElement(pre, config, languages);
         if ((isInteractive || isHighlight) && pre.style.display !== 'none') {
-            processAceElement(pre, pre, isInteractive, config);
+            processAceElement(pre, pre, isInteractive, config, languages);
         }
     }
 
     // Look for ace editor controls in the <code> fence, this should take priority over ace editor controls in the <pre> fence.
-    const codeElements = Array.from(root.getElementsByTagName('code'));
+    const codeElements = scopes.flatMap((scope) => Array.from(scope.getElementsByTagName('code')));
     for (const code of codeElements) {
         if (code.parentNode !== null && code.parentNode.nodeName === 'PRE' && code.parentNode.style.display !== 'none') {
-            const isInteractive = isInteractiveElement(code, config);
-            const isHighlight = isHighlightElement(code, config);
+            const isInteractive = isInteractiveElement(code, config, languages);
+            const isHighlight = isHighlightElement(code, config, languages);
             if (isInteractive || isHighlight) {
-                processAceElement(code, code.parentNode, isInteractive, config);
+                processAceElement(code, code.parentNode, isInteractive, config, languages);
             }
         }
     }

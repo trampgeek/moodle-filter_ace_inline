@@ -1,5 +1,21 @@
 # Change History
 
+ * Version 1.5.11, 10 September 2026.
+    * Blame: morriemajor
+    * Fixed a real contrast bug: a readonly (highlight-mode) Ace editor under the dark theme rendered with a light grey background instead of the dark theme's own background, while its foreground text stayed the dark theme's light colour - making the code very hard to read. Caused by a `styles.css` rule that unconditionally forces a light grey background on any readonly Ace editor (added in 2024, after dark-theme support, without accounting for it) at higher CSS specificity than the dark theme's own background rule. The rule now excludes the dark theme explicitly; a regression test asserts the actual computed background colour, not just class presence, for both themes.
+
+ * Version 1.5.10, 26 August 2026.
+    * Blame: morriemajor
+    * Closes out the remaining fixes from Paul McKeown's Simplified Mode investigation not yet recorded in this history:
+    * Fixed Simplified Mode over-matching: a single ordinary CSS class (e.g. a WYSIWYG table cell's layout class) was being treated as a language specifier and silently turned into an unhighlighted Ace editor. A class is now only read as Simplified Mode syntax if it both names a real Ace language and the element is a genuine `<pre><code>` fence pair - tightened in both the JS opt-in check and the PHP filter gate that decides whether to load the Ace JS at all.
+    * Fixed `ACE_MODE_MAP`'s `c#` entry, which pointed at a non-existent Ace mode (`cs` instead of `csharp`), silently disabling C# syntax highlighting.
+
+ * Version 1.5.9, 26 August 2026.
+    * Blame: morriemajor
+    * Filter now processes only the ace-line filtered fenced sections, with only a fallback to the entire document if needs be. 
+    * Fixed line number issue in simplified mode. 
+    * Note that a cache invalidation issue can occur, it is important to bump version AND run CLI upgrade to clear caches on updates.
+
  * Version 1.5.8, 24 August 2026.
     * Blame: morriemajor
     * Merged numerous fixes from Richard Lobb (thanks!) and Paul's suggestion to hide control buttons on QBank filter config (as you can't edit anything!). Also removed type hinting from python script so should be compatible with python3.11 upwards.

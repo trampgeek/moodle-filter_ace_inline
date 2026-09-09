@@ -82,8 +82,7 @@ class text_filter extends \filter_ace_inline_base_text_filter {
             // Non-string content can not be filtered anyway.
             return $text;
         }
-        $this->do_ace_editor($text, $this->get_effective_config());
-        return $text;
+        return $this->do_ace_editor($text, $this->get_effective_config());
     }
 
     /**
@@ -161,11 +160,15 @@ class text_filter extends \filter_ace_inline_base_text_filter {
     /**
      * Process the given text by replacing any <pre> elements of class
      * ace-highlight-code with an ace code high-lighted version.
-     * The actual work is done by JavaScript; this function just calls the
-     * appropriate function. The call to strpos is required regardless becuase
-     * apparently Mathjax generates a small content fragment, which is passed
-     * through all filters, on all content pages, even editing pages. We
-     * don't wish to use our filter on pages being edited.
+     * The actual work is done by JavaScript; this function just queues the
+     * appropriate AMD module and, when it does so, wraps $text in a marker
+     * div so that module knows which part of the page it is actually
+     * responsible for (see the data-ace-inline-scan attribute below and
+     * applyAceAndBuildUi() in apply_ace_editor.js). Text with no ace-inline
+     * content is returned completely unchanged, both for performance and
+     * because Mathjax passes a small content fragment through every filter,
+     * on every content page (even editing pages), and it must not be
+     * wrapped in a div - the call to strpos is required regardless.
      * @param string $text The text to be processed.
      * @param array $config The plugin configuration info.
      * @return string The processed text.
@@ -173,16 +176,39 @@ class text_filter extends \filter_ace_inline_base_text_filter {
     public function do_ace_editor($text, $config) {
         $hasexplicitmarker = strpos($text, 'ace-interactive-code') !== false
             || strpos($text, 'ace-highlight-code') !== false;
-        // The bare '<code' check only applies under simplified mode - without it, this would
-        // queue the AMD module on almost every page on most sites, for no reason, since nearly
-        // all rendered content contains a <code> element somewhere.
-        $hassimplifiedcode = $config['simplified_mode'] == 1 && strpos($text, '<code') !== false;
+        // Simplified Mode has no attribute of its own to opt in with - its only signal is a class
+        // on an otherwise-ordinary <pre>/<code> - so this stays deliberately permissive rather
+        // than trying to validate the class is a real language name (that's the JS's job; see
+        // isSimplifiedClassMode() in apply_ace_editor.js - duplicating Ace's own mode list here
+        // would mean keeping a second copy in sync with whatever Ace version CodeRunner ships).
+        // It must stay a superset of what the JS actually accepts: every genuine Simplified Mode
+        // authoring path (this plugin's own generators, TinyMCE, Markdown Extra) always produces
+        // a full <pre><code>...</code></pre> pair with the class on one of the two tags, so the
+        // three checks below - both tags present, at least one carrying a class - can never
+        // reject anything the JS (isSimplifiedClassMode()'s own hasPreCodePair() check) would
+        // have accepted. The two strpos() calls are cheap and short-circuit before the regex ever
+        // runs, which also keeps this fast on the common case of a page with neither tag at all.
+        $hassimplifiedcode = $config['simplified_mode'] == 1
+            && strpos($text, '<pre') !== false
+            && strpos($text, '<code') !== false
+            && preg_match('/<(?:pre|code)\b[^>]*\bclass\s*=/i', $text) === 1;
         if ($hasexplicitmarker || $hassimplifiedcode) {
             $this->page->requires->js_call_amd(
                 'filter_ace_inline/ace_inline_code',
                 'initAceInlineEditor',
                 [$config]
             );
+            // Marks this fragment as one the JS should actually scan for <pre>/<code> elements,
+            // instead of the whole document - the AMD module runs once per page (not once per
+            // filter() call, since it may be queued many times on the same page - once per forum
+            // post, for example), so it needs a way to find every fragment this filter actually
+            // produced, without also picking up unrelated markup elsewhere on the page (other
+            // plugins, navigation, content no other call to this method ever touched). See
+            // applyAceAndBuildUi() in apply_ace_editor.js, which falls back to scanning the whole
+            // document when no marked fragment exists at all - needed for content inserted after
+            // the page has already loaded, which never goes through this method (e.g. the
+            // globalThis.applyAceInteractive() hook documented for dynamically generated content).
+            return \html_writer::div($text, '', ['data-ace-inline-scan' => '1']);
         }
 
         return $text;

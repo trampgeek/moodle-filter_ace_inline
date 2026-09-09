@@ -91,7 +91,7 @@ const popItemPair = (alist, element) => {
       alist.splice(index, 2);
       return [element, pair];
   }
-  return -1;
+  return null;
 };
 
 
@@ -174,7 +174,7 @@ export class UiParameters {
      */
     extractSimplifiedClassModeParameters(isInteractive, config, options) {
         const language = options.shift();
-        const lineNumbering = popItemPair(options, 'line-numbers');
+        const lineNumbering = popItemPair(options, 'line-numbers') || popItemPair(options, 'start-line-number');
         // Cloned for the same reason as in extractUiParameters(): these per-block overrides must
         // never mutate the shared ACE_HIGHLIGHT/ACE_INTERACTIVE constants.
         const defaultParams = {...(isInteractive ? ACE_INTERACTIVE : ACE_HIGHLIGHT)};
@@ -184,13 +184,13 @@ export class UiParameters {
         if (isInteractive) {
             defaultParams['button-name'] = config.button_label;
         }
-        if (lineNumbering !== -1) {
+        if (lineNumbering !== null) {
             defaultParams['start-line-number'] = parseInt(lineNumbering[1]) || 1;
         }
 
         for (const attrName in defaultParams) {
             const valuePair = popItemPair(options, attrName);
-            const value = (valuePair !== -1) ? valuePair[1] : defaultParams[attrName];
+            const value = (valuePair !== null) ? valuePair[1] : defaultParams[attrName];
             this.paramsMap[attrName] = value;
         }
 

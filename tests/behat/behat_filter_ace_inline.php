@@ -254,6 +254,77 @@ class behat_filter_ace_inline extends behat_base {
     }
 
     /**
+     * Checks that the gutter line numbers Ace actually rendered for the editor immediately
+     * following the <pre> block whose text contains the given marker start at the given number
+     * and increment by exactly 1 for every subsequent line.
+     *
+     * Unlike i_see_ace_option_value()'s firstLineNumber check, which only confirms the *option*
+     * passed to Ace was correct, this reads the live .ace_gutter-cell elements Ace actually
+     * painted into the DOM - proof the whole rendered sequence is right, not just that the
+     * starting configuration was. .ace_gutter-active-line (used by the leak-avoidance regression
+     * test elsewhere in this file) only marks the cursor's own line, so it cannot show this on
+     * its own.
+     *
+     * @Then I should see line numbers starting at :number after :marker with filter ace inline
+     * @param string $number The expected first line number.
+     * @param string $marker Text uniquely identifying the target <pre> block.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_line_numbers_starting_at($number, $marker) {
+        $js = "Array.from(Array.from(document.querySelectorAll('pre')).find(p => p.textContent.includes("
+            . json_encode($marker) . ")).nextElementSibling.querySelectorAll('.ace_gutter-cell'))"
+            . ".map(cell => cell.textContent.trim()).filter(text => text !== '');";
+        $gutterlines = $this->getSession()->evaluateScript($js);
+        $this->assert_gutter_sequence($gutterlines, $number, "after '{$marker}'");
+    }
+
+    /**
+     * As i_see_line_numbers_starting_at() above, but for the sole Ace editor on the page - no
+     * marker needed. Used by the generated tests/behat/scenarios/ suite (see
+     * tests/scripts/generate_behat_suite.py), where every fixture gets its own dedicated
+     * question page, so there is always exactly one Ace editor to find - same reasoning as
+     * i_see_ace_option_value() below.
+     *
+     * @Then I should see line numbers starting at :number with filter ace inline
+     * @param string $number The expected first line number.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_sole_editor_line_numbers_starting_at($number) {
+        $js = "Array.from(document.querySelector('.ace_editor').querySelectorAll('.ace_gutter-cell'))"
+            . ".map(cell => cell.textContent.trim()).filter(text => text !== '');";
+        $gutterlines = $this->getSession()->evaluateScript($js);
+        $this->assert_gutter_sequence($gutterlines, $number, "for the sole ace editor");
+    }
+
+    /**
+     * Shared assertion behind i_see_line_numbers_starting_at() and
+     * i_see_sole_editor_line_numbers_starting_at(): checks that $gutterlines (the
+     * .ace_gutter-cell text values Ace actually rendered, top to bottom) starts at $number and
+     * increments by exactly 1 per entry.
+     *
+     * @param array $gutterlines The rendered gutter cell text values, in DOM order.
+     * @param string $number The expected first line number.
+     * @param string $context Human-readable text identifying which editor, for the error message.
+     * @throws ExpectationException The error message.
+     */
+    private function assert_gutter_sequence($gutterlines, $number, $context) {
+        if (empty($gutterlines)) {
+            throw new ExpectationException("No gutter line numbers found {$context}.", $this->getSession());
+        }
+        $expected = (int) $number;
+        foreach ($gutterlines as $index => $actual) {
+            $wanted = (string) ($expected + $index);
+            if ((string) $actual !== $wanted) {
+                throw new ExpectationException(
+                    "Expected line number {$wanted} at gutter row {$index} {$context}, found '{$actual}'"
+                        . " (full rendered sequence: " . implode(',', $gutterlines) . ")",
+                    $this->getSession()
+                );
+            }
+        }
+    }
+
+    /**
      * Checks a named Ace editor option's value for the sole Ace editor on
      * the current page. Unlike i_see_min_lines_value() above, this does not
      * take a marker to disambiguate between multiple blocks on one page -
@@ -279,6 +350,60 @@ class behat_filter_ace_inline extends behat_base {
                 $this->getSession()
             );
         }
+    }
+
+    /**
+     * Checks the actual rendered (computed) background colour of the Ace editor div that carries
+     * all of the given space-separated classes - deliberately checking the computed style rather
+     * than mere class presence, since CSS cascade/specificity can make the rendered background
+     * disagree with what the class list alone would suggest. This is exactly what let a real bug
+     * slip through unnoticed: a readonly Ace editor under the dark theme carries both
+     * "ace-tomorrow-night" and "readonly", but a separate, higher-specificity styles.css rule
+     * targeting ".readonly" alone silently overrode the dark theme's own background with a
+     * light grey, regardless of which theme was actually active.
+     *
+     * @Then I should see computed background colour :colour on the ace editor with classes :classes with filter ace inline
+     * @param string $colour Expected CSS computed colour, e.g. "rgb(29, 31, 33)".
+     * @param string $classes Space-separated classes the target div must all carry.
+     * @throws ExpectationException The error message.
+     */
+    public function i_see_computed_background_colour($colour, $classes) {
+        $classlist = array_filter(array_map('trim', explode(' ', $classes)));
+        $conditions = array_map(function ($class) {
+            return "contains(concat(' ', normalize-space(@class), ' '), " . json_encode(" {$class} ") . ")";
+        }, $classlist);
+        $xpath = "//div[" . implode(' and ', $conditions) . "]";
+        $js = "getComputedStyle(document.evaluate(" . json_encode($xpath)
+            . ", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).backgroundColor;";
+        $actual = $this->getSession()->evaluateScript($js);
+        if ($actual !== $colour) {
+            throw new ExpectationException(
+                "Expected background colour '{$colour}' on the ace editor with classes '{$classes}',"
+                    . " found '{$actual}'",
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
+     * Inserts a fresh, undecorated ace-highlight <pre> element directly into the page body via
+     * JavaScript - bypassing this filter entirely - then invokes the documented
+     * globalThis.applyAceInteractive() hook. Simulates dynamically generated content added after
+     * the page has already loaded (e.g. an AJAX response), which never goes through
+     * text_filter::do_ace_editor() and so is never wrapped in the data-ace-inline-scan marker
+     * div - proving applyAceAndBuildUi()'s whole-document fallback scan still works when no
+     * marked fragment covers the new content.
+     *
+     * @Given I insert a fresh ace pre element and call applyAceInteractive for filter ace inline
+     */
+    public function insert_fresh_ace_pre_and_call_apply_ace_interactive() {
+        $js = "var el = document.createElement('pre');"
+            . "el.setAttribute('data-ace-highlight-code', '');"
+            . "el.setAttribute('data-lang', 'python3');"
+            . "el.textContent = 'FRESHLYINSERTEDMARKER';"
+            . "document.body.appendChild(el);"
+            . "window.applyAceInteractive();";
+        $this->getSession()->executeScript($js);
     }
 
     /**

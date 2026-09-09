@@ -35,6 +35,11 @@ Feature: Site administrator configuration of the Ace inline filter
     And I press "Save changes"
     When I am on the "settingsdemo" "core_question > preview" page logged in as admin
     Then "//div[contains(concat(' ', normalize-space(@class), ' '), ' ace-tomorrow-night ')]" "xpath_element" should exist
+    # settingsdemo also carries a readonly (highlight-mode) block - assert its rendered
+    # background is actually the dark theme's own colour, not just that the class is present:
+    # a real bug once let a separate, higher-specificity ".readonly" rule silently override the
+    # dark theme's background with a light grey regardless of which theme was active.
+    And I should see computed background colour "rgb(29, 31, 33)" on the ace editor with classes "ace-tomorrow-night readonly" with filter ace inline
 
   Scenario: Administrator sets the dark theme mode to never
     Given I log in as "admin"
@@ -43,6 +48,9 @@ Feature: Site administrator configuration of the Ace inline filter
     And I press "Save changes"
     When I am on the "settingsdemo" "core_question > preview" page logged in as admin
     Then "//div[contains(concat(' ', normalize-space(@class), ' '), ' ace-tm ')]" "xpath_element" should exist
+    # No regression check: the light theme's readonly block must keep its distinguishing grey
+    # background - only the dark theme's own background should ever be preserved instead.
+    And I should see computed background colour "rgb(244, 244, 244)" on the ace editor with classes "ace-tm readonly" with filter ace inline
 
   Scenario: Simplified mode is off by default so plain markdown-fenced code is left untouched
     When I am on the "simplifiedmodedemo" "core_question > preview" page logged in as admin

@@ -2,7 +2,7 @@
 
 Richard Lobb, Michelle Hsieh, Andrew Bainbridge-Smith
 
-Version 1.5.8, 24 August 2026.
+Version 1.5.11, 10 September 2026.
 
 Github repo: https://github.com/trampgeek/moodle-filter_ace_inline
 
@@ -21,7 +21,7 @@ Download the plugin from the repository, and unzip the code into
 
         <moodlehome>/public/filter/ace_inline
 
-Then visit Site administration > Notifications. You should receive the usual prompt about updating the database to incorporate the new plugin.
+Then visit Site administration > Notifications. You should receive the usual prompt about updating the database to incorporate the new plugin;  this is important to clear cached pages.
 
 Once installed, visit Site administration > Plugins > Plugins overview > Additional plugins. From this page, click the icon next to "Text filters" and turn "Ace inline" to "Off, but available".
 
